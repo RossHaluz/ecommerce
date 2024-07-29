@@ -2,32 +2,150 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+:root,
+html,
+body {
+  height: 100%;
+  width: 100%;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #f5faf6;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: #f5faf6;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper .swiper-wrapper .swiper-slide {
+  height: 253px;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 768px) {
+  .swiper .swiper-wrapper .swiper-slide {
+    height: 445px;
+  }
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-pagination-custom {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.swiper-pagination-custom > .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+  border: #7faa84 1px solid;
+  background: none;
+}
+
+.swiper-pagination-custom > .swiper-pagination-bullet-active {
+  background-color: #7faa84;
+}
+
+.swiper-thumbs .swiper-wrapper .swiper-slide-thumb-active {
+  border: #7faa84 1px solid;
+  filter: contrast(0.5);
+}
+
+/* Filters.module.css */
+
+.filterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 235px;
+}
+
+.filterGroup {
+  padding: 15px;
+  background-color: #eaf2eb;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 10px;
+}
+
+.filterTitle {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: #484848;
+}
+
+.priceRangeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-bottom: 15px;
+}
+
+.priceInputContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.priceInput {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.sliderContainer {
+  padding: 15px;
+}
+
+.rc-slider-track {
+  background-color: #78ab7e;
+}
+
+.rc-slider-handle {
+  border: solid 2px #78ab7e;
+}
+
+.rc-slider-handle:hover,
+.rc-slider-handle:focus,
+.rc-slider-handle:active {
+  border-color: #78ab7e;
+  box-shadow: 0 0 5px rgba(120, 171, 126, 0.5);
+}
+
+@layer components {
+  .container {
+    @apply max-w-[2560px];
   }
 }

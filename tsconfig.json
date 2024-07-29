@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "redux/store.ts", "redux/order/selector.ts", "redux/order/slice.ts", "redux/provider.tsx", "redux/category/operetions.ts"],
   "exclude": ["node_modules"]
 }
