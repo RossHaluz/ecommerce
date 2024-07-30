@@ -18,7 +18,7 @@ const Footer = () => {
         <div className=" md:grid md:grid-cols-3 lg:grid-cols-4 justify-between md:gap-8 lg:gap-[90px]">
           {/* Contact info start */}
           <div className="flex flex-col gap-[10px] mb-[15px]  items-start">
-            <Logo className="h-[50px] lg:h-full" />
+            <Logo className="h-[50px]" />
             <div className="flex flex-col gap-[15px]">
               <h3 className="font-semibold text-sm text-[#484848]">
                 Контакти:

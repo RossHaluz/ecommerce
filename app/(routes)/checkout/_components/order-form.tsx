@@ -96,7 +96,7 @@ const OrderForm = () => {
       }
 
       const { data: responce } = await axios.post(
-        "http://localhost:3001/api/3e2769aa-8b52-4cb0-a29b-17785efbb6c8/orders",
+        "http://localhost:3001/api/42e0b4fa-a9a3-46b2-85ad-78f2833bf90c/orders",
         data
       );
 
@@ -153,7 +153,7 @@ const OrderForm = () => {
 
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="urk-poshta" />
+                              <RadioGroupItem value="ukr-poshta" />
                             </FormControl>
                             <FormLabel className="font-normal">
                               Укр-пошта

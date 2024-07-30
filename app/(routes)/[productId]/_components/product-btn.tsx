@@ -5,7 +5,7 @@ import { addItemToCart, removeItemFromCart } from "@/redux/order/slice";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";

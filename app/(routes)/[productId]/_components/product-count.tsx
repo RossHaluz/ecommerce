@@ -58,7 +58,7 @@ const ProductCount: FC<ProductCountProps> = ({
 
   return (
     <div className="grid grid-cols-3 w-20 border border-solid border-[#7FAA84] rounded-md overflow-hidden">
-      <div className="border-r border-[#7FAA84] w-full h-full flex items-center justify-center">
+      <div className="border-r border-[#7FAA84] w-full flex items-center justify-center">
         <Button
           onClick={handleDecrease}
           variant="ghost"
@@ -70,7 +70,7 @@ const ProductCount: FC<ProductCountProps> = ({
       <div className="flex items-center justify-center p-[10px]">
         <span className="text-[#484848] font-medium text-sm">{count}</span>
       </div>
-      <div className="border-l border-[#7FAA84] w-full h-full flex items-center justify-center">
+      <div className="border-l border-[#7FAA84] w-full flex items-center justify-center">
         <Button
           onClick={handleIncrease}
           variant="ghost"
