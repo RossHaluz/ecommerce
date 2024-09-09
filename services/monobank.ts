@@ -36,7 +36,6 @@ export const monobankUrl = axios.create({
             }
         });
 
-        console.log(resonce);
         
         return resonce.data;
     } catch (error) {
