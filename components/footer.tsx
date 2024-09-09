@@ -8,12 +8,12 @@ import Mastercard from "/public/images/mastercard.svg";
 import ApplePay from "/public/images/apple-pay.svg";
 import Private from "/public/images/private.svg";
 import ArrowDown from "/public/images/arrow-down.svg";
-
 import { Button } from "./ui/button";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#EAF2EB] mt-[30px]">
+
+    <footer className="bg-[#EAF2EB]">
       <div className="container pt-5 pb-[28px] flex flex-col gap-[15px]">
         <div className=" md:grid md:grid-cols-3 lg:grid-cols-4 justify-between md:gap-8 lg:gap-[90px]">
           {/* Contact info start */}
@@ -116,6 +116,7 @@ const Footer = () => {
         {/* Copyright end */}
       </div>
     </footer>
+
   );
 };
 

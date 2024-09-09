@@ -2,7 +2,6 @@
 import Logo from "/public/images/logo.svg";
 import Cart from "/public/images/cart.svg";
 import Catalog from "/public/images/catalog.svg";
-import Account from "/public/images/account.svg";
 import Phone from "/public/images/phone.svg";
 import Search from "/public/images/search.svg";
 
@@ -28,12 +27,26 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Trash from "/public/images/trash.svg";
 import { selectOrderItems } from "@/redux/order/selector";
+import ModalAuth from "./ui/modal-auth";
+import LoginForm from "./login-form";
+import RegisterForm from "./register-form";
+import Cookies from "js-cookie";
+import { User2Icon } from "lucide-react";
+import { nanoid } from 'nanoid';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [isRegister, setIsRegister] = useState(false);
   const dispatch = useDispatch();
   const orderItems = useSelector(selectOrderItems);
   const router = useRouter();
+  const token = Cookies.get("token");
+
+  const onOpenChange = () => {
+    setIsRegister(false);
+    setIsLogin(true);
+  };
 
   const hansleDeleteItem = async (id: string) => {
     try {
@@ -62,11 +75,36 @@ const Header = () => {
               +38 (096) 400 91 30
             </a>
             <div className="flex items-center gap-5">
-              <Button variant="ghost" className="hidden lg:block p-0">
-                <Link href="/">
-                  <Account />
+              {token ? (
+                <Link href="/account">
+                  <User2Icon className="text-[#7FAA84]" strokeWidth="0.75px" />
                 </Link>
-              </Button>
+              ) : (
+                <ModalAuth
+                  onOpenChange={onOpenChange}
+                  triggetBtn={
+                    <Button variant="ghost" className="hidden lg:block p-0">
+                      <User2Icon
+                        className="stroke-[#484848]"
+                        strokeWidth="0.75px"
+                      />
+                    </Button>
+                  }
+                >
+                  {isLogin && (
+                    <LoginForm
+                      setIsRegister={setIsRegister}
+                      setIsLogin={setIsLogin}
+                    />
+                  )}
+                  {isRegister && (
+                    <RegisterForm
+                      setIsRegister={setIsRegister}
+                      setIsLogin={setIsLogin}
+                    />
+                  )}
+                </ModalAuth>
+              )}
 
               <Modal
                 triggetBtn={
@@ -81,14 +119,6 @@ const Header = () => {
                 }
                 title="Кошик"
                 dialogCancel={"Продовжити покупки"}
-                dialogAction={
-                  <Link
-                    href="/"
-                    className="flex items-center justify-center text-white text-base font-semibold y-[10px]"
-                  >
-                    Оформити замовлення
-                  </Link>
-                }
               >
                 {orderItems?.length > 0 ? (
                   orderItems?.map(
@@ -180,15 +210,15 @@ const Header = () => {
       </div>
 
       <div className="bg-[#F5FAF6] lg:bg-[#EAF2EB] lg:border-y">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between container">
           <div className="hidden lg:block">
             <Popover onOpenChange={(isOpen) => setIsOpen(isOpen)}>
               <PopoverTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="flex hover:bg-[#7FAA84] hover:text-white lg:rounded-r-sm items-center gap-[10px] text-[#484848] text-sm py-2 lg:pr-5 lg:py-[13px] lg:bg-[#7FAA84] lg:flex-row-reverse lg:text-white  lg:pl-[165px] pr-0"
+                  className="flex lg:rounded-r-sm items-center gap-[10px] text-[#484848] text-sm py-2 lg:py-[13px] lg:flex-row-reverse  px-0"
                 >
-                  <Catalog className="stroke-[#484848] lg:stroke-white" />
+                  <Catalog className="stroke-[#484848]" />
 
                   <span>Каталог товарів</span>
                 </Button>
@@ -201,9 +231,9 @@ const Header = () => {
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="flex hover:bg-[#7FAA84] hover:text-white lg:rounded-r-sm items-center gap-[10px] text-[#484848] text-sm py-2 lg:pr-5 lg:py-[13px] lg:bg-[#7FAA84] lg:flex-row-reverse lg:text-white  lg:pl-[165px] pr-0"
+                  className="flex lg:rounded-r-sm items-center gap-[10px] text-[#484848] text-sm py-2  lg:py-[13px] lg:flex-row-reverse p-0"
                 >
-                  <Catalog className="stroke-[#484848] lg:stroke-white" />
+                  <Catalog className="stroke-[#484848]" />
 
                   <span>Каталог товарів</span>
                 </Button>
@@ -216,13 +246,13 @@ const Header = () => {
 
           <MainNavigation />
 
-          <div className="flex lg:hidden  pr-4">
+          <div className="flex lg:hidden">
             <MobileMenu />
           </div>
 
           <Button
             variant="ghost"
-            className="hidden lg:block pr-8 lg:pr-[165px] hover:bg-none"
+            className="hidden lg:block  hover:bg-none p-0"
           >
             <Search />
           </Button>

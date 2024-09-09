@@ -16,19 +16,20 @@ import { selectOrderItems } from "@/redux/order/selector";
 
 interface ModalProps {
   children: ReactNode;
-  title: string;
-  dialogCancel: string;
-  dialogAction: ReactNode;
+  title?: string;
+  dialogCancel?: string;
+  dialogAction?: ReactNode;
   triggetBtn: ReactNode;
 }
 
-const Modal: FC<ModalProps> = ({ children, title, triggetBtn }) => {
+const Modal: FC<ModalProps> = ({ children, title, triggetBtn, dialogAction }) => {
   const orderItems = useSelector(selectOrderItems);
 
   return (
     <Dialog>
       <DialogTrigger asChild>{triggetBtn}</DialogTrigger>
       <DialogContent className="bg-white text-[#484848] rounded-[5px]">
+        
         <div className="flex flex-col gap-[15px] lg:gap-[30px]">
           <DialogHeader>
             <div className="flex flex-col gap-[15px] lg:gap-[30px]">
@@ -48,6 +49,7 @@ const Modal: FC<ModalProps> = ({ children, title, triggetBtn }) => {
             >
               <Link href="/checkout">Оформити замовлення</Link>
             </Button>
+    
             <DialogClose className="border border-solid border-[#7FAA84] p-[11.5px]  text-[#484848] text-sm font-semibold rounded-[5px] lg:border-none lg:underline">
               Продовжити покупки
             </DialogClose>

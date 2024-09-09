@@ -10,24 +10,3 @@ const setAuthToken = (token: string) => {
 const removeAuthToken = () => {
   axios.defaults.headers.common.Authorization = "";
 };
-
-export const registerUser = createAsyncThunk(
-  "api/registerUser",
-  async (
-    params: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      password: string;
-    },
-    { rejectWithValue }
-  ) => {
-    try {
-      const { data } = await axios.post("/auth/api/register", params);
-      setAuthToken(data?.newUser?.token);
-      return data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data?.message);
-    }
-  }
-);

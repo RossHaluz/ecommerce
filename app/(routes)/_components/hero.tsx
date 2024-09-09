@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
+import print from '/public/images/print.png';
 
 type StoreData = {
   heroTitle: string;
@@ -35,6 +36,7 @@ const Hero: FC<StoreData> = ({ heroTitle, heroDesc, heroImages }) => {
           <h2 className="text-sm text-[#484848] lg:text-[24px] lg:leading-[29.26px]">
             {heroDesc}
           </h2>
+          
         </div>
 
         <Button className="py-[11.5px] px-5 max-w-max cursor-pointer lg:px-[25px] lg:py-[15px] lg:text-base lg:font-semibold rounded-[5px]">

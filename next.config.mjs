@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["res.cloudinary.com", 'localhost'],
   },
 
   webpack: (config) => {
@@ -11,6 +11,16 @@ const nextConfig = {
     });
 
     return config;
+  },
+
+  env: {
+    SERVER_URL: process.env.SERVER_URL,
+    BACKEND_URL: process.env.BACKEND_URL,
+    STORE_ID: process.env.STORE_ID,
+    MONO_URL: process.env.MONO_URL,
+    TOKEN_MONO: process.env.TOKEN_MONO,
+    NOVA_POSHTA_URL: process.env.NOVA_POSHTA_URL,
+    NOVA_POSHTA_KEY: process.env.NOVA_POSHTA_KEY
   },
 };
 

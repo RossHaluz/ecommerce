@@ -21,6 +21,7 @@ interface FiltersProps {
   filters: {
     name: string;
     id: string;
+    type: string;
     filterOptions: FilterOption[];
   }[];
   rangePrice: {
@@ -56,11 +57,11 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
     setIsInitialized(true);
   }, []);
 
-  useEffect(() => {
-    if (!isPriceChangedByUser) {
-      setRangePrices([rangePrice.minPrice, rangePrice.maxPrice]);
-    }
-  }, [rangePrice]);
+  // useEffect(() => {
+  //   if (!isPriceChangedByUser) {
+  //     setRangePrices([rangePrice.minPrice, rangePrice.maxPrice]);
+  //   }
+  // }, [rangePrice]);
 
   useEffect(() => {
     if (!isInitialized) return;
@@ -73,8 +74,6 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
             filterIds.length > 0
               ? filterIds.map((filter) => filter.id).join(",")
               : null,
-          minPrice: rangePrices[0],
-          maxPrice: rangePrices[1],
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -96,18 +95,18 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
     });
   };
 
-  const handlePriceChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    type: "min" | "max"
-  ) => {
-    const value = Number(e.target.value);
-    setIsPriceChangedByUser(true);
-    setRangePrices((prev) => {
-      const newRange = [...prev];
-      newRange[type === "min" ? 0 : 1] = value;
-      return newRange;
-    });
-  };
+  // const handlePriceChange = (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   type: "min" | "max"
+  // ) => {
+  //   const value = Number(e.target.value);
+  //   setIsPriceChangedByUser(true);
+  //   setRangePrices((prev) => {
+  //     const newRange = [...prev];
+  //     newRange[type === "min" ? 0 : 1] = value;
+  //     return newRange;
+  //   });
+  // };
 
   const removeFilterIds = () => {
     localStorage.removeItem("filterIds");
@@ -116,21 +115,34 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
     setRangePrices([rangePrice.minPrice, rangePrice.maxPrice]);
   };
 
-  const handleRangeChange = (value: number | number[]) => {
-    setIsPriceChangedByUser(true);
-    if (Array.isArray(value) && value.length === 2) {
-      setRangePrices(value);
-    }
-  };
+  // const handleRangeChange = (value: number | number[]) => {
+  //   setIsPriceChangedByUser(true);
+  //   if (Array.isArray(value) && value.length === 2) {
+  //     setRangePrices(value);
+
+  //     const url = qs.stringifyUrl(
+  //       {
+  //         url: pathname,
+  //         query: {
+  //           minPrice: value[0] ? value[0].toString() : null,
+  //           maxPrice: value[1] ? value[1].toString() : null,
+  //         },
+  //       },
+  //       { skipEmptyString: true, skipNull: true }
+  //     );
+
+  //     router.push(url);
+  //   }
+  // };
 
   return (
     <div className="hidden lg:flex flex-col gap-[30px] w-[235px]">
-      <div className="flex flex-col gap-[15px]">
+      {filterIds?.length > 0 && <div className="flex flex-col gap-[15px]">
         <span className="text-[#484848] text-base font-bold">Ви обрали:</span>
         <div className="flex flex-col gap-[10px]">
-          <div className="py-[7px] px-[15px] w-full bg-[#EAF2EB]">
+          {/* <div className="py-[7px] px-[15px] w-full bg-[#EAF2EB]">
             Ціна: від {rangePrices[0]} ₴ до {rangePrices[1]}
-          </div>
+          </div> */}
 
           {filterIds?.map((item) => (
             <div
@@ -148,9 +160,9 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
             Очистити фільтр
           </Button>
         </div>
-      </div>
+      </div>}
 
-      <div
+      {/* <div
         className={`p-[15px] bg-[#EAF2EB] flex flex-col gap-[15px] rounded-md `}
       >
         <h3 className="text-lg font-bold text-[rgb(72,72,72)]">Ціна</h3>
@@ -184,7 +196,7 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {filters?.map((filter) => (
         <div
@@ -192,17 +204,28 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
           className="p-[15px] w-[235px] bg-[#EAF2EB] flex flex-col gap-[15px] rounded-md"
         >
           <h3 className="text-lg font-bold text-[#484848]">{filter.name}</h3>
-          {filter.filterOptions?.map((item) => (
-            <div key={item.id} className="flex items-center space-x-2">
-              <Checkbox
-                checked={filterIds.some((f) => f.id === item.id)}
-                onCheckedChange={() => handleCheckedChange(item)}
-              />
-              <label htmlFor={item.id} className="text-sm text-[#484848]">
-                {item.name}
-              </label>
-            </div>
-          ))}
+          {filters?.map((item) => {
+            if (item?.type === "checkbox") {
+              return (
+                <>
+                  {filter.filterOptions?.map((item) => (
+                    <div key={item.id} className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={filterIds.some((f) => f.id === item.id)}
+                        onCheckedChange={() => handleCheckedChange(item)}
+                      />
+                      <label
+                        htmlFor={item.id}
+                        className="text-sm text-[#484848]"
+                      >
+                        {item.name}
+                      </label>
+                    </div>
+                  ))}
+                </>
+              );
+            }
+          })}
         </div>
       ))}
     </div>

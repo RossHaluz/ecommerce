@@ -1,29 +1,27 @@
 import React, { FC } from "react";
 import User from '/public/images/user.svg';
 
-interface OrderClientProps {
-  orderDetails: {
-    phoneNumber: string;
+interface HistoryOrdersClientProps {
+  item: {
     firstName: string;
     lastName: string;
-    email?: string
+    phone: string;
   };
 }
 
-const OrderClient: FC<OrderClientProps> = ({ orderDetails }) => {
-  return   <div className="flex items-start gap-10">
+const HistoryOrdersClient: FC<HistoryOrdersClientProps> = ({item}) => {
+  return <div className="flex items-start gap-10">
   <h3 className="hidden md:inline-block text-base text-[#484848] font-medium w-[83px]">
   Покупець
   </h3>
   <div className="flex items-center md:items-start gap-[15px]">
     <User />
     <p>
-    {orderDetails?.firstName} {orderDetails?.lastName}<br/>
-    {orderDetails?.phoneNumber}
-    {orderDetails?.email}
+    {item?.firstName} {item?.lastName}<br/>
+    {item?.phone}
     </p>
   </div>
 </div>
 };
 
-export default OrderClient;
+export default HistoryOrdersClient;

@@ -33,7 +33,7 @@ const Subscribe = () => {
   }
 
   return (
-    <div className="bg-[#EAF2EB] container">
+    <div className="bg-[#EAF2EB] container mb-[30px]">
       <div className="lg:grid grid-cols-3 items-center justify-center lg:justify-start gap-[30px]">
         <div className="hidden lg:block h-[250px] relative col-span-1">
           <Image

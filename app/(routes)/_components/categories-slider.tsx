@@ -25,6 +25,7 @@ const CategoriesSlider: FC<CategoriesSliderProps> = ({ categories }) => {
         centeredSlides={true}
         roundLengths={true}
         loop={true}
+        parallax={true}
       >
         {categories?.map((item) => {
           return (
@@ -32,7 +33,7 @@ const CategoriesSlider: FC<CategoriesSliderProps> = ({ categories }) => {
               {({ isActive }) => (
                 <Link
                   href={`/categories/${item?.id}`}
-                  className={`flex relative rounded-[5px] px-[27px] py-[20px] transition ease-in-out delay-250 h-full transform scale-[0.8] ${
+                  className={`flex relative rounded-[5px] px-[27px] py-[20px] transition ease-in-out delay-250 h-full transform  ${
                     isActive &&
                     "transform scale-[1] drop-shadow-[1px_1px_5px_rgba(127,170,132,0.50)]"
                   }`}

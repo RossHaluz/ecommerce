@@ -65,6 +65,8 @@ body {
   gap: 15px;
 }
 
+
+
 .swiper-pagination-custom > .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
@@ -146,6 +148,6 @@ body {
 
 @layer components {
   .container {
-    @apply max-w-[2560px];
+    @apply max-w-[1440px];
   }
 }

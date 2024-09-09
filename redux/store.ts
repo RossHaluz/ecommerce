@@ -18,7 +18,7 @@ import { authReducer } from "./auth/slice";
 
 const persistAuth = {
   key: "userDetails",
-  whitelist: ["token", "userContactDetails"],
+  whitelist: ["userContactDetails"],
   storage,
 };
 
