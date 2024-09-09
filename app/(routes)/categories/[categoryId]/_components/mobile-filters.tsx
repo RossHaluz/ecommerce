@@ -52,7 +52,7 @@ const MobileFilters: FC<MobileFiltersProps> = ({ filters }) => {
                   >
                     {item?.filterOptions?.map((item) => {
                       return (
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2" key={item?.id}>
                           <Checkbox id={item?.id} />
                           <label
                             htmlFor={item?.id}

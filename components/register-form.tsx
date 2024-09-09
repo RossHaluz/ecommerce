@@ -103,7 +103,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-base font-medium">
-                  Ім'я та Прізвище*
+                  Ім&apos;я та Прізвище*
                 </FormLabel>
                 <FormControl>
                   <Input {...field} className="border-[#7FAA84] rounded-md" />

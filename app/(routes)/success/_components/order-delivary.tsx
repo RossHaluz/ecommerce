@@ -12,7 +12,6 @@ interface OrderDelivaryProps {
 }
 
 const OrderDelivary: FC<OrderDelivaryProps> = ({orderDetails}) => {
-  console.log(orderDetails);
   
   return (
     <div className="flex items-start gap-10">
@@ -22,8 +21,8 @@ const OrderDelivary: FC<OrderDelivaryProps> = ({orderDetails}) => {
     <div className="flex items-center md:items-start gap-[15px]">
       <Address />
       <p>
-        {orderDetails?.typeDelivary} "
-        {orderDetails?.postService === "nova-poshta" && "Нова-Пошта"}"<br />
+        {orderDetails?.typeDelivary}
+        {orderDetails?.postService === "nova-poshta" && ' "Нова-Пошта" '}"<br />
         {orderDetails?.city}, {orderDetails?.address ? orderDetails?.address : orderDetails?.separation}
       </p>
     </div>
