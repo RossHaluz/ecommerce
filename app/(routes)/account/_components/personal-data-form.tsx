@@ -108,7 +108,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Ім'я та Прізвище</FormLabel>
+                  <FormLabel>Ім&apos;я та Прізвище</FormLabel>
                   <FormControl>
                     <Input
                       {...field}

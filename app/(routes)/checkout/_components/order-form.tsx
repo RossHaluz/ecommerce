@@ -315,7 +315,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
           dispatch(setOrderDetails({ ...responceOrder, orderItems }));
           dispatch(cleareOrderItems());
           dispatch(removeUserContactDetails());
-          // return router.push(responce.pageUrl);
+          return router.push(responce.pageUrl);
         }
       }
 

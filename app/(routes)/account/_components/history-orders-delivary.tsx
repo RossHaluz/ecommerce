@@ -19,8 +19,8 @@ const HistoryOrdersDelivary: FC<HistoryOrdersDelivaryProps> = ({item}) => {
   <div className="flex items-center md:items-start gap-[15px]">
     <Address />
     <p>
-      {item?.typeDelivary} "
-      {item?.postService === "nova-poshta" && "Нова-Пошта"}"<br />
+      {item?.typeDelivary} 
+      {item?.postService === "nova-poshta" && 'Нова-Пошта'}<br />
       м. {item?.city}, {item?.address ? item?.address : item?.separation}
     </p>
   </div>
