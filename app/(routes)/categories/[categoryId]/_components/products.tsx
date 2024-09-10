@@ -1,6 +1,8 @@
+'use client'
 import React, { FC } from "react";
 import ProductItem from "./product-item";
 import Pagination from "@/components/pagination";
+import { useOrigin } from "@/hooks/use-origin";
 
 interface ProductsProps {
   products: {
@@ -16,12 +18,12 @@ interface ProductsProps {
     }[];
   }[];
   page: number;
-  pageSize: number;
-  totalItem: number;
   totalPages: number;
+  categortId: string;
 }
 
-const Products: FC<ProductsProps> = ({ products, page, pageSize, totalItem, totalPages }) => {
+const Products: FC<ProductsProps> = ({ products, page, totalPages, categortId }) => {
+const baseUrl = useOrigin();
 
   return (
     <div className="flex flex-col gap-[30px]">
@@ -30,8 +32,8 @@ const Products: FC<ProductsProps> = ({ products, page, pageSize, totalItem, tota
         return <ProductItem key={item?.id} item={item} />;
       })}
     </ul>
-    
-    <Pagination currentPage={page} totalPages={totalPages} basePath={'http://localhost:3000/categories/19d55698-7ba2-43ec-b86b-0dd5acbcd34a'}/>
+
+    <Pagination currentPage={page} totalPages={totalPages} basePath={`${baseUrl}/categories/${categortId}`}/>
     </div>
   );
 };

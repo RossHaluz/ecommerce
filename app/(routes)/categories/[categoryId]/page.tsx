@@ -29,8 +29,8 @@ const CategoryPage: FC<CategoryPageProps> = async ({
   const { data } = await axios.get(
     `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories/${categoryId}?${filterIds ? `filterIds=${filterIds}` : ""}${minPrice ? `&minPrice=${minPrice}` : ""}${maxPrice ? `&maxPrice=${maxPrice}` : ""}${page ? `${getObjectKeys?.length > 1 ? `&page=${page}` : `page=${page}`}` : ""}`
   );
-  
 
+  
   const { data: filters } = await axios.get(
     `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/filters`
   );
@@ -63,7 +63,7 @@ const CategoryPage: FC<CategoryPageProps> = async ({
               } ${data?.category?.products?.length > 1 ? "товарів" : "товар"}`}</h3>
             </div>
 
-            <Products products={data?.category?.products} page={data?.meta?.page} pageSize={data?.meta?.pageSize} totalItem={data?.meta?.totalItem} totalPages={data?.meta?.totalPages}  />
+            <Products products={data?.category?.products} page={data?.meta?.page}  totalPages={data?.meta?.totalPages} categortId={data?.category?.id}  />
           </div>
         </div>
       </div>
