@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 interface FilterOption {
   id: string;
@@ -84,15 +86,25 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
     localStorage.setItem("rangePrices", JSON.stringify(rangePrices));
   }, [filterIds, rangePrices, pathname, router, isInitialized]);
 
-  const handleCheckedChange = (filter: FilterOption) => {
-    setIsPriceChangedByUser(false);
-    setFilterIds((prevFilter) => {
-      if (prevFilter.find((item) => item.id === filter.id)) {
-        return prevFilter.filter((item) => item.id !== filter.id);
-      } else {
-        return [...prevFilter, filter];
-      }
-    });
+  const handleCheckedChange = (filter: FilterOption, type: string) => {
+    console.log(filter);
+    
+    if (type === "checkbox") {
+      setFilterIds((prevFilter) => {
+        if (prevFilter.find((item) => item.id === filter.id)) {
+          return prevFilter.filter((item) => item.id !== filter.id);
+        } else {
+          return [...prevFilter, filter];
+        }
+      });
+    } else if (type === "radio") {
+      setFilterIds((prevFilter) => {
+        const updatedFilters = prevFilter.filter(
+          (item) => item.filter.id !== filter.filter.id
+        );
+        return [...updatedFilters, filter];
+      });
+    }
   };
 
   // const handlePriceChange = (
@@ -137,30 +149,32 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
 
   return (
     <div className="hidden lg:flex flex-col gap-[30px] w-[235px]">
-      {filterIds?.length > 0 && <div className="flex flex-col gap-[15px]">
-        <span className="text-[#484848] text-base font-bold">Ви обрали:</span>
-        <div className="flex flex-col gap-[10px]">
-          {/* <div className="py-[7px] px-[15px] w-full bg-[#EAF2EB]">
+      {filterIds?.length > 0 && (
+        <div className="flex flex-col gap-[15px]">
+          <span className="text-[#484848] text-base font-bold">Ви обрали:</span>
+          <div className="flex flex-col gap-[10px]">
+            {/* <div className="py-[7px] px-[15px] w-full bg-[#EAF2EB]">
             Ціна: від {rangePrices[0]} ₴ до {rangePrices[1]}
           </div> */}
 
-          {filterIds?.map((item) => (
-            <div
-              className="py-[7px] px-[15px] w-full bg-[#EAF2EB]"
-              key={item?.id}
+            {filterIds?.map((item) => (
+              <div
+                className="py-[7px] px-[15px] w-full bg-[#EAF2EB]"
+                key={item?.id}
+              >
+                {item?.filter?.name}: {item?.name}
+              </div>
+            ))}
+            <Button
+              variant="ghost"
+              className="underline text-[#78AB7E] text-base font-bold flex justify-start p-0 items-start"
+              onClick={removeFilterIds}
             >
-              {item?.filter?.name}: {item?.name}
-            </div>
-          ))}
-          <Button
-            variant="ghost"
-            className="underline text-[#78AB7E] text-base font-bold flex justify-start p-0 items-start"
-            onClick={removeFilterIds}
-          >
-            Очистити фільтр
-          </Button>
+              Очистити фільтр
+            </Button>
+          </div>
         </div>
-      </div>}
+      )}
 
       {/* <div
         className={`p-[15px] bg-[#EAF2EB] flex flex-col gap-[15px] rounded-md `}
@@ -198,36 +212,41 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
         </div>
       </div> */}
 
-      {filters?.map((filter) => (
-        <div
-          key={filter.id}
-          className="p-[15px] w-[235px] bg-[#EAF2EB] flex flex-col gap-[15px] rounded-md"
-        >
-          <h3 className="text-lg font-bold text-[#484848]">{filter.name}</h3>
-          {filters?.map((item) => {
-            if (item?.type === "checkbox") {
-              return (
-                <>
-                  {filter.filterOptions?.map((item) => (
-                    <div key={item.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        checked={filterIds.some((f) => f.id === item.id)}
-                        onCheckedChange={() => handleCheckedChange(item)}
-                      />
-                      <label
-                        htmlFor={item.id}
-                        className="text-sm text-[#484848]"
-                      >
-                        {item.name}
-                      </label>
-                    </div>
-                  ))}
-                </>
-              );
-            }
-          })}
-        </div>
-      ))}
+      {filters?.map((filter) => {
+        return (
+          <div
+            key={filter.id}
+            className="p-[15px] w-[235px] bg-[#EAF2EB] flex flex-col gap-[15px] rounded-md"
+          >
+            <h3 className="text-lg font-bold text-[#484848]">{filter.name}</h3>
+
+            {filter.filterOptions?.map((item) => (
+              <div key={item.id} className="flex items-center space-x-2">
+                {filter?.type === "checkbox" ? (
+                  <>
+                    <Checkbox
+                      checked={filterIds.some((f) => f.id === item.id)}
+                      onCheckedChange={() => handleCheckedChange(item, 'checkbox')}
+                    />
+                    <label htmlFor={item.id} className="text-sm text-[#484848]">
+                      {item.name}
+                    </label>
+                  </>
+                ) : (
+                  filter?.type === "radio" && <RadioGroup 
+                  value={filterIds.find((f) => f.filter.id === filter.id)?.id || ""}
+                  onValueChange={() => handleCheckedChange(item, "radio")}>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value={item?.id} id={item?.id}/>
+                    <Label htmlFor={item.id} className="text-sm text-[#484848]">   {item.name}</Label>
+                  </div>
+                </RadioGroup>
+                )}
+              </div>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 };

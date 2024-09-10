@@ -252,7 +252,6 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   
   
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     try {
       const currentPayment = form.getValues("payment");
 
@@ -270,7 +269,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               icon?: string;
             }[],
           },
-          redirectUrl: "https://ecommerce-admin-nine-nu.vercel.app/success",
+          redirectUrl: "http://localhost:3000",
           webHookUrl: "https://ecommerce-admin-nine-nu.vercel.app/api/97ccf7f0-ddba-4e42-b562-d90c557b37ef/orders"
         };
 
@@ -293,10 +292,13 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
         if (responce) {
           const data: {
             products?: { productId: string; quantity: number }[];
+            invoiceId: string
           } = {
             products: [],
+            invoiceId: responce.invoiceId,
             ...values,
           };
+             
     
           if (orderItems?.length > 0) {
             data.products = orderItems?.map(

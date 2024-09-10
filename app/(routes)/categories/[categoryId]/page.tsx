@@ -14,6 +14,7 @@ interface CategoryPageProps {
     filterIds: string;
     maxPrice: string;
     minPrice: string;
+    page: string
   };
 }
 
@@ -22,18 +23,20 @@ const CategoryPage: FC<CategoryPageProps> = async ({
   searchParams,
 }) => {
   const { categoryId } = params;
-  const { filterIds, maxPrice, minPrice } = searchParams;
+  const { filterIds, maxPrice, minPrice, page } = searchParams;
+  const getObjectKeys = Object.keys(searchParams);
 
   const { data } = await axios.get(
-    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories/${categoryId}?filterIds=${filterIds}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories/${categoryId}?${filterIds ? `filterIds=${filterIds}` : ""}${minPrice ? `&minPrice=${minPrice}` : ""}${maxPrice ? `&maxPrice=${maxPrice}` : ""}${page ? `${getObjectKeys?.length > 1 ? `&page=${page}` : `page=${page}`}` : ""}`
   );
+  
 
   const { data: filters } = await axios.get(
     `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/filters`
   );
 
   return (
-    <Section title={data?.name}>
+    <Section title={data?.category?.name}>
       <div className="pt-[10px] pb-[30px] flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-[15px] lg:hidden">
           <MobileFilters filters={filters} />
@@ -43,8 +46,8 @@ const CategoryPage: FC<CategoryPageProps> = async ({
           <Filters
             filters={filters}
             rangePrice={{
-              minPrice: data?.minPrice,
-              maxPrice: data?.maxPrice,
+              minPrice: data?.category?.minPrice,
+              maxPrice: data?.category?.maxPrice,
             }}
           />
 
@@ -56,11 +59,11 @@ const CategoryPage: FC<CategoryPageProps> = async ({
               </div>
 
               <h3 className="text-[#484848] text-base font-medium">{`Знайдено: ${
-                data?.products?.length
-              } ${data?.products?.length > 1 ? "товарів" : "товар"}`}</h3>
+                data?.category?.products?.length
+              } ${data?.category?.products?.length > 1 ? "товарів" : "товар"}`}</h3>
             </div>
 
-            <Products products={data?.products} />
+            <Products products={data?.category?.products} page={data?.meta?.page} pageSize={data?.meta?.pageSize} totalItem={data?.meta?.totalItem} totalPages={data?.meta?.totalPages}  />
           </div>
         </div>
       </div>
