@@ -10,7 +10,12 @@ const config = {
   ],
   prefix: "",
   theme: {
+    
     extend: {
+      boxShadow: {
+        "custom-shadow":
+          "0px 3px 3px 0px #7FAA8440",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

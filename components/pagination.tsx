@@ -1,32 +1,77 @@
 "use client";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import {  usePathname, useRouter } from "next/navigation";
 import { FC } from "react";
 import Arrow from '/public/images/arrow.svg';
+import qs from 'query-string';
 
 interface PaginationProps {
     currentPage: number;
     totalPages: number;
-    basePath: string;
+    searchParams: {
+      filterIds: string;
+      maxPrice: string;
+      minPrice: string;
+      page: string;
+      sortByPrice: string;
+    };
 }
 
-const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, basePath }) => {
+const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, searchParams }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const { filterIds, maxPrice, minPrice, page, sortByPrice } = searchParams;
+  
 
   const handlePreviousPage = () => {
     if (currentPage === 1) return;
     const prevPage = currentPage - 1;
-    router.push(`${basePath}?page=${prevPage}`);
+    const url = qs.stringifyUrl({
+      url:  pathname,
+      query: {
+        filterIds:  filterIds ? filterIds : null,
+        maxPrice: maxPrice ? maxPrice : null,
+        minPrice: minPrice ? minPrice : null,
+        page: prevPage ? prevPage : null,
+        sortByPrice: sortByPrice ? sortByPrice : null,
+      }
+    },  { skipEmptyString: true, skipNull: true });
+
+
+    router.push(url);
   };
 
   const handleNextPage = () => {
     if (currentPage === totalPages) return;
     const nextPage = currentPage + 1;
-    router.push(`${basePath}?page=${nextPage}`);
+    const url = qs.stringifyUrl({
+      url:  pathname,
+      query: {
+        filterIds:  filterIds ? filterIds : null,
+        maxPrice: maxPrice ? maxPrice : null,
+        minPrice: minPrice ? minPrice : null,
+        page: nextPage ? nextPage : null,
+        sortByPrice: sortByPrice ? sortByPrice : null,
+      }
+    },  { skipEmptyString: true, skipNull: true });
+
+
+    router.push(url);
   };
 
   const handlePageClick = (pageNumber: number) => {
-    router.push(`${basePath}?page=${pageNumber}`);
+    const url = qs.stringifyUrl({
+      url:  pathname,
+      query: {
+        filterIds:  filterIds ? filterIds : null,
+        maxPrice: maxPrice ? maxPrice : null,
+        minPrice: minPrice ? minPrice : null,
+        page: pageNumber ? pageNumber : null,
+        sortByPrice: sortByPrice ? sortByPrice : null,
+      }
+    },  { skipEmptyString: true, skipNull: true });
+
+
+    router.push(url);
   };
 
   const renderPageNumbers = () => {

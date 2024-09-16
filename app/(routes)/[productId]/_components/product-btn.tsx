@@ -54,8 +54,6 @@ const ProductBtn: FC<ProductBtnProps & ProductBtnCountProps> = ({
   const orderItems = useSelector(selectOrderItems);
   const dispatch = useDispatch();
 
-  console.log(productOptions);
-
   const hansleDeleteItem = async (id: string) => {
     try {
       dispatch(removeItemFromCart(id));

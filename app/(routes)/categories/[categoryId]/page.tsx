@@ -14,7 +14,8 @@ interface CategoryPageProps {
     filterIds: string;
     maxPrice: string;
     minPrice: string;
-    page: string
+    page: string;
+    sortByPrice: string;
   };
 }
 
@@ -23,16 +24,16 @@ const CategoryPage: FC<CategoryPageProps> = async ({
   searchParams,
 }) => {
   const { categoryId } = params;
-  const { filterIds, maxPrice, minPrice, page } = searchParams;
+  const { filterIds, maxPrice, minPrice, page, sortByPrice } = searchParams;
   const getObjectKeys = Object.keys(searchParams);
 
   const { data } = await axios.get(
-    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories/${categoryId}?${filterIds ? `filterIds=${filterIds}` : ""}${minPrice ? `&minPrice=${minPrice}` : ""}${maxPrice ? `&maxPrice=${maxPrice}` : ""}${page ? `${getObjectKeys?.length > 1 ? `&page=${page}` : `page=${page}`}` : ""}`
+    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories/${categoryId}?${filterIds ? `filterIds=${filterIds}` : ""}${minPrice ? `&minPrice=${minPrice}` : ""}${maxPrice ? `&maxPrice=${maxPrice}` : ""}${page ? `${getObjectKeys?.length > 1 ? `&page=${page}` : `page=${page}`}` : ""}${sortByPrice ? `${getObjectKeys?.length > 1 ? `&sortByPrice=${sortByPrice}` : `sortByPrice=${sortByPrice}`}` : ""}`
   );
-
+  
   
   const { data: filters } = await axios.get(
-    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/filters`
+    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories/${categoryId}/filters`
   );
 
   return (
@@ -40,7 +41,7 @@ const CategoryPage: FC<CategoryPageProps> = async ({
       <div className="pt-[10px] pb-[30px] flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-[15px] lg:hidden">
           <MobileFilters filters={filters} />
-          <SortProducts />
+          <SortProducts searchParams={searchParams}/>
         </div>
         <div className="flex items-start gap-10">
           <Filters
@@ -49,13 +50,14 @@ const CategoryPage: FC<CategoryPageProps> = async ({
               minPrice: data?.category?.minPrice,
               maxPrice: data?.category?.maxPrice,
             }}
+            searchParams={searchParams}
           />
 
           <div className="w-full flex flex-col gap-6">
             <div className="w-full hidden lg:flex items-center justify-between">
               <div className="flex items-center gap-10">
                 <span className="text-[#484848] text-base">Сортування:</span>
-                <SortProducts />
+                <SortProducts searchParams={searchParams}/>
               </div>
 
               <h3 className="text-[#484848] text-base font-medium">{`Знайдено: ${
@@ -63,7 +65,7 @@ const CategoryPage: FC<CategoryPageProps> = async ({
               } ${data?.category?.products?.length > 1 ? "товарів" : "товар"}`}</h3>
             </div>
 
-            <Products products={data?.category?.products} page={data?.meta?.page}  totalPages={data?.meta?.totalPages} categortId={data?.category?.id}  />
+            <Products products={data?.category?.products} page={data?.meta?.page}  totalPages={data?.meta?.totalPages} categortId={data?.category?.id} searchParams={searchParams} />
           </div>
         </div>
       </div>

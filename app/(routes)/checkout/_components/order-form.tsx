@@ -57,7 +57,7 @@ const formSchema = z.object({
   separation: z.string(),
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
-  phoneNumber: z.string().min(1, { message: "Phone number is required" }),
+  phone: z.string().min(1, { message: "Phone number is required" }),
   email: z.string().min(1, { message: "Email is required" }).email(),
 });
 
@@ -98,7 +98,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       separation: "",
       firstName: userDetails?.firstName || currentUser?.firstName || "",
       lastName: userDetails?.lastName || currentUser?.lastName || "",
-      phoneNumber: userDetails?.phoneNumber || currentUser?.phoneNumber || "",
+      phone: userDetails?.phoneNumber || currentUser?.phoneNumber || "",
       email: userDetails?.email || currentUser?.email || "",
     },
   });
@@ -414,7 +414,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                 />
 
                 <FormField
-                  name="phoneNumber"
+                  name="phone"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>

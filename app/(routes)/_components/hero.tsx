@@ -40,7 +40,7 @@ const Hero: FC<StoreData> = ({ heroTitle, heroDesc, heroImages }) => {
         </div>
 
         <Button className="py-[11.5px] px-5 max-w-max cursor-pointer lg:px-[25px] lg:py-[15px] lg:text-base lg:font-semibold rounded-[5px]">
-          <Link href="/">Перейти в каталог</Link>
+          <Link href="/categories">Перейти в каталог</Link>
         </Button>
       </div>
     </div>

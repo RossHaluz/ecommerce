@@ -24,7 +24,7 @@ const BestSellersItem: FC<BesrSellersItemProps> = ({ item }) => {
 
   return (
     <li className="rounded-[5px] border border-[rgba(72,72,72,0.2)] overflow-hidden">
-      <Link href="/" className="flex flex-col">
+      <Link href={`/${item?.id}`} className="flex flex-col">
         <div className="w-full h-[253px] relative overflow-hidden">
           <Image
             src={productImage}

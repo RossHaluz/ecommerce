@@ -51,11 +51,11 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
           )}
         </div>
 
-        {categories?.length > 4 && (
+   
           <Button className="w-[244px] mx-auto rounded-[5px]">
-            <Link href="/">Переглянути всі категорії</Link>
+            <Link href="/categories">Переглянути всі категорії</Link>
           </Button>
-        )}
+   
       </div>
     </Section>
   );

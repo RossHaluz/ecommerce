@@ -26,19 +26,13 @@ interface FiltersProps {
     type: string;
     filterOptions: FilterOption[];
   }[];
-  searchParams: {
-    filterIds: string;
-    page: string;
-    sortByPrice: string;
-  };
   rangePrice: {
     minPrice: number;
     maxPrice: number;
   };
 }
 
-const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
-  const {sortByPrice} = searchParams;
+const Filters: FC<FiltersProps> = ({ filters, rangePrice }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [filterIds, setFilterIds] = useState<FilterOption[]>([]);
@@ -82,7 +76,6 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
             filterIds.length > 0
               ? filterIds.map((filter) => filter.id).join(",")
               : null,
-              sortByPrice: sortByPrice ? sortByPrice : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -131,8 +124,6 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
     localStorage.removeItem("rangePrices");
     setFilterIds([]);
     setRangePrices([rangePrice.minPrice, rangePrice.maxPrice]);
-
-    router.refresh();
   };
 
   // const handleRangeChange = (value: number | number[]) => {
