@@ -269,7 +269,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               icon?: string;
             }[],
           },
-          redirectUrl: "http://localhost:3000",
+          redirectUrl: "https://ecommerce-lime-alpha-61.vercel.app",
           webHookUrl: "https://ecommerce-admin-nine-nu.vercel.app/api/97ccf7f0-ddba-4e42-b562-d90c557b37ef/orders"
         };
 
