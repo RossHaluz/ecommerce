@@ -403,7 +403,7 @@ const Header = () => {
                   <ul className="grid grid-cols-4 gap-[30px]">
                     {searchedItems?.map((item) => {
                       return (
-                        <li className="rounded-[5px] border border-[rgba(72,72,72,0.2)] overflow-hidden">
+                        <li className="rounded-[5px] border border-[rgba(72,72,72,0.2)] overflow-hidden" key={item?.id}>
                           <div className="flex flex-col">
                             <Link
                               href={`/${item?.id}`}
