@@ -49,7 +49,7 @@ const formSchema = z.object({
   }),
   city: z.string().min(1, { message: "Separation is required" }),
   address: z.string(),
-  payment: z.enum(["monobank"], {
+  payment: z.enum(["monobank", 'cashOnDelivary'], {
     required_error: "You need to select a payment method.",
   }),
   comment: z.string(),
@@ -102,6 +102,8 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       email: userDetails?.email || currentUser?.email || "",
     },
   });
+
+  const currentPayment = form.getValues('payment');
 
   const handleClickOutsideDetachment = (e: MouseEvent) => {
     if (detachmentRef && !detachmentRef.current?.contains(e.target as Node)) {
@@ -654,7 +656,8 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
             <div className="p-[15px] lg:py-[30px] bg-[#EAF2EB] rounded-[5px]">
               <div className="flex flex-col gap-5 lg:gap-[30px]">
                 <h3 className="text-[#484848] text-sm font-bold lg:text-base">
-                  Безпечна оплата картою на сайті
+                  {currentPayment === 'monobank' && 'Безпечна оплата картою на сайті'}
+                  {currentPayment === 'cashOnDelivary' && 'Оплачуйте товара при отриманні'}    
                 </h3>
 
                 <FormField
@@ -673,7 +676,16 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                               <RadioGroupItem value="monobank" />
                             </FormControl>
                             <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
-                              Кредитна/дебетова карта (Monobank Acquiring)
+                             Онлайн оплата 
+                            </FormLabel>
+                          </FormItem>
+
+                          <FormItem className="flex items-center gap-[15px] lg:gap-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="cashOnDelivary" />
+                            </FormControl>
+                            <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
+                             Оплата при отримані
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>
