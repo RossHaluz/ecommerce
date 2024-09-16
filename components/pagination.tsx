@@ -8,11 +8,11 @@ interface PaginationProps {
     currentPage: number;
     totalPages: number;
     searchParams: {
-      filterIds: string;
-      maxPrice: string;
-      minPrice: string;
-      page: string;
-      sortByPrice: string;
+      filterIds?: string;
+      maxPrice?: string;
+      minPrice?: string;
+      page?: string;
+      sortByPrice?: string;
     };
 }
 
