@@ -124,7 +124,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
         <Menu />
       </Button>
       <div
-        className={`fixed w-full h-full top-0 left-0 bg-[#F5FAF6] z-50 transform transition-all duration-150 overflow-y-auto ${
+        className={`fixed w-full h-full top-0 left-0 bg-[#F5FAF6] overflow-hidden z-50 transform transition-all duration-150 overflow-y-auto ${
           isOpen ? "translate-x-0" : "translate-x-[100%]"
         }`}
       >
@@ -278,7 +278,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
 
             <div
               className={`transform transition-all duration-150 ${
-                isActive === "catalog" ? "translate-x-0" : "translate-x-[120%] hidden"
+                isActive === "catalog" ? "translate-x-0" : "translate-x-[120%]"
               }`}
             >
               <ul className="flex flex-col gap-[15px]">
@@ -305,7 +305,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
 
             <div
               className={`transform transition-all duration-150 ${
-                isActive === "account" ? "translate-x-0" : "translate-x-[120%] hidden"
+                isActive === "account" ? "translate-x-0" : "translate-x-[120%]"
               }`}
             ></div>
 
