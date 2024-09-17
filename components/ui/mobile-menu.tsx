@@ -46,7 +46,6 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
   const inputContainerRef = useRef<HTMLInputElement>(null);
   const searchBtnRef = useRef<HTMLButtonElement>(null);
 
-  console.log(categories);
 
   const clickOutsideInput = (e: MouseEvent) => {
     if (
@@ -279,7 +278,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
 
             <div
               className={`transform transition-all duration-150 ${
-                isActive === "catalog" ? "translate-x-0" : "translate-x-[120%]"
+                isActive === "catalog" ? "translate-x-0" : "translate-x-[120%] hidden"
               }`}
             >
               <ul className="flex flex-col gap-[15px]">
@@ -303,9 +302,10 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
               </ul>
             </div>
 
+
             <div
               className={`transform transition-all duration-150 ${
-                isActive === "account" ? "translate-x-0" : "translate-x-[120%]"
+                isActive === "account" ? "translate-x-0" : "translate-x-[120%] hidden"
               }`}
             ></div>
 
