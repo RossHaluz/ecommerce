@@ -40,7 +40,7 @@ const CategoryPage: FC<CategoryPageProps> = async ({
     <Section title={data?.category?.name}>
       <div className="pt-[10px] pb-[30px] flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-[15px] lg:hidden">
-          <MobileFilters filters={filters} />
+          <MobileFilters filters={filters} searchParams={searchParams}/>
           <SortProducts searchParams={searchParams}/>
         </div>
         <div className="flex items-start gap-10">

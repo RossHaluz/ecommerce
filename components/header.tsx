@@ -57,6 +57,7 @@ const Header = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [searchedItems, setSearchedItems] = useState<Item[]>([]);
   const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
+  const [isActive, setIsActive] = useState('menu');
   const [searchValue, setSearchValue] = useState("");
   const dispatch = useDispatch();
   const orderItems = useSelector(selectOrderItems);
@@ -333,7 +334,7 @@ const Header = () => {
           <MainNavigation />
 
           <div className="flex lg:hidden">
-            <MobileMenu />
+            <MobileMenu setIsActive={setIsActive}  isActive={isActive}/>
           </div>
 
           <Button
