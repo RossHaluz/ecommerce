@@ -159,7 +159,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
     
               <div
                 className={`flex flex-col gap-[15px] transform transition-all duration-150 ${
-                  isActive === "menu" ? "translate-x-0" : "translate-x-[120%]"
+                  isActive === "menu" ? "translate-x-0" : "translate-x-[120%] hidden"
                 }`}
               >
                 <div className="relative">
