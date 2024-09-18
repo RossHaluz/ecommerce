@@ -17,11 +17,13 @@ const HistoryOrdersDelivary: FC<HistoryOrdersDelivaryProps> = ({item}) => {
     Доставка
   </h3>
   <div className="flex items-center md:items-start gap-[15px]">
+    <div>
     <Address />
+    </div>
     <p>
       {item?.typeDelivary} 
-      {item?.postService === "nova-poshta" && 'Нова-Пошта'}<br />
-      м. {item?.city}, {item?.address ? item?.address : item?.separation}
+      {item?.postService === "nova-poshta" && ' Нова-Пошта'}<br />
+     {item?.city}, {item?.address ? item?.address : item?.separation}
     </p>
   </div>
 </div>

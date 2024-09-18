@@ -70,10 +70,6 @@ const MobileMenu: FC<MobileMenuProps> = ({
   const searchBtnRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
-  console.log(isLogin);
-  
-  
-
   const clickOutsideInput = (e: MouseEvent) => {
     if (
       inputContainerRef.current &&

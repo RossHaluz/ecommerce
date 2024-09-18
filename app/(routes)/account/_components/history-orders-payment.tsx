@@ -14,7 +14,9 @@ const HistoryOrdersPayment: FC<HistoryOrdersPaymentProps> = ({item}) => {
       Оплата
     </h3>
     <div className="flex items-center md:items-start gap-[15px]">
+      <div>
       <Card />
+      </div>
       <p>
       Кредитна/дебетова карта ({item?.paymentMethod})
       </p>

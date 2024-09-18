@@ -15,7 +15,9 @@ const HistoryOrdersClient: FC<HistoryOrdersClientProps> = ({item}) => {
   Покупець
   </h3>
   <div className="flex items-center md:items-start gap-[15px]">
+    <div>
     <User />
+    </div>
     <p>
     {item?.firstName} {item?.lastName}<br/>
     {item?.phone}
