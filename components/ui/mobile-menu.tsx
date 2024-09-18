@@ -26,6 +26,7 @@ import Clock from "/public/images/clock.svg";
 import { useRouter } from "next/navigation";
 import LoginForm from "../login-form";
 import RegisterForm from "../register-form";
+import { User2Icon } from "lucide-react";
 
 interface Item {
   id: string;
@@ -192,7 +193,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
 
               {isActive === "account" && isRegister && (
                 <h3 className="text-base font-semibold text-[#484848]">
-                Реєстрація особистого кабінету
+                  Реєстрація особистого кабінету
                 </h3>
               )}
             </div>
@@ -275,13 +276,20 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 <Arrow className="-rotate-90" />
               </Button>
 
-              <Button
-                className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]"
-                onClick={() => setIsActive("account")}
-              >
-                <Account />
-                Вхід у кабінет
-              </Button>
+              {token ? (
+                <div  className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]">
+                  <User2Icon className="text-[#7FAA84]" strokeWidth="0.75px" />{" "}
+                  <Link href="/account" onClick={() => setIsOpen(false)}>Перейти у кабінет</Link>
+                </div>
+              ) : (
+                <Button
+                  className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]"
+                  onClick={() => setIsActive("account")}
+                >
+                  <Account />
+                  Вхід у кабінет
+                </Button>
+              )}
 
               <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex flex-col gap-[30px]">
                 <Link href="/" className="text-base text-[#484848]">
