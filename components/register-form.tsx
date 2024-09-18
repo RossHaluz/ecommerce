@@ -102,11 +102,11 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
             name="userName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium">
+                <FormLabel className="lg:text-base text-[#484848] font-medium">
                   Ім&apos;я та Прізвище*
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} className="border-[#7FAA84] rounded-md" />
+                  <Input {...field}   className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -118,11 +118,11 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium">
+                <FormLabel className="lg:text-base text-[#484848] font-medium">
                   Номер телефону*
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} className="border-[#7FAA84] rounded-md" />
+                  <Input {...field}   className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -134,13 +134,13 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium">
+                <FormLabel className="lg:text-base text-[#484848] font-medium">
                   Електронна пошта*
                 </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    className="border-[#7FAA84] rounded-md"
+                    className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
                     type="email"
                   />
                 </FormControl>
@@ -154,12 +154,12 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium">Пароль*</FormLabel>
+                <FormLabel className="lg:text-base text-[#484848] font-medium">Пароль*</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       {...field}
-                      className="border-[#7FAA84] rounded-md"
+                     className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
                       type={isShow ? "text" : "password"}
                     />
 
@@ -186,14 +186,14 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium">
+                <FormLabel className="lg:text-base text-[#484848] font-medium">
                   Підтвердження паролю*
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       {...field}
-                      className="border-[#7FAA84] rounded-md"
+                        className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
                       type={isShowConfirmPass ? "text" : "password"}
                     />
 
@@ -219,14 +219,14 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
         <div className="flex items-center justify-between">
           <Button
             type="submit"
-            className="max-w-max py-[10px] px-12 font-semibold"
+           className="max-w-max py-[11.5px] px-3 lg:py-[10px] lg:px-12 font-semibold"
           >
             Зареєструватись
           </Button>
           <Button
             variant="ghost"
             type="button"
-            className="text-[#484848] text-base font-medium underline"
+            className="text-[#484848] lg:text-base font-medium underline"
             onClick={handleLoginClick}
           >
             Увійти

@@ -318,6 +318,8 @@ const Header = () => {
           </div>
           <div className="lg:hidden">
             <MobileMenu
+            setIsLogin={setIsLogin}
+            setIsRegister={setIsRegister}
               openBtn={
                 <div className="flex items-center gap-2">
                   <Catalog className="stroke-[#484848]" />
@@ -337,6 +339,10 @@ const Header = () => {
               setIsActive={setIsActive}
               isActive={isActive ? isActive : 'menu'}
               openBtn={<Menu />}
+              setIsLogin={setIsLogin}
+              setIsRegister={setIsRegister}
+              isLogin={isLogin}
+              isRegister={isRegister}
             />
           </div>
 

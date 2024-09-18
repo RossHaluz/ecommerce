@@ -1,5 +1,12 @@
 "use client";
-import { Dispatch, FC, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./button";
@@ -17,6 +24,8 @@ import Account from "/public/images/account.svg";
 import Phone from "/public/images/phone.svg";
 import Clock from "/public/images/clock.svg";
 import { useRouter } from "next/navigation";
+import LoginForm from "../login-form";
+import RegisterForm from "../register-form";
 
 interface Item {
   id: string;
@@ -32,12 +41,24 @@ interface Item {
 }
 
 interface MobileMenuProps {
+  setIsRegister: Dispatch<SetStateAction<boolean>>;
+  setIsLogin: Dispatch<SetStateAction<boolean>>;
+  isRegister?: boolean;
+  isLogin?: boolean;
   setIsActive: React.Dispatch<React.SetStateAction<string>>;
   isActive: string;
-  openBtn:  React.ReactNode;
+  openBtn: React.ReactNode;
 }
 
-const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive, openBtn }) => {
+const MobileMenu: FC<MobileMenuProps> = ({
+  setIsActive,
+  isActive,
+  openBtn,
+  setIsRegister,
+  setIsLogin,
+  isRegister,
+  isLogin,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchedItems, setSearchedItems] = useState<Item[]>([]);
   const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
@@ -48,7 +69,6 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive, openBtn }) => 
   const inputContainerRef = useRef<HTMLInputElement>(null);
   const searchBtnRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
-  
 
   const clickOutsideInput = (e: MouseEvent) => {
     if (
@@ -115,6 +135,8 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive, openBtn }) => 
   const handleCloseMenu = () => {
     setIsOpen(false);
     setIsActive("");
+    setIsRegister(false);
+    setIsLogin(true);
     router.refresh();
   };
 
@@ -125,7 +147,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive, openBtn }) => 
         className="p-0 cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
-      {openBtn}
+        {openBtn}
       </Button>
       <div
         className={`fixed w-full h-full top-0 left-0 bg-[#F5FAF6] overflow-hidden z-50 transform transition-all duration-150 overflow-y-auto ${
@@ -135,7 +157,11 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive, openBtn }) => 
         <div className="px-5 pb-5 flex flex-col gap-[10px]">
           <Logo className="w-[158px] mx-auto" />
           <div className="flex flex-col gap-[15px]">
-            <div className="flex items-center justify-between">
+            <div
+              className={`flex items-center justify-between ${
+                isActive === "account" && "flex-col gap-[15px]"
+              }`}
+            >
               {isActive === "menu" && (
                 <h3 className="text-base font-semibold text-[#484848]">Меню</h3>
               )}
@@ -158,131 +184,145 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive, openBtn }) => 
               >
                 X
               </Button>
+              {isActive === "account" && isLogin && (
+                <h3 className="text-base font-semibold text-[#484848]">
+                  Вхід до особистого кабінету
+                </h3>
+              )}
+
+              {isActive === "account" && isRegister && (
+                <h3 className="text-base font-semibold text-[#484848]">
+                Реєстрація особистого кабінету
+                </h3>
+              )}
             </div>
 
-    
-              <div
-                className={`flex flex-col gap-[15px] transform transition-all duration-150 ${
-                  isActive === "menu" ? "translate-x-0" : "translate-x-[120%] hidden"
-                }`}
-              >
-                <div className="relative">
-                  <Input
-                    value={searchValue}
-                    onChange={handleSearchValue}
-                    placeholder="Пошук..."
-                    className="bg-[#EAF2EB] rounded-[5px] placeholder:text-[#48484880] w-full border-none outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#484848] text-base"
-                  />
-                  <div className="absolute top-2 right-2 h-full">
-                    <Search />
-                  </div>
-                </div>
-
-                {searchValue && (
-                  <>
-                    <div className="flex items-center justify-between">
-                      <span className="text-base text-[#484848CC]">
-                        {allItemsSearched?.length} результатів
-                      </span>
-
-                      <Button
-                        variant="ghost"
-                        className="p-0 text-base text-[#484848] underline font-bold"
-                      >
-                        <Link href="/search">Подивитись все</Link>
-                      </Button>
-                    </div>
-
-                    <ul className="flex flex-col gap-[15px]">
-                      {searchedItems?.map((item) => (
-                        <li
-                          key={item?.id}
-                          className="py-6 px-[15px] rounded-[5px] bg-[#F5FAF6] shadow-search-shadow flex items-center gap-[15px]"
-                        >
-                          <div className="relative rounded-[5px] w-[65px] h-[65px] overflow-hidden">
-                            <Image
-                              src={item?.images[0].url}
-                              alt={item?.title}
-                              objectFit="cover"
-                              fill
-                            />
-                          </div>
-
-                          <div className="flex flex-col gap-[10px]">
-                            <Link
-                              href={`/${item?.id}`}
-                              onClick={() => setIsOpen(false)}
-                              className="underline text-[#484848] font-medium w-[171px]"
-                            >
-                              {item?.title}
-                            </Link>
-
-                            <span className="text-[#7FAA84] text-lg font-bold">
-                              {item?.price} ₴
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-                <Button
-                  className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-between hover:bg-[#EAF2EB]"
-                  onClick={() => setIsActive("catalog")}
-                >
-                  <div className="flex items-center gap-2">
-                    <Catalog className="stroke-[#484848]" />
-                    <span className="text-[#484848] text-base font-semibold">
-                      Каталог товарів
-                    </span>
-                  </div>
-                  <Arrow className="-rotate-90" />
-                </Button>
-
-                <Button className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]" onClick={() => setIsActive("account")}>
-                  <Account />
-                  Вхід у кабінет
-                </Button>
-
-                <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex flex-col gap-[30px]">
-                  <Link href="/" className="text-base text-[#484848]">
-                    Про магазин
-                  </Link>
-                  <Link href="/" className="text-base text-[#484848]">
-                    Відгуки
-                  </Link>
-                  <Link href="/" className="text-base text-[#484848]">
-                    Доставка та оплата
-                  </Link>
-                  <Link href="/" className="text-base text-[#484848]">
-                    Контакти
-                  </Link>
-                </div>
-
-                <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center gap-[10px]">
-                  <Phone />
-                  <span className="text-base font-semibold text-[#484848]">
-                    +38 (096) 400 91 30
-                  </span>
-                </div>
-
-                <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-start gap-[10px]">
-                  <Clock />
-                  <div className="flex flex-col gap-[15px]">
-                    <span className="text-base text-[#484848]">
-                      Пн-Пт: 10:00 - 19:00
-                    </span>
-                    <span className="text-base text-[#484848]">
-                      Сб-Нд: вихідний
-                    </span>
-                  </div>
+            <div
+              className={`flex flex-col gap-[15px] transform transition-all duration-150 ${
+                isActive === "menu" ? "translate-x-0" : "translate-x-[120%] h-0"
+              }`}
+            >
+              <div className="relative">
+                <Input
+                  value={searchValue}
+                  onChange={handleSearchValue}
+                  placeholder="Пошук..."
+                  className="bg-[#EAF2EB] rounded-[5px] placeholder:text-[#48484880] w-full border-none outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#484848] text-base"
+                />
+                <div className="absolute top-2 right-2 h-full">
+                  <Search />
                 </div>
               </div>
 
+              {searchValue && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <span className="text-base text-[#484848CC]">
+                      {allItemsSearched?.length} результатів
+                    </span>
+
+                    <Button
+                      variant="ghost"
+                      className="p-0 text-base text-[#484848] underline font-bold"
+                    >
+                      <Link href="/search">Подивитись все</Link>
+                    </Button>
+                  </div>
+
+                  <ul className="flex flex-col gap-[15px]">
+                    {searchedItems?.map((item) => (
+                      <li
+                        key={item?.id}
+                        className="py-6 px-[15px] rounded-[5px] bg-[#F5FAF6] shadow-search-shadow flex items-center gap-[15px]"
+                      >
+                        <div className="relative rounded-[5px] w-[65px] h-[65px] overflow-hidden">
+                          <Image
+                            src={item?.images[0].url}
+                            alt={item?.title}
+                            objectFit="cover"
+                            fill
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-[10px]">
+                          <Link
+                            href={`/${item?.id}`}
+                            onClick={() => setIsOpen(false)}
+                            className="underline text-[#484848] font-medium w-[171px]"
+                          >
+                            {item?.title}
+                          </Link>
+
+                          <span className="text-[#7FAA84] text-lg font-bold">
+                            {item?.price} ₴
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              <Button
+                className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-between hover:bg-[#EAF2EB]"
+                onClick={() => setIsActive("catalog")}
+              >
+                <div className="flex items-center gap-2">
+                  <Catalog className="stroke-[#484848]" />
+                  <span className="text-[#484848] text-base font-semibold">
+                    Каталог товарів
+                  </span>
+                </div>
+                <Arrow className="-rotate-90" />
+              </Button>
+
+              <Button
+                className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]"
+                onClick={() => setIsActive("account")}
+              >
+                <Account />
+                Вхід у кабінет
+              </Button>
+
+              <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex flex-col gap-[30px]">
+                <Link href="/" className="text-base text-[#484848]">
+                  Про магазин
+                </Link>
+                <Link href="/" className="text-base text-[#484848]">
+                  Відгуки
+                </Link>
+                <Link href="/" className="text-base text-[#484848]">
+                  Доставка та оплата
+                </Link>
+                <Link href="/" className="text-base text-[#484848]">
+                  Контакти
+                </Link>
+              </div>
+
+              <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center gap-[10px]">
+                <Phone />
+                <span className="text-base font-semibold text-[#484848]">
+                  +38 (096) 400 91 30
+                </span>
+              </div>
+
+              <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-start gap-[10px]">
+                <Clock />
+                <div className="flex flex-col gap-[15px]">
+                  <span className="text-base text-[#484848]">
+                    Пн-Пт: 10:00 - 19:00
+                  </span>
+                  <span className="text-base text-[#484848]">
+                    Сб-Нд: вихідний
+                  </span>
+                </div>
+              </div>
+            </div>
 
             <div
               className={`transform transition-all duration-150 ${
-                isActive === "catalog" ? "translate-x-0" : "translate-x-[120%]"
+                isActive === "catalog"
+                  ? "translate-x-0"
+                  : "translate-x-[120%] h-0"
               }`}
             >
               <ul className="flex flex-col gap-[15px]">
@@ -306,13 +346,26 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive, openBtn }) => 
               </ul>
             </div>
 
-
             <div
               className={`transform transition-all duration-150 ${
-                isActive === "account" ? "translate-x-0" : "translate-x-[120%]"
+                isActive === "account"
+                  ? "translate-x-0"
+                  : "translate-x-[120%] h-0"
               }`}
-            ></div>
-
+            >
+              {isLogin && (
+                <LoginForm
+                  setIsRegister={setIsRegister}
+                  setIsLogin={setIsLogin}
+                />
+              )}
+              {isRegister && (
+                <RegisterForm
+                  setIsRegister={setIsRegister}
+                  setIsLogin={setIsLogin}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

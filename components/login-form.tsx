@@ -65,6 +65,7 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
   };
 
   return (
+
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -76,13 +77,13 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium">
+                <FormLabel className="lg:text-base text-[#484848] font-medium">
                   Електронна пошта*
                 </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    className="border-[#7FAA84] rounded-md"
+                    className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
                     type="email"
                   />
                 </FormControl>
@@ -96,12 +97,12 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium">Пароль*</FormLabel>
+                <FormLabel className="lg:text-base text-[#484848] font-medium">Пароль*</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       {...field}
-                      className="border-[#7FAA84] rounded-md"
+                        className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
                       type={isShow ? "text" : "password"}
                     />
 
@@ -128,7 +129,7 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
           <Button
             variant="ghost"
             type="button"
-            className="text-[#484848] text-base font-medium underline max-w-max px-0"
+            className="text-[#484848] lg:text-base font-medium underline max-w-max px-0"
           >
             Забули пароль?
           </Button>
@@ -136,14 +137,14 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
           <div className="flex items-center justify-between">
             <Button
               type="submit"
-              className="max-w-max py-[10px] px-12 font-semibold"
+              className="max-w-max py-[11.5px] px-[53px] lg:py-[10px] lg:px-12 font-semibold"
             >
               Увійти
             </Button>
             <Button
               variant="ghost"
               type="button"
-              className="text-[#484848] text-base font-medium underline"
+              className="text-[#484848] lg:text-base font-medium underline"
               onClick={handleRegisterClick}
             >
               Зареєструватись
@@ -152,6 +153,7 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
         </div>
       </form>
     </Form>
+
   );
 };
 
