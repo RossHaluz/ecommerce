@@ -328,7 +328,8 @@ const Header = () => {
               }
               setIsActive={setIsActive}
               isActive={isActive ? isActive : 'catalog'}
-              
+              isLogin={isLogin}
+              isRegister={isRegister}
             />
           </div>
 
