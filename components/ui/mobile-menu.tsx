@@ -16,6 +16,7 @@ import Arrow from "/public/images/arrow-down.svg";
 import Account from "/public/images/account.svg";
 import Phone from "/public/images/phone.svg";
 import Clock from "/public/images/clock.svg";
+import { useRouter } from "next/navigation";
 
 interface Item {
   id: string;
@@ -33,9 +34,10 @@ interface Item {
 interface MobileMenuProps {
   setIsActive: React.Dispatch<React.SetStateAction<string>>;
   isActive: string;
+  openBtn:  React.ReactNode;
 }
 
-const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
+const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive, openBtn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchedItems, setSearchedItems] = useState<Item[]>([]);
   const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
@@ -45,7 +47,8 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
   const token = Cookies.get("token");
   const inputContainerRef = useRef<HTMLInputElement>(null);
   const searchBtnRef = useRef<HTMLButtonElement>(null);
-
+  const router = useRouter();
+  
 
   const clickOutsideInput = (e: MouseEvent) => {
     if (
@@ -111,7 +114,8 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
 
   const handleCloseMenu = () => {
     setIsOpen(false);
-    setIsActive("menu");
+    setIsActive("");
+    router.refresh();
   };
 
   return (
@@ -121,7 +125,7 @@ const MobileMenu: FC<MobileMenuProps> = ({ setIsActive, isActive }) => {
         className="p-0 cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
-        <Menu />
+      {openBtn}
       </Button>
       <div
         className={`fixed w-full h-full top-0 left-0 bg-[#F5FAF6] overflow-hidden z-50 transform transition-all duration-150 overflow-y-auto ${

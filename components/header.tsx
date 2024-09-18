@@ -6,6 +6,7 @@ import Phone from "/public/images/phone.svg";
 import Search from "/public/images/search.svg";
 import Cross from "/public/images/cross.svg";
 import Available from "/public/images/available.svg";
+import Menu from "/public/images/menu.svg";
 
 import MobileMenu from "./ui/mobile-menu";
 import { Button } from "./ui/button";
@@ -57,7 +58,7 @@ const Header = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [searchedItems, setSearchedItems] = useState<Item[]>([]);
   const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
-  const [isActive, setIsActive] = useState('menu');
+  const [isActive, setIsActive] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const dispatch = useDispatch();
   const orderItems = useSelector(selectOrderItems);
@@ -65,20 +66,21 @@ const Header = () => {
   const token = Cookies.get("token");
   const inputRef = useRef<HTMLInputElement>(null);
   const inputContainerRef = useRef<HTMLInputElement>(null);
-  const searchBtnRef = useRef<HTMLButtonElement>(null)
+  const searchBtnRef = useRef<HTMLButtonElement>(null);
 
   const clickOutsideInput = (e: MouseEvent) => {
     if (
       inputContainerRef.current &&
-      !inputContainerRef.current.contains(e.target as Node) && searchBtnRef.current &&  !searchBtnRef.current.contains(e.target as Node)
+      !inputContainerRef.current.contains(e.target as Node) &&
+      searchBtnRef.current &&
+      !searchBtnRef.current.contains(e.target as Node)
     ) {
       setIsShowSearch(false);
       setSearchedItems([]);
-      setAllItemSearched([])
+      setAllItemSearched([]);
       setSearchValue("");
     }
-  }
-
+  };
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideInput);
@@ -95,8 +97,8 @@ const Header = () => {
   }, [isShowSearch]);
 
   useEffect(() => {
-    Cookies.set('searchValue', searchValue)
-  }, [searchValue])
+    Cookies.set("searchValue", searchValue);
+  }, [searchValue]);
 
   const onOpenChange = () => {
     setIsRegister(false);
@@ -119,13 +121,14 @@ const Header = () => {
       const { data } = await axios.get(
         `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products?searchValue=${e.target.value}`
       );
-  
 
-      const formateItems = data?.products?.filter((item: Item, idx: number) => idx < 4);
+      const formateItems = data?.products?.filter(
+        (item: Item, idx: number) => idx < 4
+      );
 
       if (!e.target.value) {
         setSearchedItems([]);
-        setAllItemSearched([])
+        setAllItemSearched([]);
         return;
       }
 
@@ -139,7 +142,7 @@ const Header = () => {
   const removeInputValue = () => {
     setSearchValue("");
     setSearchedItems([]);
-    setAllItemSearched([])
+    setAllItemSearched([]);
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -314,27 +317,27 @@ const Header = () => {
             </Popover>
           </div>
           <div className="lg:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="flex lg:rounded-r-sm items-center gap-[10px] text-[#484848] text-sm py-2  lg:py-[13px] lg:flex-row-reverse p-0"
-                >
+            <MobileMenu
+              openBtn={
+                <div className="flex items-center gap-2">
                   <Catalog className="stroke-[#484848]" />
-
                   <span>Каталог товарів</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <h3 className="text-[#484848] text-base font-semibold">Menu</h3>
-              </SheetContent>
-            </Sheet>
+                </div>
+              }
+              setIsActive={setIsActive}
+              isActive={isActive ? isActive : 'catalog'}
+              
+            />
           </div>
 
           <MainNavigation />
 
           <div className="flex lg:hidden">
-            <MobileMenu setIsActive={setIsActive}  isActive={isActive}/>
+            <MobileMenu
+              setIsActive={setIsActive}
+              isActive={isActive ? isActive : 'menu'}
+              openBtn={<Menu />}
+            />
           </div>
 
           <Button
@@ -390,61 +393,60 @@ const Header = () => {
                   variant="ghost"
                   className="p-0 text-base text-[#484848] underline font-bold"
                 >
-                  <Link href='/search'>
-                  Подивитись все
-                  </Link>
-               
+                  <Link href="/search">Подивитись все</Link>
                 </Button>
               </div>
 
               <div className="w-full h-[1px] bg-[#7FAA84]" />
 
-             
-                {searchedItems?.length > 0 ? (
-                  <ul className="grid grid-cols-4 gap-[30px]">
-                    {searchedItems?.map((item) => {
-                      return (
-                        <li className="rounded-[5px] border border-[rgba(72,72,72,0.2)] overflow-hidden" key={item?.id}>
-                          <div className="flex flex-col">
-                            <Link
-                              href={`/${item?.id}`}
-                              className="w-full h-[253px] relative overflow-hidden"
-                            >
-                              <Image
-                                src={item?.images[0].url}
-                                alt={item?.title}
-                                fill
-                                className="absolute top-0 left-0 object-cover"
-                              />
-                            </Link>
+              {searchedItems?.length > 0 ? (
+                <ul className="grid grid-cols-4 gap-[30px]">
+                  {searchedItems?.map((item) => {
+                    return (
+                      <li
+                        className="rounded-[5px] border border-[rgba(72,72,72,0.2)] overflow-hidden"
+                        key={item?.id}
+                      >
+                        <div className="flex flex-col">
+                          <Link
+                            href={`/${item?.id}`}
+                            className="w-full h-[253px] relative overflow-hidden"
+                          >
+                            <Image
+                              src={item?.images[0].url}
+                              alt={item?.title}
+                              fill
+                              className="absolute top-0 left-0 object-cover"
+                            />
+                          </Link>
 
-                            <div className="px-[14px] py-5">
-                              <div className="flex flex-col gap-[25px]">
-                                <div className="flex flex-col gap-[15px]">
-                                  <Link href={`/${item?.id}`}>
-                                    <h2 className="font-bold text-base">
-                                      {item?.title}
-                                    </h2>
-                                  </Link>
-                                  <div className="flex flex-col gap-[13px]">
-                                    <div className="flex items-center gap-[6px]">
-                                      <Available />
-                                      <span className="text-[#7FAA84] text-xs font-medium">
-                                        В наявності
-                                      </span>
-                                    </div>
-
-                                    <span className="text-[#484848] text-xs">
-                                      Артикул: {item?.article}
+                          <div className="px-[14px] py-5">
+                            <div className="flex flex-col gap-[25px]">
+                              <div className="flex flex-col gap-[15px]">
+                                <Link href={`/${item?.id}`}>
+                                  <h2 className="font-bold text-base">
+                                    {item?.title}
+                                  </h2>
+                                </Link>
+                                <div className="flex flex-col gap-[13px]">
+                                  <div className="flex items-center gap-[6px]">
+                                    <Available />
+                                    <span className="text-[#7FAA84] text-xs font-medium">
+                                      В наявності
                                     </span>
                                   </div>
-                                </div>
 
-                                <div className="flex items-center justify-between">
-                                  <span className="text-[#7FAA84] font-bold text-base">
-                                    {item?.price} ₴
+                                  <span className="text-[#484848] text-xs">
+                                    Артикул: {item?.article}
                                   </span>
-                                  {/* <Modal
+                                </div>
+                              </div>
+
+                              <div className="flex items-center justify-between">
+                                <span className="text-[#7FAA84] font-bold text-base">
+                                  {item?.price} ₴
+                                </span>
+                                {/* <Modal
                               triggetBtn={
                                 <Button
                                   variant="ghost"
@@ -531,25 +533,24 @@ const Header = () => {
                                 </div>
                               )}
                             </Modal> */}
-                                </div>
                               </div>
                             </div>
                           </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <div className="flex items-center justify-center w-full h-full">
-                    <h3 className="text-base text-foreground">
-                      За вашим запитом товарів не знайдено...
-                    </h3>
-                  </div>
-                )}
-              </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <div className="flex items-center justify-center w-full h-full">
+                  <h3 className="text-base text-foreground">
+                    За вашим запитом товарів не знайдено...
+                  </h3>
+                </div>
+              )}
             </div>
           </div>
-   
+        </div>
       )}
     </header>
   );
