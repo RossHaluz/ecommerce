@@ -4,8 +4,6 @@ import React, { FC, useEffect, useState } from "react";
 import qs from "query-string";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -30,8 +28,9 @@ interface FiltersProps {
     filterIds: string;
     page: string;
     sortByPrice: string;
+    searchValue: string;
   };
-  rangePrice: {
+  rangePrice?: {
     minPrice: number;
     maxPrice: number;
   };
@@ -42,13 +41,14 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [filterIds, setFilterIds] = useState<FilterOption[]>([]);
-  const [rangePrices, setRangePrices] = useState<number[]>([
-    rangePrice.minPrice,
-    rangePrice.maxPrice,
-  ]);
+  // const [rangePrices, setRangePrices] = useState<number[]>([
+  //   rangePrice?.minPrice,
+  //   rangePrice?.maxPrice,
+  // ]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isPriceChangedByUser, setIsPriceChangedByUser] = useState(false);
   const [isChangeRange, setIsChaneRange] = useState(false);
+  
 
   useEffect(() => {
     const storedFilterIds = localStorage.getItem("filterIds");
@@ -57,11 +57,11 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
     if (storedFilterIds) {
       setFilterIds(JSON.parse(storedFilterIds));
     }
-    if (storedRangePrices) {
-      setRangePrices(JSON.parse(storedRangePrices));
-    } else {
-      setRangePrices([rangePrice.minPrice, rangePrice.maxPrice]);
-    }
+    // if (storedRangePrices) {
+    //   setRangePrices(JSON.parse(storedRangePrices));
+    // } else {
+    //   setRangePrices([rangePrice?.minPrice, rangePrice?.maxPrice]);
+    // }
     setIsInitialized(true);
   }, []);
 
@@ -83,6 +83,7 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
               ? filterIds.map((filter) => filter.id).join(",")
               : null,
               sortByPrice: sortByPrice ? sortByPrice : null,
+
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -90,8 +91,8 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
 
     router.push(url);
     localStorage.setItem("filterIds", JSON.stringify(filterIds));
-    localStorage.setItem("rangePrices", JSON.stringify(rangePrices));
-  }, [filterIds, rangePrices, pathname, router, isInitialized]);
+    // localStorage.setItem("rangePrices", JSON.stringify(rangePrices));
+  }, [filterIds, pathname, router, isInitialized, searchParams?.searchValue ]);
 
   const handleCheckedChange = (filter: FilterOption, type: string) => {
     
@@ -130,7 +131,7 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
     localStorage.removeItem("filterIds");
     localStorage.removeItem("rangePrices");
     setFilterIds([]);
-    setRangePrices([rangePrice.minPrice, rangePrice.maxPrice]);
+    // setRangePrices([rangePrice?.minPrice, rangePrice?.maxPrice]);
 
     router.refresh();
   };

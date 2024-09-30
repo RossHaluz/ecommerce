@@ -3,10 +3,8 @@ import Hero from "./_components/hero";
 import Categories from "./_components/categories";
 import BesrSellers from "./_components/best-sellers";
 import Subscribe from "./_components/subscribe";
-import { cookies } from 'next/headers';
 
 export default async function Home() {
-  const token = cookies().get('token')?.value;
   
 
   const { data: settings } = await axios.get(

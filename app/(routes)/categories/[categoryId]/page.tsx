@@ -16,6 +16,7 @@ interface CategoryPageProps {
     minPrice: string;
     page: string;
     sortByPrice: string;
+    searchValue: string;
   };
 }
 
@@ -35,6 +36,8 @@ const CategoryPage: FC<CategoryPageProps> = async ({
   const { data: filters } = await axios.get(
     `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories/${categoryId}/filters`
   );
+
+
 
   return (
     <Section title={data?.category?.name}>
@@ -65,7 +68,7 @@ const CategoryPage: FC<CategoryPageProps> = async ({
               } ${data?.category?.products?.length > 1 ? "товарів" : "товар"}`}</h3>
             </div>
 
-            <Products products={data?.category?.products} page={data?.meta?.page}  totalPages={data?.meta?.totalPages} categortId={data?.category?.id} searchParams={searchParams} />
+            <Products products={data?.category?.products} page={data?.meta?.page}  totalPages={data?.meta?.totalPages} searchParams={searchParams} />
           </div>
         </div>
       </div>

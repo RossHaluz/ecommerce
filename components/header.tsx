@@ -7,7 +7,6 @@ import Search from "/public/images/search.svg";
 import Cross from "/public/images/cross.svg";
 import Available from "/public/images/available.svg";
 import Menu from "/public/images/menu.svg";
-
 import MobileMenu from "./ui/mobile-menu";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -18,9 +17,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import Modal from "./ui/modal";
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ProductCount from "@/app/(routes)/[productId]/_components/product-count";
@@ -64,9 +62,11 @@ const Header = () => {
   const orderItems = useSelector(selectOrderItems);
   const router = useRouter();
   const token = Cookies.get("token");
+  
   const inputRef = useRef<HTMLInputElement>(null);
   const inputContainerRef = useRef<HTMLInputElement>(null);
   const searchBtnRef = useRef<HTMLButtonElement>(null);
+  
 
   const clickOutsideInput = (e: MouseEvent) => {
     if (
@@ -90,15 +90,12 @@ const Header = () => {
     };
   }, []);
 
+
   useEffect(() => {
     if (isShowSearch && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isShowSearch]);
-
-  useEffect(() => {
-    Cookies.set("searchValue", searchValue);
-  }, [searchValue]);
 
   const onOpenChange = () => {
     setIsRegister(false);
@@ -117,7 +114,7 @@ const Header = () => {
 
   const handleSearchValue = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
-      setSearchValue(e.target.value);
+      setSearchValue(e.target.value); 
       const { data } = await axios.get(
         `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products?searchValue=${e.target.value}`
       );
@@ -141,12 +138,18 @@ const Header = () => {
 
   const removeInputValue = () => {
     setSearchValue("");
+    localStorage.removeItem('searchValue');
     setSearchedItems([]);
     setAllItemSearched([]);
     if (inputRef.current) {
       inputRef.current.focus();
     }
   };
+
+  const handleShowAll = () => {
+    setIsShowSearch(false)
+    Cookies.set('__search_value', searchValue, { expires: 7, path: '/' });
+  }
 
   return (
     <header className="flex flex-col relative">
@@ -400,7 +403,7 @@ const Header = () => {
                   variant="ghost"
                   className="p-0 text-base text-[#484848] underline font-bold"
                 >
-                  <Link href="/search">Подивитись все</Link>
+                  <Link href={`/search?searchValue=${searchValue}`} onClick={handleShowAll}>Подивитись все</Link>
                 </Button>
               </div>
 
