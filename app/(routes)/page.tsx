@@ -18,8 +18,6 @@ export default async function Home() {
   const { data: bestSellersProducts } = await axios.get(
     `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products/best`
   );
-
-  console.log(bestSellersProducts);
   
 
   return (
