@@ -19,6 +19,9 @@ export default async function Home() {
     `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products/best`
   );
 
+  console.log(bestSellersProducts);
+  
+
   return (
     <>
       <Hero
