@@ -68,7 +68,6 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
     }
   };
 
-  const { isValid, isSubmitting } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {

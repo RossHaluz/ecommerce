@@ -16,7 +16,7 @@ const ProductPage: FC<ProductPageProps> = async ({ params }) => {
   const { data } = await axios.get(
     `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products/${productId}`
   );
-
+  
   return (
     <div className="container py-[10px] lg:py-[30px]">
       {data && <ProductInfo initialData={data} />}

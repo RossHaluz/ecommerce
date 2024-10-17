@@ -1,7 +1,6 @@
 "use client";
-import { FC, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { Button } from "./button";
-import { ImagePlus, Trash } from "lucide-react";
 import Image from "next/image";
 import { CldUploadWidget } from "next-cloudinary";
 interface ImageUploadProps {
@@ -9,6 +8,7 @@ interface ImageUploadProps {
   onChange: (value: string) => void;
   onRemove?: (value: string) => void;
   value: string[];
+  children: ReactNode
 }
 
 const ImageUpload: FC<ImageUploadProps> = ({
@@ -16,14 +16,19 @@ const ImageUpload: FC<ImageUploadProps> = ({
   onChange,
   onRemove,
   value,
+  children
 }) => {
   const [isMounted, setIsMounted] = useState(false);
+  
+  console.log(value);
+  
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   const onUpload = (result: any) => {
+    console.log('Upload result:', result);
     onChange(result.info.secure_url);
   };
   
@@ -63,10 +68,9 @@ const ImageUpload: FC<ImageUploadProps> = ({
               disabled={disabled}
               variant="secondary"
               onClick={onClick}
-              className=" max-w-max flex items-center gap-2"
+              className="max-w-max"
             >
-              <ImagePlus className="w-4 h-4" />
-              Upload an image
+              {children}
             </Button>
           );
         }}

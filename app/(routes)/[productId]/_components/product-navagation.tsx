@@ -39,7 +39,7 @@ const ProductNavigation: FC<ProductNavigationProps> = ({
           <div className="absolute bottom-0 right-0 w-full h-[1px] bg-[#484848]" />
         )}
       </div>
-
+{/* 
       <div className="relative">
         <Button
           variant="ghost"
@@ -52,7 +52,8 @@ const ProductNavigation: FC<ProductNavigationProps> = ({
         {currentNavigation === "care" && (
           <div className="absolute bottom-0 right-0 w-full h-[1px] bg-[#484848]" />
         )}
-      </div>
+      </div> */}
+      
       <div className="relative">
         <Button
           variant="ghost"

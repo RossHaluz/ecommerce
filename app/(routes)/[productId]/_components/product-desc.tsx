@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 
 interface ProductDescProps {
   description: string;
@@ -8,24 +8,41 @@ interface ProductDescProps {
 
 const ProductDesc: FC<ProductDescProps> = ({ description }) => {
   const [isHidden, setIsHidden] = useState(true);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+
+  const maxHeigth = 80;
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      const contenctHeight = descriptionRef.current.scrollHeight;
+      if (contenctHeight > maxHeigth) {
+        setIsOverflowing(true);
+      } else {
+        setIsOverflowing(false);
+      }
+    }
+  }, [description]);
 
   return (
     <div>
-      <p
-        className={`text-[#484848] text-xs transition-all duration-300  ${
-          isHidden ? "line-clamp-6" : "line-clamp-none"
-        }`}
+      <div
+        ref={descriptionRef}
+        className={`transform transition-all duration-300 overflow-hidden`}
+        style={{maxHeight: isHidden ? `${maxHeigth}px` : 'none'}}
       >
-        {description}
-      </p>
+          <div className="text-[#484848] text-xs" dangerouslySetInnerHTML={{ __html: description }} />
+      </div>
 
-      <Button
-        variant="ghost"
-        onClick={() => setIsHidden((prev) => !prev)}
-        className="text-[#7FAA84] underline text-sm font-bold px-0"
-      >
-        {isHidden ? "Читати далі" : "Згорнути"}
-      </Button>
+      {isOverflowing && (
+        <Button
+          variant="ghost"
+          onClick={() => setIsHidden((prev) => !prev)}
+          className="text-[#7FAA84] underline text-sm font-bold px-0"
+        >
+          {isHidden ? "Читати далі" : "Згорнути"}
+        </Button>
+      )}
     </div>
   );
 };
