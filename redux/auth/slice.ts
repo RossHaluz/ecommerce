@@ -1,17 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PersistPartial } from "redux-persist/es/persistReducer";
 
-interface AuthState {
+export interface AuthState extends PersistPartial {
   isLoading: boolean;
   userContactDetails: any;
   error: string | null;
   message: string;
 }
-
-const initialState: AuthState = {
+ const initialState: AuthState = {
   isLoading: false,
   userContactDetails: null,
   error: "",
   message: "",
+  _persist: { version: -1, rehydrated: false },
 };
 
 const authSlice = createSlice({

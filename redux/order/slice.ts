@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PersistPartial } from "redux-persist/es/persistReducer";
 
 interface Option {
   id: string;
@@ -22,15 +23,18 @@ interface OrderItem {
   }[];
 }
 
-interface OrderState {
+export interface OrderState extends PersistPartial {
   orderItems: OrderItem[];
   isLoading: boolean;
   orderDetails: any;
+
 }
+
 const initialState: OrderState = {
   orderItems: [],
   isLoading: false,
   orderDetails: null,
+  _persist: { version: -1, rehydrated: false },
 };
 
 export const orderSlice = createSlice({

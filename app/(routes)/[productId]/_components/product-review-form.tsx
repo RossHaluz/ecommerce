@@ -15,8 +15,9 @@ import ReactStars from "react-rating-stars-component";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
-import ImageUpload from "@/components/ui/image-upload";
 import Clip from "/public/images/clip.svg";
+import { ChangeEvent, useRef, useState } from "react";
+import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
   userName: z.string().min(1, { message: "Обовʼязкове поле для заповнення" }),
@@ -26,13 +27,7 @@ const formSchema = z.object({
     .email("Невірно вказана електронна адреса"),
   evaluation: z.number().min(1, { message: "Обовʼязкове поле для заповнення" }),
   feedback: z.string().min(1, { message: "Обовʼязкове поле для заповнення" }),
-  photos: z
-    .array(
-      z.object({
-        url: z.string(),
-      })
-    )
-    .optional(),
+  photos: z.object({ url: z.string() }).array(),
 });
 
 const ProductReviewForm = () => {
@@ -46,6 +41,11 @@ const ProductReviewForm = () => {
       photos: [],
     },
   });
+
+  const { isSubmitting } = form.formState;
+  const images = form.getValues("photos");
+
+  console.log(images);
 
   const ratingChanged = (newRating: number) => {
     form.setValue("evaluation", newRating);
@@ -148,6 +148,7 @@ const ProductReviewForm = () => {
               )}
             />
           </div>
+
           <FormField
             name="photos"
             control={form.control}
@@ -156,19 +157,19 @@ const ProductReviewForm = () => {
                 <FormControl>
                   <ImageUpload
                     value={field.value?.map((image) => image.url) || []}
-                    onChange={(url) => {
-                      field.onChange([...(field.value ?? []), { url }]);
-                    }}
-                  >
-                    <div className="text-[#7FAA84] flex items-center gap-[10px]">
-                      <Clip />
-                      Прикріпити фото
-                    </div>
-                  </ImageUpload>
+                    onChange={(url) => [...field.value, { url }]}
+                    onRemove={(url) =>
+                      field.onChange(
+                        field.value?.filter((item) => item.url !== url) || []
+                      )
+                    }
+                    disabled={isSubmitting}
+                  />
                 </FormControl>
               </FormItem>
             )}
           />
+
           <Button
             type="submit"
             className="py-[11.5px] px-[52px] max-w-max lg:py-2 lg:px-[32.5px] lg:text-base"

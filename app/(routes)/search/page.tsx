@@ -21,6 +21,7 @@ interface SearchPageProps {
 const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
   const searcValue = cookies().get("__search_value")?.value;
 
+  
   const { data } = await axios.get(
     `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products`,
     {

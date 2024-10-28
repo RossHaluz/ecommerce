@@ -1,14 +1,14 @@
 "use client";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button } from "./button";
+import { ImagePlus, Trash } from "lucide-react";
 import Image from "next/image";
 import { CldUploadWidget } from "next-cloudinary";
 interface ImageUploadProps {
-  disabled?: boolean;
+  disabled: boolean;
   onChange: (value: string) => void;
-  onRemove?: (value: string) => void;
+  onRemove: (value: string) => void;
   value: string[];
-  children: ReactNode
 }
 
 const ImageUpload: FC<ImageUploadProps> = ({
@@ -16,11 +16,10 @@ const ImageUpload: FC<ImageUploadProps> = ({
   onChange,
   onRemove,
   value,
-  children
 }) => {
   const [isMounted, setIsMounted] = useState(false);
-  
-  console.log(value);
+
+  console.log('images', value);
   
 
   useEffect(() => {
@@ -28,7 +27,8 @@ const ImageUpload: FC<ImageUploadProps> = ({
   }, []);
 
   const onUpload = (result: any) => {
-    console.log('Upload result:', result);
+    console.log(typeof result);
+    
     onChange(result.info.secure_url);
   };
   
@@ -36,27 +36,34 @@ const ImageUpload: FC<ImageUploadProps> = ({
   if (!isMounted) {
     return null;
   }
-
-  
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-4">
-       {value?.map(item => (
-        <div
-        className="relative w-[200px] h-[200px] rounded-md overflow-hidden"
-        key={item}
-      >
-        <Image
-          fill
-          src={item}
-          alt="Billbord image"
-          className="object-cover"
-        />
-      </div>
-       ))}
+        {value?.map((url) => {
+          return (
+            <div
+              className="relative w-32 h-32 rounded-md overflow-hidden"
+              key={url}
+            >
+              <Button
+                variant="destructive"
+                className="absolute right-2 top-2 text-white bg-red-500 z-10 "
+                onClick={() => onRemove(url)}
+              >
+                <Trash className="w-4 h-5" />
+              </Button>
+              <Image
+                fill
+                src={url}
+                alt="Billbord image"
+                className="object-cover absolute top-0 left-0"
+              />
+            </div>
+          );
+        })}
       </div>
 
-      <CldUploadWidget onUpload={onUpload} uploadPreset="p655strs">
+      <CldUploadWidget onSuccess={onUpload} uploadPreset="p655strs" options={{multiple: true}}>
         {({ open }) => {
           const onClick = () => {
             open();
@@ -68,9 +75,10 @@ const ImageUpload: FC<ImageUploadProps> = ({
               disabled={disabled}
               variant="secondary"
               onClick={onClick}
-              className="max-w-max"
+              className=" max-w-max flex items-center gap-2"
             >
-              {children}
+              <ImagePlus className="w-4 h-4" />
+              Upload an image
             </Button>
           );
         }}

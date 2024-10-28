@@ -12,9 +12,10 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { useDispatch } from "react-redux";
-
-import { OrderReducer } from "./order/slice";
-import { authReducer } from "./auth/slice";
+import { authReducer, AuthState } from "./auth/slice";
+import { OrderReducer, OrderState } from "./order/slice";
+import { searchReducer } from "./search/slice";
+import { PersistPartial } from "redux-persist/es/persistReducer";
 
 const persistAuth = {
   key: "userDetails",
@@ -28,10 +29,14 @@ const persistOrder = {
   storage,
 };
 
+const persistedAuthReducer = persistReducer<AuthState & PersistPartial>(persistAuth, authReducer);
+const persistedOrderReducer = persistReducer<OrderState & PersistPartial>(persistOrder, OrderReducer);
+
 export const store = configureStore({
   reducer: {
-    auth: persistReducer(persistAuth, authReducer),
-    order: persistReducer(persistOrder, OrderReducer),
+    auth: persistedAuthReducer,
+    order: persistedOrderReducer,
+    search: searchReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
