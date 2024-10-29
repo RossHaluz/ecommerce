@@ -1,4 +1,4 @@
-import React, { FC} from "react";
+import React, { FC } from "react";
 import Pagination from "@/components/pagination";
 import ProductItem from "../../categories/[categoryId]/_components/product-item";
 
@@ -31,7 +31,6 @@ const Products: FC<ProductsProps> = ({
   totalPages,
   searchParams,
 }) => {
-
   return (
     <div className="flex flex-col gap-[30px]">
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-[30px]">
@@ -40,11 +39,13 @@ const Products: FC<ProductsProps> = ({
         })}
       </ul>
 
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        searchParams={searchParams}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          searchParams={searchParams}
+        />
+      )}
     </div>
   );
 };
