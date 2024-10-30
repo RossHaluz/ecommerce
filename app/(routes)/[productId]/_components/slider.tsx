@@ -31,12 +31,14 @@ const Slider: FC<SliderProps> = ({ images }) => {
         {images?.map((item) => {
           return (
             <SwiperSlide key={item?.id}>
+              <div className="relative aspect-square rounded-2xl overflow-hidden h-full w-full">
               <Image
                 src={item?.url}
                 alt="Image slider"
                 fill
-                className="absolute top-0 right-0 object-cover object-top"
+                className="absolute top-0 right-0 object-cover"
               />
+              </div>
             </SwiperSlide>
           );
         })}
@@ -59,7 +61,9 @@ const Slider: FC<SliderProps> = ({ images }) => {
           {images?.map((item) => {
             return (
               <SwiperSlide key={item?.id}>
-                <Image src={item?.url} alt="Image slider" fill />
+                <div className="relative aspect-square rounded-2xl w-full h-full overflow-hidden">
+                <Image src={item?.url} alt="Image slider" fill className="absolute top-0 left-0 object-cover" />
+                </div>
               </SwiperSlide>
             );
           })}
