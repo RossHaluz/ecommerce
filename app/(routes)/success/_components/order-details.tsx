@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { removeUserContactDetails } from "@/redux/auth/slice";
 
 const OrderDetails = () => {
   const orderDetails = useSelector(selectOrderDetails);
@@ -17,10 +19,15 @@ const OrderDetails = () => {
     orderDetails && format(orderDetails?.createdAt, "dd-MM-yyyy");
   const formatTime = orderDetails && format(orderDetails?.createdAt, "HH:mm");
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if(!orderDetails){
       router.push('/')
+    }
+
+    () => {
+      dispatch(removeUserContactDetails());
     }
   }, [])
 

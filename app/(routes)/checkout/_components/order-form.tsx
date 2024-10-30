@@ -268,7 +268,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               icon?: string;
             }[],
           },
-          redirectUrl: "https://ecommerce-lime-alpha-61.vercel.app",
+          redirectUrl: "https://ecommerce-lime-alpha-61.vercel.app/success",
           webHookUrl: "https://ecommerce-admin-nine-nu.vercel.app/api/97ccf7f0-ddba-4e42-b562-d90c557b37ef/orders"
         };
 
@@ -315,7 +315,6 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     
           dispatch(setOrderDetails({ ...responceOrder, orderItems }));
           dispatch(cleareOrderItems());
-          dispatch(removeUserContactDetails());
           return router.push(responce.pageUrl);
         }
       }
