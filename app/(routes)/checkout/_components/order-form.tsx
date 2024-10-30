@@ -151,12 +151,9 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       setSeparatios(responce?.data[0].Addresses);
 
       setIsShowSeparatios(true);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("An unknown error occurred");
-      }
+    } catch (error) {
+      console.log(error);
+      
     }
   };
 
@@ -350,7 +347,6 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       router.push("/success");
     } catch (error) {
       console.log(error);
-
       toast.error("Something went wrong...");
     }
   };
