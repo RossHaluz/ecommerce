@@ -31,7 +31,7 @@ const OrderDetails = () => {
     </h3>
 
     <p className="text-[#484848] lg:font-medium lg:w-[978px]">
-      Ваше замовлення № 1003 прийняте. Ми звʼяжеться із вами найближчим часом
+      Ваше замовлення № {orderDetails?.orderNumber} прийняте. Ми звʼяжеться із вами найближчим часом
       для підтвердження замовленняабо надішлено інформаційне повідомлення у
       Viber чи SMS.
     </p>
@@ -40,7 +40,7 @@ const OrderDetails = () => {
       <div className="flex flex-col gap-[15px] lg:gap-[30px]">
         <div className="flex flex-col gap-[10px] md:flex-row md:items-center md:justify-between">
           <h3 className="text-base lg:text-2xl font-bold text-[#484848]">
-            Замовлення №1003
+            Замовлення №{orderDetails?.orderNumber}
           </h3>
           <div className="flex items-center gap-10 md:gap-[15px]">
             <span className="text-[#484848] text-xs lg:text-base lg:font-medium">

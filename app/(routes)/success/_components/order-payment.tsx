@@ -16,7 +16,7 @@ const OrderPayment: FC<OrderPaymentProps> = ({orderDetails}) => {
     <div className="flex items-center md:items-start gap-[15px]">
       <Card />
       <p>
-      Кредитна/дебетова карта ({orderDetails?.paymentMethod})
+        {orderDetails?.paymentMethod === 'cashOnDelivary' ? 'Оплата при отримані' : 'Онлайн оплата'}
       </p>
     </div>
   </div>
