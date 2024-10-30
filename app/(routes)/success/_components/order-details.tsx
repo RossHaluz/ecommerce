@@ -22,9 +22,9 @@ const OrderDetails = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(!orderDetails){
-      router.push('/')
-    }
+    // if(!orderDetails){
+    //   router.push('/')
+    // }
 
     () => {
       dispatch(removeUserContactDetails());
