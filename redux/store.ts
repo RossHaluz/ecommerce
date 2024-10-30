@@ -25,7 +25,7 @@ const persistAuth = {
 
 const persistOrder = {
   key: "orderItems",
-  whitelist: ["orderItems"],
+  whitelist: ["orderItems", 'orderDetails'],
   storage,
 };
 
