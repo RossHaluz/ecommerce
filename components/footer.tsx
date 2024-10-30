@@ -41,19 +41,21 @@ const Footer = () => {
 
           {/* Catalog start  */}
           <div className="mb-[15px]">
-            <Button className="font-semibold text-sm p-0 h-0" variant="ghost">
+            <Button className="font-semibold text-sm p-0 h-0 md:hidden" variant="ghost">
               Каталог товарів
               <ArrowDown />
             </Button>
+            <h3 className="text-sm font-semibold hidden md:inline-block"> Каталог товарів</h3>
           </div>
           {/* Catalog end  */}
 
           {/* Info start  */}
           <div className="mb-[30px]">
-            <Button className="font-semibold text-sm p-0 h-0" variant="ghost">
+            <Button className="font-semibold text-sm p-0 h-0 md:hidden" variant="ghost">
               Інформація
               <ArrowDown />
             </Button>
+            <h3 className="text-sm font-semibold hidden md:inline-block">Інформація</h3>
           </div>
           {/* Info end  */}
 
