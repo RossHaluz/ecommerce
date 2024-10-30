@@ -26,7 +26,7 @@ const OrderDetails = () => {
     //   router.push('/')
     // }
 
-    () => {
+   return () => {
       dispatch(removeUserContactDetails());
     }
   }, [])
