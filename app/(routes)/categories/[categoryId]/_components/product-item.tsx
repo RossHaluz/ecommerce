@@ -84,7 +84,7 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
       <div className="flex flex-col">
         <Link
           href={`/${item?.id}`}
-          className="w-full h-[253px] relative overflow-hidden"
+          className="aspect-video lg:aspect-square relative overflow-hidden"
         >
           <Image
             src={productImage}
