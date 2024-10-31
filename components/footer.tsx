@@ -90,7 +90,7 @@ const Footer = () => {
             >
               {categories?.map((item: { id: string; name: string }) => {
                 return (
-                  <Link href={`/categories/${item?.id}`}>{item?.name}</Link>
+                  <Link href={`/categories/${item?.id}`} key={item?.id}>{item?.name}</Link>
                 );
               })}
             </div>
