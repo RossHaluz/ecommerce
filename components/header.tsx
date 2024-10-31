@@ -16,14 +16,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Modal from "./ui/modal";
-import React, {  useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ProductCount from "@/app/(routes)/[productId]/_components/product-count";
 import Image from "next/image";
 import { removeItemFromCart } from "@/redux/order/slice";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Trash from "/public/images/trash.svg";
 import { selectOrderItems } from "@/redux/order/selector";
 import ModalAuth from "./ui/modal-auth";
@@ -32,6 +32,8 @@ import RegisterForm from "./register-form";
 import Cookies from "js-cookie";
 import { User2Icon } from "lucide-react";
 import SearchBar from "./search-bar";
+import axios from "axios";
+import { cn } from "@/lib/utils";
 
 export interface Item {
   id: string;
@@ -56,7 +58,24 @@ const Header = () => {
   const orderItems = useSelector(selectOrderItems);
   const router = useRouter();
   const token = Cookies.get("token");
-  
+  const [categories, setCategories] = useState([]);
+  const { categoryId } = useParams();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories`
+        );
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getCategories();
+  }, []);
+
   const searchBtnRef = useRef<HTMLButtonElement>(null);
 
   const onOpenChange = () => {
@@ -73,7 +92,6 @@ const Header = () => {
       toast.error("Something went wrong...");
     }
   };
-
 
   return (
     <header className="flex flex-col relative">
@@ -240,13 +258,35 @@ const Header = () => {
                   <span>Каталог товарів</span>
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="z-50 bg-white"></PopoverContent>
+              <PopoverContent className="z-50 bg-white py-[15px] px-[30px]">
+                <ul className="flex flex-col gap-[15px]">
+                  {categories?.map((item: { name: string; id: string }) => {
+                    return (
+                      <li className="flex flex-col gap-[15px]" key={item?.id}>
+                        <Link
+                          href={`/categories/${item?.id}`}
+                          className={cn(
+                            "text-[18px] leading-[21.94px] text-[#484848] hover:text-[#7FAA84] hover:underline",
+                            {
+                              "text-[#7FAA84] underline":
+                                item?.id === categoryId,
+                            }
+                          )}
+                        >
+                          {item?.name}
+                        </Link>
+                        <div className="w-full h-[1px] bg-[#7FAA84]" />
+                      </li>
+                    );
+                  })}
+                </ul>
+              </PopoverContent>
             </Popover>
           </div>
           <div className="lg:hidden">
             <MobileMenu
-            setIsLogin={setIsLogin}
-            setIsRegister={setIsRegister}
+              setIsLogin={setIsLogin}
+              setIsRegister={setIsRegister}
               openBtn={
                 <div className="flex items-center gap-2">
                   <Catalog className="stroke-[#484848]" />
@@ -254,7 +294,7 @@ const Header = () => {
                 </div>
               }
               setIsActive={setIsActive}
-              isActive={isActive ? isActive : 'catalog'}
+              isActive={isActive ? isActive : "catalog"}
               isLogin={isLogin}
               isRegister={isRegister}
             />
@@ -265,7 +305,7 @@ const Header = () => {
           <div className="flex lg:hidden">
             <MobileMenu
               setIsActive={setIsActive}
-              isActive={isActive ? isActive : 'menu'}
+              isActive={isActive ? isActive : "menu"}
               openBtn={<Menu />}
               setIsLogin={setIsLogin}
               setIsRegister={setIsRegister}
@@ -286,7 +326,11 @@ const Header = () => {
       </div>
 
       {isShowSearch && (
-      <SearchBar setIsShowSearch={setIsShowSearch} isShowSearch={isShowSearch} searchBtnRef={searchBtnRef}/>
+        <SearchBar
+          setIsShowSearch={setIsShowSearch}
+          isShowSearch={isShowSearch}
+          searchBtnRef={searchBtnRef}
+        />
       )}
     </header>
   );
