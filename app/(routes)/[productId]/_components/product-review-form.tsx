@@ -15,9 +15,12 @@ import ReactStars from "react-rating-stars-component";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
-import Clip from "/public/images/clip.svg";
 import { ChangeEvent, useRef, useState } from "react";
-import ImageUpload from "@/components/ui/image-upload";
+import { ImagePlus } from "lucide-react";
+import Image from "next/image";
+import { nanoid } from "nanoid";
+import { useParams } from "next/navigation";
+import axios from "axios";
 
 const formSchema = z.object({
   userName: z.string().min(1, { message: "Обовʼязкове поле для заповнення" }),
@@ -31,6 +34,10 @@ const formSchema = z.object({
 });
 
 const ProductReviewForm = () => {
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const selectRef = useRef<HTMLInputElement>(null);
+  const { productId } = useParams();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,17 +52,43 @@ const ProductReviewForm = () => {
   const { isSubmitting } = form.formState;
   const images = form.getValues("photos");
 
-  console.log(images);
-
   const ratingChanged = (newRating: number) => {
     form.setValue("evaluation", newRating);
   };
 
+  const handleSelectFiles = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      setSelectedFiles(files);
+    }
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values);
+      const formData = new FormData();
+      if (selectedFiles && selectedFiles.length > 0) {
+        for (let i = 0; i <= selectedFiles?.length; i++) {
+          formData.append("photos", selectedFiles[i]);
+        }
+      }
+      formData.append("userName", values.userName);
+      formData.append("userEmail", values.userEmail);
+      formData.append("evaluation", String(values.evaluation));
+      formData.append("feedback", values.feedback);
+
+      const { data } = await axios.post(
+        `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products/${productId}/review-product`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -148,27 +181,42 @@ const ProductReviewForm = () => {
               )}
             />
           </div>
+          {selectedFiles?.length > 0 && (
+            <div className="flex items-center gap-5">
+              {selectedFiles?.map((item) => {
+                return (
+                  <div
+                    className="relative w-[80px] h-[80px] overflow-hidden rounded-2xl"
+                    key={nanoid()}
+                  >
+                    <Image
+                      src={URL.createObjectURL(item)}
+                      alt="Review photo"
+                      fill
+                      className="absolute top-0 left-0 object-cover"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
-          <FormField
-            name="photos"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <ImageUpload
-                    value={field.value?.map((image) => image.url) || []}
-                    onChange={(url) => [...field.value, { url }]}
-                    onRemove={(url) =>
-                      field.onChange(
-                        field.value?.filter((item) => item.url !== url) || []
-                      )
-                    }
-                    disabled={isSubmitting}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
+          <input
+            type="file"
+            ref={selectRef}
+            className="hidden"
+            multiple
+            onChange={handleSelectFiles}
           />
+          <Button
+            type="button"
+            onClick={() => selectRef.current?.click()}
+            variant="secondary"
+            className=" max-w-max flex items-center gap-2"
+          >
+            <ImagePlus className="w-4 h-4" />
+            Upload an image
+          </Button>
 
           <Button
             type="submit"
