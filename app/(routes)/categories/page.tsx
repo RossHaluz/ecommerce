@@ -1,19 +1,16 @@
-import Section from '@/components/section'
-import axios from 'axios'
-import React from 'react'
-import Categories from './_components/categories';
+import Section from "@/components/section";
+import React from "react";
+import Categories from "./_components/categories";
+import { getCategories } from "@/actions/get-data";
 
 const CategoriesPage = async () => {
-    const { data: categories } = await axios.get(
-        `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories/all`
-      );
+  const categories = (await getCategories()) || [];
 
-      
   return (
-    <Section title='Категорії'>
-      <Categories categories={categories}/>
+    <Section title="Категорії">
+      <Categories categories={categories} />
     </Section>
-  )
-}
+  );
+};
 
-export default CategoriesPage
+export default CategoriesPage;

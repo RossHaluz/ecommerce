@@ -2,7 +2,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { FC } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 interface CategoriesSliderProps {
@@ -29,7 +28,10 @@ const CategoriesSlider: FC<CategoriesSliderProps> = ({ categories }) => {
       >
         {categories?.map((item) => {
           return (
-            <SwiperSlide key={item?.billboard?.imageUrl}>
+            <SwiperSlide
+              key={item?.billboard?.imageUrl}
+              style={{ height: 400 }}
+            >
               {({ isActive }) => (
                 <Link
                   href={`/categories/${item?.id}`}
@@ -37,15 +39,15 @@ const CategoriesSlider: FC<CategoriesSliderProps> = ({ categories }) => {
                     isActive &&
                     "transform scale-[1] drop-shadow-[1px_1px_5px_rgba(127,170,132,0.50)]"
                   }`}
+                  style={{
+                    backgroundImage: `url('${process.env.BACKEND_URL}/billboards/${item?.billboard?.imageUrl}')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
                 >
-                  <Image
-                    src={item?.billboard?.imageUrl}
-                    alt={item?.name}
-                    fill
-                    className="absolute top left-0 object-cover w-full h-full"
-                  />
-                  <h3 className="relative mt-auto text-left text-[16px] w-[199px] text-[#484848] font-semibold tracking-[0.32px]">
-                    {item?.billboard?.label}
+                  <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-40"></div>
+                  <h3 className="relative mt-auto text-left text-[16px] w-[199px] text-white font-semibold tracking-[0.32px]">
+                    {item?.name}
                   </h3>
                 </Link>
               )}

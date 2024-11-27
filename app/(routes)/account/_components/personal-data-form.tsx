@@ -18,6 +18,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import UserAvatar from "/public/images/account-avatar.svg";
 import Image from "next/image";
+import { updateUser } from "@/actions/get-data";
 
 interface PersonalDataFormProps {
   user: {
@@ -26,16 +27,16 @@ interface PersonalDataFormProps {
     lastName: string;
     phoneNumber: string;
     email: string;
-    avatar: string;
     token: string;
+    avatar: string;
   };
 }
 
 const formSchema = z.object({
-  username: z.string().min(1),
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
   phoneNumber: z.string().min(1),
   email: z.string().min(1).email(),
-  avatar: z.string(),
 });
 
 const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
@@ -48,16 +49,17 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
     resolver: zodResolver(formSchema),
     defaultValues: user
       ? {
-          username: `${user?.firstName} ${user?.lastName}`,
+          ...user,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
           phoneNumber: user?.phoneNumber,
           email: user?.email,
-          avatar: user?.avatar,
         }
       : {
-          username: "",
+          firstName: "",
+          lastName: "",
           phoneNumber: "",
           email: "",
-          avatar: "",
         },
   });
 
@@ -68,11 +70,10 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
     }
   };
 
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const formData = new FormData();
-      formData.append("username", values.username);
+      formData.append("firstName", values.firstName);
       formData.append("phoneNumber", values.phoneNumber);
       formData.append("email", values.email);
 
@@ -80,12 +81,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
         formData.append("avatar", selectFile);
       }
 
-      await axios.patch(`${process.env.SERVER_URL}api/auth/update`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await updateUser(formData);
 
       router.refresh();
       toast.success("User success update");
@@ -98,20 +94,36 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex items-start gap-[228px] lg:border-l lg:border-[#7FAA84] lg:pl-[30px]"
+        className="flex items-start gap-[228px] lg:border-l lg:border-[#c0092a] lg:pl-[30px]"
       >
         <div className="flex flex-col gap-[30px] w-full lg:lg:w-[397px]">
           <div className="flex flex-col gap-[15px]">
             <FormField
-              name="username"
+              name="firstName"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Ім&apos;я та Прізвище</FormLabel>
+                  <FormLabel>Ім&apos;я</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      className="bg-[#EAF2EB] shadow-none rounded-[5px] text-[#484848] border-none p-4"
+                      className="bg-[#F2F2F2] shadow-none rounded-[5px] text-[#484848] border-none p-4"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="lastName"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Прізвище</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="bg-[#F2F2F2] shadow-none rounded-[5px] text-[#484848] border-none p-4"
                     />
                   </FormControl>
                 </FormItem>
@@ -127,7 +139,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="bg-[#EAF2EB] shadow-none rounded-[5px] text-[#484848] border-none p-4"
+                      className="bg-[#F2F2F2] shadow-none rounded-[5px] text-[#484848] border-none p-4"
                     />
                   </FormControl>
                 </FormItem>
@@ -143,7 +155,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="bg-[#EAF2EB] shadow-none rounded-[5px] text-[#484848] border-none p-4"
+                      className="bg-[#F2F2F2] shadow-none rounded-[5px] text-[#484848] border-none p-4"
                     />
                   </FormControl>
                 </FormItem>
@@ -156,50 +168,38 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
           </Button>
         </div>
 
-<div className="hidden lg:block">
-        <input
-          type="file"
-          className="hidden"
-          ref={fileRef}
-          onChange={handleSelectFile}
-        />
-        <FormField
-          name="avatar"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-[5px] items-center">
-              <div className="relative h-20 w-20 rounded-full border border-solid border-[#7FAA84] overflow-hidden">
-                {(selectFile && (
-                  <Image
-                    src={URL.createObjectURL(selectFile)}
-                    alt="User avatar"
-                    fill
-                    objectFit="cover"
-                  />
-                )) ||
-                  (!selectFile && !user?.avatar && <UserAvatar />) ||
-                  (user?.avatar && (
-                    <Image
-                      src={`${process.env.SERVER_URL}avatars/${user?.avatar}`}
-                      alt="User avatar"
-                      fill
-                      objectFit="cover"
-                    />
-                  ))}
-              </div>
-              <FormControl>
-                {fileRef && (
-                  <h3
-                    className="underline text-base cursor-pointer"
-                    onClick={() => fileRef?.current?.click()}
-                  >
-                    Змінити фото
-                  </h3>
-                )}
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        <div className="hidden lg:block">
+          <input
+            type="file"
+            className="hidden"
+            ref={fileRef}
+            onChange={handleSelectFile}
+          />
+
+          <div className="flex flex-col gap-[5px] items-center">
+            <div className="relative h-20 w-20 rounded-full border border-solid border-[#c0092a] overflow-hidden">
+              {!selectFile && !user?.avatar && (
+                <UserAvatar className="stroke-[#c0092a]" />
+              )}
+              {selectFile && (
+                <Image
+                  src={URL.createObjectURL(selectFile)}
+                  alt="Select avatar"
+                  fill
+                  objectFit="cover"
+                />
+              )}
+            </div>
+
+            <Button
+              className="p-0"
+              variant="ghost"
+              type="button"
+              onClick={() => fileRef.current?.click()}
+            >
+              Змінити фото
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

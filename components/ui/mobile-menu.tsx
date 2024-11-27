@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import LoginForm from "../login-form";
 import RegisterForm from "../register-form";
 import { User2Icon } from "lucide-react";
+import { getCategories } from "@/actions/get-data";
 
 interface Item {
   id: string;
@@ -88,13 +89,11 @@ const MobileMenu: FC<MobileMenuProps> = ({
   useEffect(() => {
     if (!isOpen) return;
 
-    const getCategories = async () => {
-      const { data } = await axios.get(
-        `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories`
-      );
-      setCategories(data);
+    const setAllCategories = async () => {
+      const categories = (await getCategories()) || [];
+      setCategories(categories);
     };
-    getCategories();
+    setAllCategories();
   }, [isOpen]);
 
   useEffect(() => {
@@ -156,7 +155,9 @@ const MobileMenu: FC<MobileMenuProps> = ({
         }`}
       >
         <div className="px-5 pb-5 flex flex-col gap-[10px]">
-          <Logo className="w-[158px] mx-auto" />
+          <div className="p-4">
+            <Logo className="w-[158px] mx-auto" />
+          </div>
           <div className="flex flex-col gap-[15px]">
             <div
               className={`flex items-center justify-between ${
@@ -277,9 +278,11 @@ const MobileMenu: FC<MobileMenuProps> = ({
               </Button>
 
               {token ? (
-                <div  className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]">
+                <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]">
                   <User2Icon className="text-[#7FAA84]" strokeWidth="0.75px" />{" "}
-                  <Link href="/account" onClick={() => setIsOpen(false)}>Перейти у кабінет</Link>
+                  <Link href="/account" onClick={() => setIsOpen(false)}>
+                    Перейти у кабінет
+                  </Link>
                 </div>
               ) : (
                 <Button

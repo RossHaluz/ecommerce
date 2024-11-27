@@ -12,10 +12,16 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { useDispatch } from "react-redux";
-import { authReducer, AuthState } from "./auth/slice";
-import { OrderReducer, OrderState } from "./order/slice";
+import { OrderReducer } from "./order/slice";
 import { searchReducer } from "./search/slice";
-import { PersistPartial } from "redux-persist/es/persistReducer";
+import { authReducer } from "./auth/slice";
+import { categoryReducer } from "./categories/slice";
+
+const persistSearch = {
+  key: "searchDetails",
+  whitelist: ["searchQuery", "searchItems"],
+  storage,
+};
 
 const persistAuth = {
   key: "userDetails",
@@ -25,18 +31,20 @@ const persistAuth = {
 
 const persistOrder = {
   key: "orderItems",
-  whitelist: ["orderItems", 'orderDetails'],
+  whitelist: ["orderItems", "orderDetails"],
   storage,
 };
 
-const persistedAuthReducer = persistReducer<AuthState & PersistPartial>(persistAuth, authReducer);
-const persistedOrderReducer = persistReducer<OrderState & PersistPartial>(persistOrder, OrderReducer);
+const persistedAuthReducer = persistReducer(persistAuth, authReducer);
+const persistedOrderReducer = persistReducer(persistOrder, OrderReducer);
+const persisterSearchReducer = persistReducer(persistSearch, searchReducer);
 
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     order: persistedOrderReducer,
-    search: searchReducer,
+    search: persisterSearchReducer,
+    category: categoryReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

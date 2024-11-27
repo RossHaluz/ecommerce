@@ -27,14 +27,12 @@ export interface OrderState extends PersistPartial {
   orderItems: OrderItem[];
   isLoading: boolean;
   orderDetails: any;
-
 }
 
-const initialState: OrderState = {
+const initialState: any = {
   orderItems: [],
   isLoading: false,
   orderDetails: null,
-  _persist: { version: -1, rehydrated: false },
 };
 
 export const orderSlice = createSlice({
@@ -44,15 +42,15 @@ export const orderSlice = createSlice({
     setOrderDetails(state, action) {
       state.orderDetails = action.payload;
     },
-    addItemToCart(state, action: PayloadAction<OrderItem>) {
+    addItemToCart(state, action) {
       const findOrderItem = state.orderItems.find(
-        (item) => item.id === action?.payload?.id
+        (item: any) => item.id === action?.payload?.id
       );
 
-      const findTheSameOptions = state.orderItems.find((item) =>
-        item?.selectOptions?.every((option) =>
+      const findTheSameOptions = state.orderItems.find((item: any) =>
+        item?.selectOptions?.every((option: any) =>
           action.payload?.selectOptions.every(
-            (optionItem) => optionItem?.optionValue === option?.optionValue
+            (optionItem: any) => optionItem?.optionValue === option?.optionValue
           )
         )
       );
@@ -65,9 +63,9 @@ export const orderSlice = createSlice({
         state.orderItems.push(action.payload);
       }
     },
-    removeItemFromCart(state, action: PayloadAction<string>) {
+    removeItemFromCart(state, action) {
       state.orderItems = state.orderItems.filter(
-        (item) => item.orderItemId !== action.payload
+        (item: any) => item.orderItemId !== action.payload
       );
     },
     changeProductCount(
@@ -76,7 +74,7 @@ export const orderSlice = createSlice({
     ) {
       const { itemId, type } = action.payload;
       const findItem = state.orderItems.find(
-        (item) => item.orderItemId === itemId
+        (item: any) => item.orderItemId === itemId
       );
       if (findItem) {
         if (type === "increase") {

@@ -27,7 +27,7 @@ const BestSellersItem: FC<BesrSellersItemProps> = ({ item }) => {
       <Link href={`/${item?.id}`} className="flex flex-col">
         <div className="aspect-video lg:aspect-square relative overflow-hidden">
           <Image
-            src={productImage}
+            src={`${process.env.BACKEND_URL}/products/${productImage}`}
             alt={item?.title}
             fill
             className="absolute top-0 left-0 object-cover"
@@ -41,8 +41,8 @@ const BestSellersItem: FC<BesrSellersItemProps> = ({ item }) => {
 
               <div className="flex flex-col gap-[13px]">
                 <div className="flex items-center gap-[6px]">
-                  <Available />
-                  <span className="text-[#7FAA84] text-xs font-medium">
+                  <Available className="stroke-[#c0092a]" />
+                  <span className="text-[#c0092a] text-xs font-medium">
                     В наявності
                   </span>
                 </div>
@@ -54,11 +54,11 @@ const BestSellersItem: FC<BesrSellersItemProps> = ({ item }) => {
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-[#7FAA84] font-bold text-base">
+              <span className="text-[#c0092a] font-bold text-base">
                 {item?.price} ₴
               </span>
               <Button variant="ghost" className="hover:bg-none">
-                <Bag />
+                <Bag className="stroke-[#c0092a]" />
               </Button>
             </div>
           </div>

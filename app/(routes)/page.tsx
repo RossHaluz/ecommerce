@@ -1,32 +1,21 @@
-import axios from "axios";
-import Hero from "./_components/hero";
 import Categories from "./_components/categories";
 import BesrSellers from "./_components/best-sellers";
 import Subscribe from "./_components/subscribe";
+import {
+  getBestSellersProducts,
+  getCategories,
+  getStoreDetails,
+} from "@/actions/get-data";
+import HeroSlider from "./_components/hero-slider";
 
 export default async function Home() {
-  
-
-  const { data: settings } = await axios.get(
-    `${process.env.BACKEND_URL}/api/store/${process.env.STORE_ID}`
-  );
-
-  const { data: categories } = await axios.get(
-    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories`
-  );
-
-  const { data: bestSellersProducts } = await axios.get(
-    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products/best`
-  );
-  
+  const store = await getStoreDetails();
+  const categories = await getCategories("4");
+  const bestSellersProducts = await getBestSellersProducts();
 
   return (
     <>
-      <Hero
-        heroTitle={settings.heroTitle}
-        heroDesc={settings.heroDesc}
-        heroImages={settings.heroImages}
-      />
+      <HeroSlider heroBillboards={store?.heroBillboards} />
       <Categories categories={categories} />
       <BesrSellers bestSellersProducts={bestSellersProducts} />
       <Subscribe />

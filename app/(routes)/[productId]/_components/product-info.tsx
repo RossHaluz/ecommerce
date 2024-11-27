@@ -71,10 +71,15 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
     })),
   }));
 
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   return (
     <div className="flex flex-col gap-[30px]">
       <h1 className="text-[#484848] hidden lg:inline-block font-bold lg:text-2xl">
-        {title}
+        {capitalizeFirstLetter(title)}
       </h1>
 
       <div className="grid grid-cols-1 gap-[15px] lg:grid-cols-2 lg:gap-[30px] pb-8 lg:pb-[30px] items-center">
@@ -85,8 +90,8 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
         <div className="flex flex-col gap-[15px] lg:gap-[60px]">
           <div className="flex flex-col gap-[15px] lg:gap-[30px]">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-[6px] text-[#7FAA84] text-xs font-medium">
-                <Available />В наявності
+              <div className="flex items-center gap-[6px] text-[#c0092a] text-xs font-medium">
+                <Available className="stroke-[#c0092a]" />В наявності
               </div>
               <span className="text-[#484848] text-xs">Артикул: {article}</span>
             </div>

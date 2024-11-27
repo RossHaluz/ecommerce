@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/popover";
 import Modal from "./ui/modal";
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ProductCount from "@/app/(routes)/[productId]/_components/product-count";
 import Image from "next/image";
@@ -32,8 +31,11 @@ import RegisterForm from "./register-form";
 import Cookies from "js-cookie";
 import { User2Icon } from "lucide-react";
 import SearchBar from "./search-bar";
-import axios from "axios";
 import { cn } from "@/lib/utils";
+import { getCurrentUser } from "@/actions/get-data";
+import { selectCategories } from "@/redux/categories/selectors";
+import { getCategories } from "@/redux/categories/operetions";
+import { useAppDispatch } from "@/hooks/use-dispatch";
 
 export interface Item {
   id: string;
@@ -54,26 +56,30 @@ const Header = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
   const [isActive, setIsActive] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const orderItems = useSelector(selectOrderItems);
   const router = useRouter();
   const token = Cookies.get("token");
-  const [categories, setCategories] = useState([]);
+  const categories = useSelector(selectCategories);
   const { categoryId } = useParams();
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const getCategories = async () => {
+    const setUser = async () => {
       try {
-        const { data } = await axios.get(
-          `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories`
-        );
-        setCategories(data);
+        const user = await getCurrentUser();
+
+        setCurrentUser(user);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     };
 
-    getCategories();
+    setUser();
+  }, []);
+
+  useEffect(() => {
+    dispatch(getCategories());
   }, []);
 
   const searchBtnRef = useRef<HTMLButtonElement>(null);
@@ -95,10 +101,10 @@ const Header = () => {
 
   return (
     <header className="flex flex-col relative">
-      <div className="bg-[#EAF2EB] w-full">
+      <div className="bg-[#F2F2F2] w-full">
         <div className="container flex items-center justify-between h-full">
-          <Link href="/">
-            <Logo className="w-[159px] h-[50px] lg:w-[255px] lg:h-20" />
+          <Link href="/" className="flex items-start justify-start py-2">
+            <Logo />
           </Link>
 
           <div className="flex items-center gap-[70px]">
@@ -110,9 +116,9 @@ const Header = () => {
               +38 (096) 400 91 30
             </a>
             <div className="flex items-center gap-5">
-              {token ? (
+              {token && currentUser ? (
                 <Link href="/account">
-                  <User2Icon className="text-[#7FAA84]" strokeWidth="0.75px" />
+                  <User2Icon className="text-[#c0092a]" strokeWidth="0.75px" />
                 </Link>
               ) : (
                 <ModalAuth
@@ -145,7 +151,7 @@ const Header = () => {
                 triggetBtn={
                   <Button variant="ghost" className="p-0 relative">
                     <Cart />
-                    <div className="w-4 h-4 p-[5px] rounded-full bg-[#7FAA84] absolute top-5 right-0 flex items-center justify-center">
+                    <div className="w-4 h-4 p-[5px] rounded-full bg-[#c0092a] absolute top-5 right-0 flex items-center justify-center">
                       <span className="text-[#FFFFFF] text-xs">
                         {orderItems?.length > 0 ? orderItems?.length : 0}
                       </span>
@@ -173,12 +179,12 @@ const Header = () => {
                     }) => {
                       return (
                         <div
-                          className="flex items-start lg:items-center gap-[15px] w-full lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                          className="flex items-start lg:items-center gap-[15px] w-full lg:border lg:border-solid lg:border-[#c0092a] rounded-[5px]"
                           key={item?.orderItemId}
                         >
                           <div className="w-[65px] h-[65px] lg:w-[138px] lg:h-full rounded-[5px] overflow-hidden relative">
                             <Image
-                              src={item?.images?.[0]?.url}
+                              src={`${process.env.BACKEND_URL}/products/${item?.images?.[0]?.url}`}
                               alt={item?.images?.[0]?.id}
                               fill
                               className="object-cover"
@@ -218,7 +224,7 @@ const Header = () => {
                             </div>
 
                             <div className=" flex items-center  justify-between lg:items-start w-full lg:flex-col  lg:gap-[10px] ">
-                              <span className="text-lg text-[#7FAA84] font-bold">
+                              <span className="text-lg text-[#c0092a] font-bold">
                                 {item?.price} ₴
                               </span>
                               <ProductCount
@@ -244,7 +250,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="bg-[#F5FAF6] lg:bg-[#EAF2EB] lg:border-y">
+      <div className="bg-[#F2F2F2] lg:bg-[#F2F2F2] lg:border-y">
         <div className="flex items-center justify-between container">
           <div className="hidden lg:block">
             <Popover onOpenChange={(isOpen) => setIsOpen(isOpen)}>

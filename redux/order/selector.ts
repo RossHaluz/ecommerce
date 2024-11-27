@@ -1,6 +1,3 @@
-import { RootState } from "../rootReducer";
+export const selectOrderItems = (state: any) => state.order.orderItems;
 
-export const selectOrderItems = (state: RootState) => state.order.orderItems;
-
-export const selectOrderDetails = (state: RootState) =>
-  state.order.orderDetails;
+export const selectOrderDetails = (state: any) => state.order.orderDetails;

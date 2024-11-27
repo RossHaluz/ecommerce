@@ -5,14 +5,7 @@ import { z } from "zod";
 import subscribe from "/public/images/subscribe.jpg";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 
@@ -33,7 +26,7 @@ const Subscribe = () => {
   }
 
   return (
-    <div className="bg-[#EAF2EB] mb-[30px]">
+    <div className="bg-[#F2F2F2] mb-[30px]">
       <div className="lg:grid grid-cols-3 items-center justify-center lg:justify-start gap-[30px] container">
         <div className="hidden lg:block h-[250px] relative col-span-1">
           <Image

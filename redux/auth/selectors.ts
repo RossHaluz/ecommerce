@@ -1,11 +1,9 @@
-import { RootState } from "../rootReducer";
 
-export const selectIsLoading = (state: RootState) => state.auth.isLoading;
+export const selectIsLoading = (state: any) => state.auth.isLoading;
 
-export const selectUserContactDetails = (state: RootState) =>
+export const selectUserContactDetails = (state: any) =>
   state.auth.userContactDetails;
 
-export const selectMessage = (state: RootState) => state.auth.message;
+export const selectMessage = (state: any) => state.auth.message;
 
-export const selectError = (state: RootState) => state.auth.error;
-
+export const selectError = (state: any) => state.auth.error;

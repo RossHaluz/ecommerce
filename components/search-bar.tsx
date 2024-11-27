@@ -1,199 +1,228 @@
-'use client'
+"use client";
 import Search from "/public/images/search.svg";
 import Cross from "/public/images/cross.svg";
 import Available from "/public/images/available.svg";
 
-import React, { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react'
-import { Input } from './ui/input';
-import {Item} from './header';
-import axios from 'axios';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Input } from "./ui/input";
+import { Item } from "./header";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import Image from "next/image";
-import { toast } from "react-toastify";
+import { getSearchProducts } from "@/actions/get-data";
+import qs from "query-string";
+import { useRouter } from "next/navigation";
 
 interface setIsShowSearchProps {
-    setIsShowSearch: Dispatch<SetStateAction<boolean>>;
-    isShowSearch: boolean;
-    searchBtnRef: React.RefObject<HTMLButtonElement>;
+  setIsShowSearch: Dispatch<SetStateAction<boolean>>;
+  isShowSearch: boolean;
+  searchBtnRef: React.RefObject<HTMLButtonElement>;
 }
 
-const SearchBar: FC<setIsShowSearchProps> = ({setIsShowSearch, isShowSearch, searchBtnRef}) => {
-    const [searchedItems, setSearchedItems] = useState<Item[]>([]);
-    const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
-    const [searchValue, setSearchValue] = useState("");
+const SearchBar: FC<setIsShowSearchProps> = ({
+  setIsShowSearch,
+  isShowSearch,
+  searchBtnRef,
+}) => {
+  const [searchedItems, setSearchedItems] = useState<Item[]>([]);
+  const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
+  const [searchValue, setSearchValue] = useState("");
+  const router = useRouter();
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    const inputContainerRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const inputContainerRef = useRef<HTMLInputElement>(null);
 
-    console.log(searchValue);
-     
-    const clickOutsideInput = (e: MouseEvent) => {
-      if (
-        inputContainerRef.current &&
-        !inputContainerRef.current.contains(e.target as Node) &&
-        searchBtnRef.current &&
-        !searchBtnRef.current.contains(e.target as Node)
-      ) {
-        setIsShowSearch(false);
+  const clickOutsideInput = (e: MouseEvent) => {
+    if (
+      inputContainerRef.current &&
+      !inputContainerRef.current.contains(e.target as Node) &&
+      searchBtnRef.current &&
+      !searchBtnRef.current.contains(e.target as Node)
+    ) {
+      setIsShowSearch(false);
+      setSearchedItems([]);
+      setAllItemSearched([]);
+      setSearchValue("");
+    }
+  };
+
+  const handleSearchValue = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setSearchValue(e.target.value);
+      const { products } = await getSearchProducts({
+        searchValue: e.target.value,
+      });
+
+      const formateItems = products?.filter(
+        (item: Item, idx: number) => idx < 4
+      );
+
+      if (!e.target.value) {
         setSearchedItems([]);
         setAllItemSearched([]);
-        setSearchValue("");
+        return;
       }
-    };
 
-    const handleSearchValue = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        try {
-          setSearchValue(e.target.value);           
-          const { data } = await axios.get(
-            `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products?searchValue=${e.target.value}`
-          );
-    
-          const formateItems = data?.products?.filter(
-            (item: Item, idx: number) => idx < 4
-          );
-    
-          if (!e.target.value) {
-            setSearchedItems([]);
-            setAllItemSearched([]);
-            return;
-          }
-    
-          setAllItemSearched(data?.products);
-          setSearchedItems(formateItems);
-        } catch (error) {
-          toast.error("Something went wrong...");
-        }
-      };
+      setAllItemSearched(products);
+      setSearchedItems(formateItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      const removeInputValue = () => {
-        setSearchValue("");
-        localStorage.removeItem('searchValue');
-        setSearchedItems([]);
-        setAllItemSearched([]);
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      };
-
+  const removeInputValue = () => {
+    setSearchValue("");
+    localStorage.removeItem("searchValue");
+    setSearchedItems([]);
+    setAllItemSearched([]);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   const handleShowAll = () => {
-    setIsShowSearch(false)
-    Cookies.set('__search_value', searchValue, { expires: 7, path: '/' });
-  }
-  
-    useEffect(() => {
-      window.addEventListener("mousedown", clickOutsideInput);
-  
-      () => {
-        window.removeEventListener("mousedown", clickOutsideInput);
-      };
-    }, []);
-  
-  
-    useEffect(() => {
-      if (isShowSearch && inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, [isShowSearch]);
+    setIsShowSearch(false);
+    Cookies.set("__search_value", searchValue, { expires: 7, path: "/" });
+    const url = qs.stringifyUrl({
+      url: "/search",
+      query: {
+        searchValue,
+      },
+    });
+
+    return router.push(url);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousedown", clickOutsideInput);
+
+    () => {
+      window.removeEventListener("mousedown", clickOutsideInput);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isShowSearch && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isShowSearch]);
+
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   return (
     <div
-    ref={inputContainerRef}
-    className="w-full bg-[#F5FAF6] absolute top-full left-0 z-50"
-  >
-    <div className="border-b border-[#4848481A]">
-      <div className=" container">
-        <div className="relative">
-          <Input
-            ref={inputRef}
-            value={searchValue}
-            onChange={handleSearchValue}
-            className="bg-transparent w-full border-none pl-[30px] outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#484848] text-base font-medium"
-          />
-          <div className="absolute top-2 left-0 h-full">
-            <Search />
-          </div>
+      ref={inputContainerRef}
+      className="w-full bg-[#F2F2F2] absolute top-full left-0 z-50"
+    >
+      <div className="border-b border-[#4848481A]">
+        <div className=" container">
+          <div className="relative">
+            <Input
+              ref={inputRef}
+              value={searchValue}
+              onChange={handleSearchValue}
+              className="bg-transparent w-full border-none pl-[30px] outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#484848] text-base font-medium"
+            />
+            <div className="absolute top-2 left-0 h-full">
+              <Search />
+            </div>
 
-          {searchValue && (
-            <Button
-              variant="ghost"
-              className="absolute top-0 right-0 px-0"
-              onClick={removeInputValue}
-            >
-              <Cross />
-            </Button>
-          )}
+            {searchValue && (
+              <Button
+                variant="ghost"
+                className="absolute top-0 right-0 px-0"
+                onClick={removeInputValue}
+              >
+                <Cross />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
 
-    <div className="pt-[30px] pb-[39px] bg-[#F5FAF6] shadow-custom-shadow">
-      <div className="container flex flex-col gap-[30px]">
-        <div className="flex items-center justify-between">
-          <span className="text-base text-[#484848CC]">
-            {allItemsSearched?.length} результатів
-          </span>
+      <div className="pt-[30px] pb-[39px] bg-[#F2F2F2] shadow-md">
+        <div className="container flex flex-col gap-[30px]">
+          <div className="flex items-center justify-between">
+            <span className="text-base text-[#484848CC]">
+              {allItemsSearched?.length} результатів
+            </span>
 
-          <Button
-            variant="ghost"
-            className="p-0 text-base text-[#484848] underline font-bold"
-          >
-            <Link href={`/search?searchValue=${searchValue}`} onClick={handleShowAll}>Подивитись все</Link>
-          </Button>
-        </div>
+            <Button
+              variant="ghost"
+              className="p-0 text-base text-[#484848] underline font-bold"
+            >
+              <Button
+                type="button"
+                className="p-0"
+                variant="ghost"
+                onClick={handleShowAll}
+              >
+                Подивитись все
+              </Button>
+            </Button>
+          </div>
 
-        <div className="w-full h-[1px] bg-[#7FAA84]" />
+          <div className="w-full h-[1px] bg-[#c0092a]" />
 
-        {searchedItems?.length > 0 ? (
-          <ul className="grid grid-cols-4 gap-[30px]">
-            {searchedItems?.map((item) => {
-              return (
-                <li
-                  className="rounded-[5px] border border-[rgba(72,72,72,0.2)] overflow-hidden"
-                  key={item?.id}
-                >
-                  <div className="flex flex-col">
-                    <Link
-                      href={`/${item?.id}`}
-                      className="w-full h-[253px] relative overflow-hidden"
-                    >
-                      <Image
-                        src={item?.images[0].url}
-                        alt={item?.title}
-                        fill
-                        className="absolute top-0 left-0 object-cover"
-                      />
-                    </Link>
+          {searchedItems?.length > 0 ? (
+            <ul className="grid grid-cols-4 gap-[30px]">
+              {searchedItems?.map((item) => {
+                return (
+                  <li
+                    className="rounded-[5px] border border-[rgba(72,72,72,0.2)] overflow-hidden"
+                    key={item?.id}
+                  >
+                    <div className="flex flex-col">
+                      <Link
+                        href={`/${item?.id}`}
+                        className="w-full h-[253px] relative overflow-hidden"
+                      >
+                        <Image
+                          src={`${process.env.BACKEND_URL}/products/${item?.images[0].url}`}
+                          alt={item?.title}
+                          fill
+                          className="absolute top-0 left-0 object-cover"
+                        />
+                      </Link>
 
-                    <div className="px-[14px] py-5">
-                      <div className="flex flex-col gap-[25px]">
-                        <div className="flex flex-col gap-[15px]">
-                          <Link href={`/${item?.id}`}>
-                            <h2 className="font-bold text-base">
-                              {item?.title}
-                            </h2>
-                          </Link>
-                          <div className="flex flex-col gap-[13px]">
-                            <div className="flex items-center gap-[6px]">
-                              <Available />
-                              <span className="text-[#7FAA84] text-xs font-medium">
-                                В наявності
+                      <div className="px-[14px] py-5">
+                        <div className="flex flex-col gap-[25px]">
+                          <div className="flex flex-col gap-[15px]">
+                            <Link href={`/${item?.id}`}>
+                              <h2 className="font-bold text-base">
+                                {capitalizeFirstLetter(item?.title)}
+                              </h2>
+                            </Link>
+                            <div className="flex flex-col gap-[13px]">
+                              <div className="flex items-center gap-[6px]">
+                                <Available className="stroke-[#c0092a]" />
+                                <span className="text-[#c0092a] text-xs font-medium">
+                                  В наявності
+                                </span>
+                              </div>
+
+                              <span className="text-[#484848] text-xs">
+                                Артикул: {item?.article}
                               </span>
                             </div>
-
-                            <span className="text-[#484848] text-xs">
-                              Артикул: {item?.article}
-                            </span>
                           </div>
-                        </div>
 
-                        <div className="flex items-center justify-between">
-                          <span className="text-[#7FAA84] font-bold text-base">
-                            {item?.price} ₴
-                          </span>
-                          {/* <Modal
+                          <div className="flex items-center justify-between">
+                            <span className="text-[#c0092a] font-bold text-base">
+                              {item?.price} ₴
+                            </span>
+                            {/* <Modal
                         triggetBtn={
                           <Button
                             variant="ghost"
@@ -280,25 +309,25 @@ const SearchBar: FC<setIsShowSearchProps> = ({setIsShowSearch, isShowSearch, sea
                           </div>
                         )}
                       </Modal> */}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <div className="flex items-center justify-center w-full h-full">
-            <h3 className="text-base text-foreground">
-              За вашим запитом товарів не знайдено...
-            </h3>
-          </div>
-        )}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="flex items-center justify-center w-full h-full">
+              <h3 className="text-base text-foreground">
+                За вашим запитом товарів не знайдено...
+              </h3>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
 export default SearchBar;

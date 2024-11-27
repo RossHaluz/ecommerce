@@ -20,10 +20,7 @@ interface ProductReviewsListProps {
 }
 
 const ProductReviewsList: FC<ProductReviewsListProps> = ({ reviews }) => {
-  const [countReview, setCountReview] = useState(0);
-
-  console.log(reviews);
-  
+  const [countReview, setCountReview] = useState(0);  
 
   useEffect(() => {
     if (reviews && reviews.length > 0) {

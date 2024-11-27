@@ -24,7 +24,7 @@ const OrderItems = () => {
   };
 
   return (
-    <div className="p-[30px] rounded-[5px] bg-[#EAF2EB] sticky top-1 transition-all">
+    <div className="p-[30px] rounded-[5px] bg-[#F2F2F2] sticky top-1 transition-all">
       <div className="flex flex-col gap-[30px]">
         <h3 className="text-[#484848] text-2xl font-bold">Ваш кошик</h3>
 
@@ -56,7 +56,7 @@ const OrderItems = () => {
                     </Button>
                     <div className="w-[118px] h-[118px] rounded-[5px] overflow-hidden relative">
                       <Image
-                        src={imageUrl}
+                        src={`${process.env.BACKEND_URL}/products/${imageUrl}`}
                         alt={item?.title}
                         fill
                         className="object-cover absolute top-0 left-0"
@@ -75,7 +75,7 @@ const OrderItems = () => {
                           {item?.quantity}
                         </span>
                         <span className="text-[#484848]">x</span>
-                        <span className="text-[#7FAA84] text-base font-bold">
+                        <span className="text-[#c0092a] text-base font-bold">
                           {item?.priceForOne} ₴
                         </span>
                       </div>
@@ -98,7 +98,7 @@ const OrderItems = () => {
               <h3 className="text-base font-bold text-[#484848]">
                 Загальна вартість:
               </h3>
-              <span className="text-[#7FAA84] text-base font-bold">
+              <span className="text-[#c0092a] text-base font-bold">
                 {totalPrice} ₴
               </span>
             </div>

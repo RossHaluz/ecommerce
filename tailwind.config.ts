@@ -12,7 +12,7 @@ const config = {
   theme: {
     extend: {
       boxShadow: {
-        "custom-shadow": "0px 3px 3px 0px #7FAA8440",
+        "custom-shadow": "0px 3px 3px 0px #c0092a",
         "search-shadow":
           "1px 1px 5px 0px #7FAA844D, -1px -1px 5px 0px #78AB7E4D",
       },

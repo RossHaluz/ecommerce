@@ -3,7 +3,6 @@ import CategoriesSlider from "./categories-slider";
 import Section from "@/components/section";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/image";
 
 interface CategoriesProps {
   categories: {
@@ -33,16 +32,15 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
                   href={`/categories/${item?.id}`}
                   key={item?.id}
                   className="relative h-[250px] flex p-[30px] hover:scale-105 transition-all lg:first-of-type:w-full lg:first-of-type:col-span-2 lg:last-of-type:w-full lg:last-of-type:col-span-2"
+                  style={{
+                    backgroundImage: `url('${process.env.BACKEND_URL}/billboards/${item?.billboard?.imageUrl}')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
                 >
-                  <Image
-                    src={item?.billboard?.imageUrl}
-                    alt={item?.billboard?.label}
-                    priority
-                    fill
-                    className="absolute top-0 left-0 object-cover"
-                  />
+                  <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-40"></div>
 
-                  <h3 className="text-[#484848] text-2xl font-semibold relative mt-auto lg:w-[293px]">
+                  <h3 className="text-white  text-2xl font-semibold relative mt-auto lg:w-[293px]">
                     {item?.billboard?.label}
                   </h3>
                 </Link>
@@ -51,11 +49,9 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
           )}
         </div>
 
-   
-          <Button className="w-[244px] mx-auto rounded-[5px]">
-            <Link href="/categories">Переглянути всі категорії</Link>
-          </Button>
-   
+        <Button className="w-[244px] mx-auto rounded-[5px]">
+          <Link href="/categories">Переглянути всі категорії</Link>
+        </Button>
       </div>
     </Section>
   );

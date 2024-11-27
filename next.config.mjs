@@ -14,7 +14,6 @@ const nextConfig = {
   },
 
   env: {
-    SERVER_URL: process.env.SERVER_URL,
     BACKEND_URL: process.env.BACKEND_URL,
     STORE_ID: process.env.STORE_ID,
     MONO_URL: process.env.MONO_URL,

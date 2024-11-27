@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import ProductInfo from "./_components/product-info";
 import Advantages from "./_components/advantages";
 import ProductDetails from "./_components/product-details";
+import { getProductDetails } from "@/actions/get-data";
 
 interface ProductPageProps {
   params: {
@@ -13,16 +14,14 @@ interface ProductPageProps {
 const ProductPage: FC<ProductPageProps> = async ({ params }) => {
   const { productId } = params;
 
-  const { data } = await axios.get(
-    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products/${productId}`
-  );
-  
+  const product = await getProductDetails(productId);
+
   return (
     <div className="container py-[10px] lg:py-[30px]">
-      {data && <ProductInfo initialData={data} />}
+      {product && <ProductInfo initialData={product} />}
 
       <Advantages />
-      {data && <ProductDetails initialData={data} />}
+      {product && <ProductDetails initialData={product} />}
     </div>
   );
 };

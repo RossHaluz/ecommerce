@@ -19,8 +19,6 @@ interface ProductsProps {
   totalPages: number;
   searchParams: {
     filterIds: string;
-    maxPrice: string;
-    minPrice: string;
     page: string;
   };
 }

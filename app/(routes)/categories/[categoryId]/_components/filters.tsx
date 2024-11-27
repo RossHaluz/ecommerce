@@ -26,50 +26,28 @@ interface FiltersProps {
   }[];
   searchParams: {
     filterIds: string;
+    searchValue: string;
     page: string;
     sortByPrice: string;
-    searchValue: string;
-  };
-  rangePrice?: {
-    minPrice: number;
-    maxPrice: number;
   };
 }
 
-const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
-  const {sortByPrice} = searchParams;
+const Filters: FC<FiltersProps> = ({ filters, searchParams }) => {
+  const { sortByPrice, searchValue } = searchParams;
   const pathname = usePathname();
   const router = useRouter();
   const [filterIds, setFilterIds] = useState<FilterOption[]>([]);
-  // const [rangePrices, setRangePrices] = useState<number[]>([
-  //   rangePrice?.minPrice,
-  //   rangePrice?.maxPrice,
-  // ]);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [isPriceChangedByUser, setIsPriceChangedByUser] = useState(false);
-  const [isChangeRange, setIsChaneRange] = useState(false);
-  
 
   useEffect(() => {
     const storedFilterIds = localStorage.getItem("filterIds");
-    const storedRangePrices = localStorage.getItem("rangePrices");
 
     if (storedFilterIds) {
       setFilterIds(JSON.parse(storedFilterIds));
     }
-    // if (storedRangePrices) {
-    //   setRangePrices(JSON.parse(storedRangePrices));
-    // } else {
-    //   setRangePrices([rangePrice?.minPrice, rangePrice?.maxPrice]);
-    // }
+
     setIsInitialized(true);
   }, []);
-
-  // useEffect(() => {
-  //   if (!isPriceChangedByUser) {
-  //     setRangePrices([rangePrice.minPrice, rangePrice.maxPrice]);
-  //   }
-  // }, [rangePrice]);
 
   useEffect(() => {
     if (!isInitialized) return;
@@ -82,8 +60,8 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
             filterIds.length > 0
               ? filterIds.map((filter) => filter.id).join(",")
               : null,
-              sortByPrice: sortByPrice ? sortByPrice : null,
-
+          sortByPrice: sortByPrice ? sortByPrice : null,
+          searchValue: searchValue ? searchValue : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -91,11 +69,9 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
 
     router.push(url);
     localStorage.setItem("filterIds", JSON.stringify(filterIds));
-    // localStorage.setItem("rangePrices", JSON.stringify(rangePrices));
-  }, [filterIds, pathname, router, isInitialized, searchParams?.searchValue ]);
+  }, [filterIds, pathname, router, isInitialized]);
 
   const handleCheckedChange = (filter: FilterOption, type: string) => {
-    
     if (type === "checkbox") {
       setFilterIds((prevFilter) => {
         if (prevFilter.find((item) => item.id === filter.id)) {
@@ -114,47 +90,12 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
     }
   };
 
-  // const handlePriceChange = (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   type: "min" | "max"
-  // ) => {
-  //   const value = Number(e.target.value);
-  //   setIsPriceChangedByUser(true);
-  //   setRangePrices((prev) => {
-  //     const newRange = [...prev];
-  //     newRange[type === "min" ? 0 : 1] = value;
-  //     return newRange;
-  //   });
-  // };
-
   const removeFilterIds = () => {
     localStorage.removeItem("filterIds");
-    localStorage.removeItem("rangePrices");
     setFilterIds([]);
-    // setRangePrices([rangePrice?.minPrice, rangePrice?.maxPrice]);
 
     router.refresh();
   };
-
-  // const handleRangeChange = (value: number | number[]) => {
-  //   setIsPriceChangedByUser(true);
-  //   if (Array.isArray(value) && value.length === 2) {
-  //     setRangePrices(value);
-
-  //     const url = qs.stringifyUrl(
-  //       {
-  //         url: pathname,
-  //         query: {
-  //           minPrice: value[0] ? value[0].toString() : null,
-  //           maxPrice: value[1] ? value[1].toString() : null,
-  //         },
-  //       },
-  //       { skipEmptyString: true, skipNull: true }
-  //     );
-
-  //     router.push(url);
-  //   }
-  // };
 
   return (
     <div className="hidden lg:flex flex-col gap-[30px] w-[235px]">
@@ -162,13 +103,9 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
         <div className="flex flex-col gap-[15px]">
           <span className="text-[#484848] text-base font-bold">Ви обрали:</span>
           <div className="flex flex-col gap-[10px]">
-            {/* <div className="py-[7px] px-[15px] w-full bg-[#EAF2EB]">
-            Ціна: від {rangePrices[0]} ₴ до {rangePrices[1]}
-          </div> */}
-
             {filterIds?.map((item) => (
               <div
-                className="py-[7px] px-[15px] w-full bg-[#EAF2EB]"
+                className="py-[7px] px-[15px] w-full bg-[#F2F2F2]"
                 key={item?.id}
               >
                 {item?.filter?.name}: {item?.name}
@@ -176,7 +113,7 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
             ))}
             <Button
               variant="ghost"
-              className="underline text-[#78AB7E] text-base font-bold flex justify-start p-0 items-start"
+              className="underline text-[#c0092a] text-base font-bold flex justify-start p-0 items-start"
               onClick={removeFilterIds}
             >
               Очистити фільтр
@@ -185,47 +122,11 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
         </div>
       )}
 
-      {/* <div
-        className={`p-[15px] bg-[#EAF2EB] flex flex-col gap-[15px] rounded-md `}
-      >
-        <h3 className="text-lg font-bold text-[rgb(72,72,72)]">Ціна</h3>
-        <div className="flex flex-col gap-6 pb-[15px]">
-          <div className="flex items-center gap-2">
-            <Input
-              type="number"
-              placeholder="Мін"
-              value={rangePrices[0]}
-              onChange={(e) => handlePriceChange(e, "min")}
-              className="p-2 rounded border border-gray-300"
-            />
-            -
-            <Input
-              type="number"
-              placeholder="Макс"
-              value={rangePrices[1]}
-              onChange={(e) => handlePriceChange(e, "max")}
-              className="p-2 rounded border border-gray-300"
-            />
-          </div>
-          <div className="px-[15px]">
-            <Slider
-              range
-              className="t-slider"
-              min={rangePrice?.minPrice}
-              max={rangePrice?.maxPrice}
-              step={10}
-              value={rangePrices}
-              onChange={handleRangeChange}
-            />
-          </div>
-        </div>
-      </div> */}
-
       {filters?.map((filter) => {
         return (
           <div
             key={filter.id}
-            className="p-[15px] w-[235px] bg-[#EAF2EB] flex flex-col gap-[15px] rounded-md"
+            className="p-[15px] w-[235px] bg-[#F2F2F2] flex flex-col gap-[15px] rounded-md"
           >
             <h3 className="text-lg font-bold text-[#484848]">{filter.name}</h3>
 
@@ -235,21 +136,35 @@ const Filters: FC<FiltersProps> = ({ filters, rangePrice, searchParams }) => {
                   <>
                     <Checkbox
                       checked={filterIds.some((f) => f.id === item.id)}
-                      onCheckedChange={() => handleCheckedChange(item, 'checkbox')}
+                      onCheckedChange={() =>
+                        handleCheckedChange(item, "checkbox")
+                      }
                     />
                     <label htmlFor={item.id} className="text-sm text-[#484848]">
                       {item.name}
                     </label>
                   </>
                 ) : (
-                  filter?.type === "radio" && <RadioGroup 
-                  value={filterIds.find((f) => f.filter.id === filter.id)?.id || ""}
-                  onValueChange={() => handleCheckedChange(item, "radio")}>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value={item?.id} id={item?.id}/>
-                    <Label htmlFor={item.id} className="text-sm text-[#484848]">   {item.name}</Label>
-                  </div>
-                </RadioGroup>
+                  filter?.type === "radio" && (
+                    <RadioGroup
+                      value={
+                        filterIds.find((f) => f.filter.id === filter.id)?.id ||
+                        ""
+                      }
+                      onValueChange={() => handleCheckedChange(item, "radio")}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value={item?.id} id={item?.id} />
+                        <Label
+                          htmlFor={item.id}
+                          className="text-sm text-[#484848]"
+                        >
+                          {" "}
+                          {item.name}
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  )
                 )}
               </div>
             ))}

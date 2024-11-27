@@ -19,7 +19,7 @@ import z from "zod";
 import axios from "axios";
 
 interface ChangePasswordFormProps {
-    token: string
+  token: string;
 }
 
 const formSchema = z
@@ -33,7 +33,7 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-const ChangePasswordForm: FC<ChangePasswordFormProps> = ({token}) => {
+const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
   const [isShowOldPassword, setIsShowOldPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   const [isShowNewPassword, setIsShowNewPassword] = useState(false);
@@ -51,14 +51,17 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({token}) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-        const {data} = await axios.post(`${process.env.SERVER_URL}api/auth/change-password`, values, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });        
-        toast.success(data?.message)
-        
-    } catch (error) { 
+      const { data } = await axios.post(
+        `${process.env.SERVER_URL}api/auth/change-password`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success(data?.message);
+    } catch (error) {
       toast.error("Something went wrong...");
     }
   };
@@ -67,7 +70,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({token}) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-[30px] lg:border-l lg:border-[#7FAA84] lg:pl-[30px] w-full lg:lg:w-[397px]"
+        className="flex flex-col gap-[30px] lg:border-l lg:border-[#c0092a] lg:pl-[30px] w-full lg:lg:w-[397px]"
       >
         <div className="flex flex-col gap-[5px]">
           <FormField
@@ -81,13 +84,13 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({token}) => {
                     <Input
                       {...field}
                       type={isShowOldPassword ? "text" : "password"}
-                      className="bg-transparent border border-solid border-[#7FAA84] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
+                      className="bg-transparent border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       onClick={() => setIsShowOldPassword((prev) => !prev)}
-                      className="absolute top-0 right-0 text-[#7FAA84] "
+                      className="absolute top-0 right-0 text-[#484848] "
                     >
                       {isShowOldPassword ? (
                         <Eye size={24} />
@@ -115,13 +118,13 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({token}) => {
                     <Input
                       {...field}
                       type={isShowNewPassword ? "text" : "password"}
-                      className="bg-transparent border border-solid border-[#7FAA84] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
+                      className="bg-transparent border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       onClick={() => setIsShowNewPassword((prev) => !prev)}
-                      className="absolute top-0 right-0 text-[#7FAA84] "
+                      className="absolute top-0 right-0 text-[#484848] "
                     >
                       {isShowNewPassword ? (
                         <Eye size={24} />
@@ -149,13 +152,13 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({token}) => {
                     <Input
                       {...field}
                       type={isShowConfirmPassword ? "text" : "password"}
-                      className="bg-transparent border border-solid border-[#7FAA84] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
+                      className="bg-transparent border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       onClick={() => setIsShowConfirmPassword((prev) => !prev)}
-                      className="absolute top-0 right-0 text-[#7FAA84] "
+                      className="absolute top-0 right-0 text-[#484848] "
                     >
                       {isShowConfirmPassword ? (
                         <Eye size={24} />
@@ -171,7 +174,13 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({token}) => {
           />
         </div>
 
-        <Button type="submit" disabled={!isValid || isSubmitting} className="max-w-max mx-auto lg:ml-0 lg:px-[42.5px] lg:py-[10px] px-[58.5px] py-[11.5px]">Змінити</Button>
+        <Button
+          type="submit"
+          disabled={!isValid || isSubmitting}
+          className="max-w-max mx-auto lg:ml-0 lg:px-[42.5px] lg:py-[10px] px-[58.5px] py-[11.5px]"
+        >
+          Змінити
+        </Button>
       </form>
     </Form>
   );

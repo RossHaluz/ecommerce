@@ -1,5 +1,4 @@
 import Section from "@/components/section";
-import axios from "axios";
 import { FC } from "react";
 import MobileFilters from "../categories/[categoryId]/_components/mobile-filters";
 import Filters from "../categories/[categoryId]/_components/filters";
@@ -7,12 +6,11 @@ import SortProducts from "../categories/[categoryId]/_components/sort";
 import Products from "./_components/products";
 import { cookies } from "next/headers";
 import NotFoundItems from "@/components/not-found-items";
+import { getSearchProducts } from "@/actions/get-data";
 
 interface SearchPageProps {
   searchParams: {
     filterIds: string;
-    maxPrice: string;
-    minPrice: string;
     page: string;
     sortByPrice: string;
     searchValue: string;
@@ -20,24 +18,18 @@ interface SearchPageProps {
 }
 
 const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
-  const searcValue = cookies().get("__search_value")?.value;
+  const { filterIds, page, sortByPrice } = searchParams;
+  const searchValue = cookies().get("__search_value")?.value;
 
-  const { data } = await axios.get(
-    `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products`,
-    {
-      params: {
-        searchValue: searcValue,
-        filterIds: searchParams.filterIds,
-        maxPrice: searchParams.maxPrice,
-        minPrice: searchParams.minPrice,
-        page: searchParams.page,
-        sortByPrice: searchParams.sortByPrice,
-      },
-    }
-  );
+  const data = await getSearchProducts({
+    searchValue,
+    filterIds,
+    page,
+    sortByPrice,
+  });
 
   return (
-    <Section title={`Результати пошуку: ${searcValue ? searcValue : ""}`}>
+    <Section title={`Результати пошуку: ${searchValue ? searchValue : ""}`}>
       {data?.products?.length > 0 ? (
         <div className="pt-[10px] pb-[30px] flex flex-col gap-5">
           <div className="grid grid-cols-2 gap-[15px] lg:hidden">
@@ -45,7 +37,9 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
             <SortProducts searchParams={searchParams} />
           </div>
           <div className="flex items-start gap-10">
-            <Filters filters={data.filters} searchParams={searchParams} />
+            {data.filters?.length > 0 && (
+              <Filters filters={data.filters} searchParams={searchParams} />
+            )}
 
             <div className="w-full flex flex-col gap-6">
               <div className="w-full hidden lg:flex items-center justify-between">

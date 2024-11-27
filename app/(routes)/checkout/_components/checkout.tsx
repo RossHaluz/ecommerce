@@ -2,8 +2,8 @@
 import { useSelector } from "react-redux";
 import CheckoutContactForm from "./checkout-contact-form";
 import OrderForm from "./order-form";
-import { selectUserContactDetails } from "@/redux/auth/selectors";
 import { FC } from "react";
+import { selectUserContactDetails } from "@/redux/auth/selectors";
 
 interface CheckoutProps {
   currentUser?: {
@@ -18,12 +18,12 @@ interface CheckoutProps {
 
 const Checkout: FC<CheckoutProps> = ({ currentUser }) => {
   const userContactDetails = useSelector(selectUserContactDetails);
-  const hasContactDetails = userContactDetails || currentUser
+  const hasContactDetails = userContactDetails || currentUser;
 
   return (
     <div className="flex flex-col gap-4 lg:gap-[30px]">
-    {!userContactDetails && !currentUser && <CheckoutContactForm />}
-    {hasContactDetails &&  <OrderForm currentUser={currentUser} />}
+      {!userContactDetails && !currentUser && <CheckoutContactForm />}
+      {hasContactDetails && <OrderForm currentUser={currentUser} />}
     </div>
   );
 };

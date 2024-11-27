@@ -10,40 +10,26 @@ import ApplePay from "/public/images/apple-pay.svg";
 import Private from "/public/images/private.svg";
 import ArrowDown from "/public/images/arrow-down.svg";
 import { Button } from "./ui/button";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useSelector } from "react-redux";
+import { selectCategories } from "@/redux/categories/selectors";
 
 const Footer = () => {
-  const [categories, setCategories] = useState([]);
+  const categories = useSelector(selectCategories);
   const [isShowCategories, setIsShowCategories] = useState(false);
   const [isShowInfo, setIsShowInfo] = useState(false);
   const categoriesRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const { data } = await axios.get(
-          `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/categories`
-        );
-        setCategories(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getCategories();
-  }, []);
-
   return (
-    <footer className="bg-[#EAF2EB]">
+    <footer className="bg-[#F2F2F2]">
       <div className="container pt-5 pb-[28px] flex flex-col gap-[15px]">
         <div className=" md:grid md:grid-cols-3 lg:grid-cols-4 justify-between md:gap-8 lg:gap-[90px]">
           {/* Contact info start */}
           <div className="flex flex-col gap-[10px] mb-[15px] items-start">
-            <Logo className="h-[50px]" />
+            <Logo />
             <div className="flex flex-col gap-[15px]">
               <h3 className="font-semibold text-sm text-[#484848]">
                 Контакти:
@@ -90,7 +76,9 @@ const Footer = () => {
             >
               {categories?.map((item: { id: string; name: string }) => {
                 return (
-                  <Link href={`/categories/${item?.id}`} key={item?.id}>{item?.name}</Link>
+                  <Link href={`/categories/${item?.id}`} key={item?.id}>
+                    {item?.name}
+                  </Link>
                 );
               })}
             </div>
@@ -207,7 +195,7 @@ const Footer = () => {
           <div className="w-full h-[1px] bg-[#48484880]" />
           <div className="flex items-center gap-[10px] mx-auto">
             <CopyrightIcon className="w-4 h-4" />
-            2022 KoalaDream права захищені
+            2020 Audiparts права захищені
           </div>
           <p className="text-center text-[#484848] text-sm">
             Розробка сайту -{" "}

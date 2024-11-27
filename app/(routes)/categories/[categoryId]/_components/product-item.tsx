@@ -79,6 +79,11 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
     }
   };
 
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   return (
     <li className="rounded-[5px] border border-[rgba(72,72,72,0.2)] overflow-hidden">
       <div className="flex flex-col">
@@ -87,7 +92,7 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
           className="aspect-video lg:aspect-square relative overflow-hidden"
         >
           <Image
-            src={productImage}
+            src={`${process.env.BACKEND_URL}/products/${productImage}`}
             alt={item?.title}
             fill
             className="absolute top-0 left-0 object-cover"
@@ -98,12 +103,14 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
           <div className="flex flex-col gap-[25px]">
             <div className="flex flex-col gap-[15px]">
               <Link href={`/${item?.id}`}>
-                <h2 className="font-bold text-base">{item?.title}</h2>
+                <h2 className="font-bold text-base normal-case">
+                  {capitalizeFirstLetter(item?.title)}
+                </h2>
               </Link>
               <div className="flex flex-col gap-[13px]">
                 <div className="flex items-center gap-[6px]">
-                  <Available />
-                  <span className="text-[#7FAA84] text-xs font-medium">
+                  <Available className="stroke-[#c0092a]" />
+                  <span className="text-[#c0092a] text-xs font-medium">
                     В наявності
                   </span>
                 </div>
@@ -115,14 +122,14 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-[#7FAA84] font-bold text-base">
+              <span className="text-[#c0092a] font-bold text-base">
                 {item?.price} ₴
               </span>
               <Modal
                 triggetBtn={
                   <Button
                     variant="ghost"
-                    className="hover:bg-none p-0"
+                    className="hover:bg-none p-0 stroke-[#c0092a]"
                     onClick={() => handleAddItemToCart(item)}
                   >
                     <Bag />
@@ -156,13 +163,13 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
                     }) => {
                       return (
                         <div
-                          className="flex items-start lg:items-center gap-[15px] w-full lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                          className="flex items-start lg:items-center gap-[15px] w-full lg:border lg:border-solid lg:border-[#c0092a] rounded-[5px]"
                           key={item?.orderItemId}
                         >
                           <div className="w-[65px] h-[65px] lg:w-[138px] lg:h-full rounded-[5px] overflow-hidden relative">
                             <Image
-                              src={item?.images[0]?.url}
-                              alt={item?.images[0]?.id}
+                              src={`${process.env.BACKEND_URL}/products/${item?.images[0]?.url}`}
+                              alt={item?.title}
                               fill
                               className="object-cover"
                             />
@@ -183,7 +190,7 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
                             </div>
 
                             <div className=" flex items-center  justify-between lg:items-start w-full lg:flex-col  lg:gap-[10px] ">
-                              <span className="text-lg text-[#7FAA84] font-bold">
+                              <span className="text-lg text-[#c0092a] font-bold">
                                 {item?.price} ₴
                               </span>
 

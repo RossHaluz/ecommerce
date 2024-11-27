@@ -32,12 +32,12 @@ const Slider: FC<SliderProps> = ({ images }) => {
           return (
             <SwiperSlide key={item?.id}>
               <div className="relative aspect-square rounded-2xl overflow-hidden h-full w-full">
-              <Image
-                src={item?.url}
-                alt="Image slider"
-                fill
-                className="absolute top-0 right-0 object-cover"
-              />
+                <Image
+                  src={`${process.env.BACKEND_URL}/products/${item?.url}`}
+                  alt="Image slider"
+                  fill
+                  className="absolute top-0 right-0 object-cover"
+                />
               </div>
             </SwiperSlide>
           );
@@ -62,7 +62,12 @@ const Slider: FC<SliderProps> = ({ images }) => {
             return (
               <SwiperSlide key={item?.id}>
                 <div className="relative aspect-square rounded-2xl w-full h-full overflow-hidden">
-                <Image src={item?.url} alt="Image slider" fill className="absolute top-0 left-0 object-cover" />
+                  <Image
+                    src={`${process.env.BACKEND_URL}/products/${item?.url}`}
+                    alt="Image slider"
+                    fill
+                    className="absolute top-0 left-0 object-cover"
+                  />
                 </div>
               </SwiperSlide>
             );
@@ -70,7 +75,7 @@ const Slider: FC<SliderProps> = ({ images }) => {
         </Swiper>
         {images?.length > 3 && (
           <Button variant="ghost" type="button" className="swiper-btn-next">
-            <ArrowDown />
+            <ArrowDown className="stroke-[#c0092a]" />
           </Button>
         )}
       </div>

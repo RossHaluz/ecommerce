@@ -138,12 +138,12 @@ const ProductBtn: FC<ProductBtnProps & ProductBtnCountProps> = ({
             }) => {
               return (
                 <div
-                  className="flex items-start lg:items-center gap-[15px] w-full lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                  className="flex items-start lg:items-center gap-[15px] w-full lg:border lg:border-solid lg:border-[#c0092a] rounded-[5px]"
                   key={item?.orderItemId}
                 >
                   <div className="w-[65px] h-[65px] lg:w-[138px] lg:h-full rounded-[5px] overflow-hidden relative">
                     <Image
-                      src={item?.images[0]?.url}
+                      src={`${process.env.BACKEND_URL}/products/${item?.images[0]?.url}`}
                       alt={item?.images[0]?.id}
                       fill
                       className="object-cover"
@@ -185,7 +185,7 @@ const ProductBtn: FC<ProductBtnProps & ProductBtnCountProps> = ({
                     </div>
 
                     <div className=" flex items-center  justify-between lg:items-start w-full lg:flex-col  lg:gap-[10px] ">
-                      <span className="text-lg text-[#7FAA84] font-bold">
+                      <span className="text-lg text-[#c0092a] font-bold">
                         {item?.price} ₴
                       </span>
                       <ProductCount

@@ -50,22 +50,23 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const { data } = await axios.post(
-        `${process.env.SERVER_URL}api/auth/login`,
+        `${process.env.BACKEND_URL}/api/auth/login`,
         values
       );
 
-      Cookies.set("token", data?.loginUser?.token, { expires: 1 });
-       axios.defaults.headers.common.Authorization = `Bearer ${data?.loginUser?.token}`
+      Cookies.set("token", data?.data?.token, { expires: 7 });
+      axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
       router.push("/account");
       router.refresh();
       toast.success("Success login");
     } catch (error) {
+      console.log(error);
+
       toast.error("Something went wrong...");
     }
   };
 
   return (
-
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -83,7 +84,7 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
                     type="email"
                   />
                 </FormControl>
@@ -97,12 +98,14 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="lg:text-base text-[#484848] font-medium">Пароль*</FormLabel>
+                <FormLabel className="lg:text-base text-[#484848] font-medium">
+                  Пароль*
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       {...field}
-                        className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                      className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
                       type={isShow ? "text" : "password"}
                     />
 
@@ -112,9 +115,9 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
                       onClick={() => setIsShow((prev) => !prev)}
                     >
                       {isShow ? (
-                        <Eye className="text-[#7FAA84]" />
+                        <Eye className="text-[#c0092a]" />
                       ) : (
-                        <EyeOff className="text-[#7FAA84]" />
+                        <EyeOff className="text-[#c0092a]" />
                       )}
                     </Button>
                   </div>
@@ -153,7 +156,6 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
         </div>
       </form>
     </Form>
-
   );
 };
 

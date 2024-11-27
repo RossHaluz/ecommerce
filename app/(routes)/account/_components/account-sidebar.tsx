@@ -19,17 +19,17 @@ const AccountSidebar: FC<AccountSidebarProps> = ({
       <Button
         variant="ghost"
         className={`p-0 max-h-max justify-start ${
-          activeNavigation === "personal-data" && "text-bold"
+          activeNavigation === "personal-data" && "text-bold text-[#c0092a]"
         }`}
         onClick={() => setActiveNavigation("personal-data")}
       >
-        Особистий замовлень
+        Особисті дані
       </Button>
 
       <Button
         variant="ghost"
         className={`p-0 max-h-max justify-start ${
-          activeNavigation === "history" && "text-bold"
+          activeNavigation === "history" && "text-bold text-[#c0092a]"
         }`}
         onClick={() => setActiveNavigation("history")}
       >
@@ -39,7 +39,7 @@ const AccountSidebar: FC<AccountSidebarProps> = ({
       <Button
         variant="ghost"
         className={`p-0 max-h-max justify-start ${
-          activeNavigation === "history" && "text-bold"
+          activeNavigation === "change-password" && "text-bold text-[#c0092a]"
         }`}
         onClick={() => setActiveNavigation("change-password")}
       >

@@ -9,13 +9,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { selectUserContactDetails } from "@/redux/auth/selectors";
 import { createUserContactDetails } from "@/redux/auth/slice";
 import { AppDispatch } from "@/redux/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -35,9 +33,9 @@ const formSchema = z.object({
     message: "Phone number is required",
   }),
   email: z
-  .string()
-  .email("Type a valid email")
-  .min(1, { message: "Email is required" }),
+    .string()
+    .email("Type a valid email")
+    .min(1, { message: "Email is required" }),
 });
 
 const formSchemaRegister = z
@@ -68,7 +66,6 @@ const formSchemaRegister = z
 const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isRegister, setIsRegister] = useState<boolean | string>(false);
-  const userContactDetails = useSelector(selectUserContactDetails);
 
   const form = useForm<z.infer<typeof formSchemaRegister>>({
     resolver: zodResolver(isRegister ? formSchemaRegister : formSchema),
@@ -117,7 +114,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                     <FormControl>
                       <Input
                         placeholder="Ім’я"
-                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                         {...field}
                       />
                     </FormControl>
@@ -133,7 +130,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                     <FormControl>
                       <Input
                         placeholder="Прізвище"
-                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                         {...field}
                       />
                     </FormControl>
@@ -149,7 +146,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                     <FormControl>
                       <Input
                         placeholder="Номер телефону"
-                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                         {...field}
                       />
                     </FormControl>
@@ -165,15 +162,13 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                     <FormControl>
                       <Input
                         placeholder="Email"
-                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-
-              
 
               {isRegister && (
                 <>
@@ -186,7 +181,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                           <Input
                             type="password"
                             placeholder="Password"
-                            className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                            className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                             {...field}
                           />
                         </FormControl>
@@ -202,7 +197,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                           <Input
                             type="password"
                             placeholder="Confirm Password"
-                            className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                            className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                             {...field}
                           />
                         </FormControl>

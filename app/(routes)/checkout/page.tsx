@@ -1,36 +1,9 @@
-import axios from "axios";
 import Checkout from "./_components/checkout";
 import OrderItems from "./_components/order-items";
-import { cookies } from "next/headers";
+import { getCurrentUser } from "@/actions/get-data";
 
 const CheckoutPage = async () => {
-  let currentUser = null;
-  const cookiesState = cookies();
-  const token = cookiesState.get("token")?.value;
-
-  if (token) {
-    const { data } = await axios.get(
-      `${process.env.SERVER_URL}api/auth/current`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    currentUser = data?.user;
-  }
-
-  const data = {
-    apiKey: "49b5685ec580dccca061cdbb4b4b80de",
-    modelName: "AddressGeneral",
-    calledMethod: "getSettlements",
-    methodProperties: {
-      FindByString: "Київ",
-    },
-  };
-
-  
+  const currentUser = await getCurrentUser();
 
   return (
     <div className="pt-[10px] pb-[30px] lg:py-[30px] container">

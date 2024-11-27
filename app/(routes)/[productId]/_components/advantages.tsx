@@ -4,8 +4,8 @@ import Credit from "/public/images/credit.svg";
 
 const Advantages = () => {
   return (
-    <div className="p-[15px] bg-[#EAF2EB] md:bg-transparent md:grid-cols-2 lg:grid-cols-3 rounded-[5px] grid grid-cols-1 gap-6 lg:gap-[30px] pb-[30px]">
-      <div className="flex items-center gap-[15px] md:bg-[#EAF2EB] p-[15px] md:rounded-md">
+    <div className="p-[15px] bg-[#F2F2F2] md:bg-transparent md:grid-cols-2 lg:grid-cols-3 rounded-[5px] grid grid-cols-1 gap-6 lg:gap-[30px] pb-[30px]">
+      <div className="flex items-center gap-[15px] md:bg-[#F2F2F2] p-[15px] md:rounded-md">
         <div className="max-w-max">
           <Box />
         </div>
@@ -13,7 +13,7 @@ const Advantages = () => {
           Безкоштовна доставка при замовленні на суму від 2000 грн
         </p>
       </div>
-      <div className="flex items-center gap-[15px] md:bg-[#EAF2EB] p-[15px] md:rounded-md">
+      <div className="flex items-center gap-[15px] md:bg-[#F2F2F2] p-[15px] md:rounded-md">
         <div className="max-w-max">
           <Refresh />
         </div>
@@ -21,7 +21,7 @@ const Advantages = () => {
           Гарантія обміну чи повернення протягом 14 днів
         </p>
       </div>
-      <div className="flex items-center gap-[15px] md:bg-[#EAF2EB] p-[15px] md:rounded-md">
+      <div className="flex items-center gap-[15px] md:bg-[#F2F2F2] p-[15px] md:rounded-md">
         <div className="max-w-max">
           <Credit />
         </div>

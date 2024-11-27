@@ -9,18 +9,20 @@ body {
   width: 100%;
 }
 
-body {
-  background-color: #f5faf6;
-}
-
 img {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-body {
-  background-color: #f5faf6;
+.swiper-hero .swiper-wrapper .swiper-slide {
+  height: calc(100vh - 90px) !important;
+}
+
+@media screen and (min-width: 1200px) {
+  .swiper-hero .swiper-wrapper .swiper-slide {
+    height: calc(100vh - 100px) !important;
+  }
 }
 
 .swiper {
@@ -29,16 +31,10 @@ body {
 }
 
 .swiper .swiper-wrapper .swiper-slide {
-  height: 253px;
+  height: 100%;
   border-radius: 4px;
   position: relative;
   overflow: hidden;
-}
-
-@media screen and (min-width: 768px) {
-  .swiper .swiper-wrapper .swiper-slide {
-    height: 445px;
-  }
 }
 
 .swiper-slide {
@@ -69,16 +65,16 @@ body {
   width: 10px;
   height: 10px;
   opacity: 1;
-  border: #7faa84 1px solid;
+  border: #c0092a 1px solid;
   background: none;
 }
 
 .swiper-pagination-custom > .swiper-pagination-bullet-active {
-  background-color: #7faa84;
+  background-color: #c0092a;
 }
 
 .swiper-thumbs .swiper-wrapper .swiper-slide-thumb-active {
-  border: #7faa84 1px solid;
+  border: #c0092a 1px solid;
   border-radius: 16px;
   filter: contrast(0.5);
 }
@@ -131,11 +127,11 @@ body {
 }
 
 .rc-slider-track {
-  background-color: #78ab7e;
+  background-color: #c0092a;
 }
 
 .rc-slider-handle {
-  border: solid 2px #78ab7e;
+  border: solid 2px #c0092a;
 }
 
 .rc-slider-handle:hover,

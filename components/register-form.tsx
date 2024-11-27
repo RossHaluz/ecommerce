@@ -27,7 +27,8 @@ interface RegisterFormPops {
 
 const formSchema = z
   .object({
-    userName: z.string().min(1, { message: "User name is required" }),
+    firstName: z.string().min(1, { message: "First name is required" }),
+    lastName: z.string().min(1, { message: "Last name is required" }),
     phoneNumber: z.string().min(1, { message: "Phone number is required" }),
     email: z.string().min(1, { message: "Email is required" }),
     password: z.string().min(1, { message: "Password is required" }),
@@ -46,7 +47,8 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userName: "",
+      firstName: "",
+      lastName: "",
       phoneNumber: "",
       email: "",
       password: "",
@@ -61,27 +63,21 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const dataValues: {
-        firstName?: string;
-        lastName?: string;
-        phoneNumber: string;
-        email: string;
-        password: string;
-      } = {
-        phoneNumber: values?.phoneNumber,
-        email: values?.email,
-        password: values?.password,
+      const formData = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phoneNumber: values.phoneNumber,
+        email: values.email,
+        password: values.password,
       };
-      dataValues.firstName = values?.userName?.split(" ")[0];
-      dataValues.lastName = values?.userName?.split(" ")[1];
 
       const { data } = await axios.post(
-        `${process.env.SERVER_URL}api/auth/register`,
-        dataValues
+        `${process.env.BACKEND_URL}/api/auth/register`,
+        formData
       );
-      
-      Cookies.set("token", data?.newUser?.token, { expires: 1 });
-      axios.defaults.headers.common.Authorization = `Bearer ${data?.newUser?.token}`;
+
+      Cookies.set("token", data?.data?.newUser?.token, { expires: 1 });
+      axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
       router.push("/account");
       router.refresh();
       toast.success("Success register");
@@ -99,14 +95,36 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
         <div className="flex flex-col gap-5">
           <FormField
             control={form.control}
-            name="userName"
+            name="firstName"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="lg:text-base text-[#484848] font-medium">
-                  Ім&apos;я та Прізвище*
+                  Ім&apos;я*
                 </FormLabel>
                 <FormControl>
-                  <Input {...field}   className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md" />
+                  <Input
+                    {...field}
+                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="lg:text-base text-[#484848] font-medium">
+                  Прізвище*
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -122,7 +140,10 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                   Номер телефону*
                 </FormLabel>
                 <FormControl>
-                  <Input {...field}   className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md" />
+                  <Input
+                    {...field}
+                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -140,7 +161,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
                     type="email"
                   />
                 </FormControl>
@@ -154,12 +175,14 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="lg:text-base text-[#484848] font-medium">Пароль*</FormLabel>
+                <FormLabel className="lg:text-base text-[#484848] font-medium">
+                  Пароль*
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       {...field}
-                     className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                      className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
                       type={isShow ? "text" : "password"}
                     />
 
@@ -169,9 +192,9 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                       onClick={() => setIsShow((prev) => !prev)}
                     >
                       {isShow ? (
-                        <Eye className="text-[#7FAA84]" />
+                        <Eye className="text-[#c0092a]" />
                       ) : (
-                        <EyeOff className="text-[#7FAA84]" />
+                        <EyeOff className="text-[#c0092a]" />
                       )}
                     </Button>
                   </div>
@@ -193,7 +216,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                   <div className="relative">
                     <Input
                       {...field}
-                        className="bg-[#EAF2EB] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                      className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
                       type={isShowConfirmPass ? "text" : "password"}
                     />
 
@@ -203,9 +226,9 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                       onClick={() => setIsShowConfirmPass((prev) => !prev)}
                     >
                       {isShow ? (
-                        <Eye className="text-[#7FAA84]" />
+                        <Eye className="text-[#c0092a]" />
                       ) : (
-                        <EyeOff className="text-[#7FAA84]" />
+                        <EyeOff className="text-[#c0092a]" />
                       )}
                     </Button>
                   </div>
@@ -219,7 +242,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
         <div className="flex items-center justify-between">
           <Button
             type="submit"
-           className="max-w-max py-[11.5px] px-3 lg:py-[10px] lg:px-12 font-semibold"
+            className="max-w-max py-[11.5px] px-3 lg:py-[10px] lg:px-12 font-semibold"
           >
             Зареєструватись
           </Button>

@@ -12,7 +12,7 @@ const ProductNavigation: FC<ProductNavigationProps> = ({
   setCurrentNavigation,
 }) => {
   return (
-    <div className="flex items-center  gap-[30px] overflow-hidden overflow-x-auto border-b border-[#7FAA84]">
+    <div className="flex items-center  gap-[30px] overflow-hidden overflow-x-auto border-b border-[#484848]">
       <div className="relative">
         <Button
           variant="ghost"
@@ -39,7 +39,7 @@ const ProductNavigation: FC<ProductNavigationProps> = ({
           <div className="absolute bottom-0 right-0 w-full h-[1px] bg-[#484848]" />
         )}
       </div>
-{/* 
+      {/* 
       <div className="relative">
         <Button
           variant="ghost"
@@ -53,7 +53,7 @@ const ProductNavigation: FC<ProductNavigationProps> = ({
           <div className="absolute bottom-0 right-0 w-full h-[1px] bg-[#484848]" />
         )}
       </div> */}
-      
+
       <div className="relative">
         <Button
           variant="ghost"

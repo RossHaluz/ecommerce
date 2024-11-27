@@ -5,7 +5,7 @@ interface ProductPriceProps {
 }
 
 const ProductPrice: FC<ProductPriceProps> = ({ price }) => {
-  return <span className="text-[#7FAA84] text-lg font-bold">{price} ₴</span>;
+  return <span className="text-[#c0092a] text-lg font-bold">{price} ₴</span>;
 };
 
 export default ProductPrice;

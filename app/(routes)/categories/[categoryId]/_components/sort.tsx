@@ -13,16 +13,15 @@ import qs from "query-string";
 interface SortProductsProps {
   searchParams: {
     filterIds: string;
-    maxPrice: string;
-    minPrice: string;
     page: string;
+    searchValue: string;
   };
 }
 
 const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { filterIds, maxPrice, minPrice, page } = searchParams;
+  const { filterIds, searchValue } = searchParams;
   const [selectSort, setSelectSort] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -44,6 +43,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
         query: {
           filterIds: filterIds ? filterIds : null,
           sortByPrice: selectSort ? selectSort : null,
+          searchValue: searchValue ? searchValue : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -59,10 +59,10 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
 
   return (
     <Select onValueChange={onValueChange} value={selectSort}>
-      <SelectTrigger className="w-full lg:w-[195px] bg-[#EAF2EB]">
+      <SelectTrigger className="w-full lg:w-[195px] bg-[#F2F2F2]">
         <SelectValue placeholder="Сортування" />
       </SelectTrigger>
-      <SelectContent className="bg-[#EAF2EB]">
+      <SelectContent className="bg-[#F2F2F2]">
         {/* <SelectItem value="light">За популярністю</SelectItem> */}
         <SelectItem value="asc">Від дешевших</SelectItem>
         <SelectItem value="desc">Від дорожчих</SelectItem>

@@ -9,7 +9,7 @@ interface NotFoundItemsProps {
 const NotFoundItems: FC<NotFoundItemsProps> = ({ text }) => {
   return (
     <div className="flex flex-col gap-4 md:gap-6 lg:gap-[30px]">
-      <div className="p-[15px] bg-[#EAF2EB] rounded-[5px]">
+      <div className="p-[15px] bg-[#F2F2F2] rounded-[5px]">
         <h3 className="md:text-base text-[#484848]">{text}</h3>
       </div>
       <Button type="button" className="mx-auto max-w-max">

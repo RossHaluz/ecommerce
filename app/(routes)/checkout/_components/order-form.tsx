@@ -20,17 +20,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useSelector } from "react-redux";
-import { selectUserContactDetails } from "@/redux/auth/selectors";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { selectOrderItems } from "@/redux/order/selector";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { cleareOrderItems, setOrderDetails } from "@/redux/order/slice";
-import { removeUserContactDetails } from "@/redux/auth/slice";
 import ArrowDown from "/public/images/arrow-down.svg";
 import { getSeparation } from "@/services/services";
 import { createInvoice } from "@/services/monobank";
+import { selectUserContactDetails } from "@/redux/auth/selectors";
+import { removeUserContactDetails } from "@/redux/auth/slice";
+import { createOrder } from "@/actions/get-data";
 
 interface OrderFormProps {
   currentUser?: {
@@ -49,7 +50,7 @@ const formSchema = z.object({
   }),
   city: z.string().min(1, { message: "Separation is required" }),
   address: z.string(),
-  payment: z.enum(["monobank", 'cashOnDelivary'], {
+  payment: z.enum(["monobank", "cashOnDelivary"], {
     required_error: "You need to select a payment method.",
   }),
   comment: z.string(),
@@ -103,7 +104,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     },
   });
 
-  const currentPayment = form.getValues('payment');
+  const currentPayment = form.getValues("payment");
 
   const handleClickOutsideDetachment = (e: MouseEvent) => {
     if (detachmentRef && !detachmentRef.current?.contains(e.target as Node)) {
@@ -153,7 +154,6 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       setIsShowSeparatios(true);
     } catch (error) {
       console.log(error);
-      
     }
   };
 
@@ -248,8 +248,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     detachment && form.setValue("separation", detachment);
     setIsShowDetachment(false);
   };
-  
-  
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const currentPayment = form.getValues("payment");
@@ -269,35 +268,35 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
             }[],
           },
           redirectUrl: "https://ecommerce-lime-alpha-61.vercel.app/success",
-          webHookUrl: "https://ecommerce-admin-nine-nu.vercel.app/api/97ccf7f0-ddba-4e42-b562-d90c557b37ef/orders"
+          webHookUrl:
+            "https://ecommerce-admin-nine-nu.vercel.app/api/97ccf7f0-ddba-4e42-b562-d90c557b37ef/orders",
         };
         let amount = 0;
 
-        orderItems?.forEach((item) => {
+        orderItems?.forEach((item: any) => {
           amount += item.price;
           dataMono.merchantPaymInfo.basketOrder.push({
             name: item?.title,
             qty: Number(item?.quantity),
             sum: Number(item?.price * 100),
             code: item?.article,
-            icon: item.images[0].url
+            icon: item.images[0].url,
           });
         });
 
         dataMono.amount = Math.round(amount * 100);
         const responce = await createInvoice(dataMono);
-        
+
         if (responce) {
           const data: {
             products?: { productId: string; quantity: number }[];
-            invoiceId: string
+            invoiceId: string;
           } = {
             products: [],
             invoiceId: responce.invoiceId,
             ...values,
           };
-             
-    
+
           if (orderItems?.length > 0) {
             data.products = orderItems?.map(
               (item: { id: string; quantity: number }) => ({
@@ -306,13 +305,10 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               })
             );
           }
-    
-          const { data: responceOrder } = await axios.post(
-            `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/orders`,
-            data
-          );
-    
-          dispatch(setOrderDetails({ ...responceOrder, orderItems }));
+
+          const order = await createOrder(data);
+
+          dispatch(setOrderDetails({ ...order, orderItems }));
           dispatch(removeUserContactDetails());
           dispatch(cleareOrderItems());
           return router.push(responce.pageUrl);
@@ -335,12 +331,9 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
         );
       }
 
-      const { data: responce } = await axios.post(
-        `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/orders`,
-        data
-      );
+      const order = await createOrder(data);
 
-      dispatch(setOrderDetails({ ...responce, orderItems }));
+      dispatch(setOrderDetails({ ...order, orderItems }));
       dispatch(cleareOrderItems());
       dispatch(removeUserContactDetails());
       router.push("/success");
@@ -366,12 +359,12 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               onClick={() => setIsShowContact((prev) => !prev)}
             >
               <div className="flex items-center gap-[15px] p-0 justify-start">
-                <div className="w-[30px] h-[30px] p-3 border border-solid border-[#7FAA8480] rounded-full flex items-center justify-center">
+                <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
                   <div className="text-[#484848] font-bold">1</div>
                 </div>
                 <h3 className="text-[#484848] font-bold">Контактні дані</h3>
               </div>
-              <ArrowDown />
+              <ArrowDown className="stroke-[#c0092a]" />
             </Button>
 
             {isShowContact && (
@@ -386,7 +379,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                       <FormControl>
                         <Input
                           placeholder="Ім’я"
-                          className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                          className="py-3 lg:py-2 px-[15px] bg-[#F2F2F2] lg:bg-transparent text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                           {...field}
                         />
                       </FormControl>
@@ -402,7 +395,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                       <FormControl>
                         <Input
                           placeholder="Прізвище"
-                          className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                          className="py-3 lg:py-2 px-[15px] bg-[#F2F2F2] lg:bg-transparent text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                           {...field}
                         />
                       </FormControl>
@@ -418,7 +411,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                       <FormControl>
                         <Input
                           placeholder="Номер телефону"
-                          className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                          className="py-3 lg:py-2 px-[15px] bg-[#F2F2F2] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                           {...field}
                         />
                       </FormControl>
@@ -434,7 +427,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                       <FormControl>
                         <Input
                           placeholder="Email"
-                          className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-[#48484880] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#7FAA84] rounded-[5px]"
+                          className="py-3 lg:py-2 px-[15px] bg-[#F2F2F2] lg:bg-transparent text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                           {...field}
                         />
                       </FormControl>
@@ -448,7 +441,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
           {/* Достака  */}
           <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
             <div className="flex items-center gap-[15px]">
-              <div className="w-[30px] h-[30px] p-3 border border-solid border-[#7FAA8480] rounded-full flex items-center justify-center">
+              <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
                 <div className="text-[#484848] font-bold">2</div>
               </div>
               <h3 className="text-[#484848] font-bold">Доставка</h3>
@@ -490,7 +483,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   <Button
                     variant="ghost"
                     className={cn("text-base text-[#484848] p-0 font-medium", {
-                      "text-[#7FAA84] font-bold underline":
+                      "text-[#c0092a] font-bold underline":
                         currentDelivary === "separation",
                     })}
                     onClick={() => setCurrentDelivary("separation")}
@@ -501,7 +494,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   <Button
                     variant="ghost"
                     className={cn("text-base text-[#484848] p-0 font-medium", {
-                      "text-[#7FAA84] font-bold underline":
+                      "text-[#c0092a] font-bold underline":
                         currentDelivary === "address",
                     })}
                     onClick={() => setCurrentDelivary("address")}
@@ -524,7 +517,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                             value={field.value}
                             onChange={(e) => handleChangeCity(e)}
                             placeholder="Почніть водити назву населеного пункту"
-                            className="border border-solid border-[#7FAA84] bg-transparent rounded-[5px]"
+                            className="border border-solid border-[#484848] bg-transparent rounded-[5px]"
                           />
                         </FormControl>
                         <FormMessage className=" text-red-500 text-sm " />
@@ -579,7 +572,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                               }
                               placeholder="Введіть номер віділення"
                               onFocus={onFocusSeparationInput}
-                              className="border border-solid border-[#7FAA84] bg-transparent rounded-[5px]"
+                              className="border border-solid border-[#484848] bg-transparent rounded-[5px]"
                             />
                             {isShowDetachment && (
                               <div className="absolute top-[110%] z-50 left-0 w-full bg-white shadow-md rounded-md p-4 max-h-44 overflow-y-auto flex flex-col gap-4 items-start transform transition-all duration-150">
@@ -628,7 +621,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                               disabled={!currentCity}
                               {...field}
                               placeholder="Введіть адресу"
-                              className="border border-solid border-[#7FAA84] bg-transparent rounded-[5px]"
+                              className="border border-solid border-[#484848] bg-transparent rounded-[5px]"
                             />
                           </FormControl>
                         </FormItem>
@@ -643,16 +636,18 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
           {/* Оплата */}
           <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
             <div className="flex items-center gap-[15px]">
-              <div className="w-[30px] h-[30px] p-3 border border-solid border-[#7FAA8480] rounded-full flex items-center justify-center">
+              <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
                 <div className="text-[#484848] font-bold">3</div>
               </div>
               <h3 className="text-[#484848] font-bold">Оплата</h3>
             </div>
-            <div className="p-[15px] lg:py-[30px] bg-[#EAF2EB] rounded-[5px]">
+            <div className="p-[15px] lg:py-[30px] bg-[#F2F2F2] rounded-[5px]">
               <div className="flex flex-col gap-5 lg:gap-[30px]">
                 <h3 className="text-[#484848] text-sm font-bold lg:text-base">
-                  {currentPayment === 'monobank' && 'Безпечна оплата картою на сайті'}
-                  {currentPayment === 'cashOnDelivary' && 'Оплачуйте товара при отриманні'}    
+                  {currentPayment === "monobank" &&
+                    "Безпечна оплата картою на сайті"}
+                  {currentPayment === "cashOnDelivary" &&
+                    "Оплачуйте товара при отриманні"}
                 </h3>
 
                 <FormField
@@ -671,7 +666,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                               <RadioGroupItem value="monobank" />
                             </FormControl>
                             <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
-                             Онлайн оплата 
+                              Онлайн оплата
                             </FormLabel>
                           </FormItem>
 
@@ -680,7 +675,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                               <RadioGroupItem value="cashOnDelivary" />
                             </FormControl>
                             <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
-                             Оплата при отримані
+                              Оплата при отримані
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>
@@ -695,7 +690,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
           {/* Коментар */}
           <div className="flex flex-col gap-[15px] lg:gap-4 w-full">
             <div className="flex items-center gap-[15px]">
-              <div className="w-[30px] h-[30px] p-3 border border-solid border-[#7FAA8480] rounded-full flex items-center justify-center">
+              <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
                 <div className="text-[#484848] font-bold">4</div>
               </div>
               <h3 className="text-[#484848] font-bold">
@@ -713,7 +708,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                         <Textarea
                           {...field}
                           placeholder="Введіть коментар"
-                          className="border border-solid border-[#7FAA84] rounded-[5px] bg-transparent"
+                          className="border border-solid border-[#484848] rounded-[5px] bg-transparent"
                         />
                       </FormControl>
                     </FormItem>
