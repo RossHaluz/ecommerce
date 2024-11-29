@@ -30,7 +30,7 @@ const Subcategories: FC<SubcategoriesProps> = ({ subcategories }) => {
               height={80}
             />
 
-            <h3>{item?.name}</h3>
+            <h3 className="md:base font-medium">{item?.name}</h3>
           </Link>
         );
       })}

@@ -1,5 +1,4 @@
 import Section from "@/components/section";
-import axios from "axios";
 import React, { FC } from "react";
 import Products from "./_components/products";
 import MobileFilters from "./_components/mobile-filters";
@@ -8,6 +7,7 @@ import SortProducts from "./_components/sort";
 import NotFoundItems from "@/components/not-found-items";
 import { getCategoryDetails, getFiltersByCategory } from "@/actions/get-data";
 import Subcategories from "./_components/subcategories";
+import buildCategoryName from "./_components/buildCategoryName";
 
 interface CategoryPageProps {
   params: {
@@ -37,10 +37,11 @@ const CategoryPage: FC<CategoryPageProps> = async ({
     sortByPrice,
   });
 
+  const categoryName = await buildCategoryName(category?.category?.id);
   const filters = await getFiltersByCategory(categoryId);
 
   return (
-    <Section title={category?.category?.name}>
+    <Section title={categoryName}>
       <div className="pt-[10px] pb-[30px] flex flex-col gap-5">
         {category?.category?.children &&
           category?.category?.children?.length > 0 && (

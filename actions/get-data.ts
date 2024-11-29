@@ -45,10 +45,10 @@ export const getBestSellersProducts = async () => {
 //Get category details
 export const getCategoryDetails = async (data: {
   categoryId: string;
-  filterIds: string;
-  page: string;
-  sortByPrice: string;
-  pageSize: string;
+  filterIds?: string;
+  page?: string;
+  sortByPrice?: string;
+  pageSize?: string;
 }) => {
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
