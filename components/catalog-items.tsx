@@ -78,7 +78,10 @@ const CatalogItems: FC<CategoriesListProps> = ({
       {openCategories[category?.id] &&
         category?.children &&
         category?.children?.map((item) => (
-          <div className="p-2 bg-[#F2F2F2]  rounded-md text-[#484848]">
+          <div
+            className="p-2 bg-[#F2F2F2]  rounded-md text-[#484848]"
+            key={item?.id}
+          >
             {renderCategory(item)}
           </div>
         ))}
