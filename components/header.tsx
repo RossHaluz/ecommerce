@@ -10,11 +10,6 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import MainNavigation from "./main-navigation";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import Modal from "./ui/modal";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -22,7 +17,7 @@ import ProductCount from "@/app/(routes)/[productId]/_components/product-count";
 import Image from "next/image";
 import { removeItemFromCart } from "@/redux/order/slice";
 import { toast } from "react-toastify";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Trash from "/public/images/trash.svg";
 import { selectOrderItems } from "@/redux/order/selector";
 import ModalAuth from "./ui/modal-auth";
@@ -31,11 +26,11 @@ import RegisterForm from "./register-form";
 import Cookies from "js-cookie";
 import { User2Icon } from "lucide-react";
 import SearchBar from "./search-bar";
-import { cn } from "@/lib/utils";
 import { getCurrentUser } from "@/actions/get-data";
 import { selectCategories } from "@/redux/categories/selectors";
 import { getCategories } from "@/redux/categories/operetions";
 import { useAppDispatch } from "@/hooks/use-dispatch";
+import CatalogItems from "./catalog-items";
 
 export interface Item {
   id: string;
@@ -51,7 +46,6 @@ export interface Item {
 }
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isShowSearch, setIsShowSearch] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
@@ -61,8 +55,23 @@ const Header = () => {
   const router = useRouter();
   const token = Cookies.get("token");
   const categories = useSelector(selectCategories);
-  const { categoryId } = useParams();
   const [currentUser, setCurrentUser] = useState(null);
+  const [isShowCatalog, setIsShowCatelog] = useState(false);
+  const catelogRef = useRef<HTMLDivElement>(null);
+
+  const clickOutsideCatalog = (e: MouseEvent) => {
+    if (catelogRef.current && !catelogRef.current.contains(e.target as Node)) {
+      setIsShowCatelog(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousedown", clickOutsideCatalog);
+
+    () => {
+      window.addEventListener("mousedown", clickOutsideCatalog);
+    };
+  });
 
   useEffect(() => {
     const setUser = async () => {
@@ -252,42 +261,28 @@ const Header = () => {
 
       <div className="bg-[#F2F2F2] lg:bg-[#F2F2F2] lg:border-y">
         <div className="flex items-center justify-between container">
-          <div className="hidden lg:block">
-            <Popover onOpenChange={(isOpen) => setIsOpen(isOpen)}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="flex lg:rounded-r-sm items-center gap-[10px] text-[#484848] text-sm py-2 lg:py-[13px] lg:flex-row-reverse  px-0"
-                >
-                  <Catalog className="stroke-[#484848]" />
+          <div className="hidden lg:block relative" ref={catelogRef}>
+            <Button
+              className="p-0 flex items-center gap-2"
+              variant="ghost"
+              onClick={() => setIsShowCatelog((prev) => !prev)}
+            >
+              <Catalog className="stroke-[#484848]" />
 
-                  <span>Каталог товарів</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="z-50 bg-white py-[15px] px-[30px]">
-                <ul className="flex flex-col gap-[15px]">
-                  {categories?.map((item: { name: string; id: string }) => {
-                    return (
-                      <li className="flex flex-col gap-[15px]" key={item?.id}>
-                        <Link
-                          href={`/categories/${item?.id}`}
-                          className={cn(
-                            "text-[18px] leading-[21.94px] text-[#484848] hover:text-[#7FAA84] hover:underline",
-                            {
-                              "text-[#7FAA84] underline":
-                                item?.id === categoryId,
-                            }
-                          )}
-                        >
-                          {item?.name}
-                        </Link>
-                        <div className="w-full h-[1px] bg-[#7FAA84]" />
-                      </li>
-                    );
-                  })}
-                </ul>
-              </PopoverContent>
-            </Popover>
+              <span>Каталог товарів</span>
+            </Button>
+
+            <div
+              className={`absolute top-[115%]  left-0 z-30 transform transition-opacity duration-300 ${
+                isShowCatalog ? "opacity-1" : "opacity-0"
+              }`}
+            >
+              <CatalogItems
+                categories={categories}
+                setIsShowCatelog={setIsShowCatelog}
+                isShowCatalog={isShowCatalog}
+              />
+            </div>
           </div>
           <div className="lg:hidden">
             <MobileMenu
