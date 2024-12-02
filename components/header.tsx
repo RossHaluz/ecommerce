@@ -274,7 +274,7 @@ const Header = () => {
 
             <div
               className={`absolute top-[115%]  left-0 z-30 transform transition-opacity duration-300 ${
-                isShowCatalog ? "opacity-1" : "opacity-0"
+                isShowCatalog ? "opacity-1" : "opacity-0 hidden"
               }`}
             >
               <CatalogItems

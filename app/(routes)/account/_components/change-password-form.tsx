@@ -37,6 +37,8 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
   const [isShowOldPassword, setIsShowOldPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   const [isShowNewPassword, setIsShowNewPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,8 +53,8 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const { data } = await axios.post(
-        `${process.env.SERVER_URL}api/auth/change-password`,
+      const { data } = await axios.patch(
+        `${process.env.BACKEND_URL}/api/auth/change-password`,
         values,
         {
           headers: {
@@ -60,9 +62,12 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
           },
         }
       );
-      toast.success(data?.message);
-    } catch (error) {
-      toast.error("Something went wrong...");
+      setSuccessMessage(data?.data?.message);
+      setErrorMessage("");
+    } catch (error: any) {
+      console.log(error);
+      setErrorMessage(error?.response?.data?.message);
+      setSuccessMessage("");
     }
   };
 
@@ -173,6 +178,14 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
             )}
           />
         </div>
+
+        {successMessage && (
+          <p className="md:text-base text-[#7FAA84]">{successMessage}</p>
+        )}
+
+        {errorMessage && (
+          <p className="md:text-base text-[#EF787A]">{errorMessage}</p>
+        )}
 
         <Button
           type="submit"

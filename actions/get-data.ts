@@ -169,11 +169,13 @@ export const updateUser = async (values: any) => {
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
   try {
-    const { data } = await axios.patch("/auth/update", values, {
+    const { data } = await axios.patch(`/auth/update`, values, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    console.log(data);
 
     return data?.data;
   } catch (error) {

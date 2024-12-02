@@ -74,6 +74,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
     try {
       const formData = new FormData();
       formData.append("firstName", values.firstName);
+      formData.append("lastName", values.lastName);
       formData.append("phoneNumber", values.phoneNumber);
       formData.append("email", values.email);
 
@@ -178,8 +179,18 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
 
           <div className="flex flex-col gap-[5px] items-center">
             <div className="relative h-20 w-20 rounded-full border border-solid border-[#c0092a] overflow-hidden">
-              {!selectFile && !user?.avatar && (
+              {!selectFile && !user?.avatar ? (
                 <UserAvatar className="stroke-[#c0092a]" />
+              ) : (
+                user?.avatar &&
+                !selectFile && (
+                  <Image
+                    src={`${process.env.BACKEND_URL}/avatars/${user?.avatar}`}
+                    alt="User avatarb"
+                    fill
+                    objectFit="cover"
+                  />
+                )
               )}
               {selectFile && (
                 <Image
