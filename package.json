@@ -30,6 +30,8 @@
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.28",
     "js-cookie": "^3.0.5",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "lucide-react": "^0.395.0",
     "multer": "^1.4.5-lts.1",
     "multer-storage-cloudinary": "^4.0.0",

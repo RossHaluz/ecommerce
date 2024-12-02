@@ -30,7 +30,7 @@ const CategoriesSlider: FC<CategoriesSliderProps> = ({ categories }) => {
           return (
             <SwiperSlide
               key={item?.billboard?.imageUrl}
-              className=" aspect-square"
+              className="aspect-square"
             >
               {({ isActive }) => (
                 <Link

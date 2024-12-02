@@ -13,39 +13,49 @@ interface HistoryOrdersProps {
     lastName: string;
     phone: string;
     paymentMethod: string;
+    orderNumber: string;
     postService: string;
     separation: string;
     address: string;
     typeDelivary: string;
     createdAt: string;
     orderItems: any[];
-  }[]
+  }[];
   activeNavigation: string;
-  setActiveNavigation: Dispatch<SetStateAction<string>>; 
+  setActiveNavigation: Dispatch<SetStateAction<string>>;
 }
 
-const HistoryOrders: FC<HistoryOrdersProps> = ({ ordersByUser, activeNavigation, setActiveNavigation }) => {
-
+const HistoryOrders: FC<HistoryOrdersProps> = ({
+  ordersByUser,
+  activeNavigation,
+  setActiveNavigation,
+}) => {
   return (
     <div className="flex flex-col gap-3 lg:flex-row lg:gap-[103px]">
       <Button
-        onClick={() => setActiveNavigation('history')}
+        onClick={() => setActiveNavigation("history")}
         variant="ghost"
-        className={`p-0 fex items-center justify-between text-[#484848] ${activeNavigation === 'history' ? 'font-bold' : "font-semibold"}`}
+        className={`p-0 fex items-center justify-between text-[#484848] ${
+          activeNavigation === "history" ? "font-bold" : "font-semibold"
+        }`}
       >
-   Історія замовлень
-        <ArrowDown  className={`${activeNavigation === 'history' && 'rotate-180'} transform transition-all duration-150 lg:hidden`}/>
+        Історія замовлень
+        <ArrowDown
+          className={`${
+            activeNavigation === "history" && "rotate-180"
+          } transform transition-all duration-150 lg:hidden`}
+        />
       </Button>
 
       <AnimatePresence initial={false}>
-        {activeNavigation === 'history' && (
+        {activeNavigation === "history" && (
           <motion.div
-            initial={{  height: 0, opacity: 0 }}
-            animate={{  height: '100%', opacity: 1 }}
-            exit={{  height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "linear"}}      
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "100%", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "linear" }}
           >
-           <HistoryOrdersList ordersByUser={ordersByUser}/>
+            <HistoryOrdersList ordersByUser={ordersByUser} />
           </motion.div>
         )}
       </AnimatePresence>

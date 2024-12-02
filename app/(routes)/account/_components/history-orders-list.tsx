@@ -8,6 +8,23 @@ import Link from "next/link";
 import HistoryOrdersDelivary from "./history-orders-delivary";
 import HistoryOrdersPayment from "./history-orders-payment";
 import HistoryOrdersClient from "./history-orders-client";
+import PdfGenerator from "./pdf-generator";
+
+interface OrderItem {
+  id: string;
+  product: {
+    price: string;
+    id: string;
+    title: string;
+    article: string;
+    images: {
+      url: string;
+    }[];
+  };
+  name: string;
+  quantity: number;
+  price: number;
+}
 
 interface HistoryOrdersListProps {
   ordersByUser: {
@@ -17,18 +34,23 @@ interface HistoryOrdersListProps {
     lastName: string;
     phone: string;
     paymentMethod: string;
+    orderNumber: string;
     postService: string;
     separation: string;
     address: string;
     typeDelivary: string;
     createdAt: string;
-    orderItems: any[];
+    orderItems: OrderItem[];
   }[];
 }
 
 const HistoryOrdersList: FC<HistoryOrdersListProps> = ({ ordersByUser }) => {
   const [isShowItems, setShowItems] = useState<string | null>(null);
-  console.log(ordersByUser);
+
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   return (
     <div className="w-full lg:border-l lg:border-[#c0092a] lg:pl-[30px]">
@@ -42,23 +64,27 @@ const HistoryOrdersList: FC<HistoryOrdersListProps> = ({ ordersByUser }) => {
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-[#484848] text-base font-bold">
-                  Замовлення № 1003
+                  Замовлення № {item?.orderNumber}
                 </h3>
-                <Button
-                  variant="ghost"
-                  className="p-0"
-                  onClick={() =>
-                    setShowItems((prev) =>
-                      prev === item?.id ? null : item?.id
-                    )
-                  }
-                >
-                  <ArrowDown
-                    className={`stroke-[#c0092a] transform transition-all duration-150 ${
-                      isShowItems === item?.id && "rotate-180"
-                    }`}
-                  />
-                </Button>
+
+                <div className="flex items-center gap-4">
+                  <PdfGenerator item={item} />
+                  <Button
+                    variant="ghost"
+                    className="p-0"
+                    onClick={() =>
+                      setShowItems((prev) =>
+                        prev === item?.id ? null : item?.id
+                      )
+                    }
+                  >
+                    <ArrowDown
+                      className={`stroke-[#c0092a] transform transition-all duration-150 ${
+                        isShowItems === item?.id && "rotate-180"
+                      }`}
+                    />
+                  </Button>
+                </div>
               </div>
 
               <span className="text-[#484848]">ТТН: 20450545678902</span>
@@ -92,7 +118,7 @@ const HistoryOrdersList: FC<HistoryOrdersListProps> = ({ ordersByUser }) => {
                                 href={`/${item?.product?.id}`}
                                 className="underline text-[#484848] font-bold"
                               >
-                                {item?.product?.title}
+                                {capitalizeFirstLetter(item?.product?.title)}
                               </Link>
                               <span className="text-[#484848] text-xs">
                                 Артикул: {item?.product?.article}
