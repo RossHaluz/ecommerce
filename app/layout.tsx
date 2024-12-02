@@ -19,13 +19,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body className={inter.className}>
         <ProviderWrapper>
           <Header />
-          <main>{children}</main>
+          <main className="mt-[98px]">{children}</main>
           <Footer />
           <ToastContainer />
         </ProviderWrapper>

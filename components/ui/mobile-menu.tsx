@@ -11,11 +11,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./button";
 import Cookies from "js-cookie";
-import axios from "axios";
-import { toast } from "react-toastify";
 import { Input } from "./input";
 
-import Menu from "/public/images/menu.svg";
 import Logo from "/public/images/logo.svg";
 import Search from "/public/images/search.svg";
 import Catalog from "/public/images/catalog.svg";
@@ -27,7 +24,9 @@ import { useRouter } from "next/navigation";
 import LoginForm from "../login-form";
 import RegisterForm from "../register-form";
 import { User2Icon } from "lucide-react";
-import { getCategories } from "@/actions/get-data";
+import { getCategories, getSearchProducts } from "@/actions/get-data";
+import RenderCategoryItems from "../render-category-items";
+import qs from "query-string";
 
 interface Item {
   id: string;
@@ -111,11 +110,11 @@ const MobileMenu: FC<MobileMenuProps> = ({
   const handleSearchValue = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setSearchValue(e.target.value);
-      const { data } = await axios.get(
-        `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/products?searchValue=${e.target.value}`
-      );
+      const { products } = await getSearchProducts({
+        searchValue: e.target.value,
+      });
 
-      const formateItems = data?.products?.filter(
+      const formateItems = products?.filter(
         (item: Item, idx: number) => idx < 3
       );
 
@@ -125,11 +124,24 @@ const MobileMenu: FC<MobileMenuProps> = ({
         return;
       }
 
-      setAllItemSearched(data?.products);
+      setAllItemSearched(products);
       setSearchedItems(formateItems);
     } catch (error) {
-      toast.error("Something went wrong...");
+      console.log(error);
     }
+  };
+
+  const handleShowAll = () => {
+    setIsShowSearch(false);
+    Cookies.set("__search_value", searchValue, { expires: 7, path: "/" });
+    const url = qs.stringifyUrl({
+      url: "/search",
+      query: {
+        searchValue,
+      },
+    });
+
+    return router.push(url);
   };
 
   const handleCloseMenu = () => {
@@ -138,6 +150,11 @@ const MobileMenu: FC<MobileMenuProps> = ({
     setIsRegister(false);
     setIsLogin(true);
     router.refresh();
+  };
+
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return;
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   return (
@@ -150,7 +167,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
         {openBtn}
       </Button>
       <div
-        className={`fixed w-full h-full top-0 left-0 bg-[#F5FAF6] overflow-hidden z-50 transform transition-all duration-150 overflow-y-auto ${
+        className={`fixed w-full h-full top-0 left-0 bg-white overflow-hidden z-50 transform transition-all duration-150 overflow-y-auto ${
           isOpen ? "translate-x-0" : "translate-x-[100%]"
         }`}
       >
@@ -173,7 +190,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                   className="p-0 hover:bg-transparent flex items-center gap-5"
                   onClick={() => setIsActive("menu")}
                 >
-                  <Arrow className="rotate-90" />
+                  <Arrow className="rotate-90 stroke-[#484848]" />
                   <span className="text-[#484848] text-base font-semibold">
                     Каталог товарів
                   </span>
@@ -209,7 +226,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                   value={searchValue}
                   onChange={handleSearchValue}
                   placeholder="Пошук..."
-                  className="bg-[#EAF2EB] rounded-[5px] placeholder:text-[#48484880] w-full border-none outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#484848] text-base"
+                  className="bg-[#F2F2F2] rounded-[5px] placeholder:text-[#48484880] w-full border-none outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#484848] text-base"
                 />
                 <div className="absolute top-2 right-2 h-full">
                   <Search />
@@ -226,8 +243,9 @@ const MobileMenu: FC<MobileMenuProps> = ({
                     <Button
                       variant="ghost"
                       className="p-0 text-base text-[#484848] underline font-bold"
+                      onClick={handleShowAll}
                     >
-                      <Link href="/search">Подивитись все</Link>
+                      Подивитись все
                     </Button>
                   </div>
 
@@ -235,11 +253,11 @@ const MobileMenu: FC<MobileMenuProps> = ({
                     {searchedItems?.map((item) => (
                       <li
                         key={item?.id}
-                        className="py-6 px-[15px] rounded-[5px] bg-[#F5FAF6] shadow-search-shadow flex items-center gap-[15px]"
+                        className="py-6 px-[15px] rounded-[5px] bg-[#F2F2F2] shadow-search-shadow flex items-center gap-[15px]"
                       >
                         <div className="relative rounded-[5px] w-[65px] h-[65px] overflow-hidden">
                           <Image
-                            src={item?.images[0].url}
+                            src={`${process.env.BACKEND_URL}/products/${item?.images[0].url}`}
                             alt={item?.title}
                             objectFit="cover"
                             fill
@@ -252,10 +270,10 @@ const MobileMenu: FC<MobileMenuProps> = ({
                             onClick={() => setIsOpen(false)}
                             className="underline text-[#484848] font-medium w-[171px]"
                           >
-                            {item?.title}
+                            {capitalizeFirstLetter(item?.title)}
                           </Link>
 
-                          <span className="text-[#7FAA84] text-lg font-bold">
+                          <span className="text-[#484848] text-lg font-bold">
                             {item?.price} ₴
                           </span>
                         </div>
@@ -265,7 +283,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 </>
               )}
               <Button
-                className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-between hover:bg-[#EAF2EB]"
+                className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex items-center justify-between hover:bg-[#F2F2F2]"
                 onClick={() => setIsActive("catalog")}
               >
                 <div className="flex items-center gap-2">
@@ -274,19 +292,19 @@ const MobileMenu: FC<MobileMenuProps> = ({
                     Каталог товарів
                   </span>
                 </div>
-                <Arrow className="-rotate-90" />
+                <Arrow className="-rotate-90 stroke-[#484848]" />
               </Button>
 
               {token ? (
-                <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]">
-                  <User2Icon className="text-[#7FAA84]" strokeWidth="0.75px" />{" "}
+                <div className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#F2F2F2] text-[#484848]">
+                  <User2Icon className="text-[#c0092a]" strokeWidth="0.75px" />{" "}
                   <Link href="/account" onClick={() => setIsOpen(false)}>
                     Перейти у кабінет
                   </Link>
                 </div>
               ) : (
                 <Button
-                  className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#EAF2EB] text-[#484848]"
+                  className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#F2F2F2] text-[#484848]"
                   onClick={() => setIsActive("account")}
                 >
                   <Account />
@@ -294,7 +312,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 </Button>
               )}
 
-              <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex flex-col gap-[30px]">
+              <div className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex flex-col gap-[30px]">
                 <Link href="/" className="text-base text-[#484848]">
                   Про магазин
                 </Link>
@@ -309,14 +327,14 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 </Link>
               </div>
 
-              <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-center gap-[10px]">
+              <div className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex items-center gap-[10px]">
                 <Phone />
                 <span className="text-base font-semibold text-[#484848]">
                   +38 (096) 400 91 30
                 </span>
               </div>
 
-              <div className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px] flex items-start gap-[10px]">
+              <div className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex items-start gap-[10px]">
                 <Clock />
                 <div className="flex flex-col gap-[15px]">
                   <span className="text-base text-[#484848]">
@@ -336,25 +354,11 @@ const MobileMenu: FC<MobileMenuProps> = ({
                   : "translate-x-[120%] h-0"
               }`}
             >
-              <ul className="flex flex-col gap-[15px]">
-                {categories?.map((item: { id: string; name: string }) => {
-                  return (
-                    <li
-                      key={item?.id}
-                      className="bg-[#EAF2EB] rounded-[5px] py-[13px] px-[15px]"
-                    >
-                      <Link
-                        href={`/categories/${item?.id}`}
-                        className="flex items-center justify-between"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item?.name}
-                        <Arrow className="-rotate-90" />
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+              <RenderCategoryItems
+                categories={categories}
+                setIsOpen={setIsOpen}
+                isOpen={isOpen}
+              />
             </div>
 
             <div

@@ -109,7 +109,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex flex-col relative">
+    <header className="flex flex-col fixed top-0 left-0 w-full z-50 shadow-lg">
       <div className="bg-[#F2F2F2] w-full">
         <div className="container flex items-center justify-between h-full">
           <Link href="/" className="flex items-start justify-start py-2">
