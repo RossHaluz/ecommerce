@@ -1,12 +1,12 @@
-'use client'
-import React, { FC, useState } from 'react'
-import LogoutBtn from './logout-btn'
-import PersonalData from './personal-data'
-import HistoryOrders from './history-orders';
-import ChangePassword from './change-password';
+"use client";
+import React, { FC, useState } from "react";
+import LogoutBtn from "./logout-btn";
+import PersonalData from "./personal-data";
+import HistoryOrders from "./history-orders";
+import ChangePassword from "./change-password";
 
 interface AccountMobileNavigationProps {
-    token: string;
+  token: string;
   user: {
     _id: string;
     firstName: string;
@@ -23,27 +23,43 @@ interface AccountMobileNavigationProps {
     lastName: string;
     phone: string;
     paymentMethod: string;
+    orderNumber: string;
     postService: string;
     separation: string;
     address: string;
     typeDelivary: string;
     createdAt: string;
     orderItems: any[];
-  }[]
+  }[];
 }
 
-
-const AccountMobileNavigation:  FC<AccountMobileNavigationProps> = ({ token, user, ordersByUser }) => {
-const [activeNavigation, setActiveNavigation] = useState('personal-data')
+const AccountMobileNavigation: FC<AccountMobileNavigationProps> = ({
+  token,
+  user,
+  ordersByUser,
+}) => {
+  const [activeNavigation, setActiveNavigation] = useState("personal-data");
 
   return (
     <div className="lg:hidden flex lg:hi flex-col gap-[30px]">
       <LogoutBtn token={token} />
-      <PersonalData user={user} activeNavigation={activeNavigation} setActiveNavigation={setActiveNavigation}/>
-      <HistoryOrders ordersByUser={ordersByUser} activeNavigation={activeNavigation} setActiveNavigation={setActiveNavigation}/>
-      <ChangePassword token={token} activeNavigation={activeNavigation} setActiveNavigation={setActiveNavigation}/>
+      <PersonalData
+        user={user}
+        activeNavigation={activeNavigation}
+        setActiveNavigation={setActiveNavigation}
+      />
+      <HistoryOrders
+        ordersByUser={ordersByUser}
+        activeNavigation={activeNavigation}
+        setActiveNavigation={setActiveNavigation}
+      />
+      <ChangePassword
+        token={token}
+        activeNavigation={activeNavigation}
+        setActiveNavigation={setActiveNavigation}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default AccountMobileNavigation
+export default AccountMobileNavigation;

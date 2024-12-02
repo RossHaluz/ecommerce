@@ -23,6 +23,7 @@ interface AccountDescNavigation {
     lastName: string;
     phone: string;
     paymentMethod: string;
+    orderNumber: string;
     postService: string;
     separation: string;
     address: string;
