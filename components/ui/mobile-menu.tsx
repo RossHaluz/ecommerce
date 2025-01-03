@@ -8,13 +8,10 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "./button";
 import Cookies from "js-cookie";
-import { Input } from "./input";
 
 import Logo from "/public/images/logo.svg";
-import Search from "/public/images/search.svg";
 import Catalog from "/public/images/catalog.svg";
 import Arrow from "/public/images/arrow-down.svg";
 import Account from "/public/images/account.svg";
@@ -24,9 +21,11 @@ import { useRouter } from "next/navigation";
 import LoginForm from "../login-form";
 import RegisterForm from "../register-form";
 import { User2Icon } from "lucide-react";
-import { getCategories, getSearchProducts } from "@/actions/get-data";
+import {
+  getCategories,
+  getCurrentUser,
+} from "@/actions/get-data";
 import RenderCategoryItems from "../render-category-items";
-import qs from "query-string";
 
 interface Item {
   id: string;
@@ -66,10 +65,27 @@ const MobileMenu: FC<MobileMenuProps> = ({
   const [categories, setCategories] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [isShowSearch, setIsShowSearch] = useState(false);
-  const token = Cookies.get("token");
   const inputContainerRef = useRef<HTMLInputElement>(null);
   const searchBtnRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
+  const [user, setUser] = useState<{ role: string } | null>(null);
+  const [isInitialization, setIsInitialization] = useState(false);
+
+  useEffect(() => {
+    setIsInitialization(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isInitialization) return;
+
+    const setCurrentUser = async () => {
+      const currentUser = await getCurrentUser();
+
+      setUser(currentUser);
+    };
+
+    setCurrentUser();
+  }, [isInitialization]);
 
   const clickOutsideInput = (e: MouseEvent) => {
     if (
@@ -107,54 +123,12 @@ const MobileMenu: FC<MobileMenuProps> = ({
     Cookies.set("searchValue", searchValue);
   }, [searchValue]);
 
-  const handleSearchValue = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      setSearchValue(e.target.value);
-      const { products } = await getSearchProducts({
-        searchValue: e.target.value,
-      });
-
-      const formateItems = products?.filter(
-        (item: Item, idx: number) => idx < 3
-      );
-
-      if (!e.target.value) {
-        setSearchedItems([]);
-        setAllItemSearched([]);
-        return;
-      }
-
-      setAllItemSearched(products);
-      setSearchedItems(formateItems);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleShowAll = () => {
-    setIsShowSearch(false);
-    Cookies.set("__search_value", searchValue, { expires: 7, path: "/" });
-    const url = qs.stringifyUrl({
-      url: "/search",
-      query: {
-        searchValue,
-      },
-    });
-
-    return router.push(url);
-  };
-
   const handleCloseMenu = () => {
     setIsOpen(false);
     setIsActive("");
     setIsRegister(false);
     setIsLogin(true);
     router.refresh();
-  };
-
-  const capitalizeFirstLetter = (str: string) => {
-    if (!str) return;
-    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   return (
@@ -167,11 +141,11 @@ const MobileMenu: FC<MobileMenuProps> = ({
         {openBtn}
       </Button>
       <div
-        className={`fixed w-full h-full top-0 left-0 bg-white overflow-hidden z-50 transform transition-all duration-150 overflow-y-auto ${
+        className={`fixed w-full h-screen top-0 left-0 bg-white overflow-hidden z-[100] transform transition-all duration-150 overflow-y-auto ${
           isOpen ? "translate-x-0" : "translate-x-[100%]"
         }`}
       >
-        <div className="px-5 pb-5 flex flex-col gap-[10px]">
+        <div className="px-5 pb-2 flex flex-col gap-[10px]">
           <div className="p-4">
             <Logo className="w-[158px] mx-auto" />
           </div>
@@ -199,7 +173,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
               <Button
                 variant="ghost"
                 onClick={handleCloseMenu}
-                className="p-0 h-0 ml-auto"
+                className="p-0 ml-auto h-auto"
               >
                 X
               </Button>
@@ -221,67 +195,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 isActive === "menu" ? "translate-x-0" : "translate-x-[120%] h-0"
               }`}
             >
-              <div className="relative">
-                <Input
-                  value={searchValue}
-                  onChange={handleSearchValue}
-                  placeholder="Пошук..."
-                  className="bg-[#F2F2F2] rounded-[5px] placeholder:text-[#48484880] w-full border-none outline-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#484848] text-base"
-                />
-                <div className="absolute top-2 right-2 h-full">
-                  <Search />
-                </div>
-              </div>
 
-              {searchValue && (
-                <>
-                  <div className="flex items-center justify-between">
-                    <span className="text-base text-[#484848CC]">
-                      {allItemsSearched?.length} результатів
-                    </span>
-
-                    <Button
-                      variant="ghost"
-                      className="p-0 text-base text-[#484848] underline font-bold"
-                      onClick={handleShowAll}
-                    >
-                      Подивитись все
-                    </Button>
-                  </div>
-
-                  <ul className="flex flex-col gap-[15px]">
-                    {searchedItems?.map((item) => (
-                      <li
-                        key={item?.id}
-                        className="py-6 px-[15px] rounded-[5px] bg-[#F2F2F2] shadow-search-shadow flex items-center gap-[15px]"
-                      >
-                        <div className="relative rounded-[5px] w-[65px] h-[65px] overflow-hidden">
-                          <Image
-                            src={`${process.env.BACKEND_URL}/products/${item?.images[0].url}`}
-                            alt={item?.title}
-                            objectFit="cover"
-                            fill
-                          />
-                        </div>
-
-                        <div className="flex flex-col gap-[10px]">
-                          <Link
-                            href={`/${item?.id}`}
-                            onClick={() => setIsOpen(false)}
-                            className="underline text-[#484848] font-medium w-[171px]"
-                          >
-                            {capitalizeFirstLetter(item?.title)}
-                          </Link>
-
-                          <span className="text-[#484848] text-lg font-bold">
-                            {item?.price} ₴
-                          </span>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
               <Button
                 className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex items-center justify-between hover:bg-[#F2F2F2]"
                 onClick={() => setIsActive("catalog")}
@@ -295,7 +209,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 <Arrow className="-rotate-90 stroke-[#484848]" />
               </Button>
 
-              {token ? (
+              {user && user?.role === "user" ? (
                 <div className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex items-center justify-start gap-[10px] hover:bg-[#F2F2F2] text-[#484848]">
                   <User2Icon className="text-[#c0092a]" strokeWidth="0.75px" />{" "}
                   <Link href="/account" onClick={() => setIsOpen(false)}>
@@ -322,13 +236,13 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 <Link href="/" className="text-base text-[#484848]">
                   Доставка та оплата
                 </Link>
-                <Link href="/" className="text-base text-[#484848]">
+                <Link href="/contacts" className="text-base text-[#484848]">
                   Контакти
                 </Link>
               </div>
 
               <div className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex items-center gap-[10px]">
-                <Phone />
+                <Phone className="fill-[#484848]" />
                 <span className="text-base font-semibold text-[#484848]">
                   +38 (096) 400 91 30
                 </span>

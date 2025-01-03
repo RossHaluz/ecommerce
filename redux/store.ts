@@ -16,6 +16,7 @@ import { OrderReducer } from "./order/slice";
 import { searchReducer } from "./search/slice";
 import { authReducer } from "./auth/slice";
 import { categoryReducer } from "./categories/slice";
+import { modelReducer } from "./models/slice";
 
 const persistSearch = {
   key: "searchDetails",
@@ -45,6 +46,7 @@ export const store = configureStore({
     order: persistedOrderReducer,
     search: persisterSearchReducer,
     category: categoryReducer,
+    model: modelReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

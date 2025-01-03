@@ -14,7 +14,7 @@ const AccountPage = async () => {
   }
 
   return (
-    <div className="container pt-[10px] pb-[30px] lg:pt-[30px]">
+    <div className="container mt-6 mb-6 lg:mt-12">
       <AccountMobileNavigation
         token={token}
         user={user}

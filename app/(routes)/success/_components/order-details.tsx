@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import OrderDropClient from "./order-drop-client";
 
 const OrderDetails = () => {
   const orderDetails = useSelector(selectOrderDetails);
@@ -26,16 +27,15 @@ const OrderDetails = () => {
 
   return (
     <>
-      {" "}
       {orderDetails && (
-        <div className="flex flex-col gap-[30px] pt-[10px] pb-[30px] lg:py-[30px] container">
+        <div className="flex flex-col gap-[30px] container">
           <h3 className="text-[#484848] text-base font-bold lg:text-2xl">
             {orderDetails?.firstName}, дякуємо за замовлення!
           </h3>
 
           <p className="text-[#484848] lg:font-medium lg:w-[978px]">
             Ваше замовлення № {orderDetails?.orderNumber} прийняте. Ми
-            звʼяжеться із вами найближчим часом для підтвердження замовленняабо
+            звʼяжеться із вами найближчим часом для підтвердження замовлення або
             надішлено інформаційне повідомлення у Viber чи SMS.
           </p>
 
@@ -98,6 +98,14 @@ const OrderDetails = () => {
                 <div className="w-full h-[1px] bg-[#c0092a]" />
 
                 <OrderClient orderDetails={orderDetails} />
+                {orderDetails?.orderType === "DROPSHIP" && (
+                  <>
+                    <div className="w-full h-[1px] bg-[#c0092a]" />
+                    <OrderDropClient
+                      dropshipDetails={orderDetails?.dropshipDetails}
+                    />
+                  </>
+                )}
               </div>
             </div>
           </div>

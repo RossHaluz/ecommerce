@@ -40,7 +40,7 @@ const CategoriesSlider: FC<CategoriesSliderProps> = ({ categories }) => {
                     "transform scale-[1] drop-shadow-[1px_1px_5px_rgba(127,170,132,0.50)]"
                   }`}
                   style={{
-                    backgroundImage: `url('${process.env.BACKEND_URL}/billboards/${item?.billboard?.imageUrl}')`,
+                    backgroundImage: `url('${process.env.BACKEND_URL}/public/billboards/${item?.billboard?.imageUrl}')`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}

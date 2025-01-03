@@ -22,12 +22,7 @@ interface ModalProps {
   triggetBtn: ReactNode;
 }
 
-const Modal: FC<ModalProps> = ({
-  children,
-  title,
-  triggetBtn,
-  dialogAction,
-}) => {
+const Modal: FC<ModalProps> = ({ children, title, triggetBtn }) => {
   const orderItems = useSelector(selectOrderItems);
 
   return (

@@ -1,6 +1,6 @@
 import Section from "@/components/section";
 import { FC } from "react";
-import BestSellersItem from "./best-sellers.item";
+import BestSellersItem from "./best-sellers-item";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -28,9 +28,7 @@ const BesrSellers: FC<BesrSellersProps> = ({ bestSellersProducts }) => {
           })}
         </ul>
         <Button className="max-w-max px-[17.5px] lg:px-[25px] lg:py-[15px] py-[11.5px] rounded-[5px] mx-auto">
-          <Link href='/categories'>
-          Перейти в католог
-          </Link>
+          <Link href="/categories">Перейти в католог</Link>
         </Button>
       </div>
     </Section>

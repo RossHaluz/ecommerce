@@ -78,6 +78,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
 
       Cookies.set("token", data?.data?.newUser?.token, { expires: 1 });
       axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
+
       router.push("/account");
       router.refresh();
       toast.success("Success register");
@@ -123,7 +124,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#AA0A27] rounded-md"
                   />
                 </FormControl>
                 <FormMessage />
@@ -142,7 +143,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#AA0A27] rounded-md"
                   />
                 </FormControl>
                 <FormMessage />
@@ -161,7 +162,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#AA0A27] rounded-md"
                     type="email"
                   />
                 </FormControl>
@@ -182,7 +183,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                   <div className="relative">
                     <Input
                       {...field}
-                      className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                      className="bg-[#F2F2F2] border-none outline-none lg:border-[#AA0A27] rounded-md"
                       type={isShow ? "text" : "password"}
                     />
 

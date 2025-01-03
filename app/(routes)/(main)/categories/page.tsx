@@ -3,6 +3,9 @@ import React from "react";
 import Categories from "./_components/categories";
 import { getCategories } from "@/actions/get-data";
 
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 const CategoriesPage = async () => {
   const categories = (await getCategories()) || [];
 

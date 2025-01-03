@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["res.cloudinary.com", 'localhost'],
+    domains: ["res.cloudinary.com", "localhost", "api.audiparts.site"],
   },
 
   webpack: (config) => {
@@ -19,7 +19,8 @@ const nextConfig = {
     MONO_URL: process.env.MONO_URL,
     TOKEN_MONO: process.env.TOKEN_MONO,
     NOVA_POSHTA_URL: process.env.NOVA_POSHTA_URL,
-    NOVA_POSHTA_KEY: process.env.NOVA_POSHTA_KEY
+    NOVA_POSHTA_KEY: process.env.NOVA_POSHTA_KEY,
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   },
 };
 

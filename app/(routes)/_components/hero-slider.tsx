@@ -33,7 +33,7 @@ const HeroSlider: FC<HeroSliderProps> = ({ heroBillboards }) => {
             <div
               className="relative w-full h-full"
               style={{
-                backgroundImage: `url(${process.env.BACKEND_URL}/hero-billboards/${item?.image})`,
+                backgroundImage: `url(${process.env.BACKEND_URL}/public/hero-billboards/${item?.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}

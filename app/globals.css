@@ -7,6 +7,7 @@ html,
 body {
   height: 100%;
   width: 100%;
+  background: #f2f2f2;
 }
 
 img {
@@ -56,18 +57,18 @@ img {
 } */
 
 .swiper-pagination-custom {
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 15px; */
 }
 
-.swiper-pagination-custom > .swiper-pagination-bullet {
+/* .swiper-pagination-custom > .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
   opacity: 1;
   border: #c0092a 1px solid;
   background: none;
-}
+} */
 
 .swiper-pagination-custom > .swiper-pagination-bullet-active {
   background-color: #c0092a;
@@ -75,7 +76,7 @@ img {
 
 .swiper-thumbs .swiper-wrapper .swiper-slide-thumb-active {
   border: #c0092a 1px solid;
-  border-radius: 16px;
+  /* border-radius: 16px; */
   filter: contrast(0.5);
 }
 

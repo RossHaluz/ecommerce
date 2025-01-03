@@ -1,11 +1,5 @@
-import React from 'react'
-
 const RegularClientForm = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div></div>;
+};
 
-export default RegularClientForm
+export default RegularClientForm;

@@ -14,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import z from "zod";
 import axios from "axios";
 
@@ -89,7 +88,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
                     <Input
                       {...field}
                       type={isShowOldPassword ? "text" : "password"}
-                      className="bg-transparent border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
+                      className="bg-[#FFFDFD] border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
                     />
                     <Button
                       type="button"
@@ -123,7 +122,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
                     <Input
                       {...field}
                       type={isShowNewPassword ? "text" : "password"}
-                      className="bg-transparent border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
+                      className="bg-[#FFFDFD] border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
                     />
                     <Button
                       type="button"
@@ -157,7 +156,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
                     <Input
                       {...field}
                       type={isShowConfirmPassword ? "text" : "password"}
-                      className="bg-transparent border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
+                      className="bg-[#FFFDFD] border border-solid border-[#484848] shadow-none rounded-[5px] text-[#484848] py-4 pl-4 pr-12"
                     />
                     <Button
                       type="button"

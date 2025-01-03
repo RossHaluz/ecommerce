@@ -1,21 +1,20 @@
 import React, { FC } from "react";
-import ProductItem from "./product-item";
 import Pagination from "@/components/pagination";
+import ProductItem from "../(main)/categories/[categoryId]/_components/product-item";
 
 interface ProductsProps {
   products: {
-    product: {
+    id: string;
+    title: string;
+    price: string;
+    article: string;
+    maxPrice: string;
+    catalog_number: string;
+    productOptions: any[];
+    images: {
       id: string;
-      title: string;
-      price: string;
-      article: string;
-      maxPrice: string;
-      productOptions: any[];
-      images: {
-        id: string;
-        url: string;
-      }[];
-    };
+      url: string;
+    }[];
   }[];
   page: number;
   totalPages: number;
@@ -32,10 +31,10 @@ const Products: FC<ProductsProps> = ({
   searchParams,
 }) => {
   return (
-    <div className="flex flex-col gap-[30px]">
-      <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-[30px]">
+    <div className="flex flex-col gap-[30px] w-full">
+      <ul className="grid grid-cols-1 gap-5 lg:gap-[30px]">
         {products?.map((item) => {
-          return <ProductItem key={item?.product?.id} item={item?.product} />;
+          return <ProductItem key={item?.id} item={item} />;
         })}
       </ul>
 

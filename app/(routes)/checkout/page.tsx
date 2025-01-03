@@ -6,7 +6,7 @@ const CheckoutPage = async () => {
   const currentUser = await getCurrentUser();
 
   return (
-    <div className="pt-[10px] pb-[30px] lg:py-[30px] container">
+    <div className="mt-6 mb-6 lg:mt-12 container">
       <div className="flex flex-col gap-[15px] lg:gap-[30px]">
         <h1 className="text-[#484848] text-base font-bold">
           Оформлення замовлення

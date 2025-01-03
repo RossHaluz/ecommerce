@@ -39,6 +39,8 @@ const Filters: FC<FiltersProps> = ({ filters, searchParams }) => {
   const [filterIds, setFilterIds] = useState<FilterOption[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  console.log(filterIds);
+
   useEffect(() => {
     const storedFilterIds = localStorage.getItem("filterIds");
 

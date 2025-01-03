@@ -15,6 +15,12 @@ interface HistoryOrdersProps {
     paymentMethod: string;
     orderNumber: string;
     postService: string;
+    orderType: string;
+    dropshipDetails: {
+      clientFirstName: string;
+      clientLastName: string;
+      clientPhone: string;
+    };
     separation: string;
     address: string;
     typeDelivary: string;
@@ -35,7 +41,7 @@ const HistoryOrders: FC<HistoryOrdersProps> = ({
       <Button
         onClick={() => setActiveNavigation("history")}
         variant="ghost"
-        className={`p-0 fex items-center justify-between text-[#484848] ${
+        className={`p-0 flex items-center justify-between text-[#484848] ${
           activeNavigation === "history" ? "font-bold" : "font-semibold"
         }`}
       >
@@ -43,7 +49,7 @@ const HistoryOrders: FC<HistoryOrdersProps> = ({
         <ArrowDown
           className={`${
             activeNavigation === "history" && "rotate-180"
-          } transform transition-all duration-150 lg:hidden`}
+          } transform transition-all duration-150 lg:hidden stroke-[#484848]`}
         />
       </Button>
 

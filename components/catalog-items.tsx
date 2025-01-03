@@ -46,7 +46,7 @@ const CatalogItems: FC<CategoriesListProps> = ({
   };
 
   const renderCategory = (category: Category): React.ReactNode => (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3" key={category?.id}>
       <div className="flex items-center justify-between relative">
         <Link
           href={`/categories/${category?.id}`}
@@ -89,7 +89,7 @@ const CatalogItems: FC<CategoriesListProps> = ({
   );
 
   return (
-    <div className="bg-white p-4 shadow-lg rounded-md h-auto min-w-[300px] border border-solid overflow-y-auto flex flex-col gap-4">
+    <div className="bg-white p-4 shadow-lg rounded-md h-auto min-w-[250px] border border-solid overflow-y-auto flex flex-col gap-4">
       {categories?.map((item) => renderCategory(item))}
     </div>
   );

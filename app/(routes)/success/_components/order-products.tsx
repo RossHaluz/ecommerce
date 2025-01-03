@@ -16,6 +16,16 @@ interface OrderProductsProps {
 }
 
 const OrderProducts: FC<OrderProductsProps> = ({ item }) => {
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const USDollar = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   return (
     <div className="relative">
       <div className="flex items-start gap-[15px]">
@@ -24,10 +34,11 @@ const OrderProducts: FC<OrderProductsProps> = ({ item }) => {
           className="relative rounded-[5px] overflow-hidden w-[94px] h-[94px]"
         >
           <Image
-            src={`${process.env.BACKEND_URL}/products/${item?.images[0]?.url}`}
+            src={`${process.env.BACKEND_URL}/public/products/${item?.images[0]?.url}`}
             alt="Order image"
             fill
             className="absolute top-0 right-0 object-cover"
+            unoptimized={true}
           />
         </Link>
 
@@ -37,7 +48,7 @@ const OrderProducts: FC<OrderProductsProps> = ({ item }) => {
               href={`/${item?.id}`}
               className="text-[#484848] text-sm font-bold underline"
             >
-              {item?.title}
+              {capitalizeFirstLetter(item?.title)}
             </Link>
             <span className="text-[#484848] text-xs">{item?.article}</span>
           </div>
@@ -50,7 +61,9 @@ const OrderProducts: FC<OrderProductsProps> = ({ item }) => {
             <span className="text-[#484848] md:text-base">
               {item?.quantity} товар на суму
             </span>
-            <span className="text-[#c0092a] text-lg">{item?.price} ₴</span>
+            <span className="text-[#c0092a] text-lg">
+              {USDollar.format(Number(item?.price))}
+            </span>
           </div>
         </div>
       </div>

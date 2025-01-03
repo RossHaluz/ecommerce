@@ -15,7 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { EyeOff, Eye } from "lucide-react";
 import { Dispatch, FC, SetStateAction, useState } from "react";
-import { toast } from "react-toastify";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -32,6 +31,7 @@ const formSchema = z.object({
 
 const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
   const [isShow, setIsShow] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,15 +54,21 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
         values
       );
 
+      if (data?.data?.role !== "user") {
+        throw new Error("Користувача не знайдено");
+      }
+
       Cookies.set("token", data?.data?.token, { expires: 7 });
       axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
       router.push("/account");
       router.refresh();
-      toast.success("Success login");
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Something went wrong...");
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong...";
+      console.error(error);
+      setErrorMessage(errorMessage);
     }
   };
 
@@ -127,7 +133,11 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
             )}
           />
         </div>
-
+        {errorMessage && (
+          <p className="md:text-base text-red-500 font-medium">
+            {errorMessage}
+          </p>
+        )}
         <div className="flex flex-col gap-[30px]">
           <Button
             variant="ghost"

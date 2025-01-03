@@ -28,7 +28,7 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
               key={item?.id}
               className="relative h-[250px] flex p-[30px] hover:scale-105 transition-all lg:first-of-type:w-full lg:first-of-type:col-span-2 lg:last-of-type:w-full lg:last-of-type:col-span-2"
               style={{
-                backgroundImage: `url('${process.env.BACKEND_URL}/billboards/${item?.billboard?.imageUrl}')`,
+                backgroundImage: `url('${process.env.BACKEND_URL}/public/billboards/${item?.billboard?.imageUrl}')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}

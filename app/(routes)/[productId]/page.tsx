@@ -17,7 +17,7 @@ const ProductPage: FC<ProductPageProps> = async ({ params }) => {
   const product = await getProductDetails(productId);
 
   return (
-    <div className="container py-[10px] lg:py-[30px]">
+    <div className="container mt-6 mb-6 lg:mt-12">
       {product && <ProductInfo initialData={product} />}
 
       <Advantages />

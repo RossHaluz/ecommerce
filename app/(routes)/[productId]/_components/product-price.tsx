@@ -5,7 +5,14 @@ interface ProductPriceProps {
 }
 
 const ProductPrice: FC<ProductPriceProps> = ({ price }) => {
-  return <span className="text-[#c0092a] text-lg font-bold">{price} ₴</span>;
+  const USDollar = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  
+  return (
+    <span className="text-[#c0092a] text-lg font-bold">{USDollar.format(price)}</span>
+  );
 };
 
 export default ProductPrice;

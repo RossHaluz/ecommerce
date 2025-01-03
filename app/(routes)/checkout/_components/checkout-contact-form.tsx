@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 
 const CheckoutContactForm = () => {
   const [currentForm, setCurrentForm] = useState("new");
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-[30px] w-full">
@@ -40,7 +39,7 @@ const CheckoutContactForm = () => {
           </Button>
         </div>
       </div>
-      {currentForm === "new" && <NewClientForm isOpen={isOpen} />}
+      {currentForm === "new" && <NewClientForm />}
       {currentForm === "regular" && <RegularClientForm />}
     </div>
   );

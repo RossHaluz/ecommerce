@@ -23,8 +23,18 @@ const OrderItems = () => {
     }
   };
 
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const USDollar = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   return (
-    <div className="p-[30px] rounded-[5px] bg-[#F2F2F2] sticky top-1 transition-all">
+    <div className="p-[30px] rounded-[5px] bg-[#FFFDFD] sticky top-10  transition-all">
       <div className="flex flex-col gap-[30px]">
         <h3 className="text-[#484848] text-2xl font-bold">Ваш кошик</h3>
 
@@ -45,6 +55,7 @@ const OrderItems = () => {
                 }[];
               }) => {
                 const imageUrl = item?.images[0].url;
+
                 totalPrice += Number(item?.price);
                 return (
                   <div className="flex items-center gap-[30px]" key={item?.id}>
@@ -56,10 +67,11 @@ const OrderItems = () => {
                     </Button>
                     <div className="w-[118px] h-[118px] rounded-[5px] overflow-hidden relative">
                       <Image
-                        src={`${process.env.BACKEND_URL}/products/${imageUrl}`}
+                        src={`${process.env.BACKEND_URL}/public/products/${imageUrl}`}
                         alt={item?.title}
                         fill
                         className="object-cover absolute top-0 left-0"
+                        unoptimized={true}
                       />
                     </div>
                     <div className="flex flex-col gap-[15px]">
@@ -67,7 +79,7 @@ const OrderItems = () => {
                         href={`/${item?.id}`}
                         className="text-base font-bold text-[#484848] underline"
                       >
-                        {item?.title}
+                        {capitalizeFirstLetter(item?.title)}
                       </Link>
 
                       <div className="flex items-center gap-[10px]">
@@ -76,7 +88,7 @@ const OrderItems = () => {
                         </span>
                         <span className="text-[#484848]">x</span>
                         <span className="text-[#c0092a] text-base font-bold">
-                          {item?.priceForOne} ₴
+                          {USDollar.format(Number(item?.priceForOne))}
                         </span>
                       </div>
 
@@ -92,14 +104,14 @@ const OrderItems = () => {
               }
             )}
 
-            <div className="w-full h-[1px] bg-[#7FAA8480]" />
+            <div className="w-full h-[1px] bg-[#c0092a]" />
 
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-[#484848]">
                 Загальна вартість:
               </h3>
               <span className="text-[#c0092a] text-base font-bold">
-                {totalPrice} ₴
+                {USDollar.format(Number(totalPrice))}
               </span>
             </div>
           </div>

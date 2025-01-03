@@ -23,6 +23,12 @@ interface AccountMobileNavigationProps {
     lastName: string;
     phone: string;
     paymentMethod: string;
+    orderType: string;
+    dropshipDetails: {
+      clientFirstName: string;
+      clientLastName: string;
+      clientPhone: string;
+    };
     orderNumber: string;
     postService: string;
     separation: string;

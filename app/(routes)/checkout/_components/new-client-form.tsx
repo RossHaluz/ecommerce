@@ -12,15 +12,14 @@ import { Input } from "@/components/ui/input";
 import { createUserContactDetails } from "@/redux/auth/slice";
 import { AppDispatch } from "@/redux/store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
-
-interface NewClientFormProps {
-  isOpen?: boolean;
-}
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   firstName: z.string().min(1, {
@@ -32,10 +31,6 @@ const formSchema = z.object({
   phoneNumber: z.string().min(1, {
     message: "Phone number is required",
   }),
-  email: z
-    .string()
-    .email("Type a valid email")
-    .min(1, { message: "Email is required" }),
 });
 
 const formSchemaRegister = z
@@ -49,10 +44,7 @@ const formSchemaRegister = z
     phoneNumber: z.string().min(1, {
       message: "Phone number is required",
     }),
-    email: z
-      .string()
-      .email("Type a valid email")
-      .min(1, { message: "Email is required" }),
+    email: z.string().email("Type a valid email"),
     password: z
       .string()
       .min(6, { message: "Password is required and should have 6 length" }),
@@ -63,9 +55,10 @@ const formSchemaRegister = z
     path: ["confirmPassword"],
   });
 
-const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
+const NewClientForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isRegister, setIsRegister] = useState<boolean | string>(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchemaRegister>>({
     resolver: zodResolver(isRegister ? formSchemaRegister : formSchema),
@@ -93,6 +86,29 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
         return;
       }
 
+      if (isRegister) {
+        const formData = {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          phoneNumber: values.phoneNumber,
+          email: values.email,
+          password: values.password,
+        };
+
+        const { data } = await axios.post(
+          `${process.env.BACKEND_URL}/api/auth/register`,
+          formData
+        );
+
+        Cookies.set("token", data?.data?.newUser?.token, { expires: 1 });
+        axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
+
+        dispatch(createUserContactDetails(values));
+        toast.success("Success register");
+        router.refresh();
+        return;
+      }
+
       dispatch(createUserContactDetails(values));
       toast.success("Success");
     } catch (error: any) {
@@ -114,7 +130,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                     <FormControl>
                       <Input
                         placeholder="Ім’я"
-                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                        className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                         {...field}
                       />
                     </FormControl>
@@ -130,7 +146,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                     <FormControl>
                       <Input
                         placeholder="Прізвище"
-                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                        className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                         {...field}
                       />
                     </FormControl>
@@ -146,23 +162,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                     <FormControl>
                       <Input
                         placeholder="Номер телефону"
-                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                name="email"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Email"
-                        className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                        className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                         {...field}
                       />
                     </FormControl>
@@ -173,6 +173,22 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
               {isRegister && (
                 <>
                   <FormField
+                    name="email"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            placeholder="Email"
+                            className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
                     name="password"
                     control={form.control}
                     render={({ field }) => (
@@ -181,7 +197,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                           <Input
                             type="password"
                             placeholder="Password"
-                            className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                            className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                             {...field}
                           />
                         </FormControl>
@@ -197,7 +213,7 @@ const NewClientForm: FC<NewClientFormProps> = ({ isOpen }) => {
                           <Input
                             type="password"
                             placeholder="Confirm Password"
-                            className="py-3 lg:py-2 px-[15px] bg-[#EAF2EB] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                            className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                             {...field}
                           />
                         </FormControl>

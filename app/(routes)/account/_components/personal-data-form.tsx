@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import React, { FC, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -95,7 +94,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex items-start gap-[228px] lg:border-l lg:border-[#c0092a] lg:pl-[30px]"
+        className="flex items-start gap-[228px]"
       >
         <div className="flex flex-col gap-[30px] w-full lg:lg:w-[397px]">
           <div className="flex flex-col gap-[15px]">
@@ -108,7 +107,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="bg-[#F2F2F2] shadow-none rounded-[5px] text-[#484848] border-none p-4"
+                      className="bg-[#FFFDFD] shadow-none rounded-[5px] text-[#484848] border-none p-4"
                     />
                   </FormControl>
                 </FormItem>
@@ -124,7 +123,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="bg-[#F2F2F2] shadow-none rounded-[5px] text-[#484848] border-none p-4"
+                      className="bg-[#FFFDFD] shadow-none rounded-[5px] text-[#484848] border-none p-4"
                     />
                   </FormControl>
                 </FormItem>
@@ -140,7 +139,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="bg-[#F2F2F2] shadow-none rounded-[5px] text-[#484848] border-none p-4"
+                      className="bg-[#FFFDFD] shadow-none rounded-[5px] text-[#484848] border-none p-4"
                     />
                   </FormControl>
                 </FormItem>
@@ -156,7 +155,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="bg-[#F2F2F2] shadow-none rounded-[5px] text-[#484848] border-none p-4"
+                      className="bg-[#FFFDFD] shadow-none rounded-[5px] text-[#484848] border-none p-4"
                     />
                   </FormControl>
                 </FormItem>
@@ -185,10 +184,11 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
                 user?.avatar &&
                 !selectFile && (
                   <Image
-                    src={`${process.env.BACKEND_URL}/avatars/${user?.avatar}`}
+                    src={`${process.env.BACKEND_URL}/public/avatars/${user?.avatar}`}
                     alt="User avatarb"
                     fill
                     objectFit="cover"
+                    unoptimized={true}
                   />
                 )
               )}

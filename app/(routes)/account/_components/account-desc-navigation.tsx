@@ -25,6 +25,12 @@ interface AccountDescNavigation {
     paymentMethod: string;
     orderNumber: string;
     postService: string;
+    orderType: string;
+    dropshipDetails: {
+      clientFirstName: string;
+      clientLastName: string;
+      clientPhone: string;
+    };
     separation: string;
     address: string;
     typeDelivary: string;
@@ -41,7 +47,7 @@ const AccountDescNavigation: FC<AccountDescNavigation> = ({
   const [activeNavigation, setActiveNavigation] = useState("personal-data");
 
   return (
-    <div className="hidden lg:flex items-start gap-24">
+    <div className="hidden lg:flex items-start gap-8">
       <AccountSidebar
         token={token}
         activeNavigation={activeNavigation}

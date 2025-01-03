@@ -11,6 +11,7 @@ interface CheckoutProps {
     firstName: string;
     lastName: string;
     phoneNumber: string;
+    type: string;
     email: string;
     avatar: string;
   } | null;

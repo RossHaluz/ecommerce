@@ -28,8 +28,8 @@ const MainNavigation = () => {
     {
       id: 4,
       name: "Контакти",
-      href: "/contact",
-      active: pathname === "/contact",
+      href: "/contacts",
+      active: pathname === "/contacts",
     },
   ];
 

@@ -33,7 +33,7 @@ export const getCategories = async (limit?: string) => {
 //Get best seller products
 export const getBestSellersProducts = async () => {
   try {
-    const { data } = await axios.get(`/product/${storeId}/best`);
+    const { data } = await axios.get(`/product/${storeId}/best`, {});
 
     return data?.data;
   } catch (error) {
@@ -49,6 +49,7 @@ export const getCategoryDetails = async (data: {
   page?: string;
   sortByPrice?: string;
   pageSize?: string;
+  modelId?: string;
 }) => {
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
@@ -59,6 +60,7 @@ export const getCategoryDetails = async (data: {
       sortByPrice = "desc",
       pageSize = 10,
       categoryId,
+      modelId,
     } = data;
     const { data: category } = await axios.get(
       `/category/${storeId}/${categoryId}`,
@@ -71,6 +73,7 @@ export const getCategoryDetails = async (data: {
           filterIds,
           sortByPrice,
           pageSize,
+          modelId,
         },
       }
     );
@@ -129,8 +132,16 @@ export const getCurrentUser = async () => {
 
 //Create order
 export const createOrder = async (values: any) => {
+  console.log(values);
+
+  const tokenCookie = cookies().get("token");
+  const token = tokenCookie ? tokenCookie.value : null;
   try {
-    const { data } = await axios.post(`/order/${storeId}/create`, values);
+    const { data } = await axios.post(`/order/${storeId}/create`, values, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return data?.data;
   } catch (error) {
@@ -164,6 +175,31 @@ export const getSearchProducts = async (data: {
   }
 };
 
+//Get all products
+export const getAllProducts = async (data: {
+  filterIds?: string;
+  page?: string;
+  sortByPrice?: string;
+  modelId: string;
+}) => {
+  try {
+    const { filterIds, page, sortByPrice, modelId } = data;
+    const { data: products } = await axios.get(`/product/${storeId}`, {
+      params: {
+        filterIds,
+        page,
+        sortByPrice,
+        modelId,
+      },
+    });
+
+    return products?.data;
+  } catch (error) {
+    console.log("GET_ALL_PRODUCTS", error);
+    return null;
+  }
+};
+
 //Update user
 export const updateUser = async (values: any) => {
   const tokenCookie = cookies().get("token");
@@ -175,11 +211,23 @@ export const updateUser = async (values: any) => {
       },
     });
 
-    console.log(data);
-
     return data?.data;
   } catch (error) {
     console.log("UPDATE_USER", error);
+    return null;
+  }
+};
+
+//Get all models
+export const getModels = async () => {
+  try {
+    const { data } = await axios.get(`/model/${storeId}`);
+
+    console.log("models", data);
+
+    return data?.data;
+  } catch (error) {
+    console.log(error);
     return null;
   }
 };

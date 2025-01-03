@@ -30,6 +30,7 @@ interface ProductInfoProps {
     }[];
     title: string;
     description: string;
+    catalog_number: string;
     price: string;
     article: string;
     id: string;
@@ -41,6 +42,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
     images: imagesProduct,
     title,
     price,
+    catalog_number,
     article,
     productOptions,
   } = initialData;
@@ -85,7 +87,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
       <div className="grid grid-cols-1 gap-[15px] lg:grid-cols-2 lg:gap-[30px] pb-8 lg:pb-[30px] items-center">
         <Slider images={images} />
         <h1 className="text-[#484848] text-base font-bold lg:hidden">
-          {title}
+          {capitalizeFirstLetter(title)}
         </h1>
         <div className="flex flex-col gap-[15px] lg:gap-[60px]">
           <div className="flex flex-col gap-[15px] lg:gap-[30px]">
@@ -93,8 +95,17 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
               <div className="flex items-center gap-[6px] text-[#c0092a] text-xs font-medium">
                 <Available className="stroke-[#c0092a]" />В наявності
               </div>
-              <span className="text-[#484848] text-xs">Артикул: {article}</span>
+              <div className="flex flex-col gap-4">
+                <span className="text-[#484848] text-xs">
+                  <span className="font-semibold">Артикул:</span> {article}
+                </span>
+                <span className="text-[#484848] text-xs">
+                  <span className="font-semibold">Каталожний номер:</span>{" "}
+                  {catalog_number}
+                </span>
+              </div>
             </div>
+
             <div className="flex flex-col gap-[15px] lg:gap-[30px] lg:flex-col-reverse">
               <Separator />
               <ProductOption

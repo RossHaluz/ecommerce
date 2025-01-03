@@ -15,39 +15,41 @@ const AccountSidebar: FC<AccountSidebarProps> = ({
   setActiveNavigation,
 }) => {
   return (
-    <div className="flex flex-col gap-[30px]">
-      <Button
-        variant="ghost"
-        className={`p-0 max-h-max justify-start ${
-          activeNavigation === "personal-data" && "text-bold text-[#c0092a]"
-        }`}
-        onClick={() => setActiveNavigation("personal-data")}
-      >
-        Особисті дані
-      </Button>
+    <>
+      <div className="flex flex-col gap-[30px] pr-6 border-r border-[#c0092a]">
+        <Button
+          variant="ghost"
+          className={`p-0 text-left max-h-max ${
+            activeNavigation === "personal-data" && "text-bold text-[#c0092a]"
+          }`}
+          onClick={() => setActiveNavigation("personal-data")}
+        >
+          Особисті дані
+        </Button>
 
-      <Button
-        variant="ghost"
-        className={`p-0 max-h-max justify-start ${
-          activeNavigation === "history" && "text-bold text-[#c0092a]"
-        }`}
-        onClick={() => setActiveNavigation("history")}
-      >
-        Історія замовлень
-      </Button>
+        <Button
+          variant="ghost"
+          className={`p-0 max-h-max text-left ${
+            activeNavigation === "history" && "text-bold text-[#c0092a]"
+          }`}
+          onClick={() => setActiveNavigation("history")}
+        >
+          Історія замовлень
+        </Button>
 
-      <Button
-        variant="ghost"
-        className={`p-0 max-h-max justify-start ${
-          activeNavigation === "change-password" && "text-bold text-[#c0092a]"
-        }`}
-        onClick={() => setActiveNavigation("change-password")}
-      >
-        Зміна паролю
-      </Button>
+        <Button
+          variant="ghost"
+          className={`p-0 max-h-max text-left ${
+            activeNavigation === "change-password" && "text-bold text-[#c0092a]"
+          }`}
+          onClick={() => setActiveNavigation("change-password")}
+        >
+          Зміна паролю
+        </Button>
 
-      <LogoutBtn token={token} />
-    </div>
+        <LogoutBtn token={token} />
+      </div>
+    </>
   );
 };
 

@@ -21,7 +21,6 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { selectOrderItems } from "@/redux/order/selector";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -39,6 +38,7 @@ interface OrderFormProps {
     firstName: string;
     lastName: string;
     phoneNumber: string;
+    type: string;
     email: string;
     avatar: string;
   } | null;
@@ -59,12 +59,34 @@ const formSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
   phone: z.string().min(1, { message: "Phone number is required" }),
-  email: z.string().min(1, { message: "Email is required" }).email(),
+  email: z.string(),
+});
+
+const dropFormSchema = z.object({
+  firstName: z.string().min(1, { message: "First name is required" }),
+  lastName: z.string().min(1, { message: "Last name is required" }),
+  phone: z.string().min(1, { message: "Phone number is required" }),
+  callBack: z.boolean().default(false),
+  separation: z.string(),
+  email: z.string(),
+  comment: z.string(),
+  postService: z.enum(["nova-poshta"], {
+    required_error: "You need to select a post service.",
+  }),
+  city: z.string().min(1, { message: "Separation is required" }),
+  address: z.string(),
+  payment: z.enum(["monobank", "cashOnDelivary"], {
+    required_error: "You need to select a payment method.",
+  }),
+  clientFirstName: z.string().min(1, { message: "First name is required" }),
+  clientLastName: z.string().min(1, { message: "Last name is required" }),
+  clientPhone: z.string().min(1, { message: "Phone number is required" }),
 });
 
 const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const [currentDelivary, setCurrentDelivary] = useState("separation");
   const [isShowContact, setIsShowContact] = useState(false);
+  const [isShowContactClient, setIsShowContactClient] = useState(true);
   const [separatios, setSeparatios] = useState<
     | {
         Present: string;
@@ -87,8 +109,10 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const cityRef = useRef<HTMLDivElement>(null);
   const detachmentRef = useRef<HTMLDivElement>(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof dropFormSchema>>({
+    resolver: zodResolver(
+      currentUser?.type === "drop" ? dropFormSchema : formSchema
+    ),
     defaultValues: {
       postService: "nova-poshta",
       city: "",
@@ -101,6 +125,9 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       lastName: userDetails?.lastName || currentUser?.lastName || "",
       phone: userDetails?.phoneNumber || currentUser?.phoneNumber || "",
       email: userDetails?.email || currentUser?.email || "",
+      clientFirstName: "",
+      clientLastName: "",
+      clientPhone: "",
     },
   });
 
@@ -267,9 +294,8 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               icon?: string;
             }[],
           },
-          redirectUrl: "https://ecommerce-lime-alpha-61.vercel.app/success",
-          webHookUrl:
-            "https://ecommerce-admin-nine-nu.vercel.app/api/97ccf7f0-ddba-4e42-b562-d90c557b37ef/orders",
+          redirectUrl: "https://audiparts.site/success",
+          webHookUrl: `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/orders`,
         };
         let amount = 0;
 
@@ -362,24 +388,138 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                 <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
                   <div className="text-[#484848] font-bold">1</div>
                 </div>
-                <h3 className="text-[#484848] font-bold">Контактні дані</h3>
+                <h3 className="text-[#484848] font-bold">
+                  {currentUser?.type === "drop"
+                    ? "Дані дропшипера"
+                    : "Контактні дані"}
+                </h3>
               </div>
-              <ArrowDown className="stroke-[#c0092a]" />
+              <ArrowDown
+                className={cn(
+                  "stroke-[#c0092a] transform transition-all duration-300 rotate-0",
+                  {
+                    "rotate-180": isShowContact,
+                  }
+                )}
+              />
             </Button>
 
-            {isShowContact && (
+            <div
+              className={cn(
+                "flex-col gap-[15px] w-full transform transition-all duration-300 origin-top scale-y-0 hidden",
+                {
+                  "scale-y-100 flex": isShowContact,
+                }
+              )}
+            >
+              <FormField
+                name="firstName"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Ім’я"
+                        className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                name="lastName"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Прізвище"
+                        className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                name="phone"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Номер телефону"
+                        className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Email"
+                        className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          {/* Дані клієнта дропшипера */}
+          {currentUser?.type === "drop" && (
+            <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
+              <Button
+                variant="ghost"
+                type="button"
+                className="flex items-center justify-between p-0"
+                onClick={() => setIsShowContactClient((prev) => !prev)}
+              >
+                <div className="flex items-center gap-[15px] p-0 justify-start">
+                  <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
+                    <div className="text-[#484848] font-bold">2</div>
+                  </div>
+                  <h3 className="text-[#484848] font-bold">Дані клієнта</h3>
+                </div>
+                <ArrowDown
+                  className={cn(
+                    "stroke-[#c0092a] transform transition-all duration-300 rotate-0",
+                    {
+                      "rotate-180": isShowContactClient,
+                    }
+                  )}
+                />
+              </Button>
+
               <div
-                className={`flex flex-col gap-[15px] w-full transform transition-all duration-300`}
+                className={cn(
+                  "flex-col gap-[15px] w-full transform transition-all duration-300 origin-top scale-y-0 hidden",
+                  {
+                    "scale-y-100 flex": isShowContactClient,
+                  }
+                )}
               >
                 <FormField
-                  name="firstName"
+                  name="clientFirstName"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="Ім’я"
-                          className="py-3 lg:py-2 px-[15px] bg-[#F2F2F2] lg:bg-transparent text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                          className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                           {...field}
                         />
                       </FormControl>
@@ -388,14 +528,14 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                 />
 
                 <FormField
-                  name="lastName"
+                  name="clientLastName"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="Прізвище"
-                          className="py-3 lg:py-2 px-[15px] bg-[#F2F2F2] lg:bg-transparent text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                          className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                           {...field}
                         />
                       </FormControl>
@@ -404,30 +544,14 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                 />
 
                 <FormField
-                  name="phone"
+                  name="clientPhone"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="Номер телефону"
-                          className="py-3 lg:py-2 px-[15px] bg-[#F2F2F2] lg:bg-transparent text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  name="email"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          placeholder="Email"
-                          className="py-3 lg:py-2 px-[15px] bg-[#F2F2F2] lg:bg-transparent text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                          className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                           {...field}
                         />
                       </FormControl>
@@ -435,14 +559,16 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   )}
                 />
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Достака  */}
           <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
             <div className="flex items-center gap-[15px]">
               <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
-                <div className="text-[#484848] font-bold">2</div>
+                <div className="text-[#484848] font-bold">
+                  {currentUser?.type === "drop" ? "3" : "2"}
+                </div>
               </div>
               <h3 className="text-[#484848] font-bold">Доставка</h3>
             </div>
@@ -500,7 +626,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                     onClick={() => setCurrentDelivary("address")}
                     type="button"
                   >
-                    Доставка за даресою
+                    Доставка за адресою
                   </Button>
                 </div>
               </div>
@@ -517,7 +643,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                             value={field.value}
                             onChange={(e) => handleChangeCity(e)}
                             placeholder="Почніть водити назву населеного пункту"
-                            className="border border-solid border-[#484848] bg-transparent rounded-[5px]"
+                            className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
                           />
                         </FormControl>
                         <FormMessage className=" text-red-500 text-sm " />
@@ -572,7 +698,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                               }
                               placeholder="Введіть номер віділення"
                               onFocus={onFocusSeparationInput}
-                              className="border border-solid border-[#484848] bg-transparent rounded-[5px]"
+                              className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
                             />
                             {isShowDetachment && (
                               <div className="absolute top-[110%] z-50 left-0 w-full bg-white shadow-md rounded-md p-4 max-h-44 overflow-y-auto flex flex-col gap-4 items-start transform transition-all duration-150">
@@ -621,7 +747,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                               disabled={!currentCity}
                               {...field}
                               placeholder="Введіть адресу"
-                              className="border border-solid border-[#484848] bg-transparent rounded-[5px]"
+                              className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
                             />
                           </FormControl>
                         </FormItem>
@@ -637,11 +763,13 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
           <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
             <div className="flex items-center gap-[15px]">
               <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
-                <div className="text-[#484848] font-bold">3</div>
+                <div className="text-[#484848] font-bold">
+                  {currentUser?.type === "drop" ? "4" : "3"}
+                </div>
               </div>
               <h3 className="text-[#484848] font-bold">Оплата</h3>
             </div>
-            <div className="p-[15px] lg:py-[30px] bg-[#F2F2F2] rounded-[5px]">
+            <div className="p-[15px] lg:py-[30px] bg-[#FFFDFD] rounded-[5px]">
               <div className="flex flex-col gap-5 lg:gap-[30px]">
                 <h3 className="text-[#484848] text-sm font-bold lg:text-base">
                   {currentPayment === "monobank" &&
@@ -691,7 +819,9 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
           <div className="flex flex-col gap-[15px] lg:gap-4 w-full">
             <div className="flex items-center gap-[15px]">
               <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
-                <div className="text-[#484848] font-bold">4</div>
+                <div className="text-[#484848] font-bold">
+                  {currentUser?.type === "drop" ? "5" : "4"}
+                </div>
               </div>
               <h3 className="text-[#484848] font-bold">
                 Коментар до замовлення
@@ -708,7 +838,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                         <Textarea
                           {...field}
                           placeholder="Введіть коментар"
-                          className="border border-solid border-[#484848] rounded-[5px] bg-transparent"
+                          className="border border-solid border-[#484848] rounded-[5px] bg-[#FFFDFD]"
                         />
                       </FormControl>
                     </FormItem>

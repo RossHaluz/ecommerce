@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ProviderWrapper>
           <Header />
-          <main className="mt-[98px]">{children}</main>
+          <main className="">{children}</main>
           <Footer />
           <ToastContainer />
         </ProviderWrapper>

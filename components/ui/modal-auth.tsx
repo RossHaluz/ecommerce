@@ -13,14 +13,19 @@ interface ModalAuthProps {
   onOpenChange: () => void;
 }
 
-const ModalAuth: FC<ModalAuthProps> = ({ children, triggetBtn, onOpenChange }) => {
-
+const ModalAuth: FC<ModalAuthProps> = ({
+  children,
+  triggetBtn,
+  onOpenChange,
+}) => {
   return (
     <Dialog onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{triggetBtn}</DialogTrigger>
-      <DialogContent className="bg-white text-[#484848] rounded-[5px] p-4 flex flex-col gap-[30px] w-[357px]">
-<DialogTitle className="text-center font-bold">Вхід до особистого кабінету</DialogTitle>
-          {children}
+      <DialogContent className="bg-white text-[#484848] rounded-[5px] p-4 flex flex-col gap-[30px] w-[357px] max-h-[80%] overflow-y-auto">
+        <DialogTitle className="text-center font-bold">
+          Вхід до особистого кабінету
+        </DialogTitle>
+        {children}
       </DialogContent>
     </Dialog>
   );
