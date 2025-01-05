@@ -1,8 +1,9 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Arrow from "/public/images/arrow.svg";
 import qs from "query-string";
+import { cn } from "@/lib/utils";
 
 interface PaginationProps {
   currentPage: number;
@@ -13,6 +14,7 @@ interface PaginationProps {
     minPrice?: string;
     page?: string;
     sortByPrice?: string;
+    modelId: string;
   };
 }
 
@@ -23,7 +25,14 @@ const Pagination: FC<PaginationProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { filterIds, maxPrice, minPrice, page, sortByPrice } = searchParams;
+  const { filterIds, maxPrice, minPrice, sortByPrice, modelId, page } =
+    searchParams;
+
+  useEffect(() => {
+    if (!page) return;
+
+    localStorage.setItem("currentPage", page);
+  }, [page]);
 
   const handlePreviousPage = () => {
     if (currentPage === 1) return;
@@ -37,6 +46,7 @@ const Pagination: FC<PaginationProps> = ({
           minPrice: minPrice ? minPrice : null,
           page: prevPage ? prevPage : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
+          modelId: modelId ? modelId : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -57,6 +67,7 @@ const Pagination: FC<PaginationProps> = ({
           minPrice: minPrice ? minPrice : null,
           page: nextPage ? nextPage : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
+          modelId: modelId ? modelId : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -75,6 +86,7 @@ const Pagination: FC<PaginationProps> = ({
           minPrice: minPrice ? minPrice : null,
           page: pageNumber ? pageNumber : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
+          modelId: modelId ? modelId : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -94,14 +106,18 @@ const Pagination: FC<PaginationProps> = ({
     }
 
     for (let i = startPage; i <= endPage; i++) {
+      const isCurrentPage = i === Number(currentPage);
+
       pageNumbers.push(
         <button
           key={i}
-          className={`text-[#484848] flex items-center justify-center w-[30px] h-[30px] ${
-            i === currentPage
-              ? "bg-[#c0092a] text-white rounded-full"
-              : "hover:bg-accent"
-          }`}
+          className={cn(
+            "text-[#484848] flex items-center justify-center w-[30px] h-[30px]",
+            {
+              "bg-[#c0092a] text-white rounded-full": isCurrentPage,
+              "hover:bg-accent": !isCurrentPage,
+            }
+          )}
           onClick={() => handlePageClick(i)}
         >
           {i}

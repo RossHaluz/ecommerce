@@ -522,7 +522,9 @@ const SearchBar = () => {
                         </div>
 
                         <span className="text-[14px] leading-[17.07px] font-medium">
-                          {USDollar.format(Number(item?.price))}
+                          {Number(item?.price) === 0 && "Ціна договірна"}
+                          {Number(item?.price) > 0 &&
+                            USDollar.format(Number(item?.price))}
                         </span>
                       </div>
                     </Link>

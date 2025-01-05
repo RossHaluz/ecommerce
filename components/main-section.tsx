@@ -45,7 +45,7 @@ const MainSection: FC<MainSectionProps> = ({
   }, [dispatch]);
 
   return (
-    <section className="mt-6 mb-6 lg:my -12">
+    <section className="my-6 lg:my-12">
       <div className="container flex flex-col gap-3 md:gap-[30px] overflow-x-auto">
         <div className="flex items-center justify-between gap-3">
           {title && (

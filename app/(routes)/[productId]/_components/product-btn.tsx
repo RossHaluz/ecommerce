@@ -197,7 +197,9 @@ const ProductBtn: FC<ProductBtnProps & ProductBtnCountProps> = ({
 
                     <div className=" flex items-center  justify-between lg:items-start w-full lg:flex-col  lg:gap-[10px] ">
                       <span className="text-lg text-[#c0092a] font-bold">
-                        {USDollar.format(item?.price)}
+                        {Number(item?.price) === 0 && "Ціна договірна"}
+                        {Number(item?.price) > 0 &&
+                          USDollar.format(Number(item?.price))}
                       </span>
                       <ProductCount
                         count={item?.quantity}

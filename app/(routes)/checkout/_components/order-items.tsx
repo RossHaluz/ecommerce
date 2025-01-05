@@ -88,7 +88,9 @@ const OrderItems = () => {
                         </span>
                         <span className="text-[#484848]">x</span>
                         <span className="text-[#c0092a] text-base font-bold">
-                          {USDollar.format(Number(item?.priceForOne))}
+                          {Number(item?.priceForOne) === 0 && "Ціна договірна"}
+                          {Number(item?.priceForOne) > 0 &&
+                            USDollar.format(Number(item?.priceForOne))}
                         </span>
                       </div>
 
@@ -111,7 +113,8 @@ const OrderItems = () => {
                 Загальна вартість:
               </h3>
               <span className="text-[#c0092a] text-base font-bold">
-                {USDollar.format(Number(totalPrice))}
+                {Number(totalPrice) === 0 && "Ціна договірна"}
+                {Number(totalPrice) > 0 && USDollar.format(Number(totalPrice))}
               </span>
             </div>
           </div>

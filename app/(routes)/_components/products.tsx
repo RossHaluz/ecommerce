@@ -21,6 +21,7 @@ interface ProductsProps {
   searchParams: {
     filterIds: string;
     page: string;
+    modelId: string;
   };
 }
 

@@ -53,6 +53,8 @@ const formSchema = z.object({
   payment: z.enum(["monobank", "cashOnDelivary"], {
     required_error: "You need to select a payment method.",
   }),
+  ref_city: z.string(),
+  ref_separation: z.string(),
   comment: z.string(),
   callBack: z.boolean().default(false),
   separation: z.string(),
@@ -68,6 +70,8 @@ const dropFormSchema = z.object({
   phone: z.string().min(1, { message: "Phone number is required" }),
   callBack: z.boolean().default(false),
   separation: z.string(),
+  ref_city: z.string(),
+  ref_separation: z.string(),
   email: z.string(),
   comment: z.string(),
   postService: z.enum(["nova-poshta"], {
@@ -97,7 +101,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     | null
   >(null);
   const [detachments, setDetachments] = useState<
-    { Description: string | undefined }[]
+    { Description: string; Ref: string }[]
   >([]);
   const [isShowSeparatios, setIsShowSeparatios] = useState(false);
   const [isShowDetachment, setIsShowDetachment] = useState(false);
@@ -187,9 +191,11 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const handleSelectCity = async (data: {
     MainDescription: string;
     Present: string;
+    Ref: string;
   }) => {
     try {
       form.setValue("city", data.Present);
+      form.setValue("ref_city", data.Ref);
       setCurrentCity(data.MainDescription);
 
       const response = await getSeparation({
@@ -204,8 +210,9 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       });
 
       const formattedDetachments = response.data.map(
-        (item: { Description?: string }) => ({
-          Description: item.Description,
+        (item: { Description?: string; Ref?: string }) => ({
+          Description: item.Description ?? "",
+          Ref: item?.Ref ?? "",
         })
       );
 
@@ -232,10 +239,12 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       });
 
       const detachments = response.data.map(
-        (item: { Description?: string }) => ({
-          Description: item.Description,
+        (item: { Description?: string; Ref?: string }) => ({
+          Description: item.Description ?? "",
+          Ref: item?.Ref ?? "",
         })
       );
+
       setDetachments(detachments);
     } catch (error) {
       toast.success("Sumething went wrong...");
@@ -247,6 +256,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   ) => {
     try {
       form.setValue("separation", e.target.value);
+
       const response = await getSeparation({
         apiKey: process.env.NOVA_POSHTA_KEY ? process.env.NOVA_POSHTA_KEY : "",
         modelName: "AddressGeneral",
@@ -259,11 +269,11 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
         },
       });
 
-      const detachments = response.data.map(
-        (item: { Description?: string }) => ({
-          Description: item.Description,
-        })
-      );
+      const detachments =
+        response.data.map((item: { Description?: string; Ref?: string }) => ({
+          Description: item.Description ?? "",
+          Ref: item.Ref ?? "",
+        })) || [];
 
       setDetachments(detachments);
     } catch (error) {
@@ -271,8 +281,13 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     }
   };
 
-  const handleSelectDetachment = (detachment: string | undefined) => {
-    detachment && form.setValue("separation", detachment);
+  const handleSelectDetachment = (detachment: {
+    Description: string;
+    Ref: string;
+  }) => {
+    detachment && form.setValue("separation", detachment?.Description);
+    form.setValue("ref_separation", detachment?.Ref);
+
     setIsShowDetachment(false);
   };
 
@@ -295,7 +310,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
             }[],
           },
           redirectUrl: "https://audiparts.site/success",
-          webHookUrl: `${process.env.BACKEND_URL}/api/${process.env.STORE_ID}/orders`,
+          webHookUrl: `${process.env.BACKEND_URL}/api/order/${process.env.STORE_ID}/create`,
         };
         let amount = 0;
 
@@ -304,13 +319,13 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
           dataMono.merchantPaymInfo.basketOrder.push({
             name: item?.title,
             qty: Number(item?.quantity),
-            sum: Number(item?.price * 100),
+            sum: Number(item?.price * 43 * 100),
             code: item?.article,
             icon: item.images[0].url,
           });
         });
 
-        dataMono.amount = Math.round(amount * 100);
+        dataMono.amount = Math.round(amount * 43 * 100);
         const responce = await createInvoice(dataMono);
 
         if (responce) {
@@ -664,6 +679,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                                 handleSelectCity({
                                   Present: item.Present,
                                   MainDescription: item.MainDescription,
+                                  Ref: item?.Ref,
                                 })
                               }
                             >
@@ -711,9 +727,11 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                                         className="p-0"
                                         key={item?.Description}
                                         onClick={() =>
-                                          handleSelectDetachment(
-                                            item.Description
-                                          )
+                                          handleSelectDetachment({
+                                            Description:
+                                              item?.Description ?? "",
+                                            Ref: item?.Ref ?? "",
+                                          })
                                         }
                                       >
                                         {item?.Description}

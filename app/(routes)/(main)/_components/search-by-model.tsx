@@ -37,6 +37,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   useEffect(() => {
     if (!isInitialized) return;
     const selectSort = localStorage.getItem("sortByPrice");
+    const currentPage = localStorage.getItem("currentPage");
 
     const url = qs.stringifyUrl(
       {
@@ -44,12 +45,13 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
         query: {
           modelId: selectModel?.id,
           sortByPrice: selectSort ? selectSort : null,
+          page: currentPage ? currentPage : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
     );
 
-    return router.push(url);
+    return router.push(url, { scroll: false });
   }, [isInitialized]);
 
   useEffect(() => {
@@ -95,15 +97,17 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   const handleSerchProductsByModel = () => {
     if (!selectModel) return;
     localStorage.setItem("model", JSON.stringify(selectModel));
+    const selectSort = localStorage.getItem("sortByPrice");
 
     const url = qs.stringifyUrl({
       url: pathname,
       query: {
         modelId: selectModel?.id,
+        ...(selectSort && { sortByPrice: selectSort }),
       },
     });
 
-    router.push(url);
+    return router.push(url);
   };
 
   return (

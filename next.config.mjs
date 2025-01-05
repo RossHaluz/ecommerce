@@ -4,6 +4,10 @@ const nextConfig = {
     domains: ["res.cloudinary.com", "localhost", "api.audiparts.site"],
   },
 
+  experimental: {
+    scrollRestoration: true,
+  },
+
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,

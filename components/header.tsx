@@ -31,6 +31,7 @@ import { useAppDispatch } from "@/hooks/use-dispatch";
 import { cn } from "@/lib/utils";
 import Categories from "@/app/(routes)/(main)/_components/categories";
 import { motion, useScroll, useTransform } from "framer-motion";
+import qs from "query-string";
 
 export interface Item {
   id: string;
@@ -110,6 +111,13 @@ const Header = () => {
     };
   }, []);
 
+  const goToHomePage = () => {
+    const url = qs.stringifyUrl({
+      url: pathname,
+      query: {},
+    });
+  };
+
   const clickOutsidePhoneNumbers = (e: MouseEvent) => {
     if (numbersRef.current && !numbersRef.current.contains(e.target as Node)) {
       setIsShowPhoneNumbers(false);
@@ -157,9 +165,9 @@ const Header = () => {
     <>
       <header className="bg-[#FFFDFD] z-20 relative">
         <div className="py-[10px] hidden lg:flex items-center justify-between container">
-          <Link href="/">
+          <Button variant="ghost" size="reset" onClick={goToHomePage}>
             <LogoBlack />
-          </Link>
+          </Button>
 
           <div className="flex items-center gap-6">
             <div className="relative" ref={infoRef}>
@@ -281,9 +289,14 @@ const Header = () => {
                 <Categories categories={categories} />
               </div>
             </div>
-            <Link href="/" className="lg:hidden py-3">
+            <Button
+              onClick={goToHomePage}
+              variant="ghost"
+              size="reset"
+              className="lg:hidden py-3"
+            >
               <LogoWhite />
-            </Link>
+            </Button>
             <SearchBar />
 
             <div className="items-center gap-5 hidden lg:flex ">

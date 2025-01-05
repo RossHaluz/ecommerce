@@ -48,6 +48,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
 
   useEffect(() => {
     if (!isInitialized) return;
+    const currentPage = localStorage.getItem("currentPage");
 
     const url = qs.stringifyUrl(
       {
@@ -56,12 +57,13 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
           filterIds: filterIds ? filterIds : null,
           sortByPrice: selectSort ? selectSort : null,
           searchValue: searchValue ? searchValue : null,
+          page: currentPage ? currentPage : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
     );
 
-    router.push(url);
+    router.push(url, { scroll: false });
     localStorage.setItem("sortByPrice", selectSort);
   }, [selectSort, isInitialized, pathname, router]);
 

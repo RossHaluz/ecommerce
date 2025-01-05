@@ -2,6 +2,31 @@
 import axios from "axios";
 import { cookies } from "next/headers";
 
+interface Product {
+  id: string;
+  title: string;
+  price: string;
+  article: string;
+  maxPrice: string;
+  catalog_number: string;
+  productOptions: any[];
+  images: {
+    id: string;
+    url: string;
+  }[];
+}
+[];
+
+interface Meta {
+  page: number;
+  totalPages: number;
+}
+
+export interface ProductsResponse {
+  products: Product[];
+  meta: Meta;
+}
+
 axios.defaults.baseURL = `${process.env.BACKEND_URL}/api`;
 const storeId = process.env.STORE_ID;
 
@@ -181,7 +206,7 @@ export const getAllProducts = async (data: {
   page?: string;
   sortByPrice?: string;
   modelId: string;
-}) => {
+}): Promise<ProductsResponse | null> => {
   try {
     const { filterIds, page, sortByPrice, modelId } = data;
     const { data: products } = await axios.get(`/product/${storeId}`, {

@@ -135,7 +135,8 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
 
         <div className="flex flex-col gap-2">
           <h3 className="text-[14px] leading-[17.07px] md:text-[28px] md:leading-[34.13px]  font-semibold text-[#111111]">
-            {USDollar.format(Number(item?.price))}
+            {Number(item?.price) === 0 && "Ціна договірна"}
+            {Number(item?.price) > 0 && USDollar.format(Number(item?.price))}
           </h3>
 
           <Modal
@@ -203,7 +204,9 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
 
                         <div className=" flex items-center  justify-between lg:items-start w-full lg:flex-col  lg:gap-[10px] ">
                           <span className="text-lg text-[#c0092a] font-bold">
-                            {USDollar.format(Number(item?.price))}
+                            {Number(item?.price) === 0 && "Ціна договірна"}
+                            {Number(item?.price) > 0 &&
+                              USDollar.format(Number(item?.price))}
                           </span>
 
                           <ProductCount

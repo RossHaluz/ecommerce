@@ -9,9 +9,12 @@ const ProductPrice: FC<ProductPriceProps> = ({ price }) => {
     style: "currency",
     currency: "USD",
   });
-  
+
   return (
-    <span className="text-[#c0092a] text-lg font-bold">{USDollar.format(price)}</span>
+    <span className="text-[#c0092a] text-lg font-bold">
+      {Number(price) === 0 && "Ціна договірна"}
+      {Number(price) > 0 && USDollar.format(Number(price))}
+    </span>
   );
 };
 
