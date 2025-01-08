@@ -5,6 +5,14 @@ import { ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import qs from "query-string";
 import { usePathname, useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/store";
+import {
+  setSelectModel,
+  removeSelectedModel,
+  setModel,
+} from "@/redux/models/slice";
+import { useSelector } from "react-redux";
+import { selectCurrentModel, selectModel } from "@/redux/models/selectors";
 
 interface SearchByModelProps {
   models: {
@@ -15,27 +23,14 @@ interface SearchByModelProps {
 
 const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [selectModel, setSelectModel] = useState<null | {
-    id: string;
-    name: string;
-  }>(null);
   const modelRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const currentModel = useSelector(selectCurrentModel);
+  const model = useSelector(selectModel);
 
   useEffect(() => {
-    const model = localStorage.getItem("model");
-    if (model) {
-      const parseModels = JSON.parse(model);
-      setSelectModel(parseModels);
-    }
-
-    setIsInitialized(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isInitialized) return;
     const selectSort = localStorage.getItem("sortByPrice");
     const currentPage = localStorage.getItem("currentPage");
 
@@ -43,7 +38,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
       {
         url: pathname,
         query: {
-          modelId: selectModel?.id,
+          modelId: currentModel?.id,
           sortByPrice: selectSort ? selectSort : null,
           page: currentPage ? currentPage : null,
         },
@@ -52,7 +47,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
     );
 
     return router.push(url, { scroll: false });
-  }, [isInitialized]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideModel);
@@ -69,13 +64,18 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   };
 
   const handleRemoveModel = () => {
-    localStorage.removeItem("model");
+    dispatch(removeSelectedModel());
+    dispatch(setModel(null));
+    setModel(null);
     const selectSort = localStorage.getItem("sortByPrice");
-    setSelectModel(null);
+    localStorage.setItem("currentPage", "1");
+    const page = localStorage.getItem("currentPage");
+    setModel(null);
     const url = qs.stringifyUrl(
       {
         url: pathname,
         query: {
+          currentPage: page,
           modelId: null,
           sortByPrice: selectSort ? selectSort : null,
         },
@@ -87,22 +87,25 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   };
 
   const handleSelectModel = (model: { id: string; name: string }) => {
-    setSelectModel({
-      id: model?.id,
-      name: model?.name,
-    });
+    dispatch(
+      setModel({
+        id: model?.id,
+        name: model?.name,
+      })
+    );
     setIsOpen(false);
   };
 
   const handleSerchProductsByModel = () => {
-    if (!selectModel) return;
-    localStorage.setItem("model", JSON.stringify(selectModel));
+    if (!model) return;
     const selectSort = localStorage.getItem("sortByPrice");
+
+    dispatch(setSelectModel(model));
 
     const url = qs.stringifyUrl({
       url: pathname,
       query: {
-        modelId: selectModel?.id,
+        modelId: model?.id,
         ...(selectSort && { sortByPrice: selectSort }),
       },
     });
@@ -123,17 +126,17 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
             className={cn(
               "bg-[#F2F2F2] p-5 rounded-lg w-full flex items-center gap-2 justify-between hover:bg-[#F2F2F2] hover:text-current",
               {
-                "text-[#111111]": selectModel,
+                "text-[#111111]": currentModel || model,
               }
             )}
           >
-            {selectModel ? (
-              selectModel?.name
+            {currentModel || model ? (
+              currentModel?.name || model?.name
             ) : (
               <span className="text-[#B8B6B6]">Оберіть модель</span>
             )}
             <div className="flex items-center gap-1">
-              {selectModel && (
+              {currentModel && (
                 <X color="#c0092a" size={24} onClick={handleRemoveModel} />
               )}
               <ChevronDown
@@ -164,7 +167,8 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
                   variant="ghost"
                   key={item?.id}
                   className={cn("flex items-start ml-0", {
-                    "text-[#c0092a] font-medium": selectModel?.id === item?.id,
+                    "text-[#c0092a] font-medium":
+                      currentModel?.id === item?.id || model?.id === item?.id,
                   })}
                 >
                   {item?.name}

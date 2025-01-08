@@ -31,7 +31,7 @@ import { useAppDispatch } from "@/hooks/use-dispatch";
 import { cn } from "@/lib/utils";
 import Categories from "@/app/(routes)/(main)/_components/categories";
 import { motion, useScroll, useTransform } from "framer-motion";
-import qs from "query-string";
+import { removeSelectedModel, setModel } from "@/redux/models/slice";
 
 export interface Item {
   id: string;
@@ -112,10 +112,11 @@ const Header = () => {
   }, []);
 
   const goToHomePage = () => {
-    const url = qs.stringifyUrl({
-      url: pathname,
-      query: {},
-    });
+    dispatch(removeSelectedModel());
+    dispatch(setModel(null));
+    localStorage.removeItem("currentPage");
+
+    router.push("/");
   };
 
   const clickOutsidePhoneNumbers = (e: MouseEvent) => {
@@ -165,7 +166,12 @@ const Header = () => {
     <>
       <header className="bg-[#FFFDFD] z-20 relative">
         <div className="py-[10px] hidden lg:flex items-center justify-between container">
-          <Button variant="ghost" size="reset" onClick={goToHomePage}>
+          <Button
+            size="reset"
+            variant="ghost"
+            onClick={goToHomePage}
+            className="cursor-pointer"
+          >
             <LogoBlack />
           </Button>
 
@@ -290,10 +296,10 @@ const Header = () => {
               </div>
             </div>
             <Button
-              onClick={goToHomePage}
-              variant="ghost"
               size="reset"
-              className="lg:hidden py-3"
+              variant="ghost"
+              className="lg:hidden py-3 cursor-pointer"
+              onClick={goToHomePage}
             >
               <LogoWhite />
             </Button>

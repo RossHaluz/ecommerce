@@ -18,6 +18,12 @@ import { authReducer } from "./auth/slice";
 import { categoryReducer } from "./categories/slice";
 import { modelReducer } from "./models/slice";
 
+const persistModel = {
+  key: "currentModel",
+  whitelist: ["currentModel"],
+  storage,
+};
+
 const persistSearch = {
   key: "searchDetails",
   whitelist: ["searchQuery", "searchItems"],
@@ -39,6 +45,7 @@ const persistOrder = {
 const persistedAuthReducer = persistReducer(persistAuth, authReducer);
 const persistedOrderReducer = persistReducer(persistOrder, OrderReducer);
 const persisterSearchReducer = persistReducer(persistSearch, searchReducer);
+const persistModelReducer = persistReducer(persistModel, modelReducer);
 
 export const store = configureStore({
   reducer: {
@@ -46,7 +53,7 @@ export const store = configureStore({
     order: persistedOrderReducer,
     search: persisterSearchReducer,
     category: categoryReducer,
-    model: modelReducer,
+    model: persistModelReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

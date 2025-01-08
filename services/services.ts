@@ -22,7 +22,7 @@ interface ApiResponse {
     Description?: string;
     Addresses: {
       Present: string;
-      DeliveryCit: string;
+      DeliveryCity: string;
       MainDescription: string;
       Ref: string;
     }[];

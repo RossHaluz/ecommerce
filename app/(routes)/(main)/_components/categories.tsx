@@ -30,12 +30,12 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
 
   const renderChildren = (children: Category[]) => {
     return (
-      <div className="absolute left-full top-0 bg-[#FFFDFD] shadow-lg rounded-r-md py-2 w-full h-full over z-30">
+      <div className="absolute left-full top-0 bg-[#FFFDFD] shadow-lg rounded-r-md p-2 w-full h-full overflow-hidden overflow-y-auto z-30">
         {children.map((child) => (
           <Link
             href={`/categories/${child.id}`}
             key={child.id}
-            className="block px-4 py-6 hover:bg-transparent text-[16px] font-medium leading-[19.5px] text-[#111111]"
+            className="block py-[18px] px-6 hover:bg-transparent text-[16px] font-medium leading-[19.5px] text-[#111111]"
           >
             {child.name}
           </Link>
@@ -73,7 +73,7 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
     <>
       <div
         className={cn(
-          "hidden lg:flex flex-col rounded-md  bg-[#FFFDFD] w-[302px] py-2 relative",
+          "hidden lg:flex flex-col rounded-md  bg-[#FFFDFD] w-full py-2 relative",
           {
             "z-50 rounded-l-md rounded-r-none": hoveredOnMenu,
           }

@@ -1,16 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getModels } from "./operetions";
 
 const initialState: any = {
   isLoading: false,
   models: [],
+  currentModel: null,
+  model: null,
   error: null,
 };
 
 const modelSlice = createSlice({
   name: "model",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectModel(
+      state,
+      action: PayloadAction<{ id: string; name: string } | null>
+    ) {
+      state.currentModel = action.payload;
+    },
+    removeSelectedModel(state) {
+      state.currentModel = null;
+    },
+    setModel(
+      state,
+      action: PayloadAction<{ id: string; name: string } | null>
+    ) {
+      state.model = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getModels.pending, (state, action) => {
@@ -28,5 +46,8 @@ const modelSlice = createSlice({
       });
   },
 });
+
+export const { setSelectModel, removeSelectedModel, setModel } =
+  modelSlice.actions;
 
 export const modelReducer = modelSlice.reducer;

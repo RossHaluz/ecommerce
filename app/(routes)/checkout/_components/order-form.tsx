@@ -94,7 +94,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const [separatios, setSeparatios] = useState<
     | {
         Present: string;
-        DeliveryCit: string;
+        DeliveryCity: string;
         Ref: string;
         MainDescription: string;
       }[]
@@ -180,7 +180,23 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
         throw new Error(responce.errors);
       }
 
-      setSeparatios(responce?.data[0].Addresses);
+      console.log(responce);
+
+      const formattedAddresses = responce?.data[0].Addresses.map(
+        (address: {
+          Present: string;
+          DeliveryCity: string;
+          MainDescription: string;
+          Ref: string;
+        }) => ({
+          Present: address.Present,
+          DeliveryCity: address.DeliveryCity,
+          MainDescription: address.MainDescription,
+          Ref: address.Ref,
+        })
+      );
+
+      setSeparatios(formattedAddresses);
 
       setIsShowSeparatios(true);
     } catch (error) {
@@ -191,11 +207,11 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const handleSelectCity = async (data: {
     MainDescription: string;
     Present: string;
-    Ref: string;
+    DeliveryCity: string;
   }) => {
     try {
       form.setValue("city", data.Present);
-      form.setValue("ref_city", data.Ref);
+      form.setValue("ref_city", data.DeliveryCity);
       setCurrentCity(data.MainDescription);
 
       const response = await getSeparation({
@@ -679,7 +695,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                                 handleSelectCity({
                                   Present: item.Present,
                                   MainDescription: item.MainDescription,
-                                  Ref: item?.Ref,
+                                  DeliveryCity: item?.DeliveryCity,
                                 })
                               }
                             >
