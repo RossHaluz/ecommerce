@@ -14,7 +14,7 @@ interface ProductPageProps {
 const ProductPage: FC<ProductPageProps> = async ({ params }) => {
   const { productId } = params;
 
-  const product = await getProductDetails(productId);
+  const { product } = await getProductDetails(productId);
 
   return (
     <div className="container mt-6 mb-6 lg:mt-12">

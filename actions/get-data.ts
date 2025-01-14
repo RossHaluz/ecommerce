@@ -207,6 +207,8 @@ export const getAllProducts = async (data: {
   sortByPrice?: string;
   modelId: string;
 }): Promise<ProductsResponse | null> => {
+  const tokenCookie = cookies().get("token");
+  const token = tokenCookie ? tokenCookie.value : null;
   try {
     const { filterIds, page, sortByPrice, modelId } = data;
     const { data: products } = await axios.get(`/product/${storeId}`, {
@@ -215,6 +217,9 @@ export const getAllProducts = async (data: {
         page,
         sortByPrice,
         modelId,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     });
 

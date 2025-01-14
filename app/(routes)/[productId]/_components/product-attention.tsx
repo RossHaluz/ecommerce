@@ -1,11 +1,18 @@
-import React from "react";
+import React, { FC } from "react";
 
-const ProductAttention = () => {
+type ProductAttention = {
+  price: number;
+};
+
+const ProductAttention: FC<ProductAttention> = ({ price }) => {
   return (
-    <p className="text-[#484848] lg:inline-block hidden">
-      Просимо звернути увагу, що розташування малюнка (чи кольору) на наволочці
-      та підковдрі може відрізнятися від того, яким Ви бачите на фото.
-    </p>
+    <>
+      {price === 0 && (
+        <p className="text-[#484848] lg:inline-block hidden">
+          Ціну до даного товара уточняйте у менеджера.
+        </p>
+      )}
+    </>
   );
 };
 

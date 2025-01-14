@@ -5,14 +5,36 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import ProductCount from "../../[productId]/_components/product-count";
-import { removeItemFromCart } from "@/redux/order/slice";
+import {
+  currentPriceOrderItems,
+  removeItemFromCart,
+} from "@/redux/order/slice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { FC, useEffect } from "react";
 
-const OrderItems = () => {
+interface OrderItemsProps {
+  currentUser: {
+    type: string;
+  };
+}
+
+const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
   const dispatch = useDispatch();
   const orderItems = useSelector(selectOrderItems);
   let totalPrice = 0;
+
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser?.type === "drop") {
+        dispatch(currentPriceOrderItems({ userType: "drop" }));
+      } else if (currentUser?.type === "user") {
+        dispatch(currentPriceOrderItems({ userType: "user" }));
+      }
+    } else {
+      dispatch(currentPriceOrderItems({ userType: "user" }));
+    }
+  }, [dispatch, currentUser]);
 
   const handleRemoveItem = async (id: string) => {
     try {

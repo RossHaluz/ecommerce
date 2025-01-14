@@ -117,7 +117,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
               />
             </div>
 
-            <ProductAttention />
+            <ProductAttention price={parseInt(initialData?.price)} />
           </div>
 
           <div className="flex flex-col gap-[15px] lg:gap-[30px]">

@@ -15,6 +15,11 @@ interface OrderItem {
   priceForOne: number;
   orderItemId: string;
   selectOptions: Option[];
+  productPrices: {
+    id: string;
+    drop_price: number;
+    retail_price: number;
+  }[];
   title: string;
   article: string;
   images: {
@@ -63,6 +68,22 @@ export const orderSlice = createSlice({
         state.orderItems.push(action.payload);
       }
     },
+    currentPriceOrderItems(state, action) {
+      const userType = action.payload.userType;
+
+      state.orderItems = state.orderItems?.map((item: OrderItem) => {
+        const newPrice =
+          userType === "drop"
+            ? item?.productPrices[0]?.drop_price
+            : item?.productPrices[0]?.retail_price;
+
+        return {
+          ...item,
+          price: newPrice,
+          priceForOne: newPrice,
+        };
+      });
+    },
     removeItemFromCart(state, action) {
       state.orderItems = state.orderItems.filter(
         (item: any) => item.orderItemId !== action.payload
@@ -98,6 +119,7 @@ export const {
   changeProductCount,
   setOrderDetails,
   cleareOrderItems,
+  currentPriceOrderItems,
 } = orderSlice.actions;
 
 export const OrderReducer = orderSlice.reducer;

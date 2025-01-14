@@ -90,16 +90,16 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
   };
 
   return (
-    <li className="flex items-start gap-4 p-4 md:p-6 bg-[#FFFDFD] rounded">
-      <Link href={`/${item?.id}`}>
-        <div className="relative overflow-hidden w-[112px] h-[112px] md:w-[278px] md:h-[278px]">
+    <li className="grid grid-cols-5 gap-4 p-4 md:p-6 bg-[#FFFDFD] rounded">
+      <Link href={`/${item?.id}`} className="col-span-2">
+        <div className="relative overflow-hidden h-full w-full">
           {productImage ? (
             <Image
               src={`${process.env.BACKEND_URL}/public/products/${productImage}`}
               alt={item?.title}
               fill
-              objectFit="cover"
-              className="w-full h-full"
+              objectFit="contain"
+              objectPosition="center center"
               unoptimized={true}
             />
           ) : (
@@ -108,25 +108,24 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
               alt="Image not found"
               fill
               objectFit="cover"
-              className="w-full h-full"
               unoptimized={true}
             />
           )}
         </div>
       </Link>
 
-      <div className="flex flex-col gap-4 h-full md:justify-between">
+      <div className="flex flex-col gap-4 h-full md:justify-between col-span-3">
         <div className="flex flex-col gap-2 md:gap-4">
           <Link href={`/${item?.id}`}>
             <h2 className="text-[14px] leading-[17.07px] font-medium text-[#111111] uppercase line-clamp-2 md:text-[24px] md:leading-[33.6px]">
-              {item?.title}
+              {item?.title} - {item?.article}
             </h2>
           </Link>
 
           <div className="flex flex-col gap-1 md:gap-4">
-            <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
+            {/* <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
               Код товару: {item?.article}
-            </h3>
+            </h3> */}
             <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
               Каталожний номер: {item?.catalog_number}
             </h3>

@@ -10,6 +10,7 @@ import { Swiper as SwiperClass } from "swiper/types";
 
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
@@ -30,23 +31,23 @@ const Slider: FC<SliderProps> = ({ images }) => {
               dynamicBullets: true,
             }}
             modules={[Pagination, Thumbs]}
+            parallax
             thumbs={{ swiper: thumbsSwiper }}
           >
             {images?.map((item) => {
               return (
                 <SwiperSlide
                   key={item?.id}
-                  className="aspect-square rounded-2xl overflow-hidden"
+                  className="aspect-square rounded-2xl overflow-hidden relative"
                 >
-                  <div className="relative  h-full w-full">
-                    <Image
-                      src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
-                      alt="Image slider"
-                      fill
-                      className="absolute top-0 right-0 object-cover"
-                      unoptimized={true}
-                    />
-                  </div>
+                  <Image
+                    src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
+                    alt="Image slider"
+                    fill
+                    objectFit="contain"
+                    objectPosition="center center"
+                    unoptimized={true}
+                  />
                 </SwiperSlide>
               );
             })}
@@ -62,6 +63,7 @@ const Slider: FC<SliderProps> = ({ images }) => {
               direction="vertical"
               navigation={{
                 nextEl: ".swiper-btn-next",
+                prevEl: ".swiper-btn-prev",
               }}
               style={{ height: "260px", width: "65px", overflow: "hidden" }}
               className="flex flex-col ml-0"
@@ -70,26 +72,40 @@ const Slider: FC<SliderProps> = ({ images }) => {
                 return (
                   <SwiperSlide
                     key={item?.id}
-                    className="aspect-square rounded-2xl overflow-hidden"
+                    className="aspect-square rounded-2xl overflow-hidden relative"
                   >
-                    <div className="relative w-full h-full">
-                      <Image
-                        src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
-                        alt="Image slider"
-                        fill
-                        className="absolute top-0 left-0 object-cover"
-                        unoptimized={true}
-                      />
-                    </div>
+                    <Image
+                      src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
+                      alt="Image slider"
+                      fill
+                      objectFit="contain"
+                      unoptimized={true}
+                    />
                   </SwiperSlide>
                 );
               })}
             </Swiper>
-            {images?.length > 3 && (
-              <Button variant="ghost" type="button" className="swiper-btn-next">
-                <ArrowDown className="stroke-[#c0092a]" />
-              </Button>
-            )}
+            <div className="w-full flex items-center justify-between">
+              {images?.length > 3 && (
+                <Button
+                  variant="ghost"
+                  type="button"
+                  className="swiper-btn-prev"
+                >
+                  <ArrowDown className="stroke-[#c0092a] rotate-180" />
+                </Button>
+              )}
+
+              {images?.length > 3 && (
+                <Button
+                  variant="ghost"
+                  type="button"
+                  className="swiper-btn-next"
+                >
+                  <ArrowDown className="stroke-[#c0092a]" />
+                </Button>
+              )}
+            </div>
           </div>
           <div className="swiper-pagination-custom mx-auto lg:hidden" />
         </div>

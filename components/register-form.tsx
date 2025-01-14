@@ -105,7 +105,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none  rounded-md"
                   />
                 </FormControl>
                 <FormMessage />
@@ -124,7 +124,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#AA0A27] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none  rounded-md"
                   />
                 </FormControl>
                 <FormMessage />
@@ -143,7 +143,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#AA0A27] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none  rounded-md"
                   />
                 </FormControl>
                 <FormMessage />
@@ -162,7 +162,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#AA0A27] rounded-md"
+                    className="bg-[#F2F2F2] border-none outline-none  rounded-md"
                     type="email"
                   />
                 </FormControl>
@@ -183,7 +183,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                   <div className="relative">
                     <Input
                       {...field}
-                      className="bg-[#F2F2F2] border-none outline-none lg:border-[#AA0A27] rounded-md"
+                      className="bg-[#F2F2F2] border-none outline-none  rounded-md"
                       type={isShow ? "text" : "password"}
                     />
 

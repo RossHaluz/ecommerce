@@ -18,10 +18,13 @@ import { Dispatch, FC, SetStateAction, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface LoginFormProps {
-  setIsRegister: Dispatch<SetStateAction<boolean>>;
-  setIsLogin: Dispatch<SetStateAction<boolean>>;
+  setIsRegister?: Dispatch<SetStateAction<boolean>>;
+  setIsLogin?: Dispatch<SetStateAction<boolean>>;
+  anotherStylesInput?: boolean;
+  isCheckoutContactForm?: boolean;
 }
 
 const formSchema = z.object({
@@ -29,7 +32,12 @@ const formSchema = z.object({
   password: z.string().min(1, { message: "Password is required" }),
 });
 
-const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
+const LoginForm: FC<LoginFormProps> = ({
+  setIsRegister,
+  setIsLogin,
+  anotherStylesInput = false,
+  isCheckoutContactForm = false,
+}) => {
   const [isShow, setIsShow] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
@@ -43,8 +51,10 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
   });
 
   const handleRegisterClick = () => {
-    setIsRegister(true);
-    setIsLogin(false);
+    if (setIsRegister && setIsLogin) {
+      setIsRegister(true);
+      setIsLogin(false);
+    }
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -60,7 +70,10 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
 
       Cookies.set("token", data?.data?.token, { expires: 7 });
       axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
-      router.push("/account");
+      if (!isCheckoutContactForm) {
+        router.push("/account");
+      }
+
       router.refresh();
     } catch (error: any) {
       const errorMessage =
@@ -90,7 +103,13 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
                 <FormControl>
                   <Input
                     {...field}
-                    className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                    className={cn(
+                      "bg-[#F2F2F2] border-none outline-none rounded-md",
+                      {
+                        "bg-[#FFFDFD] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848]":
+                          anotherStylesInput,
+                      }
+                    )}
                     type="email"
                   />
                 </FormControl>
@@ -111,7 +130,13 @@ const LoginForm: FC<LoginFormProps> = ({ setIsRegister, setIsLogin }) => {
                   <div className="relative">
                     <Input
                       {...field}
-                      className="bg-[#F2F2F2] border-none outline-none lg:border-[#7FAA84] rounded-md"
+                      className={cn(
+                        "bg-[#F2F2F2] border-none outline-none rounded-md",
+                        {
+                          "bg-[#FFFDFD] lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848]":
+                            anotherStylesInput,
+                        }
+                      )}
                       type={isShow ? "text" : "password"}
                     />
 

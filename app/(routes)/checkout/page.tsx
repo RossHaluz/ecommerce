@@ -16,7 +16,7 @@ const CheckoutPage = async () => {
             <Checkout currentUser={currentUser} />
           </div>
           <div className="hidden md:block">
-            <OrderItems />
+            <OrderItems currentUser={currentUser} />
           </div>
         </div>
       </div>
