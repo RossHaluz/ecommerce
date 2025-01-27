@@ -79,7 +79,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
       Cookies.set("token", data?.data?.newUser?.token, { expires: 1 });
       axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
 
-      router.push("/account");
+      setIsLogin(true);
       router.refresh();
       toast.success("Success register");
     } catch (error) {
@@ -189,6 +189,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
 
                     <Button
                       variant="ghost"
+                      type="button"
                       className="absolute top-0 right-0"
                       onClick={() => setIsShow((prev) => !prev)}
                     >
@@ -222,6 +223,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
                     />
 
                     <Button
+                      type="button"
                       variant="ghost"
                       className="absolute top-0 right-0"
                       onClick={() => setIsShowConfirmPass((prev) => !prev)}

@@ -23,7 +23,7 @@ const OrderDetails = () => {
     if (!orderDetails) {
       router.push("/");
     }
-  }, []);
+  }, [orderDetails, router]);
 
   return (
     <>

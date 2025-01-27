@@ -71,7 +71,7 @@ const Filters: FC<FiltersProps> = ({ filters, searchParams }) => {
 
     router.push(url);
     localStorage.setItem("filterIds", JSON.stringify(filterIds));
-  }, [filterIds, pathname, router, isInitialized]);
+  }, [filterIds, pathname, router, isInitialized, searchValue, sortByPrice]);
 
   const handleCheckedChange = (filter: FilterOption, type: string) => {
     if (type === "checkbox") {

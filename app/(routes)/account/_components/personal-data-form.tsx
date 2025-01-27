@@ -13,7 +13,6 @@ import React, { FC, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import UserAvatar from "/public/images/account-avatar.svg";
 import Image from "next/image";
@@ -39,7 +38,6 @@ const formSchema = z.object({
 });
 
 const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
-  const token = Cookies.get("token");
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [selectFile, setSelectFile] = useState<File | null>(null);
@@ -61,6 +59,15 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
           email: "",
         },
   });
+
+  const createGravatar = (avatar: string) => {
+    if (avatar.startsWith("//")) {
+      let image = null;
+      image = avatar.split("").splice(2).join("");
+      return `https://${image}`;
+    }
+    return `${process.env.BACKEND_URL}/public/avatars/${user?.avatar}`;
+  };
 
   const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -184,7 +191,7 @@ const PersonalDataForm: FC<PersonalDataFormProps> = ({ user }) => {
                 user?.avatar &&
                 !selectFile && (
                   <Image
-                    src={`${process.env.BACKEND_URL}/public/avatars/${user?.avatar}`}
+                    src={createGravatar(user?.avatar)}
                     alt="User avatarb"
                     fill
                     objectFit="cover"

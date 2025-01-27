@@ -19,6 +19,7 @@ interface OrderItem {
     id: string;
     title: string;
     article: string;
+    catalog_number: string;
     images: {
       url: string;
     }[];
@@ -54,6 +55,8 @@ interface HistoryOrdersListProps {
 
 const HistoryOrdersList: FC<HistoryOrdersListProps> = ({ ordersByUser }) => {
   const [isShowItems, setShowItems] = useState<string | null>(null);
+
+  console.log(ordersByUser);
 
   const capitalizeFirstLetter = (str: string) => {
     if (!str) return;

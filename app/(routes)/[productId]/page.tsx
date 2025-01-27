@@ -14,14 +14,14 @@ interface ProductPageProps {
 const ProductPage: FC<ProductPageProps> = async ({ params }) => {
   const { productId } = params;
 
-  const { product } = await getProductDetails(productId);
+  const data = await getProductDetails(productId);
 
   return (
     <div className="container mt-6 mb-6 lg:mt-12">
-      {product && <ProductInfo initialData={product} />}
+      {data?.product && <ProductInfo initialData={data?.product} />}
 
       <Advantages />
-      {product && <ProductDetails initialData={product} />}
+      {data?.product && <ProductDetails initialData={data?.product} />}
     </div>
   );
 };

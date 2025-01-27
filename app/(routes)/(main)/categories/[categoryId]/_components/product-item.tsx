@@ -15,6 +15,8 @@ import { selectOrderItems } from "@/redux/order/selector";
 import ProductCount from "@/app/(routes)/[productId]/_components/product-count";
 import Trash from "/public/images/trash.svg";
 import { nanoid } from "@reduxjs/toolkit";
+import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
+import { cn } from "@/lib/utils";
 
 interface ProductItemProps {
   item: {
@@ -37,6 +39,7 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
   const productImage = item?.images?.map((item) => item?.url)[0];
   const dispatch = useDispatch();
   const orderItems = useSelector(selectOrderItems);
+  const currentCustomizer = useSelector(selectCurrentCustomizer);
 
   const USDollar = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -90,9 +93,24 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
   };
 
   return (
-    <li className="grid grid-cols-5 gap-4 p-4 md:p-6 bg-[#FFFDFD] rounded">
-      <Link href={`/${item?.id}`} className="col-span-2">
-        <div className="relative overflow-hidden h-full w-full">
+    <li
+      className={cn("grid gap-4 bg-[#FFFDFD] rounded", {
+        "grid-cols-5 p-4 md:p-6": currentCustomizer === "list",
+        "grid-cols-1": currentCustomizer === "grid",
+      })}
+    >
+      <Link
+        href={`/${item?.id}`}
+        className={cn("w-full", {
+          "col-span-2": currentCustomizer === "list",
+        })}
+      >
+        <div
+          className={cn("relative overflow-hidden", {
+            "h-full w-full": currentCustomizer === "list",
+            "aspect-video w-full": currentCustomizer === "grid",
+          })}
+        >
           {productImage ? (
             <Image
               src={`${process.env.BACKEND_URL}/public/products/${productImage}`}
@@ -114,10 +132,23 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
         </div>
       </Link>
 
-      <div className="flex flex-col gap-4 h-full md:justify-between col-span-3">
+      <div
+        className={cn("flex flex-col gap-4 h-full md:justify-between", {
+          "col-span-3": currentCustomizer === "list",
+          "p-4 md:p-6 items-center": currentCustomizer === "grid",
+        })}
+      >
         <div className="flex flex-col gap-2 md:gap-4">
           <Link href={`/${item?.id}`}>
-            <h2 className="text-[14px] leading-[17.07px] font-medium text-[#111111] uppercase line-clamp-2 md:text-[24px] md:leading-[33.6px]">
+            <h2
+              className={cn(
+                "text-[14px] leading-[17.07px] font-medium text-[#111111] uppercase line-clamp-2 md:text-[24px] md:leading-[33.6px]",
+                {
+                  "md:text-[14px] md:leading-[17.07px] md:text-center":
+                    currentCustomizer === "grid",
+                }
+              )}
+            >
               {item?.title} - {item?.article}
             </h2>
           </Link>
@@ -126,14 +157,28 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
             {/* <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
               Код товару: {item?.article}
             </h3> */}
-            <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
+            <h3
+              className={cn(
+                "text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]",
+                {
+                  "text-center": currentCustomizer === "grid",
+                }
+              )}
+            >
               Каталожний номер: {item?.catalog_number}
             </h3>
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
-          <h3 className="text-[14px] leading-[17.07px] md:text-[28px] md:leading-[34.13px]  font-semibold text-[#111111]">
+          <h3
+            className={cn(
+              "text-[14px] leading-[17.07px] md:text-[28px] md:leading-[34.13px]  font-semibold text-[#111111]",
+              {
+                "md:text-lg text-center": currentCustomizer === "grid",
+              }
+            )}
+          >
             {Number(item?.price) === 0 && "Ціна договірна"}
             {Number(item?.price) > 0 && USDollar.format(Number(item?.price))}
           </h3>
@@ -142,7 +187,7 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
             triggetBtn={
               <Button
                 variant="ghost"
-                className="hover:bg-none bg-[#c0092a] max-w-max leading-[14.63px] font-medium p-[12.5px] md:px-[73px] md:py-[14px] text-[#FFFDFD]"
+                className="hover:bg-none bg-[#c0092a] max-w-max leading-[14.63px] font-medium p-[12.5px] md:px-[73px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
                 onClick={() => handleAddItemToCart(item)}
               >
                 Додати до кошику

@@ -3,6 +3,7 @@ import Products from "./_components/products";
 import NotFoundItems from "@/components/not-found-items";
 import { getCategoryDetails } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
@@ -18,6 +19,26 @@ interface CategoryPageProps {
     sortByPrice: string;
     searchValue: string;
     modelId: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: CategoryPageProps): Promise<Metadata> {
+  const { categoryId } = params;
+
+  // Отримання деталей категорії для мета-тегів
+  const category = await getCategoryDetails({
+    categoryId,
+    pageSize: "10",
+  });
+
+  const categoryName =
+    category?.category?.name || "Запчастини під усі моделі Audi";
+
+  return {
+    title: `Купити ${categoryName.toLowerCase()} в магазині Audiparts`,
+    description: `Оберіть запчастини для ${categoryName}. Великий вибір, доступні ціни, доставка по Україні.`,
   };
 }
 

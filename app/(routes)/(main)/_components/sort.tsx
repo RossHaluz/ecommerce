@@ -9,6 +9,8 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useSelector } from "react-redux";
+import { selectCurrentModel } from "@/redux/models/selectors";
 
 interface SortProductsProps {
   searchParams: {
@@ -28,6 +30,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
+  const currentModel = useSelector(selectCurrentModel);
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideSort);
@@ -58,6 +61,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
           sortByPrice: selectSort ? selectSort : null,
           searchValue: searchValue ? searchValue : null,
           page: currentPage ? currentPage : null,
+          modelId: currentModel ? currentModel?.id : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -65,7 +69,15 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
 
     router.push(url, { scroll: false });
     localStorage.setItem("sortByPrice", selectSort);
-  }, [selectSort, isInitialized, pathname, router]);
+  }, [
+    selectSort,
+    isInitialized,
+    pathname,
+    router,
+    currentModel,
+    filterIds,
+    searchValue,
+  ]);
 
   const clickOutsideSort = (e: MouseEvent) => {
     if (sortRef.current && !sortRef.current.contains(e.target as Node)) {

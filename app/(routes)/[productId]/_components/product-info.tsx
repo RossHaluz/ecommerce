@@ -60,7 +60,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
   useEffect(() => {
     const price = count * Number(savePrice);
     setCurrentPrice(price);
-  }, [count]);
+  }, [count, savePrice]);
 
   const optionValues = productOptions?.map((option) => ({
     title: option?.option?.name,

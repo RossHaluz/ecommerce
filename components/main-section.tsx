@@ -12,6 +12,7 @@ import {
 import { selectModels } from "@/redux/models/selectors";
 import { getModels } from "@/redux/models/operetions";
 import SortProducts from "@/app/(routes)/(main)/_components/sort";
+import CustomizerLayout from "./сustomizer-layout";
 
 interface MainSectionProps {
   title: string;
@@ -53,7 +54,11 @@ const MainSection: FC<MainSectionProps> = ({
               {title}
             </h2>
           )}
-          <SortProducts searchParams={params} />
+
+          <div className="flex items-center gap-6">
+            <SortProducts searchParams={params} />
+            <CustomizerLayout />
+          </div>
         </div>
         <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
           {shouldBeCategories && (

@@ -93,7 +93,7 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(getCategories());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideInfo);

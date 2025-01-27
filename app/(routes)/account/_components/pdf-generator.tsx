@@ -1,11 +1,8 @@
 import { Button } from "@/components/ui/button";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import { formatter } from "@/lib/formatter";
 import { Printer } from "lucide-react";
-import { FC } from "react";
-
-// Імпортуємо шрифт
-import "@/public/fonts/Roboto-Regular-normal"; // Імпортуйте сам файл шрифта
+import React, { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 interface OrderItem {
   id: string;
@@ -13,6 +10,7 @@ interface OrderItem {
     price: string;
     id: string;
     title: string;
+    catalog_number: string;
     article: string;
     images: {
       url: string;
@@ -38,143 +36,182 @@ interface PdfGeneratorProps {
     typeDelivary: string;
     createdAt: string;
     orderItems: OrderItem[];
+    orderType: string;
+    dropshipDetails: {
+      clientFirstName: string;
+      clientLastName: string;
+      clientPhone: string;
+    };
   };
 }
 
-const PdfGenerator: FC<PdfGeneratorProps> = ({ item }) => {
-  const generatePdf = () => {
-    const doc = new jsPDF();
-
-    // Додаємо шрифт
-    doc.addFileToVFS("Roboto-Regular-normal.ttf", "Roboto-Regular.js");
-
-    // Додаємо шрифт в документ
-    doc.addFont("Roboto-Regular-normal.ttf", "Roboto", "normal");
-
-    // Встановлюємо шрифт
-    doc.setFont("Roboto");
-
+const PdfContent = React.forwardRef<HTMLDivElement, PdfGeneratorProps>(
+  ({ item }, ref) => {
     let totalPrice = 0;
 
-    // Заголовок
-    autoTable(doc, {
-      body: [
-        [
-          {
-            content: "Накладна про замовлення",
-            styles: {
-              halign: "center",
-              fontSize: 20,
-              textColor: "#ffffff",
-            },
-          },
-        ],
-      ],
-      theme: "plain",
-      styles: {
-        fillColor: "#343a40",
-      },
-    });
+    return (
+      <div
+        ref={ref}
+        className="print-hidden"
+        style={{
+          padding: "50px",
+          fontFamily: "Roboto, Arial, sans-serif",
+          fontSize: "12px",
+        }}
+      >
+        <h1
+          style={{
+            textAlign: "center",
+            color: "#343a40",
+            fontWeight: "bold",
+            marginBottom: "16px",
+          }}
+        >
+          Накладна про замовлення №{item?.orderNumber}
+        </h1>
 
-    // Інформація про продавця та покупця
-    autoTable(doc, {
-      body: [
-        [
-          {
-            content: "AudiParts\nм. Хмельницький, Україна",
-            styles: {
-              halign: "left",
-            },
-          },
-          {
-            content: `Покупець:\n${item.firstName} ${item.lastName}\nТелефон: ${item.phone}`,
-            styles: {
-              halign: "right",
-            },
-          },
-        ],
-      ],
-      theme: "plain",
-    });
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "20px",
+          }}
+        >
+          <div>
+            <p>AudiParts</p>
+            <p>м. Хмельницький, Україна</p>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <p style={{ fontWeight: "bold" }}>
+              {item?.orderType === "RETAIL"
+                ? "Покупець"
+                : item?.orderType === "DROPSHIP" && "Дропшипер:"}
+            </p>
+            <p>
+              {item.firstName} {item.lastName}
+            </p>
+            <p>Телефон: {item.phone}</p>
+          </div>
+          {item?.orderType === "DROPSHIP" && (
+            <div style={{ textAlign: "right" }}>
+              <h3 style={{ fontWeight: "bold" }}>Дані клієнат:</h3>
+              <p>
+                Ім&apos;я та прізвище: {item?.dropshipDetails?.clientFirstName}{" "}
+                {item?.dropshipDetails?.clientLastName}
+              </p>
+              <p>Телефон: {item?.dropshipDetails?.clientPhone}</p>
+            </div>
+          )}
+        </div>
 
-    // Інформація про замовлення
-    autoTable(doc, {
-      body: [
-        [
-          {
-            content: `Номер замовлення: ${item.orderNumber}\nДата: ${new Date(
-              item.createdAt
-            ).toLocaleDateString()}`,
-            styles: {
-              halign: "left",
-            },
-          },
-          {
-            content: `Доставка: ${item.postService}, ${
-              item.typeDelivary
-            }\nАдреса: ${item.address || item.separation}`,
-            styles: {
-              halign: "right",
-            },
-          },
-        ],
-      ],
-      theme: "plain",
-    });
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "20px",
+          }}
+        >
+          <div>
+            <p>Номер замовлення: {item.orderNumber}</p>
+            <p>Дата: {new Date(item.createdAt).toLocaleDateString()}</p>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <p>
+              Доставка: {item.postService === "nova-poshta" && "Нова Пошта"},{" "}
+              {item.typeDelivary}
+            </p>
+            <p>Адреса: {item.address || item.separation}</p>
+          </div>
+        </div>
 
-    // Таблиця товарів
-    autoTable(doc, {
-      head: [
-        [
-          "Артикул",
-          "Назва товару",
-          "Кількість",
-          "Ціна за одиницю",
-          "Загальна ціна",
-        ],
-      ],
-      body: item.orderItems.map((orderItem) => {
-        const itemTotal = orderItem.quantity * Number(orderItem.product.price);
-        totalPrice += itemTotal;
-        return [
-          orderItem.product.article,
-          orderItem.product.title,
-          orderItem.quantity,
-          `${Number(orderItem.product.price).toFixed(2)} грн`,
-          `${itemTotal.toFixed(2)} грн`,
-        ];
-      }),
-      theme: "striped",
-      headStyles: {
-        fillColor: "#343a40",
-        textColor: "#ffffff",
-      },
-    });
+        {/* Таблиця товарів */}
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginBottom: "20px",
+          }}
+        >
+          <thead>
+            <tr style={{ backgroundColor: "#343a40", color: "#ffffff" }}>
+              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Артикул
+              </th>
+              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Каталожний номер
+              </th>
+              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Назва товару
+              </th>
+              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Кількість
+              </th>
+              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Ціна за одиницю
+              </th>
+              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Загальна ціна
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {item.orderItems.map((orderItem) => {
+              const itemTotal =
+                orderItem.quantity * Number(orderItem.product.price);
+              totalPrice += itemTotal;
 
-    // Загальна вартість
-    autoTable(doc, {
-      body: [
-        [
-          {
-            content: `Загальна вартість: ${totalPrice.toFixed(2)} грн`,
-            styles: {
-              halign: "right",
-              fontSize: 14,
-            },
-          },
-        ],
-      ],
-      theme: "plain",
-    });
+              return (
+                <tr key={item?.id}>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {orderItem.product.article}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {orderItem.product?.catalog_number}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {orderItem.product.title}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {orderItem.quantity}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {formatter.format(Number(orderItem.product.price))}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {formatter.format(Number(itemTotal))}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
 
-    // Збереження PDF
-    doc.save(`Invoice_${item.orderNumber}.pdf`);
-  };
+        {/* Загальна вартість */}
+        <p style={{ textAlign: "right", fontSize: "14px", fontWeight: "bold" }}>
+          Загальна вартість: {formatter.format(Number(totalPrice))}
+        </p>
+      </div>
+    );
+  }
+);
+
+PdfContent.displayName = "PdfContent";
+
+const PdfGenerator = ({ item }: PdfGeneratorProps) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = useReactToPrint({
+    contentRef,
+    documentTitle: `Invoice_${item.orderNumber}`,
+  });
 
   return (
-    <Button variant="ghost" onClick={generatePdf}>
-      <Printer color="#c0092a" />
-    </Button>
+    <>
+      <PdfContent ref={contentRef} item={item} />
+      <Button variant="ghost" onClick={() => handlePrint()}>
+        <Printer color="#c0092a" />
+      </Button>
+    </>
   );
 };
 

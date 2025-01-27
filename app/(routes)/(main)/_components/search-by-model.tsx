@@ -47,7 +47,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
     );
 
     return router.push(url, { scroll: false });
-  }, []);
+  }, [currentModel?.id, pathname, router]);
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideModel);
