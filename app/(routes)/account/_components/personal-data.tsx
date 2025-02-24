@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import ArrowDown from "/public/images/arrow-down.svg";
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import PersonalDataForm from "./personal-data-form";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -16,10 +16,14 @@ interface PersonalDataProps {
     token: string;
   };
   activeNavigation: string;
-  setActiveNavigation: Dispatch<SetStateAction<string>>; 
+  setActiveNavigation: Dispatch<SetStateAction<string>>;
 }
 
-const PersonalData: FC<PersonalDataProps> = ({ user, activeNavigation, setActiveNavigation }) => {
+const PersonalData: FC<PersonalDataProps> = ({
+  user,
+  activeNavigation,
+  setActiveNavigation,
+}) => {
   return (
     <div className="flex flex-col gap-3">
       <Button

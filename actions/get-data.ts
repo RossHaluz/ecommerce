@@ -7,6 +7,7 @@ interface Product {
   title: string;
   price: string;
   article: string;
+  product_name: string;
   maxPrice: string;
   catalog_number: string;
   productOptions: any[];
@@ -83,7 +84,7 @@ export const getCategoryDetails = async (data: {
       filterIds,
       page = 1,
       sortByPrice = "desc",
-      pageSize = 10,
+      pageSize = 30,
       categoryId,
       modelId,
     } = data;
@@ -136,6 +137,20 @@ export const getProductDetails = async (productId: string) => {
   }
 };
 
+//Get similar products
+export const getSimilarProducts = async (productId: string) => {
+  try {
+    const { data } = await axios.get(
+      `/product/${storeId}/${productId}/similar-products`
+    );
+
+    return data?.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 //Get current user
 export const getCurrentUser = async () => {
   const tokenCookie = cookies().get("token");
@@ -157,8 +172,6 @@ export const getCurrentUser = async () => {
 
 //Create order
 export const createOrder = async (values: any) => {
-  console.log(values);
-
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
   try {
@@ -177,17 +190,17 @@ export const createOrder = async (values: any) => {
 
 //Search products
 export const getSearchProducts = async (data: {
-  filterIds?: string;
   searchValue?: string;
   page?: string;
   sortByPrice?: string;
+  modelId?: string;
 }) => {
   try {
-    const { filterIds, searchValue, page, sortByPrice } = data;
+    const { modelId, searchValue, page, sortByPrice } = data;
     const { data: products } = await axios.get(`/product/${storeId}`, {
       params: {
         searchValue,
-        filterIds,
+        modelId,
         page,
         sortByPrice,
       },
@@ -205,18 +218,20 @@ export const getAllProducts = async (data: {
   filterIds?: string;
   page?: string;
   sortByPrice?: string;
-  modelId: string;
+  modelId?: string;
+  pageSize?: number;
 }): Promise<ProductsResponse | null> => {
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
   try {
-    const { filterIds, page, sortByPrice, modelId } = data;
+    const { filterIds, page, sortByPrice, modelId, pageSize } = data;
     const { data: products } = await axios.get(`/product/${storeId}`, {
       params: {
         filterIds,
         page,
         sortByPrice,
         modelId,
+        pageSize,
       },
       headers: {
         Authorization: `Bearer ${token}`,

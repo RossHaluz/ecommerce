@@ -5,8 +5,6 @@ import {
   SelectValue,
   SelectContent,
 } from "@/components/ui/select";
-import { usePathname, useRouter } from "next/navigation";
-import qs from "query-string";
 import React, { FC } from "react";
 
 interface ProductOptionProps {

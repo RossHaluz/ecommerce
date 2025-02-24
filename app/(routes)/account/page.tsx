@@ -3,6 +3,15 @@ import { redirect } from "next/navigation";
 import AccountMobileNavigation from "./_components/account-mobile-navigation";
 import AccountDescNavigation from "./_components/account-desc-navigation";
 import { getCurrentUser } from "@/actions/get-data";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Акаунт користувача",
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 const AccountPage = async () => {
   const cookieStore = cookies();

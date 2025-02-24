@@ -9,9 +9,6 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   searchParams: {
-    filterIds?: string;
-    maxPrice?: string;
-    minPrice?: string;
     page?: string;
     sortByPrice?: string;
     modelId: string;
@@ -25,28 +22,28 @@ const Pagination: FC<PaginationProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { filterIds, maxPrice, minPrice, sortByPrice, modelId, page } =
-    searchParams;
+  const { page } = searchParams;
 
   useEffect(() => {
     if (!page) return;
-
     localStorage.setItem("currentPage", page);
   }, [page]);
 
   const handlePreviousPage = () => {
     if (currentPage === 1) return;
+    const queryParams = qs.parse(window.location.search);
+    const sortByPrice = queryParams?.sortByPrice as string;
+    const modelId = queryParams?.modelId as string;
+    const searchValue = queryParams?.searchValue as string;
     const prevPage = currentPage - 1;
     const url = qs.stringifyUrl(
       {
         url: pathname,
         query: {
-          filterIds: filterIds ? filterIds : null,
-          maxPrice: maxPrice ? maxPrice : null,
-          minPrice: minPrice ? minPrice : null,
           page: prevPage ? prevPage : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
           modelId: modelId ? modelId : null,
+          searchValue: searchValue ? searchValue : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -57,17 +54,20 @@ const Pagination: FC<PaginationProps> = ({
 
   const handleNextPage = () => {
     if (currentPage === totalPages) return;
+    const queryParams = qs.parse(window.location.search);
+    const sortByPrice = queryParams?.sortByPrice as string;
+    const modelId = queryParams?.modelId as string;
+    const searchValue = queryParams?.searchValue as string;
+
     const nextPage = currentPage + 1;
     const url = qs.stringifyUrl(
       {
         url: pathname,
         query: {
-          filterIds: filterIds ? filterIds : null,
-          maxPrice: maxPrice ? maxPrice : null,
-          minPrice: minPrice ? minPrice : null,
           page: nextPage ? nextPage : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
           modelId: modelId ? modelId : null,
+          searchValue: searchValue ? searchValue : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -77,16 +77,18 @@ const Pagination: FC<PaginationProps> = ({
   };
 
   const handlePageClick = (pageNumber: number) => {
+    const queryParams = qs.parse(window.location.search);
+    const sortByPrice = queryParams?.sortByPrice as string;
+    const modelId = queryParams?.modelId as string;
+    const searchValue = queryParams?.searchValue as string;
     const url = qs.stringifyUrl(
       {
         url: pathname,
         query: {
-          filterIds: filterIds ? filterIds : null,
-          maxPrice: maxPrice ? maxPrice : null,
-          minPrice: minPrice ? minPrice : null,
           page: pageNumber ? pageNumber : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
           modelId: modelId ? modelId : null,
+          searchValue: searchValue ? searchValue : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -131,6 +133,7 @@ const Pagination: FC<PaginationProps> = ({
   return (
     <div className="flex items-center gap-4 mx-auto py-[10px]">
       <button
+        aria-label="Повередня сторінка"
         className="flex items-center gap-2 disabled:text-gray-500 hover:bg-accent px-4 py-2 rounded-md"
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
@@ -141,6 +144,7 @@ const Pagination: FC<PaginationProps> = ({
       {renderPageNumbers()}
 
       <button
+        aria-label="Наступна сторінка"
         className="flex items-center gap-2 disabled:text-gray-500 hover:bg-accent px-4 py-2 rounded-md"
         onClick={handleNextPage}
         disabled={currentPage === totalPages}

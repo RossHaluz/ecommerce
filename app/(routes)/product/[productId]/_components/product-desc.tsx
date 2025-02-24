@@ -26,19 +26,18 @@ const ProductDesc: FC<ProductDescProps> = ({ description }) => {
 
   return (
     <div>
-      <div
-        ref={descriptionRef}
-        className={`transform transition-all duration-300 overflow-hidden`}
-        style={{maxHeight: isHidden ? `${maxHeigth}px` : 'none'}}
-      >
-          <div className="text-[#484848] text-xs" dangerouslySetInnerHTML={{ __html: description }} />
+      <div ref={descriptionRef}>
+        <div
+          className="text-[#484848] text-xs"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
       </div>
 
       {isOverflowing && (
         <Button
           variant="ghost"
           onClick={() => setIsHidden((prev) => !prev)}
-          className="text-[#7FAA84] underline text-sm font-bold px-0"
+          className="text-[#111] underline text-sm font-bold px-0"
         >
           {isHidden ? "Читати далі" : "Згорнути"}
         </Button>

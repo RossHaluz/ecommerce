@@ -16,9 +16,11 @@ interface OrderItem {
   id: string;
   product: {
     price: string;
+    product_name: string;
     id: string;
     title: string;
     article: string;
+
     catalog_number: string;
     images: {
       url: string;
@@ -55,8 +57,6 @@ interface HistoryOrdersListProps {
 
 const HistoryOrdersList: FC<HistoryOrdersListProps> = ({ ordersByUser }) => {
   const [isShowItems, setShowItems] = useState<string | null>(null);
-
-  console.log(ordersByUser);
 
   const capitalizeFirstLetter = (str: string) => {
     if (!str) return;
@@ -113,8 +113,7 @@ const HistoryOrdersList: FC<HistoryOrdersListProps> = ({ ordersByUser }) => {
                     <div className="w-full h-[1px] bg-[#c0092a]" />
                     <div className="flex flex-col gap-4">
                       {item?.orderItems.map((item) => {
-                        const totalPrice =
-                          item?.quantity * Number(item?.product?.price);
+                        const totalPrice = item?.quantity * Number(item?.price);
 
                         return (
                           <div
@@ -134,7 +133,7 @@ const HistoryOrdersList: FC<HistoryOrdersListProps> = ({ ordersByUser }) => {
                             <div className="flex flex-col gap-[15px] w-full">
                               <div className="w-[175px] flex flex-col gap-[10px]">
                                 <Link
-                                  href={`/${item?.product?.id}`}
+                                  href={`/product/${item?.product?.product_name}`}
                                   className="underline text-[#484848] font-bold"
                                 >
                                   {capitalizeFirstLetter(item?.product?.title)}

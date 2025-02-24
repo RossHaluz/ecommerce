@@ -22,13 +22,19 @@ const OrderDelivary: FC<OrderDelivaryProps> = ({ orderDetails }) => {
           <Address />
         </div>
         <p>
-          {orderDetails?.typeDelivary}
-          {orderDetails?.postService === "nova-poshta" && "Нова-Пошта"}
+          {orderDetails?.typeDelivary}{" "}
+          {orderDetails?.postService === "novaPoshta" && "Нова-Пошта"}
+          {orderDetails?.postService === "pickup" && "Самовивіз"}
+          {orderDetails?.postService === "transporter" && "Перевізник"}
           <br />
-          {orderDetails?.city},{" "}
-          {orderDetails?.address
-            ? orderDetails?.address
-            : orderDetails?.separation}
+          {orderDetails?.postService !== "pickup" && (
+            <>
+              {orderDetails?.city},
+              {orderDetails?.address
+                ? orderDetails?.address
+                : orderDetails?.separation}
+            </>
+          )}
         </p>
       </div>
     </div>

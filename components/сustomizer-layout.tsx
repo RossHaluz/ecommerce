@@ -18,6 +18,7 @@ const CustomizerLayout = () => {
   return (
     <div className="flex items-center gap-4">
       <Button
+        aria-label="Два товари в ряд"
         variant="ghost"
         size="reset"
         onClick={() => handleSelectCustomizer("grid")}
@@ -28,6 +29,7 @@ const CustomizerLayout = () => {
       </Button>
 
       <Button
+        aria-label="Один товар в ряд"
         variant="ghost"
         size="reset"
         onClick={() => handleSelectCustomizer("list")}

@@ -19,7 +19,7 @@ import Modal from "./ui/modal";
 import { selectOrderItems } from "@/redux/order/selector";
 import { useAppDispatch } from "@/redux/store";
 import { removeItemFromCart } from "@/redux/order/slice";
-import ProductCount from "@/app/(routes)/[productId]/_components/product-count";
+import ProductCount from "@/app/(routes)/product/[productId]/_components/product-count";
 import { getCurrentUser } from "@/actions/get-data";
 
 const MobileSidebar = () => {

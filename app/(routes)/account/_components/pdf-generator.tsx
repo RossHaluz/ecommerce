@@ -59,68 +59,63 @@ const PdfContent = React.forwardRef<HTMLDivElement, PdfGeneratorProps>(
           fontSize: "12px",
         }}
       >
-        <h1
-          style={{
-            textAlign: "center",
-            color: "#343a40",
-            fontWeight: "bold",
-            marginBottom: "16px",
-          }}
-        >
-          Накладна про замовлення №{item?.orderNumber}
-        </h1>
-
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
+            display: "grid",
+            gridTemplateColumns:
+              item?.orderType === "DROPSHIP"
+                ? "repeat(4, 1fr)"
+                : "repeat(3, 1fr)",
+            gap: "10px",
             marginBottom: "20px",
           }}
         >
-          <div>
-            <p>AudiParts</p>
-            <p>м. Хмельницький, Україна</p>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span>№{item?.orderNumber}</span>
+            <span>{new Date(item.createdAt).toLocaleDateString()}</span>
           </div>
-          <div style={{ textAlign: "right" }}>
-            <p style={{ fontWeight: "bold" }}>
-              {item?.orderType === "RETAIL"
-                ? "Покупець"
-                : item?.orderType === "DROPSHIP" && "Дропшипер:"}
-            </p>
-            <p>
-              {item.firstName} {item.lastName}
-            </p>
-            <p>Телефон: {item.phone}</p>
+          {/* Дропшипер або роздрібний клієнт */}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <h3 style={{ fontWeight: "bold" }}>
+              {item?.orderType === "DROPSHIP" ? "ТА:" : "Покупець:"}
+            </h3>
+            <span>
+              {item?.firstName} {item?.lastName}
+            </span>
+            <span>{item?.phone}</span>
           </div>
+          {/* Коментар - якщо дропшипер, тут будуть дані його клієнта  */}
           {item?.orderType === "DROPSHIP" && (
-            <div style={{ textAlign: "right" }}>
-              <h3 style={{ fontWeight: "bold" }}>Дані клієнат:</h3>
-              <p>
-                Ім&apos;я та прізвище: {item?.dropshipDetails?.clientFirstName}{" "}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <h3 style={{ fontWeight: "bold" }}>Дані клієнта:</h3>
+              <span>
+                {item?.dropshipDetails?.clientFirstName}{" "}
                 {item?.dropshipDetails?.clientLastName}
-              </p>
-              <p>Телефон: {item?.dropshipDetails?.clientPhone}</p>
+              </span>
+
+              <span>{item?.dropshipDetails?.clientPhone}</span>
             </div>
           )}
-        </div>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "20px",
-          }}
-        >
-          <div>
-            <p>Номер замовлення: {item.orderNumber}</p>
-            <p>Дата: {new Date(item.createdAt).toLocaleDateString()}</p>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <p>
-              Доставка: {item.postService === "nova-poshta" && "Нова Пошта"},{" "}
-              {item.typeDelivary}
-            </p>
-            <p>Адреса: {item.address || item.separation}</p>
+          {/* Дані про даставку  */}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span>{item.postService === "novaPoshta" && "Нова Пошта,"}</span>
+            <span>{item.postService === "pickup" && "Самовивіз,"}</span>
+            <span>{item.postService === "transporter" && "Перевізник,"}</span>
+            {item?.postService !== "pickup" && (
+              <>
+                <span>{item?.city && `${item?.city},`}</span>
+                <span> {item?.address ? item?.address : item?.separation}</span>
+              </>
+            )}
+            {/* Спосіб оплати  */}
+            <span>
+              {item?.paymentMethod === "cashOnDelivary" &&
+                "Оплата при отримані"}
+              {item?.paymentMethod === "monobank" &&
+                "Онлайн оплата через Monobank"}
+              {item?.paymentMethod === "payByCard" && "Оплата на карту"}
+            </span>
           </div>
         </div>
 
@@ -133,51 +128,50 @@ const PdfContent = React.forwardRef<HTMLDivElement, PdfGeneratorProps>(
           }}
         >
           <thead>
-            <tr style={{ backgroundColor: "#343a40", color: "#ffffff" }}>
-              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+            <tr>
+              <th style={{ border: "1px solid #343a40", padding: "8px" }}>
                 Артикул
               </th>
-              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+              <th style={{ border: "1px solid #343a40", padding: "8px" }}>
                 Каталожний номер
               </th>
-              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+              <th style={{ border: "1px solid #343a40", padding: "8px" }}>
                 Назва товару
               </th>
-              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+              <th style={{ border: "1px solid #343a40", padding: "8px" }}>
                 Кількість
               </th>
-              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+              <th style={{ border: "1px solid #343a40", padding: "8px" }}>
                 Ціна за одиницю
               </th>
-              <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+              <th style={{ border: "1px solid #343a40", padding: "8px" }}>
                 Загальна ціна
               </th>
             </tr>
           </thead>
           <tbody>
             {item.orderItems.map((orderItem) => {
-              const itemTotal =
-                orderItem.quantity * Number(orderItem.product.price);
+              const itemTotal = orderItem?.quantity * Number(orderItem?.price);
               totalPrice += itemTotal;
 
               return (
                 <tr key={item?.id}>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  <td style={{ border: "1px solid #343a40", padding: "8px" }}>
                     {orderItem.product.article}
                   </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  <td style={{ border: "1px solid #343a40", padding: "8px" }}>
                     {orderItem.product?.catalog_number}
                   </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  <td style={{ border: "1px solid #343a40", padding: "8px" }}>
                     {orderItem.product.title}
                   </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  <td style={{ border: "1px solid #343a40", padding: "8px" }}>
                     {orderItem.quantity}
                   </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                    {formatter.format(Number(orderItem.product.price))}
+                  <td style={{ border: "1px solid #343a40", padding: "8px" }}>
+                    {formatter.format(Number(orderItem.price))}
                   </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  <td style={{ border: "1px solid #343a40", padding: "8px" }}>
                     {formatter.format(Number(itemTotal))}
                   </td>
                 </tr>
@@ -187,7 +181,7 @@ const PdfContent = React.forwardRef<HTMLDivElement, PdfGeneratorProps>(
         </table>
 
         {/* Загальна вартість */}
-        <p style={{ textAlign: "right", fontSize: "14px", fontWeight: "bold" }}>
+        <p style={{ textAlign: "right", fontSize: "12px", fontWeight: "bold" }}>
           Загальна вартість: {formatter.format(Number(totalPrice))}
         </p>
       </div>

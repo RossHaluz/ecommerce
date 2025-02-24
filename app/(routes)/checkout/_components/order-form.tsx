@@ -16,8 +16,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Checkbox } from "@/components/ui/checkbox";
-import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -31,6 +29,7 @@ import { createInvoice } from "@/services/monobank";
 import { selectUserContactDetails } from "@/redux/auth/selectors";
 import { removeUserContactDetails } from "@/redux/auth/slice";
 import { createOrder } from "@/actions/get-data";
+import { motion } from "framer-motion";
 
 interface OrderFormProps {
   currentUser?: {
@@ -45,41 +44,35 @@ interface OrderFormProps {
 }
 
 const formSchema = z.object({
-  postService: z.enum(["nova-poshta"], {
-    required_error: "You need to select a post service.",
-  }),
-  city: z.string().min(1, { message: "Separation is required" }),
-  address: z.string(),
-  payment: z.enum(["monobank", "cashOnDelivary"], {
-    required_error: "You need to select a payment method.",
-  }),
-  ref_city: z.string(),
-  ref_separation: z.string(),
-  comment: z.string(),
-  callBack: z.boolean().default(false),
-  separation: z.string(),
-  firstName: z.string().min(1, { message: "First name is required" }),
-  lastName: z.string().min(1, { message: "Last name is required" }),
-  phone: z.string().min(1, { message: "Phone number is required" }),
-  email: z.string(),
+  postService: z.enum(["novaPoshta", "pickup", "transporter"]).optional(),
+  city: z.string().optional(),
+  address: z.string().optional(),
+  paymentMethod: z.enum(["monobank", "cashOnDelivary", "payByCard"]).optional(),
+  ref_city: z.string().optional(),
+  ref_separation: z.string().optional(),
+  comment: z.string().optional(),
+  separation: z.string().optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  phone: z.string().min(1, { message: "Номер телефону обов'язковий" }),
+  email: z.string().optional(),
 });
 
 const dropFormSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
   phone: z.string().min(1, { message: "Phone number is required" }),
-  callBack: z.boolean().default(false),
   separation: z.string(),
-  ref_city: z.string(),
-  ref_separation: z.string(),
+  ref_city: z.string().optional(),
+  ref_separation: z.string().optional(),
   email: z.string(),
   comment: z.string(),
-  postService: z.enum(["nova-poshta"], {
+  postService: z.enum(["novaPoshta", "pickup", "transporter"], {
     required_error: "You need to select a post service.",
   }),
-  city: z.string().min(1, { message: "Separation is required" }),
+  city: z.string().optional(),
   address: z.string(),
-  payment: z.enum(["monobank", "cashOnDelivary"], {
+  paymentMethod: z.enum(["monobank", "cashOnDelivary", "payByCard"], {
     required_error: "You need to select a payment method.",
   }),
   clientFirstName: z.string().min(1, { message: "First name is required" }),
@@ -89,8 +82,12 @@ const dropFormSchema = z.object({
 
 const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const [currentDelivary, setCurrentDelivary] = useState("separation");
-  const [isShowContact, setIsShowContact] = useState(false);
+  const [isShowContact, setIsShowContact] = useState(
+    currentUser?.type === "drop" ? false : true
+  );
   const [isShowContactClient, setIsShowContactClient] = useState(true);
+  const [isShowDelivary, setIsShowDelivary] = useState(false);
+  const [isShowPayment, setIsShowPayment] = useState(false);
   const [separatios, setSeparatios] = useState<
     | {
         Present: string;
@@ -113,17 +110,28 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const cityRef = useRef<HTMLDivElement>(null);
   const detachmentRef = useRef<HTMLDivElement>(null);
 
+  console.log("orderItems", orderItems);
+
+  useEffect(() => {
+    window.addEventListener("mousedown", handleClickOutsideCities);
+    window.addEventListener("mousedown", handleClickOutsideDetachment);
+
+    () => {
+      window.removeEventListener("mousedown", handleClickOutsideCities);
+      window.removeEventListener("mousedown", handleClickOutsideDetachment);
+    };
+  }, []);
+
   const form = useForm<z.infer<typeof dropFormSchema>>({
     resolver: zodResolver(
       currentUser?.type === "drop" ? dropFormSchema : formSchema
     ),
     defaultValues: {
-      postService: "nova-poshta",
+      postService: "novaPoshta",
       city: "",
       address: "",
-      payment: "monobank",
+      paymentMethod: "cashOnDelivary",
       comment: "",
-      callBack: false,
       separation: "",
       firstName: userDetails?.firstName || currentUser?.firstName || "",
       lastName: userDetails?.lastName || currentUser?.lastName || "",
@@ -135,7 +143,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     },
   });
 
-  const currentPayment = form.getValues("payment");
+  const currentPostService = form.watch("postService");
 
   const handleClickOutsideDetachment = (e: MouseEvent) => {
     if (detachmentRef && !detachmentRef.current?.contains(e.target as Node)) {
@@ -149,16 +157,6 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       setIsShowSeparatios(false);
     }
   };
-
-  useEffect(() => {
-    window.addEventListener("mousedown", handleClickOutsideCities);
-    window.addEventListener("mousedown", handleClickOutsideDetachment);
-
-    () => {
-      window.removeEventListener("mousedown", handleClickOutsideCities);
-      window.removeEventListener("mousedown", handleClickOutsideDetachment);
-    };
-  }, []);
 
   const handleChangeCity = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -179,8 +177,6 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       if (!responce?.success) {
         throw new Error(responce.errors);
       }
-
-      console.log(responce);
 
       const formattedAddresses = responce?.data[0].Addresses.map(
         (address: {
@@ -309,7 +305,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const currentPayment = form.getValues("payment");
+      const currentPayment = form.getValues("paymentMethod");
 
       if (currentPayment === "monobank") {
         const dataMono = {
@@ -325,7 +321,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               icon?: string;
             }[],
           },
-          redirectUrl: "https://audiparts.site/success",
+          redirectUrl: "https://audiparts.site",
           webHookUrl: `${process.env.BACKEND_URL}/api/order/${process.env.STORE_ID}/create`,
         };
         let amount = 0;
@@ -356,9 +352,18 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
 
           if (orderItems?.length > 0) {
             data.products = orderItems?.map(
-              (item: { id: string; quantity: number }) => ({
+              (item: {
+                id: string;
+                quantity: number;
+                title: string;
+                article: string;
+                catalog_number: string;
+              }) => ({
                 productId: item?.id,
                 quantity: item?.quantity,
+                title: item?.title,
+                article: item?.article,
+                catalog_number: item?.catalog_number,
               })
             );
           }
@@ -373,7 +378,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       }
 
       const data: {
-        products?: { productId: string; quantity: number }[];
+        products?: { productId: string; quantity: number; price: number }[];
       } = {
         products: [],
         ...values,
@@ -381,9 +386,20 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
 
       if (orderItems?.length > 0) {
         data.products = orderItems?.map(
-          (item: { id: string; quantity: number }) => ({
+          (item: {
+            id: string;
+            quantity: number;
+            price: number;
+            title: string;
+            article: string;
+            catalog_number: string;
+          }) => ({
             productId: item?.id,
             quantity: item?.quantity,
+            price: Number(item?.price),
+            title: item?.title,
+            article: item?.article,
+            catalog_number: item?.catalog_number,
           })
         );
       }
@@ -404,11 +420,11 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-[30px]"
+        className="flex flex-col gap-3"
       >
-        <div className="flex flex-col gap-[15px] lg:gap-[30px]">
+        <div className="flex flex-col gap-3">
           {/* Контактні дані  */}
-          <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
+          <div className="flex flex-col gap-3 w-full">
             <Button
               variant="ghost"
               type="button"
@@ -435,22 +451,29 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               />
             </Button>
 
-            <div
-              className={cn(
-                "flex-col gap-[15px] w-full transform transition-all duration-300 origin-top scale-y-0 hidden",
-                {
-                  "scale-y-100 flex": isShowContact,
-                }
-              )}
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={
+                isShowContact
+                  ? { opacity: 1, height: "auto" }
+                  : { opacity: 0, height: 0 }
+              }
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden flex-col gap-3"
+              style={{ display: isShowContact ? "flex" : "none" }}
             >
               <FormField
                 name="firstName"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel className="text-base font-bold">
+                      Ім&apos;я
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Ім’я"
+                        placeholder="Ім'я"
                         className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
                         {...field}
                       />
@@ -464,6 +487,9 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel className="text-base font-bold">
+                      Прізвище
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Прізвище"
@@ -478,15 +504,29 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
               <FormField
                 name="phone"
                 control={form.control}
-                render={({ field }) => (
+                rules={{ required: "Введіть номер телефону" }}
+                render={({ field, fieldState }) => (
                   <FormItem>
+                    <FormLabel className="text-base font-bold">
+                      Номер телефону <span className="text-red-600">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Номер телефону"
-                        className="py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm  lg:text-base lg:font-semibold lg:border lg:border-solid lg:border-[#484848] rounded-[5px]"
+                        className={cn(
+                          "py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid rounded-[5px]",
+                          fieldState.invalid
+                            ? "border-red-500"
+                            : "border-[#484848]"
+                        )}
                         {...field}
                       />
                     </FormControl>
+                    {fieldState.invalid && (
+                      <FormMessage className="text-red-500 text-sm">
+                        {fieldState.error?.message}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
@@ -496,6 +536,9 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel className="text-base font-bold">
+                      E-mail
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Email"
@@ -506,12 +549,12 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   </FormItem>
                 )}
               />
-            </div>
+            </motion.div>
           </div>
 
           {/* Дані клієнта дропшипера */}
           {currentUser?.type === "drop" && (
-            <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
+            <div className="flex flex-col gap-3 w-full">
               <Button
                 variant="ghost"
                 type="button"
@@ -536,7 +579,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
 
               <div
                 className={cn(
-                  "flex-col gap-[15px] w-full transform transition-all duration-300 origin-top scale-y-0 hidden",
+                  "flex-col gap-3 w-full transform transition-all duration-300 origin-top scale-y-0 hidden",
                   {
                     "scale-y-100 flex": isShowContactClient,
                   }
@@ -547,6 +590,10 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
+                      <FormLabel className="text-base font-bold">
+                        Ім&apos;я клієнта{" "}
+                        <span className="text-red-600">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Ім’я"
@@ -563,6 +610,9 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
+                      <FormLabel className="text-base font-bold">
+                        Прізвище клієнта <span className="text-red-600">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Прізвище"
@@ -579,6 +629,10 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
+                      <FormLabel className="text-base font-bold">
+                        Номер телефону клієнта{" "}
+                        <span className="text-red-600">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Номер телефону"
@@ -594,227 +648,311 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
           )}
 
           {/* Достака  */}
-          <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
-            <div className="flex items-center gap-[15px]">
-              <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
-                <div className="text-[#484848] font-bold">
-                  {currentUser?.type === "drop" ? "3" : "2"}
+          <div className="flex flex-col gap-3 w-full">
+            <Button
+              variant="ghost"
+              type="button"
+              className="flex items-center gap-4 justify-between px-0"
+              onClick={() => setIsShowDelivary((prev) => !prev)}
+            >
+              <div className="flex items-center gap-[15px]">
+                <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
+                  <div className="text-[#484848] font-bold">
+                    {currentUser?.type === "drop" ? "3" : "2"}
+                  </div>
                 </div>
-              </div>
-              <h3 className="text-[#484848] font-bold">Доставка</h3>
-            </div>
-
-            <h3 className="text-base text-[#484848] font-medium">
-              Оберіть поштовий сервіс
-            </h3>
-
-            <div className="flex flex-col gap-[15px]">
-              <div className="flex flex-col gap-[13px]">
-                <FormField
-                  control={form.control}
-                  name="postService"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-col space-y-1"
-                        >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="nova-poshta" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Нова пошта
-                            </FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage className=" text-red-500 text-sm " />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex items-center gap-2 justify-between overflow-x-auto no-scrollbar">
-                  <Button
-                    variant="ghost"
-                    className={cn("text-base text-[#484848] p-0 font-medium", {
-                      "text-[#c0092a] font-bold underline":
-                        currentDelivary === "separation",
-                    })}
-                    onClick={() => setCurrentDelivary("separation")}
-                    type="button"
-                  >
-                    Доставка на відділення
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className={cn("text-base text-[#484848] p-0 font-medium", {
-                      "text-[#c0092a] font-bold underline":
-                        currentDelivary === "address",
-                    })}
-                    onClick={() => setCurrentDelivary("address")}
-                    type="button"
-                  >
-                    Доставка за адресою
-                  </Button>
-                </div>
+                <h3 className="text-[#484848] font-bold">Доставка</h3>
               </div>
 
-              <div className="flex flex-col gap-[15px]">
-                <div className="relative" ref={cityRef}>
+              <ArrowDown
+                className={cn(
+                  "stroke-[#c0092a] transform transition-all duration-300 rotate-0",
+                  {
+                    "rotate-180": isShowDelivary,
+                  }
+                )}
+              />
+            </Button>
+
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={
+                isShowDelivary
+                  ? { opacity: 1, height: "auto" }
+                  : { opacity: 0, height: 0 }
+              }
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="flex-col gap-4"
+              style={{ display: isShowDelivary ? "flex" : "none" }}
+            >
+              <h3 className="text-base text-[#484848] font-medium">
+                Оберіть поштовий сервіс
+              </h3>
+
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3">
                   <FormField
-                    name="city"
                     control={form.control}
+                    name="postService"
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input
-                            value={field.value}
-                            onChange={(e) => handleChangeCity(e)}
-                            placeholder="Почніть водити назву населеного пункту"
-                            className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
-                          />
+                          <RadioGroup
+                            onValueChange={(value) => {
+                              if (value === "transporter") {
+                                setCurrentDelivary("address");
+                              }
+                              field.onChange(value);
+                            }}
+                            defaultValue={field.value}
+                            className="flex flex-col space-y-1"
+                          >
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="novaPoshta" />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                Нова пошта
+                              </FormLabel>
+                            </FormItem>
+
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="pickup" />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                Самовивіз
+                              </FormLabel>
+                            </FormItem>
+
+                            {currentUser?.type === "drop" && (
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="transporter" />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  Перевізник
+                                </FormLabel>
+                              </FormItem>
+                            )}
+                          </RadioGroup>
                         </FormControl>
                         <FormMessage className=" text-red-500 text-sm " />
                       </FormItem>
                     )}
                   />
-                  {isShowSeparatios && (
-                    <div className="absolute top-[110%] z-50 left-0 w-full bg-white shadow-md rounded-md p-4 max-h-44 overflow-y-auto flex flex-col gap-4 items-start transform transition-all duration-150">
-                      {separatios && separatios?.length > 0 ? (
-                        separatios?.map((item) => {
-                          return (
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              className="p-0"
-                              key={item?.Ref}
-                              onClick={() =>
-                                handleSelectCity({
-                                  Present: item.Present,
-                                  MainDescription: item.MainDescription,
-                                  DeliveryCity: item?.DeliveryCity,
-                                })
-                              }
-                            >
-                              {item?.Present}
-                            </Button>
-                          );
-                        })
-                      ) : (
-                        <div className="w-full h-full">
-                          <h3 className="text-center text-slate-600 text-xs">
-                            Not found
-                          </h3>
-                        </div>
-                      )}
+
+                  {currentPostService !== "pickup" && (
+                    <div className="flex items-center gap-2 justify-between overflow-x-auto no-scrollbar">
+                      <Button
+                        variant="ghost"
+                        disabled={currentPostService === "transporter"}
+                        className={cn(
+                          "text-base text-[#484848] p-0 font-medium",
+                          {
+                            "text-[#c0092a] font-bold underline":
+                              currentDelivary === "separation",
+                          }
+                        )}
+                        onClick={() => setCurrentDelivary("separation")}
+                        type="button"
+                      >
+                        Доставка на відділення
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className={cn(
+                          "text-base text-[#484848] p-0 font-medium",
+                          {
+                            "text-[#c0092a] font-bold underline":
+                              currentDelivary === "address",
+                          }
+                        )}
+                        onClick={() => setCurrentDelivary("address")}
+                        type="button"
+                      >
+                        Доставка за адресою
+                      </Button>
                     </div>
                   )}
                 </div>
+                {currentPostService !== "pickup" && (
+                  <div className="flex flex-col gap-3">
+                    <div className="relative" ref={cityRef}>
+                      <FormField
+                        name="city"
+                        control={form.control}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                value={field.value}
+                                onChange={(e) => handleChangeCity(e)}
+                                placeholder="Почніть водити назву населеного пункту"
+                                className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
+                              />
+                            </FormControl>
+                            <FormMessage className=" text-red-500 text-sm " />
+                          </FormItem>
+                        )}
+                      />
+                      {isShowSeparatios && (
+                        <div className="absolute top-[110%] z-50 left-0 w-full max-h-40 bg-white shadow-md rounded-md p-4 overflow-y-auto flex flex-col gap-4 items-start transform transition-all duration-150">
+                          {separatios && separatios?.length > 0 ? (
+                            separatios?.map((item) => {
+                              return (
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  className="p-0"
+                                  key={item?.Ref}
+                                  onClick={() =>
+                                    handleSelectCity({
+                                      Present: item.Present,
+                                      MainDescription: item.MainDescription,
+                                      DeliveryCity: item?.DeliveryCity,
+                                    })
+                                  }
+                                >
+                                  {item?.Present}
+                                </Button>
+                              );
+                            })
+                          ) : (
+                            <div className="w-full h-full">
+                              <h3 className="text-center text-slate-600 text-xs">
+                                Not found
+                              </h3>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
 
-                {currentDelivary === "separation" ? (
-                  <FormField
-                    name="separation"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <div className="relative" ref={detachmentRef}>
-                            <Input
-                              value={field.value}
-                              disabled={!currentCity}
-                              onChange={(value) =>
-                                onChangeDetachmentInput(value)
-                              }
-                              placeholder="Введіть номер віділення"
-                              onFocus={onFocusSeparationInput}
-                              className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
-                            />
-                            {isShowDetachment && (
-                              <div className="absolute top-[110%] z-50 left-0 w-full bg-white shadow-md rounded-md p-4 max-h-44 overflow-y-auto flex flex-col gap-4 items-start transform transition-all duration-150">
-                                {detachments && detachments?.length > 0 ? (
-                                  detachments?.map((item) => {
-                                    return (
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        className="p-0"
-                                        key={item?.Description}
-                                        onClick={() =>
-                                          handleSelectDetachment({
-                                            Description:
-                                              item?.Description ?? "",
-                                            Ref: item?.Ref ?? "",
-                                          })
-                                        }
-                                      >
-                                        {item?.Description}
-                                      </Button>
-                                    );
-                                  })
-                                ) : (
-                                  <div className="w-full h-full">
-                                    <h3 className="text-center text-slate-600 text-xs">
-                                      Not found
-                                    </h3>
+                    {currentDelivary === "separation" ? (
+                      <FormField
+                        name="separation"
+                        control={form.control}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <div className="relative" ref={detachmentRef}>
+                                <Input
+                                  value={field.value}
+                                  disabled={!currentCity}
+                                  onChange={(value) =>
+                                    onChangeDetachmentInput(value)
+                                  }
+                                  placeholder="Введіть номер віділення"
+                                  onFocus={onFocusSeparationInput}
+                                  className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
+                                />
+                                {isShowDetachment && (
+                                  <div className="absolute top-[110%] z-50 left-0 w-full bg-white shadow-md rounded-md p-4 max-h-44 overflow-y-auto flex flex-col gap-4 items-start transform transition-all duration-150">
+                                    {detachments && detachments?.length > 0 ? (
+                                      detachments?.map((item) => {
+                                        return (
+                                          <Button
+                                            type="button"
+                                            variant="ghost"
+                                            className="p-0"
+                                            key={item?.Description}
+                                            onClick={() =>
+                                              handleSelectDetachment({
+                                                Description:
+                                                  item?.Description ?? "",
+                                                Ref: item?.Ref ?? "",
+                                              })
+                                            }
+                                          >
+                                            {item?.Description}
+                                          </Button>
+                                        );
+                                      })
+                                    ) : (
+                                      <div className="w-full h-full">
+                                        <h3 className="text-center text-slate-600 text-xs">
+                                          Not found
+                                        </h3>
+                                      </div>
+                                    )}
                                   </div>
                                 )}
                               </div>
-                            )}
-                          </div>
-                        </FormControl>
-                        <FormMessage className=" text-red-500 text-sm " />
-                      </FormItem>
+                            </FormControl>
+                            <FormMessage className=" text-red-500 text-sm " />
+                          </FormItem>
+                        )}
+                      />
+                    ) : (
+                      currentDelivary === "address" && (
+                        <FormField
+                          name="address"
+                          control={form.control}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  disabled={!currentCity}
+                                  {...field}
+                                  placeholder="Введіть адресу"
+                                  className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      )
                     )}
-                  />
-                ) : (
-                  currentDelivary === "address" && (
-                    <FormField
-                      name="address"
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              disabled={!currentCity}
-                              {...field}
-                              placeholder="Введіть адресу"
-                              className="border border-solid border-[#484848] bg-[#FFFDFD] rounded-[5px]"
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  )
+                  </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Оплата */}
-          <div className="flex flex-col gap-[15px] lg:gap-[30px] w-full">
-            <div className="flex items-center gap-[15px]">
-              <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
-                <div className="text-[#484848] font-bold">
-                  {currentUser?.type === "drop" ? "4" : "3"}
+          <div className="flex flex-col gap-3 w-full">
+            <Button
+              type="button"
+              variant="ghost"
+              className="flex items-center gap-4 justify-between px-0"
+              onClick={() => setIsShowPayment((prev) => !prev)}
+            >
+              <div className="flex items-center gap-[15px]">
+                <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
+                  <div className="text-[#484848] font-bold">
+                    {currentUser?.type === "drop" ? "4" : "3"}
+                  </div>
                 </div>
+                <h3 className="text-[#484848] font-bold">Оплата</h3>
               </div>
-              <h3 className="text-[#484848] font-bold">Оплата</h3>
-            </div>
-            <div className="p-[15px] lg:py-[30px] bg-[#FFFDFD] rounded-[5px]">
-              <div className="flex flex-col gap-5 lg:gap-[30px]">
-                <h3 className="text-[#484848] text-sm font-bold lg:text-base">
-                  {currentPayment === "monobank" &&
-                    "Безпечна оплата картою на сайті"}
-                  {currentPayment === "cashOnDelivary" &&
-                    "Оплачуйте товара при отриманні"}
-                </h3>
 
+              <ArrowDown
+                className={cn(
+                  "stroke-[#c0092a] transform transition-all duration-300 rotate-0",
+                  {
+                    "rotate-180": isShowPayment,
+                  }
+                )}
+              />
+            </Button>
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={
+                isShowPayment
+                  ? { opacity: 1, height: "auto" }
+                  : { opacity: 0, height: 0 }
+              }
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="p-3 bg-[#FFFDFD] rounded-[5px]"
+              style={{ display: isShowPayment ? "flex" : "none" }}
+            >
+              <div className="flex flex-col gap-3">
                 <FormField
                   control={form.control}
-                  name="payment"
+                  name="paymentMethod"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
                       <FormControl>
@@ -825,19 +963,28 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                         >
                           <FormItem className="flex items-center gap-[15px] lg:gap-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="monobank" />
+                              <RadioGroupItem value="cashOnDelivary" />
                             </FormControl>
                             <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
-                              Онлайн оплата
+                              Оплата при отримані
                             </FormLabel>
                           </FormItem>
 
                           <FormItem className="flex items-center gap-[15px] lg:gap-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="cashOnDelivary" />
+                              <RadioGroupItem value="payByCard" />
                             </FormControl>
                             <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
-                              Оплата при отримані
+                              Оплата на карту
+                            </FormLabel>
+                          </FormItem>
+
+                          <FormItem className="flex items-center gap-[15px] lg:gap-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="monobank" />
+                            </FormControl>
+                            <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
+                              Онлайн оплата через Monobank
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>
@@ -846,11 +993,11 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   )}
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Коментар */}
-          <div className="flex flex-col gap-[15px] lg:gap-4 w-full">
+          <div className="flex flex-col gap-3 w-full">
             <div className="flex items-center gap-[15px]">
               <div className="w-[30px] h-[30px] p-3 border border-solid border-[#c0092a] rounded-full flex items-center justify-center">
                 <div className="text-[#484848] font-bold">
@@ -878,32 +1025,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                     </FormItem>
                   )}
                 />
-
-                <FormField
-                  name="callBack"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem className="flex items-center lg:items-start gap-[15px] space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel>
-                        Не телефонувати мені для підтвердження замовлення та
-                        консультації
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
               </div>
-              <p className="text-[#484848] text-xs lg:text-sm">
-                Підтверджуючи замовлення, ви приймаєте умови{" "}
-                <Link href="/" className="underline">
-                  договору оферти.
-                </Link>
-              </p>
             </div>
           </div>
         </div>

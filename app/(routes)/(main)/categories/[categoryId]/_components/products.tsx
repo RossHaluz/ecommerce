@@ -8,19 +8,18 @@ import { cn } from "@/lib/utils";
 
 interface ProductsProps {
   products: {
-    product: {
+    id: string;
+    title: string;
+    price: string;
+    article: string;
+    catalog_number: string;
+    product_name: string;
+    maxPrice: string;
+    productOptions: any[];
+    images: {
       id: string;
-      title: string;
-      price: string;
-      article: string;
-      catalog_number: string;
-      maxPrice: string;
-      productOptions: any[];
-      images: {
-        id: string;
-        url: string;
-      }[];
-    };
+      url: string;
+    }[];
   }[];
   page: number;
   totalPages: number;
@@ -40,15 +39,15 @@ const Products: FC<ProductsProps> = ({
   const currentCustomizer = useSelector(selectCurrentCustomizer);
 
   return (
-    <div className="flex flex-col gap-[30px]">
+    <div className="flex flex-col gap-3">
       <ul
-        className={cn("grid grid-cols-1 gap-5 lg:gap-[30px]", {
+        className={cn("grid grid-cols-1 gap-3", {
           "grid-cols-1": currentCustomizer === "list",
           "grid-cols-2 lg:grid-cols-3": currentCustomizer === "grid",
         })}
       >
         {products?.map((item) => {
-          return <ProductItem key={item?.product?.id} item={item?.product} />;
+          return <ProductItem key={item?.id} item={item} />;
         })}
       </ul>
 

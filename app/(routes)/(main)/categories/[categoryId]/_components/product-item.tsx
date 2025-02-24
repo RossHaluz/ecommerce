@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { addItemToCart, removeItemFromCart } from "@/redux/order/slice";
 import { useSelector } from "react-redux";
 import { selectOrderItems } from "@/redux/order/selector";
-import ProductCount from "@/app/(routes)/[productId]/_components/product-count";
 import Trash from "/public/images/trash.svg";
 import { nanoid } from "@reduxjs/toolkit";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
@@ -26,6 +25,7 @@ interface ProductItemProps {
     article: string;
     priceForOne?: string;
     catalog_number: string;
+    product_name: string;
     quantity?: number;
     images: {
       id: string;
@@ -94,31 +94,37 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
 
   return (
     <li
-      className={cn("grid gap-4 bg-[#FFFDFD] rounded", {
+      className={cn("grid gap-2 bg-[#FFFDFD] rounded", {
         "grid-cols-5 p-4 md:p-6": currentCustomizer === "list",
         "grid-cols-1": currentCustomizer === "grid",
       })}
     >
       <Link
-        href={`/${item?.id}`}
+        href={`/product/${item?.product_name}`}
         className={cn("w-full", {
           "col-span-2": currentCustomizer === "list",
         })}
       >
         <div
-          className={cn("relative overflow-hidden", {
-            "h-full w-full": currentCustomizer === "list",
-            "aspect-video w-full": currentCustomizer === "grid",
-          })}
+          className={cn(
+            "relative w-full h-auto overflow-hidden flex justify-center",
+            {
+              "h-full w-full": currentCustomizer === "list",
+              "aspect-video w-full": currentCustomizer === "grid",
+            }
+          )}
         >
           {productImage ? (
-            <Image
-              src={`${process.env.BACKEND_URL}/public/products/${productImage}`}
+            <img
+              src={`${process.env.BACKEND_URL}/products/${productImage}`}
               alt={item?.title}
-              fill
-              objectFit="contain"
-              objectPosition="center center"
-              unoptimized={true}
+              srcSet={`
+    ${process.env.BACKEND_URL}/products/${productImage}?w=300 300w,
+    ${process.env.BACKEND_URL}/products/${productImage}?w=600 600w,
+    ${process.env.BACKEND_URL}/products/${productImage}?w=1200 1200w
+  `}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading="lazy"
             />
           ) : (
             <Image
@@ -126,37 +132,33 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
               alt="Image not found"
               fill
               objectFit="cover"
-              unoptimized={true}
             />
           )}
         </div>
       </Link>
 
       <div
-        className={cn("flex flex-col gap-4 h-full md:justify-between", {
+        className={cn("flex flex-col gap-2 h-full md:justify-between", {
           "col-span-3": currentCustomizer === "list",
-          "p-4 md:p-6 items-center": currentCustomizer === "grid",
+          "p-3": currentCustomizer === "grid",
         })}
       >
         <div className="flex flex-col gap-2 md:gap-4">
-          <Link href={`/${item?.id}`}>
+          <Link href={`/product/${item?.product_name}`}>
             <h2
               className={cn(
                 "text-[14px] leading-[17.07px] font-medium text-[#111111] uppercase line-clamp-2 md:text-[24px] md:leading-[33.6px]",
                 {
-                  "md:text-[14px] md:leading-[17.07px] md:text-center":
+                  "md:text-[14px] md:leading-[17.07px]":
                     currentCustomizer === "grid",
                 }
               )}
             >
-              {item?.title} - {item?.article}
+              {item?.title}
             </h2>
           </Link>
 
-          <div className="flex flex-col gap-1 md:gap-4">
-            {/* <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
-              Код товару: {item?.article}
-            </h3> */}
+          <div className="flex items-center gap-2 justify-between">
             <h3
               className={cn(
                 "text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]",
@@ -165,19 +167,20 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
                 }
               )}
             >
-              Каталожний номер: {item?.catalog_number}
+              {item?.catalog_number}
+            </h3>
+
+            <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
+              {item?.article}
             </h3>
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between space-x-reverse gap-2">
           <h3
-            className={cn(
-              "text-[14px] leading-[17.07px] md:text-[28px] md:leading-[34.13px]  font-semibold text-[#111111]",
-              {
-                "md:text-lg text-center": currentCustomizer === "grid",
-              }
-            )}
+            className={cn("text-sm font-semibold text-[#111111]", {
+              "text-center": currentCustomizer === "grid",
+            })}
           >
             {Number(item?.price) === 0 && "Ціна договірна"}
             {Number(item?.price) > 0 && USDollar.format(Number(item?.price))}
@@ -187,10 +190,10 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
             triggetBtn={
               <Button
                 variant="ghost"
-                className="hover:bg-none bg-[#c0092a] max-w-max leading-[14.63px] font-medium p-[12.5px] md:px-[73px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
+                className="hover:bg-none bg-[#c0092a] max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
                 onClick={() => handleAddItemToCart(item)}
               >
-                Додати до кошику
+                Купити
               </Button>
             }
             title="Товар доданий до Вашого кошика!"
@@ -205,66 +208,81 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
             }
           >
             {orderItems?.length > 0 ? (
-              orderItems?.map(
-                (item: {
-                  id: string;
-                  quantity: number;
-                  price: number;
-                  priceForOne: number;
-                  orderItemId: string;
-                  title: string;
-                  article: string;
-                  images: {
+              <div className="flex flex-col gap-3">
+                {orderItems?.map(
+                  (item: {
                     id: string;
-                    url: string;
-                  }[];
-                }) => {
-                  return (
-                    <div
-                      className="flex items-start lg:items-center gap-[15px] w-full lg:border lg:border-solid lg:border-[#c0092a] rounded-[5px]"
-                      key={item?.orderItemId}
-                    >
-                      <div className="w-[65px] h-[65px] lg:w-[138px] lg:h-full rounded-[5px] overflow-hidden relative">
-                        <Image
-                          src={`${process.env.BACKEND_URL}/public/products/${item?.images[0]?.url}`}
-                          alt={item?.title}
-                          fill
-                          objectFit="cover"
-                          unoptimized={true}
-                        />
-                      </div>
-                      <div className="flex flex-col gap-[15px] lg:gap-[10px]  w-full lg:py-[10px]">
-                        <div className="flex items-center justify-between w-full">
-                          <h3 className="text-[#484848] text-sm underline w-[167px] lg:w-full">
-                            {capitalizeFirstLetter(item?.title)}
-                          </h3>
-                          <Button
-                            variant="ghost"
-                            onClick={() => hansleDeleteItem(item?.orderItemId)}
-                          >
-                            <Trash />
-                          </Button>
-                        </div>
-
-                        <div className=" flex items-center  justify-between lg:items-start w-full lg:flex-col  lg:gap-[10px] ">
-                          <span className="text-lg text-[#c0092a] font-bold">
-                            {Number(item?.price) === 0 && "Ціна договірна"}
-                            {Number(item?.price) > 0 &&
-                              USDollar.format(Number(item?.price))}
-                          </span>
-
-                          <ProductCount
-                            count={item?.quantity}
-                            itemId={item?.orderItemId}
-                            isFromOrder={true}
-                            savePrice={item?.priceForOne}
+                    quantity: number;
+                    price: number;
+                    priceForOne: number;
+                    selectOptions: any[];
+                    orderItemId: string;
+                    title: string;
+                    article: string;
+                    images: {
+                      id: string;
+                      url: string;
+                    }[];
+                  }) => {
+                    return (
+                      <div
+                        className="flex items-start gap-3 w-full rounded-[5px]"
+                        key={item?.orderItemId}
+                      >
+                        <div className="w-[65px] h-[65px]  rounded-[5px] overflow-hidden relative">
+                          <Image
+                            src={`${process.env.BACKEND_URL}/public/products/${item?.images?.[0]?.url}`}
+                            alt={item?.images?.[0]?.id}
+                            fill
+                            className="object-cover"
+                            unoptimized={true}
                           />
                         </div>
+                        <div className="flex flex-col gap-3  w-full">
+                          <div className="flex items-center justify-between w-full">
+                            <div className="flex flex-col gap-2">
+                              <h3 className="text-[#484848] text-sm underline w-[167px] lg:w-full">
+                                {capitalizeFirstLetter(item?.title)}
+                              </h3>
+                              {item?.selectOptions?.map(
+                                (item: {
+                                  optionTitle: string;
+                                  optionValue: string;
+                                  id: string;
+                                }) => {
+                                  return (
+                                    <h3
+                                      className="text-xs text-foreground"
+                                      key={item?.id}
+                                    >
+                                      {item?.optionTitle}: {item?.optionValue}
+                                    </h3>
+                                  );
+                                }
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="reset"
+                              onClick={() =>
+                                hansleDeleteItem(item?.orderItemId)
+                              }
+                            >
+                              <Trash />
+                            </Button>
+                          </div>
+
+                          <div className="flex items-center  justify-between lg:items-start w-full lg:flex-col  lg:gap-[10px] ">
+                            <span className="text-lg text-[#c0092a] font-bold">
+                              {USDollar.format(Number(item?.price))}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  );
-                }
-              )
+                    );
+                  }
+                )}
+              </div>
             ) : (
               <div className="w-full h-full flex justify-center items-center">
                 <h3 className="text-[#484848] text-sm">Корзина пуста:(</h3>

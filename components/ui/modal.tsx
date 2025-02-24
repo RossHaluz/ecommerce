@@ -36,7 +36,7 @@ const Modal: FC<ModalProps> = ({ children, title, triggetBtn }) => {
               <div className="w-full h-[1px] bg-[#4848484D]" />
             </div>
           </DialogHeader>
-          {children}
+          <div className="max-h-56 overflow-y-auto">{children}</div>
         </div>
 
         <DialogFooter className="mt-[30px]">

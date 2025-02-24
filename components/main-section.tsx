@@ -13,6 +13,8 @@ import { selectModels } from "@/redux/models/selectors";
 import { getModels } from "@/redux/models/operetions";
 import SortProducts from "@/app/(routes)/(main)/_components/sort";
 import CustomizerLayout from "./сustomizer-layout";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface MainSectionProps {
   title: string;
@@ -39,6 +41,9 @@ const MainSection: FC<MainSectionProps> = ({
   const categories = useSelector(selectCategories);
   const isLoading = useSelector(selectIsLoading);
   const models = useSelector(selectModels);
+  const pathname = usePathname();
+  const shouldBeMargin = pathname.includes("/categories");
+  const isHomePage = pathname.endsWith("/");
 
   useEffect(() => {
     dispatch(getCategories());
@@ -46,32 +51,43 @@ const MainSection: FC<MainSectionProps> = ({
   }, [dispatch]);
 
   return (
-    <section className="my-6 lg:my-12">
-      <div className="container flex flex-col gap-3 md:gap-[30px] overflow-x-auto">
-        <div className="flex items-center justify-between gap-3">
-          {title && (
-            <h2 className="text-[#484848] font-bold text-2xl lg:text-[32px] lg:leading-[40.16px]">
-              {title}
-            </h2>
-          )}
-
-          <div className="flex items-center gap-6">
-            <SortProducts searchParams={params} />
-            <CustomizerLayout />
-          </div>
-        </div>
+    <section
+      className={cn("mt-3 mb-6", {
+        "mt-[70px]": shouldBeMargin || isHomePage,
+      })}
+    >
+      <div className="container flex flex-col gap-3">
         <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
-          {shouldBeCategories && (
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3 justify-between">
+              {title && (
+                <h2 className="text-[#484848] font-bold text-base">{title}</h2>
+              )}
+              <div className="flex md:hidden items-center gap-6">
+                <SortProducts searchParams={params} />
+                <CustomizerLayout />
+              </div>
+            </div>
+
             <div className="hidden lg:block">
               {isLoading ? (
                 <div className="w-[302px] h-[500px] rounded-md bg-[#FFFDFD]" />
               ) : (
-                <Categories categories={categories} />
+                <div className="flex flex-col gap-4">
+                  <Categories categories={categories} />
+                </div>
               )}
             </div>
-          )}
-          <div className="flex flex-col gap-4 md:gap-12 w-full">
-            {shouldBeModels && <SearchByModel models={models} />}
+          </div>
+          <div className="flex flex-col gap-3 w-full">
+            <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
+              <SearchByModel models={models} />
+
+              <div className="hidden md:flex items-center gap-6 ml-auto">
+                <SortProducts searchParams={params} />
+                <CustomizerLayout />
+              </div>
+            </div>
             {children}
           </div>
         </div>

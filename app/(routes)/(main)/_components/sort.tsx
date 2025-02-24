@@ -9,12 +9,9 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useSelector } from "react-redux";
-import { selectCurrentModel } from "@/redux/models/selectors";
 
 interface SortProductsProps {
   searchParams: {
-    filterIds?: string;
     page?: string;
     searchValue?: string;
     sortByPrice?: string;
@@ -25,12 +22,9 @@ interface SortProductsProps {
 const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { filterIds, searchValue } = searchParams;
   const [selectSort, setSelectSort] = useState("");
-  const [isInitialized, setIsInitialized] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
-  const currentModel = useSelector(selectCurrentModel);
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideSort);
@@ -41,43 +35,18 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
   }, []);
 
   useEffect(() => {
-    const sort = localStorage.getItem("sortByPrice");
-    if (sort) {
-      setSelectSort(sort);
+    const queryParams = qs.parse(window.location.search);
+    const sortByPrice = queryParams.sortByPrice as string;
+    if (sortByPrice) {
+      localStorage.setItem("sortByPrice", sortByPrice);
+      const sort = localStorage.getItem("sortByPrice");
+      if (sort) {
+        setSelectSort(sort);
+      }
+    } else {
+      localStorage.setItem("sortByPrice", "");
     }
-
-    setIsInitialized(true);
   }, []);
-
-  useEffect(() => {
-    if (!isInitialized) return;
-    const currentPage = localStorage.getItem("currentPage");
-
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query: {
-          filterIds: filterIds ? filterIds : null,
-          sortByPrice: selectSort ? selectSort : null,
-          searchValue: searchValue ? searchValue : null,
-          page: currentPage ? currentPage : null,
-          modelId: currentModel ? currentModel?.id : null,
-        },
-      },
-      { skipEmptyString: true, skipNull: true }
-    );
-
-    router.push(url, { scroll: false });
-    localStorage.setItem("sortByPrice", selectSort);
-  }, [
-    selectSort,
-    isInitialized,
-    pathname,
-    router,
-    currentModel,
-    filterIds,
-    searchValue,
-  ]);
 
   const clickOutsideSort = (e: MouseEvent) => {
     if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
@@ -86,8 +55,25 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
   };
 
   const onValueChange = (value: string) => {
+    const queryParams = qs.parse(window.location.search);
+    const searchValue = queryParams?.searchValue;
+    const modelId = queryParams?.modelId;
+
+    const url = qs.stringifyUrl(
+      {
+        url: pathname,
+        query: {
+          sortByPrice: value ? value : null,
+          searchValue: searchValue ? searchValue : null,
+          modelId: modelId ? modelId : null,
+        },
+      },
+      { skipEmptyString: true, skipNull: true }
+    );
+
     setSelectSort(value);
     setIsOpen(false);
+    return router.push(url, { scroll: false });
   };
 
   return (
@@ -96,6 +82,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
         <Drawer>
           <DrawerTrigger>
             <Button
+              aria-label="Сортування товарів"
               variant="ghost"
               className="p-0 flex items-center gap-2"
               onClick={() => setIsOpen((prev) => !prev)}
@@ -135,6 +122,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
 
       <div className="relative max-w-max ml-auto hidden md:block" ref={sortRef}>
         <Button
+          aria-label="Сортування товарів за зростанням або спаданням"
           variant="ghost"
           className="p-0 flex items-center gap-2"
           onClick={() => setIsOpen((prev) => !prev)}
@@ -156,6 +144,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
           )}
         >
           <Button
+            aria-label="Сортування від дешевшого"
             onClick={() => onValueChange("asc")}
             variant="ghost"
             className="flex items-start ml-0 p-0 h-auto max-w-max"
@@ -163,6 +152,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
             Від дешевшого до дорожчого
           </Button>
           <Button
+            aria-label="Сортування від дорожчого"
             onClick={() => onValueChange("desc")}
             variant="ghost"
             className="flex items-start ml-0 p-0 h-auto max-w-max"
@@ -176,14 +166,3 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
 };
 
 export default SortProducts;
-
-// <Select onValueChange={onValueChange} value={selectSort}>
-//   <SelectTrigger className="w-full lg:w-[195px] bg-[#F2F2F2]">
-//     <SelectValue placeholder="Сортування" />
-//   </SelectTrigger>
-//   <SelectContent className="bg-[#F2F2F2]">
-//     {/* <SelectItem value="light">За популярністю</SelectItem> */}
-//     <SelectItem value="asc">Від дешевших</SelectItem>
-//     <SelectItem value="desc">Від дорожчих</SelectItem>
-//   </SelectContent>
-// </Select>

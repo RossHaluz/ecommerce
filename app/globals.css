@@ -154,6 +154,6 @@ img {
 
 @layer components {
   .container {
-    @apply max-w-[1600px];
+    @apply max-w-[2100px];
   }
 }

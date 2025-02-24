@@ -1,6 +1,14 @@
 import Section from "@/components/section";
 import Contacts from "./_components/contacts";
 import Map from "./_components/map";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: `Контактна інформація інтернет магазину Audiparts`,
+    description: `Контактна інформація інтернет магазину Audiparts по зачастинах під усі моделі Audi`,
+  };
+}
 
 const ContactsPage = () => {
   return (

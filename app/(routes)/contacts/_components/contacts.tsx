@@ -13,9 +13,17 @@ const Contacts = () => {
         <h3 className="text-[#484848] font-bold">Телефон:</h3>
         <div className="flex items-center gap-[10px]">
           <Phone className="fill-[#c0092a]" />
-          <a href="tel:++380964009130" className="text-[#484848] underline">
-            +38 (096) 400 91 30
-          </a>
+          <div className="flex flex-col gap-3">
+            <a href="tel:+380673834283" className="text-[#484848] underline">
+              +38 (067) 383 42 83 - Ігор
+            </a>
+            <a href="tel:+380965722060" className="text-[#484848] underline">
+              +38 (096) 572 20 60 - Іван
+            </a>
+            <a href="tel:+380979104659" className="text-[#484848] underline">
+              +38 (097) 910 46 59 - Богдан
+            </a>
+          </div>
         </div>
       </div>
 
@@ -35,7 +43,7 @@ const Contacts = () => {
         <div className="flex items-start gap-[10px]">
           <Message />
           <a href="mailto:info@koaladream.com.ua" className="text-[#484848]">
-            info@koaladream.com.ua
+            audipartshm@gmail.coma
           </a>
         </div>
       </div>
@@ -61,10 +69,11 @@ const Contacts = () => {
           >
             <Instagram />
           </a>
-          <a href="/" target="_blank" rel="noopener noreferrer">
-            <Facebook />
-          </a>
-          <a href="/" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://t.me/+380673834283"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Telegram />
           </a>
         </div>

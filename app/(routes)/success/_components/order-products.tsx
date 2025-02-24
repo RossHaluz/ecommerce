@@ -12,6 +12,7 @@ interface OrderProductsProps {
     quantity: number;
     price: number;
     id: string;
+    product_name: string;
   };
 }
 
@@ -45,7 +46,7 @@ const OrderProducts: FC<OrderProductsProps> = ({ item }) => {
         <div className="flex flex-col gap-[9px]">
           <div className="flex flex-col gap-[15px]">
             <Link
-              href={`/${item?.id}`}
+              href={`/product/${item?.product_name}`}
               className="text-[#484848] text-sm font-bold underline"
             >
               {capitalizeFirstLetter(item?.title)}

@@ -13,6 +13,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import FullscreenGallery from "@/components/large-photo-image";
 
 interface SliderProps {
   images: { url: string; id: string }[];
@@ -23,6 +24,17 @@ const Slider: FC<SliderProps> = ({ images }) => {
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
   const swiperRef = useRef<any>(null);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [initialImageIndex, setInitialImageIndex] = useState(0);
+
+  const onOpenGallery = (index: number) => {
+    setInitialImageIndex(index);
+    setIsGalleryOpen(true);
+  };
+
+  const onCloseGallery = () => {
+    setIsGalleryOpen(false);
+  };
 
   useEffect(() => {
     if (
@@ -64,33 +76,22 @@ const Slider: FC<SliderProps> = ({ images }) => {
               justifyContent: "center",
             }}
           >
-            {images?.map((item) => {
+            {images?.map((item, index) => {
               return (
                 <SwiperSlide
                   key={item?.id}
-                  className="rounded-2xl overflow-hidden relative"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                  className="rounded-2xl overflow-hidden"
+                  onClick={() => onOpenGallery(index)}
                 >
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "100%",
-                      aspectRatio: "1",
-                      overflow: "hidden",
-                    }}
-                  >
+                  <div className="relative w-full aspect-square flex justify-center">
                     <Image
                       src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
                       alt="Image slider"
-                      layout="fill"
+                      fill
                       objectFit="contain"
                       objectPosition="center center"
-                      unoptimized={true}
+                      priority
+                      unoptimized
                     />
                   </div>
                 </SwiperSlide>
@@ -113,14 +114,15 @@ const Slider: FC<SliderProps> = ({ images }) => {
                 return (
                   <SwiperSlide
                     key={item?.id}
-                    className="aspect-square rounded-2xl overflow-hidden relative"
+                    className="rounded-2xl overflow-hidden h-auto flex items-center justify-center"
                   >
                     <Image
                       src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
                       alt="Image slider"
                       fill
-                      objectFit="contain"
-                      unoptimized={true}
+                      objectFit="cover"
+                      priority
+                      unoptimized
                     />
                   </SwiperSlide>
                 );
@@ -161,6 +163,14 @@ const Slider: FC<SliderProps> = ({ images }) => {
             objectFit="cover"
           />
         </div>
+      )}
+
+      {isGalleryOpen && (
+        <FullscreenGallery
+          initialIndex={initialImageIndex}
+          onClose={onCloseGallery}
+          images={images?.map((item) => item?.url)}
+        />
       )}
     </>
   );

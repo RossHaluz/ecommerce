@@ -10,9 +10,16 @@ import ProviderWrapper from "@/redux/provider";
 const inter = Mulish({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Запчастини під усі моделі Audi",
+  title:
+    "Запчастини до Audi (Ауді) - купити запчастини на Audi (Ауді) в інтернет-магазині Audiparts.",
   description:
-    "Великий вибір запчастин під усі моделі Audi. Більше 4000 запчастин у наявності. Доставка по усій Україні. Можливо самовивіз. Вигідні ціни.",
+    "Купити запчастини на Audi (Ауді) в інтернет-магазині. ✓ Більше 4000 оригінальних деталей. ✓ Зачастини на Audi (Ауді) під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка протягом 2-3 днів по всій Україні.",
+  icons: {
+    icon: "/favicon.ico",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

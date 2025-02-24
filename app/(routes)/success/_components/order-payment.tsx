@@ -19,9 +19,11 @@ const OrderPayment: FC<OrderPaymentProps> = ({ orderDetails }) => {
         </div>
 
         <p>
-          {orderDetails?.paymentMethod === "cashOnDelivary"
-            ? "Оплата при отримані"
-            : "Онлайн оплата"}
+          {orderDetails?.paymentMethod === "cashOnDelivary" &&
+            "Оплата при отримані"}
+          {orderDetails?.paymentMethod === "monobank" &&
+            "Онлайн оплата через Monobank"}
+          {orderDetails?.paymentMethod === "payByCard" && "Оплата на карту"}
         </p>
       </div>
     </div>

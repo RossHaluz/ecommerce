@@ -1,18 +1,14 @@
 "use client";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { Button } from "../../../../components/ui/button";
 import { ChevronDown, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, sortCarModels } from "@/lib/utils";
 import qs from "query-string";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/store";
-import {
-  setSelectModel,
-  removeSelectedModel,
-  setModel,
-} from "@/redux/models/slice";
+import { setSelectModel, removeSelectedModel } from "@/redux/models/slice";
 import { useSelector } from "react-redux";
-import { selectCurrentModel, selectModel } from "@/redux/models/selectors";
+import { selectCurrentModel } from "@/redux/models/selectors";
+import { Button } from "@/components/ui/button";
 
 interface SearchByModelProps {
   models: {
@@ -28,26 +24,28 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const currentModel = useSelector(selectCurrentModel);
-  const model = useSelector(selectModel);
+  const [isInitialization, setIsInitialization] = useState(false);
 
   useEffect(() => {
-    const selectSort = localStorage.getItem("sortByPrice");
-    const currentPage = localStorage.getItem("currentPage");
+    setIsInitialization(true);
+    router.refresh();
+  }, []);
 
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query: {
-          modelId: currentModel?.id,
-          sortByPrice: selectSort ? selectSort : null,
-          page: currentPage ? currentPage : null,
-        },
-      },
-      { skipEmptyString: true, skipNull: true }
-    );
+  useEffect(() => {
+    if (!isInitialization) return;
+    const queryParams = qs.parse(window.location.search);
 
-    return router.push(url, { scroll: false });
-  }, [currentModel?.id, pathname, router]);
+    const modelId = queryParams?.modelId as string;
+
+    if (modelId) {
+      const selectedModel = models?.find((model) => modelId === model?.id);
+      if (selectedModel) {
+        dispatch(setSelectModel(selectedModel));
+      }
+    } else {
+      dispatch(removeSelectedModel());
+    }
+  }, [pathname, models]);
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideModel);
@@ -57,6 +55,8 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
     };
   }, []);
 
+  sortCarModels(models);
+
   const clickOutsideModel = (e: MouseEvent) => {
     if (modelRef.current && !modelRef.current.contains(e.target as Node)) {
       setIsOpen(false);
@@ -65,19 +65,17 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
 
   const handleRemoveModel = () => {
     dispatch(removeSelectedModel());
-    dispatch(setModel(null));
-    setModel(null);
-    const selectSort = localStorage.getItem("sortByPrice");
-    localStorage.setItem("currentPage", "1");
-    const page = localStorage.getItem("currentPage");
-    setModel(null);
+    const queryParams = qs.parse(window.location.search);
+    const selectSort = queryParams?.sortByPrice;
+    const searchValue = queryParams?.searchValue;
+
     const url = qs.stringifyUrl(
       {
         url: pathname,
         query: {
-          currentPage: page,
           modelId: null,
           sortByPrice: selectSort ? selectSort : null,
+          searchValue: searchValue ? searchValue : null,
         },
       },
       { skipEmptyString: true, skipNull: true }
@@ -86,54 +84,50 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
     return router.push(url);
   };
 
-  const handleSelectModel = (model: { id: string; name: string }) => {
-    dispatch(
-      setModel({
-        id: model?.id,
-        name: model?.name,
-      })
-    );
-    setIsOpen(false);
-  };
-
-  const handleSerchProductsByModel = () => {
+  const handleSerchProductsByModel = (model: { id: string; name: string }) => {
     if (!model) return;
-    const selectSort = localStorage.getItem("sortByPrice");
-
     dispatch(setSelectModel(model));
+    const queryParams = qs.parse(window.location.search);
+    const searchValue = queryParams?.searchValue;
+    const sortByPrice = queryParams?.sortByPrice;
 
-    const url = qs.stringifyUrl({
-      url: pathname,
-      query: {
-        modelId: model?.id,
-        ...(selectSort && { sortByPrice: selectSort }),
+    const url = qs.stringifyUrl(
+      {
+        url: pathname,
+        query: {
+          modelId: model ? model?.id : null,
+          sortByPrice: sortByPrice ? sortByPrice : null,
+          searchValue: searchValue ? searchValue : null,
+        },
       },
-    });
+      { skipEmptyString: true, skipNull: true }
+    );
 
-    return router.push(url);
+    setIsOpen(false);
+
+    return router.replace(url);
   };
 
   return (
-    <div className="p-4 md:p-6 rounded-lg bg-[#FFFDFD] flex flex-col gap-3 md:gap-6">
-      <h3 className="text-[#111111] text-[16px] leading-[19.5px] md:text-[24px] md:leading-[33.6px] font-medium">
-        Пошук автозапчастим по моделях:
-      </h3>
+    <div className="rounded-lg flex flex-col gap-3 md:gap-6">
       <div className="flex items-center gap-4">
         <div className="relative w-full md:w-[342px]" ref={modelRef}>
           <Button
             onClick={() => setIsOpen((prev) => !prev)}
             type="button"
             className={cn(
-              "bg-[#F2F2F2] p-5 rounded-lg w-full flex items-center gap-2 justify-between hover:bg-[#F2F2F2] hover:text-current",
+              "bg-[#FFFDFD] border border-solid border-[#111] p-5 rounded-lg w-full flex items-center gap-2 justify-between hover:bg-[#FFFDFD] hover:text-current text-base",
               {
-                "text-[#111111]": currentModel || model,
+                "text-[#111111]": currentModel,
               }
             )}
           >
-            {currentModel || model ? (
-              currentModel?.name || model?.name
+            {currentModel ? (
+              currentModel?.name
             ) : (
-              <span className="text-[#B8B6B6]">Оберіть модель</span>
+              <span className="text-[#111111] font-bold text-base">
+                Оберіть модель
+              </span>
             )}
             <div className="flex items-center gap-1">
               {currentModel && (
@@ -160,15 +154,14 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
               }
             )}
           >
-            {models?.map((item) => {
+            {sortCarModels(models)?.map((item) => {
               return (
                 <Button
-                  onClick={() => handleSelectModel(item)}
+                  onClick={() => handleSerchProductsByModel(item)}
                   variant="ghost"
                   key={item?.id}
                   className={cn("flex items-start ml-0", {
-                    "text-[#c0092a] font-medium":
-                      currentModel?.id === item?.id || model?.id === item?.id,
+                    "text-[#c0092a] font-medium": currentModel?.id === item?.id,
                   })}
                 >
                   {item?.name}
@@ -177,13 +170,6 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
             })}
           </div>
         </div>
-        <Button
-          type="button"
-          onClick={handleSerchProductsByModel}
-          className="w-full p-[11.5px] md:max-w-max md:px-[90.5px] md:py-[14px] flex items-center justify-center"
-        >
-          Шукати
-        </Button>
       </div>
     </div>
   );

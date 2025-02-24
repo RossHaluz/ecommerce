@@ -4,7 +4,6 @@ import { selectOrderItems } from "@/redux/order/selector";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import ProductCount from "../../[productId]/_components/product-count";
 import {
   currentPriceOrderItems,
   removeItemFromCart,
@@ -67,6 +66,7 @@ const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
                 id: string;
                 quantity: number;
                 price: number;
+                product_name: string;
                 orderItemId: string;
                 priceForOne: number;
                 title: string;
@@ -93,12 +93,13 @@ const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
                         alt={item?.title}
                         fill
                         className="object-cover absolute top-0 left-0"
+                        priority
                         unoptimized={true}
                       />
                     </div>
                     <div className="flex flex-col gap-[15px]">
                       <Link
-                        href={`/${item?.id}`}
+                        href={`/product/${item?.product_name}`}
                         className="text-base font-bold text-[#484848] underline"
                       >
                         {capitalizeFirstLetter(item?.title)}
@@ -115,13 +116,6 @@ const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
                             USDollar.format(Number(item?.priceForOne))}
                         </span>
                       </div>
-
-                      <ProductCount
-                        itemId={item?.orderItemId}
-                        isFromOrder={true}
-                        savePrice={item?.priceForOne}
-                        count={item?.quantity}
-                      />
                     </div>
                   </div>
                 );

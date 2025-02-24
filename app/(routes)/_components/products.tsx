@@ -10,6 +10,7 @@ interface ProductsProps {
   products: {
     id: string;
     title: string;
+    product_name: string;
     price: string;
     article: string;
     maxPrice: string;
@@ -38,9 +39,9 @@ const Products: FC<ProductsProps> = ({
   const currentCustomizer = useSelector(selectCurrentCustomizer);
 
   return (
-    <div className="flex flex-col gap-[30px] w-full">
+    <div className="flex flex-col gap-4 w-full">
       <ul
-        className={cn("grid grid-cols-1 gap-5 lg:gap-[30px]", {
+        className={cn("grid grid-cols-1 gap-3", {
           "grid-cols-1": currentCustomizer === "list",
           "grid-cols-2 lg:grid-cols-3": currentCustomizer === "grid",
         })}

@@ -1,11 +1,11 @@
 "use client";
-import { CopyrightIcon } from "lucide-react";
+import { CopyrightIcon, PhoneIcon } from "lucide-react";
 import Logo from "/public/images/logo-header.svg";
 import Telegram from "/public/images/telegram-icon.svg";
 import Viber from "/public/images/viber-icon.svg";
 import ArrowDown from "/public/images/arrow-down.svg";
 import { Button } from "./ui/button";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSelector } from "react-redux";
@@ -15,10 +15,26 @@ import { usePathname } from "next/navigation";
 const Footer = () => {
   const categories = useSelector(selectCategories);
   const [isShowCategories, setIsShowCategories] = useState(false);
+  const [isShowPhoneNumbers, setIsShowPhoneNumbers] = useState(false);
   const [isShowInfo, setIsShowInfo] = useState(false);
   const categoriesRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const isHomePage = pathname === "/" || pathname.startsWith("/categories");
+  const numbersRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    window.addEventListener("mousedown", clickOutsidePhoneNumbers);
+
+    return () => {
+      window.removeEventListener("mousedown", clickOutsidePhoneNumbers);
+    };
+  }, []);
+
+  const clickOutsidePhoneNumbers = (e: MouseEvent) => {
+    if (numbersRef.current && !numbersRef.current.contains(e.target as Node)) {
+      setIsShowPhoneNumbers(false);
+    }
+  };
 
   return (
     <footer className="bg-[#484848] text-[#FFFDFD] overflow-hidden">
@@ -35,12 +51,55 @@ const Footer = () => {
           <div className="flex flex-col gap-[10px] mb-[15px] items-start">
             <Logo />
             <div className="flex flex-col gap-[15px]">
-              <a
-                href="tel:+380964009130"
-                className="font-semibold text-sm text-current"
-              >
-                +38 (096) 400 91 30
-              </a>
+              <div className="flex items-center gap-2">
+                <PhoneIcon className="stroke-[#FFFDFD]" />
+                <div className="relative" ref={numbersRef}>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setIsShowPhoneNumbers((prev) => !prev)}
+                    className="p-0 flex items-center gap-2 text-[16px] leading-[19.5px] font-medium"
+                  >
+                    +38 (067) 383 42 83
+                    <ArrowDown
+                      className={cn(
+                        "stroke-[#FFFDFD] transform transition-all duration-300",
+                        {
+                          "rotate-180": isShowPhoneNumbers,
+                        }
+                      )}
+                    />
+                  </Button>
+
+                  <div
+                    className={cn(
+                      "bg-[#FFFDFD] rounded-md shadow-md absolute top-full left-0 p-4 origin-top scale-y-0 transform transition-all duration-300 border z-50 w-max flex flex-col gap-4",
+                      {
+                        "scale-y-100": isShowPhoneNumbers,
+                      }
+                    )}
+                  >
+                    <Link
+                      href="tel:+380673834283"
+                      className="text-[#111111] text-[16px] leading-[19.5px]"
+                    >
+                      +38 (067) 383 42 83 - Ігор
+                    </Link>
+                    <Link
+                      href="tel:+380965722060"
+                      className="text-[#111111] text-[16px] leading-[19.5px]"
+                    >
+                      +38 (096) 572 20 60 - Іван
+                    </Link>
+
+                    <Link
+                      href="tel:+380979104659"
+                      className="text-[#111111] text-[16px] leading-[19.5px]"
+                    >
+                      +38 (097) 910 46 59 - Богдан
+                    </Link>
+                  </div>
+                </div>
+              </div>
               <address className="text-current text-xs">
                 Адреса: м. Хмельницький, вул. Молодіжна 15/1
               </address>
@@ -79,13 +138,19 @@ const Footer = () => {
               )}
             >
               {categories?.map(
-                (item: { id: string; name: string }, index: number) => {
+                (
+                  item: { id: string; name: string; category_name: string },
+                  index: number
+                ) => {
                   if (index > 3) {
                     return;
                   }
 
                   return (
-                    <Link href={`/categories/${item?.id}`} key={item?.id}>
+                    <Link
+                      href={`/categories/${item?.category_name}`}
+                      key={item?.id}
+                    >
                       {item?.name}
                     </Link>
                   );
@@ -109,14 +174,19 @@ const Footer = () => {
             </h3>
             <ul className="flex flex-col gap-5 text-current">
               {categories?.map(
-                (item: { id: string; name: string }, index: number) => {
+                (
+                  item: { id: string; name: string; category_name: string },
+                  index: number
+                ) => {
                   if (index > 3) {
                     return;
                   }
 
                   return (
                     <li key={item?.id}>
-                      <Link href={`/categories/${item?.id}`}>{item?.name}</Link>
+                      <Link href={`/categories/${item?.category_name}`}>
+                        {item?.name}
+                      </Link>
                     </li>
                   );
                 }
@@ -124,8 +194,9 @@ const Footer = () => {
             </ul>
             {categories && categories?.length > 3 && (
               <Link
+                aria-label="Переглфнути усі товари"
                 href="/categories"
-                className="underline font-medium text-[#c0092a]"
+                className="underline font-bold"
               >
                 Переглянути усі
               </Link>
@@ -136,6 +207,7 @@ const Footer = () => {
           {/* Info start  */}
           <div className="mb-6 md:hidden">
             <Button
+              aria-label="Інформація"
               className="font-semibold text-sm p-0 h-auto md:hidden mb-[15px]  flex items-center justify-between w-full"
               variant="ghost"
               onClick={() => setIsShowInfo((prev) => !prev)}
@@ -158,10 +230,15 @@ const Footer = () => {
                 }
               )}
             >
-              <Link href="/contacts">Контакти</Link>
-              <Link href="/about-us">Про нас</Link>
-              <Link href="/reviews">Відгуки</Link>
-              <Link href="/delivary-payment">Доставка та оплата</Link>
+              <Link href="/contacts" aria-label="Контакти">
+                Контакти
+              </Link>
+              <Link href="/about-us" aria-label="Про нас">
+                Про нас
+              </Link>
+              <Link href="/delivary-payment" aria-label="Доставка та оплата">
+                Доставка та оплата
+              </Link>
             </div>
           </div>
 
@@ -170,16 +247,22 @@ const Footer = () => {
               <h3 className="text-[24px] leading-[33.6px]"> Інформація</h3>
               <ul className="flex flex-col gap-5 text-current">
                 <li>
-                  <Link href="/contacts">Контакти</Link>
+                  <Link href="/contacts" aria-label="Контакти">
+                    Контакти
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/about-us">Про нас</Link>
+                  <Link href="/about-us" aria-label="Про нас">
+                    Про нас
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/reviews">Відгуки</Link>
-                </li>
-                <li>
-                  <Link href="/delivary-payment">Доставка та оплата</Link>
+                  <Link
+                    href="/delivary-payment"
+                    aria-label="Доставка та оплата"
+                  >
+                    Доставка та оплата
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -188,7 +271,8 @@ const Footer = () => {
               <h3 className="text-[24px] leading-[33.6px]">Соціальні мережі</h3>
               <div className="flex items-center gap-6">
                 <a
-                  href="/"
+                  aria-label="Написати у Viber"
+                  href="https://invite.viber.com/?number=380673834283"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="h-auto"
@@ -196,7 +280,8 @@ const Footer = () => {
                   <Viber />
                 </a>
                 <a
-                  href="/"
+                  aria-label="Написати у Telegram"
+                  href="https://t.me/+380673834283"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="h-auto"
@@ -212,7 +297,8 @@ const Footer = () => {
 
           <div className="flex items-center justify-center gap-4 md:hidden">
             <a
-              href="/"
+              aria-label="Написати у Viber"
+              href="https://invite.viber.com/?number=380673834283"
               target="_blank"
               rel="noopener noreferrer"
               className="h-auto"
@@ -220,7 +306,8 @@ const Footer = () => {
               <Viber />
             </a>
             <a
-              href="/"
+              aria-label="Написати у Telegram"
+              href="https://t.me/+380673834283"
               target="_blank"
               rel="noopener noreferrer"
               className="h-auto"
@@ -242,20 +329,10 @@ const Footer = () => {
             </div>
             <div className="flex flex-col gap-2 lg:flex-row lg:gap-16 text-xs md:text-[14px] md:leading-[17.07px]">
               <p className="text-right text-current">
-                Дизайн сайту -{" "}
-                <a
-                  href="https://hiweber.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-current underline"
-                >
-                  Anastasiia Reiman
-                </a>
-              </p>
-              <p className="text-right text-current">
                 Розробка сайту -{" "}
                 <a
-                  href="https://hiweber.com/"
+                  aria-label="Розробник сайту"
+                  href="https://t.me/rosshaluzinskyi"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-current underline"

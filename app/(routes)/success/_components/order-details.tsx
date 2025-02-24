@@ -79,6 +79,7 @@ const OrderDetails = () => {
                     priceForOne: number;
                     title: string;
                     article: string;
+                    product_name: string;
                     images: {
                       id: string;
                       url: string;

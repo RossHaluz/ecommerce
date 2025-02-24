@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import React, {
   FC,
   useState,
@@ -10,10 +8,13 @@ import React, {
 } from "react";
 import { Button } from "./ui/button";
 import Arrow from "/public/images/arrow-down.svg";
+import queryString from "query-string";
+import { useRouter } from "next/navigation";
 
 interface Category {
   name: string;
   id: string;
+  category_name: string;
   children?: Category[];
 }
 
@@ -29,6 +30,7 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
   isOpen,
 }) => {
   const [openCategories, setOpenCategories] = useState<string[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (!isOpen) {
@@ -42,19 +44,39 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
     );
   };
 
+  const handleOpenCategory = (categoryName: string) => {
+    const queryParams = queryString.parse(window.location.search);
+    const modelId = queryParams?.modelId as string;
+    const sortByPrice = queryParams.sortByPrice as string;
+
+    const url = queryString.stringifyUrl(
+      {
+        url: `/categories/${categoryName}`,
+        query: {
+          modelId: modelId ? modelId : null,
+          sortByPrice: sortByPrice ? sortByPrice : null,
+        },
+      },
+      { skipEmptyString: true, skipNull: true }
+    );
+
+    setIsOpen(false);
+    return router.push(url);
+  };
+
   const renderCategory = (category: Category) => (
     <li
       key={category.id}
       className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px]"
     >
       <div className="flex items-center justify-between">
-        <Link
-          href={`/categories/${category.id}`}
-          className="flex-1"
-          onClick={() => setIsOpen(false)}
+        <Button
+          className="flex-1 flex items-center justify-start text-base"
+          onClick={() => handleOpenCategory(category.category_name)}
+          variant="ghost"
         >
           {category.name}
-        </Link>
+        </Button>
         {category.children && category.children.length > 0 && (
           <Button
             variant="ghost"
