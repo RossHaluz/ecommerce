@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["api.audiparts.site"],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "api.audiparts.site",
+        port: "",
         pathname: "/products/**",
       },
     ],

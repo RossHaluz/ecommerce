@@ -11,7 +11,7 @@ const Contacts = () => {
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[13px]">
         <h3 className="text-[#484848] font-bold">Телефон:</h3>
-        <div className="flex items-center gap-[10px]">
+        <div className="flex items-start gap-[10px]">
           <Phone className="fill-[#c0092a]" />
           <div className="flex flex-col gap-3">
             <a href="tel:+380673834283" className="text-[#484848] underline">
@@ -63,7 +63,7 @@ const Contacts = () => {
         <h3 className="text-[#484848] font-bold">Слідкуйте за нами</h3>
         <div className="flex items-center gap-5">
           <a
-            href="https://www.instagram.com/audi_parts_khm?igsh=ZDgyMHFxbjZ6bnB5"
+            href="https://www.instagram.com/audi_parts_khm/"
             target="_blank"
             rel="noopener noreferrer"
           >

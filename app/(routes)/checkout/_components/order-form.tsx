@@ -30,6 +30,7 @@ import { selectUserContactDetails } from "@/redux/auth/selectors";
 import { removeUserContactDetails } from "@/redux/auth/slice";
 import { createOrder } from "@/actions/get-data";
 import { motion } from "framer-motion";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface OrderFormProps {
   currentUser?: {
@@ -405,6 +406,23 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       }
 
       const order = await createOrder(data);
+
+      sendGAEvent("event", "make_new_order", {
+        items: orderItems?.map(
+          (item: {
+            title: string;
+            price: number;
+            quantity: number;
+            id: string;
+          }) => ({
+            item_name: item.title,
+            price: item.price,
+            quantity: item.quantity,
+            item_id: item.id,
+          })
+        ),
+        total_value: order.totalPrice,
+      });
 
       dispatch(setOrderDetails({ ...order, orderItems }));
       dispatch(cleareOrderItems());

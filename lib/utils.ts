@@ -5,12 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const sortCarModels = (models: { id: string; name: string }[]) => {
+export const sortCarModels = (
+  models: { id: string; name: string; modelName: string }[]
+) => {
   const audiModels: {
     id: string;
     name: string;
+    modelName: string;
   }[] = [];
-  const otherModels: { name: string; id: string }[] = [];
+  const otherModels: { name: string; id: string; modelName: string }[] = [];
 
   models?.forEach((model) => {
     if (!model?.name) return;
@@ -21,7 +24,10 @@ export const sortCarModels = (models: { id: string; name: string }[]) => {
     }
   });
 
-  const groupedAudi: Record<string, { name: string; id: string }[]> = {};
+  const groupedAudi: Record<
+    string,
+    { name: string; id: string; modelName: string }[]
+  > = {};
 
   audiModels.forEach((model) => {
     const baseModel =

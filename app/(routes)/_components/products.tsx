@@ -24,9 +24,7 @@ interface ProductsProps {
   page: number;
   totalPages: number;
   searchParams: {
-    filterIds: string;
     page: string;
-    modelId: string;
   };
 }
 

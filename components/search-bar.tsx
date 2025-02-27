@@ -162,68 +162,70 @@ const SearchBar = () => {
         </Form>
 
         {searchValue && isShow && (
-          <div className="rounded-[4px] border border-solid shadow-md px-2 py-3 lg:p-4 max-h-80 bg-[#FFFDFD] overflow-y-auto absolute top-[105%] left-0 w-full flex flex-col gap-4 z-30">
-            {searchedItems?.length > 0 ? (
-              searchedItems?.map((item) => {
-                return (
-                  <div
-                    className="pb-4 border-b border-[#F2F2F2]"
-                    key={item?.id}
-                  >
-                    <Link
-                      href={`/${item?.product_name}`}
-                      onClick={() => setIsShow(false)}
-                      className="grid grid-cols-2 md:flex md:items-start gap-3 p-4 hover:shadow-search-shadow transform transition-all duration-300 shadow-none"
+          <div className="rounded-[4px] border border-solid shadow-md px-2 py-3 lg:p-4 max-h-80 bg-[#FFFDFD] absolute top-[105%] left-0 w-full flex flex-col gap-4 z-30">
+            <div className="overflow-y-auto ">
+              {searchedItems?.length > 0 ? (
+                searchedItems?.map((item) => {
+                  return (
+                    <div
+                      className="pb-4 border-b border-[#F2F2F2]"
                       key={item?.id}
                     >
-                      <div className="rounded-md overflow-hidden w-auto h-20 md:w-20  relative">
-                        {item?.images[0]?.url ? (
-                          <Image
-                            src={`${process.env.BACKEND_URL}/public/products/${item?.images[0]?.url}`}
-                            alt={item?.title}
-                            fill
-                            objectFit="cover"
-                            priority
-                            unoptimized={true}
-                          />
-                        ) : (
-                          <Image
-                            src={ImageNotFound}
-                            alt="Image not found"
-                            fill
-                            objectFit="cover"
-                          />
-                        )}
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <h2 className="text-[#484848] font-medium uppercase">
-                          {item?.title}
-                        </h2>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-[#111111] text-[10px] leading-[12.19px]">
-                            Код товару: {item?.article}
-                          </span>
-                          <span className="text-[#111111] text-[10px] leading-[12.19px]">
-                            Каталожний номер: {item?.catalog_number}
-                          </span>
+                      <Link
+                        href={`/product/${item?.product_name}`}
+                        onClick={() => setIsShow(false)}
+                        className="grid grid-cols-2 md:flex md:items-start gap-3 p-4 hover:shadow-search-shadow transform transition-all duration-300 shadow-none"
+                        key={item?.id}
+                      >
+                        <div className="rounded-md overflow-hidden w-auto h-20 md:w-20  relative">
+                          {item?.images[0]?.url ? (
+                            <Image
+                              src={`${process.env.BACKEND_URL}/public/products/${item?.images[0]?.url}`}
+                              alt={item?.title}
+                              fill
+                              objectFit="contain"
+                              priority
+                              unoptimized={true}
+                            />
+                          ) : (
+                            <Image
+                              src={ImageNotFound}
+                              alt="Image not found"
+                              fill
+                              objectFit="cover"
+                            />
+                          )}
                         </div>
 
-                        <span className="text-[14px] leading-[17.07px] font-medium">
-                          {Number(item?.price) === 0 && "Ціна договірна"}
-                          {Number(item?.price) > 0 &&
-                            USDollar.format(Number(item?.price))}
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })
-            ) : (
-              <h3 className="text-base text-center text-[#111111]/70">
-                За вашим запитом товарів не знайдено...
-              </h3>
-            )}
+                        <div className="flex flex-col gap-2">
+                          <h2 className="text-[#484848] font-medium uppercase">
+                            {item?.title}
+                          </h2>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[#111111] text-[10px] leading-[12.19px]">
+                              Код товару: {item?.article}
+                            </span>
+                            <span className="text-[#111111] text-[10px] leading-[12.19px]">
+                              Каталожний номер: {item?.catalog_number}
+                            </span>
+                          </div>
+
+                          <span className="text-[14px] leading-[17.07px] font-medium">
+                            {Number(item?.price) === 0 && "Ціна договірна"}
+                            {Number(item?.price) > 0 &&
+                              USDollar.format(Number(item?.price))}
+                          </span>
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })
+              ) : (
+                <h3 className="text-base text-center text-[#111111]/70">
+                  За вашим запитом товарів не знайдено...
+                </h3>
+              )}
+            </div>
 
             {searchedItems?.length > 0 && (
               <Button

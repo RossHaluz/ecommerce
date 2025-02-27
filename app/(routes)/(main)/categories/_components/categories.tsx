@@ -6,6 +6,11 @@ interface CategoriesProps {
     id: string;
     name: string;
     category_name: string;
+    children: {
+      category_name: string;
+      name: string;
+      id: string;
+    }[];
     billboard: {
       label: string;
       imageUrl: string;
@@ -15,28 +20,37 @@ interface CategoriesProps {
 
 const Categories: FC<CategoriesProps> = ({ categories }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-rows-2 lg:grid-cols-3  gap-[30px]">
-      {categories?.map((item) => {
-        return (
-          <Link
-            href={`/categories/${item.category_name}`}
-            key={item?.id}
-            className="relative h-[250px] flex p-[30px] hover:scale-105 transition-all lg:first-of-type:w-full lg:first-of-type:col-span-2 lg:last-of-type:w-full lg:last-of-type:col-span-2"
-            style={{
-              backgroundImage: `url('${process.env.BACKEND_URL}/public/billboards/${item?.billboard?.imageUrl}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          >
-            <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-40"></div>
-
-            <h3 className="text-white text-2xl font-semibold relative mt-auto lg:w-[293px]">
-              {item?.billboard?.label}
-            </h3>
-          </Link>
-        );
-      })}
-    </div>
+    <>
+      {categories && categories?.length > 0 && (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {categories?.map((item) => {
+            return (
+              <ul className="flex flex-col gap-4" key={item?.id}>
+                <li className="flex flex-col gap-2">
+                  <Link
+                    href={`/categories/${item?.category_name}`}
+                    className="text-base font-bold"
+                  >
+                    {item?.name}
+                  </Link>
+                  {item?.children && item?.children?.length > 0 && (
+                    <ul>
+                      {item?.children?.map((item) => (
+                        <li key={item?.id}>
+                          <Link href={`/categories/${item?.category_name}`}>
+                            {item?.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              </ul>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 };
 

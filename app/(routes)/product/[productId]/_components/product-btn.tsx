@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import Trash from "/public/images/trash.svg";
 import { selectOrderItems } from "@/redux/order/selector";
 import { nanoid } from "@reduxjs/toolkit";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface ProductBtnCountProps {
   count: number | 1;
@@ -74,6 +75,12 @@ const ProductBtn: FC<ProductBtnProps & ProductBtnCountProps> = ({
       };
 
       dispatch(addItemToCart(newItem));
+      sendGAEvent("event", "add_to_cart", {
+        item_id: item.id,
+        item_name: item.title,
+        price: Number(item.price),
+        currency: "USD",
+      });
 
       toast.success("Item success add to cart");
     } catch (error) {

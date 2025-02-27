@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProviderWrapper from "@/redux/provider";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Mulish({ subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
           <ToastContainer />
         </ProviderWrapper>
       </body>
+      <GoogleAnalytics gaId="G-5DKE9X66KP" />
     </html>
   );
 }

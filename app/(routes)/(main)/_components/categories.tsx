@@ -1,8 +1,8 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import qs from "query-string";
 
 interface Category {
@@ -30,18 +30,38 @@ interface CategoriesProps {
 const Categories: FC<CategoriesProps> = ({ categories }) => {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [hoveredOnMenu, setHoveredOnMenu] = useState(false);
+  const [currenrtModel, setCurrentModel] = useState("");
+  const [isInitialization, setIsInitialization] = useState(false);
   const router = useRouter();
+  const params = useParams();
+
+  useEffect(() => {
+    setIsInitialization(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isInitialization) return;
+
+    const model = Array.isArray(params?.modelName)
+      ? params?.modelName[0]
+      : params?.modelName;
+    if (model) {
+      setCurrentModel(model);
+    }
+  }, [params, isInitialization]);
 
   const handleClickCategory = (id: string) => {
     const queryParams = qs.parse(window.location.search);
-    const modelId = queryParams?.modelId as string;
     const sortByPrice = queryParams.sortByPrice as string;
+
+    const newPath = currenrtModel
+      ? `/categories/${id}/${currenrtModel}`
+      : `/categories/${id}`;
 
     const url = qs.stringifyUrl(
       {
-        url: `/categories/${id}`,
+        url: newPath,
         query: {
-          modelId: modelId ? modelId : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
         },
       },

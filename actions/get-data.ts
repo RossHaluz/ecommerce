@@ -111,6 +111,45 @@ export const getCategoryDetails = async (data: {
   }
 };
 
+//Get category by model
+export const getCategoryByModel = async (data: {
+  categoryId: string;
+  page?: string;
+  sortByPrice?: string;
+  pageSize?: string;
+  modelName: string;
+}) => {
+  const tokenCookie = cookies().get("token");
+  const token = tokenCookie ? tokenCookie.value : null;
+  try {
+    const {
+      page = 1,
+      sortByPrice = "desc",
+      pageSize = 30,
+      categoryId,
+      modelName,
+    } = data;
+    const { data: category } = await axios.get(
+      `/category/${storeId}/${categoryId}/${modelName}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page,
+          sortByPrice,
+          pageSize,
+        },
+      }
+    );
+
+    return category?.data;
+  } catch (error) {
+    console.log("GET_CATEGORY_DATEILS", error);
+    return null;
+  }
+};
+
 //Get filters by category
 export const getFiltersByCategory = async (categoryId: string) => {
   try {
@@ -129,7 +168,6 @@ export const getFiltersByCategory = async (categoryId: string) => {
 export const getProductDetails = async (productId: string) => {
   try {
     const { data } = await axios.get(`/product/${storeId}/${productId}`);
-
     return data?.data;
   } catch (error) {
     console.log("GET_PRODUCT_DETAILS", error);
@@ -165,7 +203,7 @@ export const getCurrentUser = async () => {
 
     return data?.data?.user;
   } catch (error) {
-    console.log("GET_CURRENT_USER", error);
+    // console.log("GET_CURRENT_USER", error);
     return null;
   }
 };
@@ -218,19 +256,17 @@ export const getAllProducts = async (data: {
   filterIds?: string;
   page?: string;
   sortByPrice?: string;
-  modelId?: string;
   pageSize?: number;
 }): Promise<ProductsResponse | null> => {
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
   try {
-    const { filterIds, page, sortByPrice, modelId, pageSize } = data;
+    const { filterIds, page, sortByPrice, pageSize } = data;
     const { data: products } = await axios.get(`/product/${storeId}`, {
       params: {
         filterIds,
         page,
         sortByPrice,
-        modelId,
         pageSize,
       },
       headers: {
@@ -240,7 +276,43 @@ export const getAllProducts = async (data: {
 
     return products?.data;
   } catch (error) {
-    console.log("GET_ALL_PRODUCTS", error);
+    // console.log("GET_ALL_PRODUCTS", error);
+    return null;
+  }
+};
+
+//Get product by model
+export const getProductsByModel = async (data: {
+  page?: string;
+  sortByPrice?: string;
+  searchValue?: string;
+  modelName?: string;
+  pageSize?: number;
+}): Promise<ProductsResponse | null> => {
+  const tokenCookie = cookies().get("token");
+  const token = tokenCookie ? tokenCookie.value : null;
+  try {
+    const { page, sortByPrice, modelName, pageSize, searchValue } = data;
+    const { data: products } = await axios.get(
+      `/product/${storeId}/model/${modelName}`,
+      {
+        params: {
+          page,
+          sortByPrice,
+          pageSize,
+          searchValue,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log(products);
+
+    return products?.data;
+  } catch (error) {
+    // console.log("GET_ALL_PRODUCTS", error);
     return null;
   }
 };
@@ -259,6 +331,20 @@ export const updateUser = async (values: any) => {
     return data?.data;
   } catch (error) {
     console.log("UPDATE_USER", error);
+    return null;
+  }
+};
+
+//Get model details
+export const getModelDetails = async (model: string) => {
+  console.log(model);
+
+  try {
+    const { data } = await axios.get(`/model/${storeId}/${model}`);
+
+    return data?.data;
+  } catch (error) {
+    console.log("GET MODEL DETAILS", error);
     return null;
   }
 };

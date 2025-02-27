@@ -14,22 +14,18 @@ const Products = dynamic(() => import("../_components/products"), {
 
 interface HomeProps {
   searchParams: {
-    filterIds: string;
     page: string;
     searchValue: string;
     sortByPrice: string;
-    modelId: string;
   };
 }
 
 const ProductsWrapper = async ({ searchParams }: HomeProps) => {
-  const { filterIds, page, sortByPrice, modelId } = searchParams;
+  const { page, sortByPrice } = searchParams;
 
   const products = await getAllProducts({
     page,
-    filterIds,
     sortByPrice,
-    modelId,
     pageSize: 30,
   });
 

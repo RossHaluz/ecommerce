@@ -9,7 +9,7 @@ import React, {
 import { Button } from "./ui/button";
 import Arrow from "/public/images/arrow-down.svg";
 import queryString from "query-string";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface Category {
   name: string;
@@ -30,7 +30,25 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
   isOpen,
 }) => {
   const [openCategories, setOpenCategories] = useState<string[]>([]);
+  const [currenrtModel, setCurrentModel] = useState("");
+  const [isInitialization, setIsInitialization] = useState(false);
   const router = useRouter();
+  const params = useParams();
+
+  useEffect(() => {
+    setIsInitialization(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isInitialization) return;
+
+    const model = Array.isArray(params?.modelName)
+      ? params?.modelName[0]
+      : params?.modelName;
+    if (model) {
+      setCurrentModel(model);
+    }
+  }, [params, isInitialization]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -46,14 +64,16 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
 
   const handleOpenCategory = (categoryName: string) => {
     const queryParams = queryString.parse(window.location.search);
-    const modelId = queryParams?.modelId as string;
     const sortByPrice = queryParams.sortByPrice as string;
+
+    const newPath = currenrtModel
+      ? `/categories/${categoryName}/${currenrtModel}`
+      : `/categories/${categoryName}`;
 
     const url = queryString.stringifyUrl(
       {
-        url: `/categories/${categoryName}`,
+        url: newPath,
         query: {
-          modelId: modelId ? modelId : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
         },
       },

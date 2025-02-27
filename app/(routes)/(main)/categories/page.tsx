@@ -1,16 +1,13 @@
-import Section from "@/components/section";
 import React from "react";
 import Categories from "./_components/categories";
 import { getCategories } from "@/actions/get-data";
-
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
+import Section from "@/components/section";
 
 const CategoriesPage = async () => {
   const categories = (await getCategories()) || [];
 
   return (
-    <Section title="Категорії">
+    <Section title="Категорії" sectionStyles="mt-20 mt-[100px]">
       <Categories categories={categories} />
     </Section>
   );

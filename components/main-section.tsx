@@ -61,7 +61,7 @@ const MainSection: FC<MainSectionProps> = ({
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3 justify-between">
               {title && (
-                <h2 className="text-[#484848] font-bold text-base">{title}</h2>
+                <h1 className="text-[#484848] font-bold text-base">{title}</h1>
               )}
               <div className="flex md:hidden items-center gap-6">
                 <SortProducts searchParams={params} />

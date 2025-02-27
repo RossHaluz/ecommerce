@@ -83,7 +83,7 @@ const Slider: FC<SliderProps> = ({ images }) => {
                   className="rounded-2xl overflow-hidden"
                   onClick={() => onOpenGallery(index)}
                 >
-                  <div className="relative w-full aspect-square flex justify-center">
+                  <div className="relative w-full aspect-square flex justify-center overflow-hidden">
                     <Image
                       src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
                       alt="Image slider"
@@ -120,7 +120,7 @@ const Slider: FC<SliderProps> = ({ images }) => {
                       src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
                       alt="Image slider"
                       fill
-                      objectFit="cover"
+                      objectFit="contain"
                       priority
                       unoptimized
                     />

@@ -3,49 +3,37 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { cn, sortCarModels } from "@/lib/utils";
 import qs from "query-string";
-import { usePathname, useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/store";
-import { setSelectModel, removeSelectedModel } from "@/redux/models/slice";
-import { useSelector } from "react-redux";
-import { selectCurrentModel } from "@/redux/models/selectors";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 interface SearchByModelProps {
   models: {
     id: string;
     name: string;
+    modelName: string;
   }[];
 }
 
 const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [currentModel, setCurrentModel] = useState<{
+    id: string;
+    name: string;
+    modelName: string;
+  } | null>(null);
   const modelRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const dispatch = useAppDispatch();
-  const currentModel = useSelector(selectCurrentModel);
-  const [isInitialization, setIsInitialization] = useState(false);
+  const params = useParams();
 
   useEffect(() => {
-    setIsInitialization(true);
-    router.refresh();
-  }, []);
-
-  useEffect(() => {
-    if (!isInitialization) return;
-    const queryParams = qs.parse(window.location.search);
-
-    const modelId = queryParams?.modelId as string;
-
-    if (modelId) {
-      const selectedModel = models?.find((model) => modelId === model?.id);
-      if (selectedModel) {
-        dispatch(setSelectModel(selectedModel));
-      }
+    if (!params?.modelName) {
+      setCurrentModel(null);
     } else {
-      dispatch(removeSelectedModel());
+      const model = models.find((item) => item.modelName === params.modelName);
+      if (model) setCurrentModel(model);
     }
-  }, [pathname, models]);
+  }, [params?.modelName, models]);
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideModel);
@@ -64,16 +52,23 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   };
 
   const handleRemoveModel = () => {
-    dispatch(removeSelectedModel());
+    setCurrentModel(null);
     const queryParams = qs.parse(window.location.search);
     const selectSort = queryParams?.sortByPrice;
     const searchValue = queryParams?.searchValue;
 
+    const newPathArray = pathname
+      .split("/")
+      .filter((item) => item !== params?.modelName && item !== "");
+
+    // Правильне формування шляху
+    const newPath =
+      newPathArray.length > 0 ? `/${newPathArray.join("/")}` : "/";
+
     const url = qs.stringifyUrl(
       {
-        url: pathname,
+        url: newPath,
         query: {
-          modelId: null,
           sortByPrice: selectSort ? selectSort : null,
           searchValue: searchValue ? searchValue : null,
         },
@@ -84,18 +79,42 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
     return router.push(url);
   };
 
-  const handleSerchProductsByModel = (model: { id: string; name: string }) => {
+  const handleSerchProductsByModel = (model: {
+    id: string;
+    name: string;
+    modelName: string;
+  }) => {
     if (!model) return;
-    dispatch(setSelectModel(model));
+    setCurrentModel(model);
     const queryParams = qs.parse(window.location.search);
     const searchValue = queryParams?.searchValue;
     const sortByPrice = queryParams?.sortByPrice;
 
+    const currentModelName = Array.isArray(params?.modelName)
+      ? params.modelName[0]
+      : params?.modelName;
+
+    // Отримуємо всі сегменти шляху
+    const pathSegments = pathname.split("/").filter(Boolean);
+
+    // Видаляємо попередню модель, якщо вона є
+    if (currentModelName) {
+      const modelIndex = pathSegments.indexOf(currentModelName);
+      if (modelIndex !== -1) {
+        pathSegments.splice(modelIndex, 1);
+      }
+    }
+
+    // Додаємо нову модель
+    pathSegments.push(model.modelName);
+
+    // Формуємо новий шлях
+    const newPath = `/${pathSegments.join("/")}`;
+
     const url = qs.stringifyUrl(
       {
-        url: pathname,
+        url: newPath,
         query: {
-          modelId: model ? model?.id : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
           searchValue: searchValue ? searchValue : null,
         },
@@ -104,7 +123,6 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
     );
 
     setIsOpen(false);
-
     return router.replace(url);
   };
 
@@ -158,10 +176,11 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
               return (
                 <Button
                   onClick={() => handleSerchProductsByModel(item)}
-                  variant="ghost"
+                  variant={"ghost"}
                   key={item?.id}
                   className={cn("flex items-start ml-0", {
-                    "text-[#c0092a] font-medium": currentModel?.id === item?.id,
+                    "text-[#c0092a] font-medium":
+                      params?.modelName === item?.modelName,
                   })}
                 >
                   {item?.name}

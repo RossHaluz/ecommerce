@@ -27,7 +27,7 @@ export async function generateMetadata({
 }: ProductPageProps): Promise<Metadata> {
   const { productId } = params;
   const data = await getProductDetails(productId);
-  const productName = data?.product?.title;
+  const productName = data?.product?.title || "Товар";
   const catalog_number = data?.product?.catalog_number;
   const models = data?.product?.models
     ?.map((item: any) => item?.model?.name)

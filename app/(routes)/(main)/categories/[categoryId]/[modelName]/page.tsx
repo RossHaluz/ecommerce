@@ -1,6 +1,6 @@
 import React, { FC, Suspense } from "react";
 import NotFoundItems from "@/components/not-found-items";
-import { getCategories, getCategoryDetails } from "@/actions/get-data";
+import { getCategoryByModel, getModelDetails } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
@@ -8,70 +8,60 @@ import dynamic from "next/dynamic";
 export const fetchCache = "force-cache";
 export const revalidate = 60;
 
-const Products = dynamic(() => import("./_components/products"), {
+const Products = dynamic(() => import("@/app/(routes)/_components/products"), {
   ssr: false,
 });
 
 interface CategoryPageProps {
   params: {
     categoryId: string;
+    modelName: string;
   };
   searchParams: {
-    filterIds?: string;
     page?: string;
     sortByPrice?: string;
     searchValue?: string;
-    modelId?: string;
   };
-}
-
-export async function generateStaticParams() {
-  const categories = await getCategories();
-
-  return categories.map(
-    (category: { id: string; name: string; category_name: string }) => ({
-      categoryId: category.category_name,
-    })
-  );
 }
 
 export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
-  const { categoryId } = params;
+  const { categoryId, modelName } = params;
 
   let categoryName: string;
 
-  const category = await getCategoryDetails({
+  const category = await getCategoryByModel({
     categoryId,
+    modelName,
   });
+  const model = await getModelDetails(modelName);
   categoryName = category?.category?.name || "Запчастини під усі моделі Audi";
 
   return {
-    title: `Купити ${categoryName.toLowerCase()} на Audi (Ауді) за вигідною ціною в магазині Audiparts`,
-    description: `Купити ${categoryName} на Audi (Ауді) в інтернет-магазині. ✓ Більше 4000 оригінальних деталей. ✓ Запчастини на Audi (Ауді) під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка протягом 2-3 днів по всій Україні.`,
+    title: `Купити ${categoryName.toLowerCase()} на Audi (Ауді) ${
+      model?.name
+    }  за вигідною ціною в магазині Audiparts`,
+    description: `Купити ${categoryName}  на Audi (Ауді) ${model?.name} в інтернет-магазині. ✓ Більше 4000 оригінальних деталей. ✓ Запчастини на Audi (Ауді) під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка протягом 2-3 днів по всій Україні.`,
   };
 }
 
 const ProductsWrapper = async ({
   categoryId,
+  modelName,
   searchParams,
 }: {
   categoryId: string;
+  modelName: string;
   searchParams: CategoryPageProps["searchParams"];
 }) => {
-  const {
-    filterIds = "",
-    page = "1",
-    sortByPrice = "",
-    modelId = "",
-  } = searchParams;
+  const { page = "1", sortByPrice = "" } = searchParams;
 
-  const category = await getCategoryDetails({
+  const category = await getCategoryByModel({
     categoryId,
     page,
     sortByPrice,
-    modelId,
+    modelName,
   });
 
   if (!category || !category.products || category.products.length === 0) {
@@ -85,7 +75,7 @@ const ProductsWrapper = async ({
       products={category.products}
       page={category.meta?.page || 1}
       totalPages={category.meta?.totalPages || 1}
-      searchParams={{ filterIds, page, modelId }}
+      searchParams={{ page }}
     />
   );
 };
@@ -94,18 +84,24 @@ const CategoryPage: FC<CategoryPageProps> = async ({
   params,
   searchParams,
 }) => {
-  const { categoryId } = params;
+  const { categoryId, modelName } = params;
 
-  const category = await getCategoryDetails({
+  const category = await getCategoryByModel({
     categoryId,
+    modelName,
   });
 
   const categoryName = category?.category?.name || "Запчастини до Audi";
+  const model = await getModelDetails(modelName);
 
   return (
-    <MainSection title={categoryName} params={searchParams}>
+    <MainSection title={`${categoryName} ${model?.name}`} params={searchParams}>
       <Suspense fallback={<p>Завантаження товарів...</p>}>
-        <ProductsWrapper categoryId={categoryId} searchParams={searchParams} />
+        <ProductsWrapper
+          categoryId={categoryId}
+          modelName={modelName}
+          searchParams={searchParams}
+        />
       </Suspense>
     </MainSection>
   );

@@ -11,7 +11,6 @@ interface PaginationProps {
   searchParams: {
     page?: string;
     sortByPrice?: string;
-    modelId: string;
   };
 }
 
