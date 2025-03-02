@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import Image from "next/image";
 import { removeItemFromCart } from "@/redux/order/slice";
 import { toast } from "react-toastify";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { selectOrderItems } from "@/redux/order/selector";
 import ModalAuth from "./ui/modal-auth";
 import LoginForm from "./login-form";
@@ -67,7 +67,8 @@ const Header = () => {
   const infoRef = useRef<HTMLDivElement>(null);
   const numbersRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const shouldBeFixed = pathname.includes("/categories");
+  const params = useParams();
+  const shouldBeFixed = pathname.includes("/categories") || params?.modelName;
   const homePage = pathname.endsWith("/");
 
   const handleClickOutside = (
@@ -358,7 +359,7 @@ const Header = () => {
                           >
                             <div className="w-[65px] h-[65px]  rounded-[5px] overflow-hidden relative">
                               <Image
-                                src={`${process.env.BACKEND_URL}/public/products/${item?.images?.[0]?.url}`}
+                                src={item?.images?.[0]?.url}
                                 alt={item?.images?.[0]?.id}
                                 fill
                                 className="object-cover"

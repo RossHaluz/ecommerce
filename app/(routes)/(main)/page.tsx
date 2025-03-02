@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import { getAllProducts } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
@@ -6,10 +5,10 @@ import NotFoundItems from "@/components/not-found-items";
 import { FC } from "react";
 
 export const fetchCache = "force-cache";
-export const revalidate = 60;
+export const revalidate = 300;
 
 const Products = dynamic(() => import("../_components/products"), {
-  ssr: false,
+  ssr: true,
 });
 
 interface HomeProps {
@@ -26,7 +25,7 @@ const ProductsWrapper = async ({ searchParams }: HomeProps) => {
   const products = await getAllProducts({
     page,
     sortByPrice,
-    pageSize: 30,
+    pageSize: 20,
   });
 
   if (!products || !products.products || products.products.length === 0) {
@@ -50,9 +49,7 @@ const ProductsWrapper = async ({ searchParams }: HomeProps) => {
 const Home: FC<HomeProps> = ({ searchParams }) => {
   return (
     <MainSection title="Запчастини до Audi" params={searchParams}>
-      <Suspense fallback={<p>Завантаження товарів...</p>}>
-        <ProductsWrapper searchParams={searchParams} />
-      </Suspense>
+      <ProductsWrapper searchParams={searchParams} />
     </MainSection>
   );
 };

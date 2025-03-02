@@ -17,7 +17,6 @@ import qs from "query-string";
 
 const SearchBar = () => {
   const [searchedItems, setSearchedItems] = useState<Item[]>([]);
-  const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isFocusInput, setIsFocusInput] = useState(false);
   const [isShow, setIsShow] = useState(false);
@@ -31,6 +30,34 @@ const SearchBar = () => {
       window.removeEventListener("mousedown", clickOutsideSearch);
     };
   }, []);
+
+  useEffect(() => {
+    if (!searchValue) {
+      setSearchedItems([]);
+    }
+
+    const delaySearch = setTimeout(async () => {
+      setIsShow(true);
+      try {
+        const { products } = await getSearchProducts({
+          searchValue,
+        });
+
+        const formateItems = products?.filter(
+          (item: Item, idx: number) => idx < 4
+        );
+
+        if (!searchValue) {
+          setSearchedItems([]);
+          return;
+        }
+
+        setSearchedItems(formateItems);
+      } catch (error) {
+        console.log("Items not found...");
+      }
+    }, 500);
+  }, [searchValue]);
 
   const onFocuseInput = async () => {
     setIsFocusInput(true);
@@ -74,29 +101,8 @@ const SearchBar = () => {
     },
   });
 
-  const handleSearchValue = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      setIsShow(true);
-      setSearchValue(e.target.value);
-      const { products } = await getSearchProducts({
-        searchValue: e.target.value,
-      });
-
-      const formateItems = products?.filter(
-        (item: Item, idx: number) => idx < 4
-      );
-
-      if (!e.target.value) {
-        setSearchedItems([]);
-        setAllItemSearched([]);
-        return;
-      }
-
-      setAllItemSearched(products);
-      setSearchedItems(formateItems);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
   };
 
   const USDollar = new Intl.NumberFormat("en-US", {
@@ -180,7 +186,7 @@ const SearchBar = () => {
                         <div className="rounded-md overflow-hidden w-auto h-20 md:w-20  relative">
                           {item?.images[0]?.url ? (
                             <Image
-                              src={`${process.env.BACKEND_URL}/public/products/${item?.images[0]?.url}`}
+                              src={item?.images[0]?.url}
                               alt={item?.title}
                               fill
                               objectFit="contain"

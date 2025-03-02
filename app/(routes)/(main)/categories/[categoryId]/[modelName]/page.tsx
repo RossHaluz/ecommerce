@@ -1,4 +1,4 @@
-import React, { FC, Suspense } from "react";
+import React, { FC } from "react";
 import NotFoundItems from "@/components/not-found-items";
 import { getCategoryByModel, getModelDetails } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
@@ -6,10 +6,10 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 
 export const fetchCache = "force-cache";
-export const revalidate = 60;
+export const revalidate = 300;
 
 const Products = dynamic(() => import("@/app/(routes)/_components/products"), {
-  ssr: false,
+  ssr: true,
 });
 
 interface CategoryPageProps {
@@ -96,13 +96,11 @@ const CategoryPage: FC<CategoryPageProps> = async ({
 
   return (
     <MainSection title={`${categoryName} ${model?.name}`} params={searchParams}>
-      <Suspense fallback={<p>Завантаження товарів...</p>}>
-        <ProductsWrapper
-          categoryId={categoryId}
-          modelName={modelName}
-          searchParams={searchParams}
-        />
-      </Suspense>
+      <ProductsWrapper
+        categoryId={categoryId}
+        modelName={modelName}
+        searchParams={searchParams}
+      />
     </MainSection>
   );
 };

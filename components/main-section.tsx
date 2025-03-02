@@ -13,7 +13,7 @@ import { selectModels } from "@/redux/models/selectors";
 import { getModels } from "@/redux/models/operetions";
 import SortProducts from "@/app/(routes)/(main)/_components/sort";
 import CustomizerLayout from "./сustomizer-layout";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 interface MainSectionProps {
@@ -26,7 +26,7 @@ interface MainSectionProps {
     page?: string;
     searchValue?: string;
     sortByPrice?: string;
-    modelId?: string;
+    modelName?: string;
   };
 }
 
@@ -42,7 +42,9 @@ const MainSection: FC<MainSectionProps> = ({
   const isLoading = useSelector(selectIsLoading);
   const models = useSelector(selectModels);
   const pathname = usePathname();
-  const shouldBeMargin = pathname.includes("/categories");
+  const queryParams = useParams();
+  const shouldBeMargin =
+    pathname.includes("/categories") || queryParams?.modelName;
   const isHomePage = pathname.endsWith("/");
 
   useEffect(() => {

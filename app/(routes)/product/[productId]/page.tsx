@@ -45,10 +45,12 @@ const ProductPage: FC<ProductPageProps> = async ({ params }) => {
   const similarProducts = await getSimilarProducts(productId);
 
   return (
-    <div className="container mt-6 mb-6 flex flex-col gap-4">
-      {data?.product && <ProductInfo initialData={data?.product} />}
-      <SimilarProducts similarProducts={similarProducts} />
-    </div>
+    <>
+      <div className="container my-6 flex flex-col gap-4">
+        {data?.product && <ProductInfo initialData={data?.product} />}
+        <SimilarProducts similarProducts={similarProducts} />
+      </div>
+    </>
   );
 };
 

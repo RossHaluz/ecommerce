@@ -60,7 +60,7 @@ const FullscreenGallery: React.FC<FullscreenGalleryProps> = ({
           className="relative h-[90%] w-full"
         >
           <Image
-            src={`${process.env.BACKEND_URL}/public/products/${images[currentIndex]}`}
+            src={images[currentIndex]}
             alt="Gallery Image"
             fill
             objectFit="contain"

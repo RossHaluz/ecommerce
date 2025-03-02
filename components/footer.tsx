@@ -270,7 +270,7 @@ const Footer = () => {
             <div className="flex flex-col gap-4">
               <h3 className="text-[24px] leading-[33.6px]">Соціальні мережі</h3>
               <div className="flex items-center gap-6">
-                <a
+                {/* <a
                   aria-label="Написати у Viber"
                   href="https://invite.viber.com/?number=380673834283"
                   target="_blank"
@@ -278,7 +278,7 @@ const Footer = () => {
                   className="h-auto"
                 >
                   <Viber />
-                </a>
+                </a> */}
                 <a
                   aria-label="Написати у Telegram"
                   href="https://t.me/+380673834283"
@@ -296,7 +296,7 @@ const Footer = () => {
           {/* Soacials start */}
 
           <div className="flex items-center justify-center gap-4 md:hidden">
-            <a
+            {/* <a
               aria-label="Написати у Viber"
               href="https://invite.viber.com/?number=380673834283"
               target="_blank"
@@ -304,7 +304,7 @@ const Footer = () => {
               className="h-auto"
             >
               <Viber />
-            </a>
+            </a> */}
             <a
               aria-label="Написати у Telegram"
               href="https://t.me/+380673834283"

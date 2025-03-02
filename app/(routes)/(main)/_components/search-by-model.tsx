@@ -5,6 +5,7 @@ import { cn, sortCarModels } from "@/lib/utils";
 import qs from "query-string";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { FixedSizeList as List } from "react-window";
 
 interface SearchByModelProps {
   models: {
@@ -126,6 +127,8 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
     return router.replace(url);
   };
 
+  const sortedModels = sortCarModels(models);
+
   return (
     <div className="rounded-lg flex flex-col gap-3 md:gap-6">
       <div className="flex items-center gap-4">
@@ -163,8 +166,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
               />
             </div>
           </Button>
-
-          <div
+          {/* <div
             className={cn(
               "rounded-lg bg-[#FFFDFD] shadow-md p-4 z-20 max-h-44 overflow-y-auto flex flex-col transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid w-full right-0",
               {
@@ -187,6 +189,39 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
                 </Button>
               );
             })}
+          </div> */}
+          <div
+            className={cn(
+              "rounded-lg bg-[#FFFDFD] shadow-md p-4 z-20 flex flex-col transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid w-full right-0",
+              {
+                "scale-y-1": isOpen,
+              }
+            )}
+          >
+            <List
+              height={176} // 4 елементи по 44px (або змінюй за потребою)
+              itemCount={sortedModels.length}
+              itemSize={44} // висота одного елемента
+              width="100%"
+            >
+              {({ index, style }) => {
+                const item = sortedModels[index];
+                return (
+                  <Button
+                    onClick={() => handleSerchProductsByModel(item)}
+                    variant={"ghost"}
+                    key={item?.id}
+                    className={cn("flex items-start ml-0", {
+                      "text-[#c0092a] font-medium":
+                        params?.modelName === item?.modelName,
+                    })}
+                    style={style} // Важливо додати для коректного відображення
+                  >
+                    {item?.name}
+                  </Button>
+                );
+              }}
+            </List>
           </div>
         </div>
       </div>

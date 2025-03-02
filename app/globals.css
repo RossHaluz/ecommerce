@@ -152,6 +152,12 @@ img {
   box-shadow: 0 0 5px rgba(120, 171, 126, 0.5);
 }
 
+.swiper-horizontal
+  > .swiper-pagination-bullets.swiper-pagination-bullets-dynamic,
+.swiper-pagination-horizontal.swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
+  transform: none !important;
+}
+
 @layer components {
   .container {
     @apply max-w-[2100px];

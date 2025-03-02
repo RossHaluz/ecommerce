@@ -1,4 +1,4 @@
-import React, { FC, Suspense } from "react";
+import React, { FC } from "react";
 import NotFoundItems from "@/components/not-found-items";
 import { getCategories, getCategoryDetails } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
@@ -6,10 +6,10 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 
 export const fetchCache = "force-cache";
-export const revalidate = 60;
+export const revalidate = 300;
 
 const Products = dynamic(() => import("./_components/products"), {
-  ssr: false,
+  ssr: true,
 });
 
 interface CategoryPageProps {
@@ -21,7 +21,6 @@ interface CategoryPageProps {
     page?: string;
     sortByPrice?: string;
     searchValue?: string;
-    modelId?: string;
   };
 }
 
@@ -60,18 +59,13 @@ const ProductsWrapper = async ({
   categoryId: string;
   searchParams: CategoryPageProps["searchParams"];
 }) => {
-  const {
-    filterIds = "",
-    page = "1",
-    sortByPrice = "",
-    modelId = "",
-  } = searchParams;
+  const { filterIds = "", page = "1", sortByPrice = "" } = searchParams;
 
   const category = await getCategoryDetails({
     categoryId,
     page,
     sortByPrice,
-    modelId,
+    pageSize: "20",
   });
 
   if (!category || !category.products || category.products.length === 0) {
@@ -85,7 +79,7 @@ const ProductsWrapper = async ({
       products={category.products}
       page={category.meta?.page || 1}
       totalPages={category.meta?.totalPages || 1}
-      searchParams={{ filterIds, page, modelId }}
+      searchParams={{ filterIds, page }}
     />
   );
 };
@@ -104,9 +98,7 @@ const CategoryPage: FC<CategoryPageProps> = async ({
 
   return (
     <MainSection title={categoryName} params={searchParams}>
-      <Suspense fallback={<p>Завантаження товарів...</p>}>
-        <ProductsWrapper categoryId={categoryId} searchParams={searchParams} />
-      </Suspense>
+      <ProductsWrapper categoryId={categoryId} searchParams={searchParams} />
     </MainSection>
   );
 };

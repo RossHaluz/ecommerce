@@ -16,7 +16,6 @@ import Trash from "/public/images/trash.svg";
 import { nanoid } from "@reduxjs/toolkit";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
 import { cn } from "@/lib/utils";
-import Head from "next/head";
 import { sendGAEvent } from "@next/third-parties/google";
 
 interface ProductItemProps {
@@ -102,15 +101,6 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
 
   return (
     <>
-      <Head>
-        {productImage && (
-          <link
-            rel="preload"
-            as="image"
-            href={`${process.env.BACKEND_URL}/products/${productImage}`}
-          />
-        )}
-      </Head>
       <li
         className={cn("grid gap-2 bg-[#FFFDFD] rounded", {
           "grid-cols-5 p-4 md:p-6": currentCustomizer === "list",
@@ -134,11 +124,11 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
           >
             {productImage ? (
               <Image
-                src={`https://api.audiparts.site/products/${productImage}`}
+                src={productImage}
                 alt={item?.title || "Фото товару"}
                 fill
                 objectFit="contain"
-                priority
+                priority={true}
               />
             ) : (
               <Image

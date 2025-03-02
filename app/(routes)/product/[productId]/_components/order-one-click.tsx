@@ -20,7 +20,6 @@ import { sendGAEvent } from "@next/third-parties/google";
 
 interface OrderOneClickProps {
   item: {
-    id: string;
     price: string;
     productId: string;
     quantity: 1;
@@ -85,7 +84,7 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
       }
 
       sendGAEvent("event", "make_order_one_click", {
-        item_id: item.id,
+        item_id: item.productId,
         item_name: item.title,
         price: Number(item.price),
         currency: "USD",

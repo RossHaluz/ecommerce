@@ -89,7 +89,7 @@ const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
                     </Button>
                     <div className="w-[118px] h-[118px] rounded-[5px] overflow-hidden relative">
                       <Image
-                        src={`${process.env.BACKEND_URL}/public/products/${imageUrl}`}
+                        src={imageUrl}
                         alt={item?.title}
                         fill
                         className="object-cover absolute top-0 left-0"

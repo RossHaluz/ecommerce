@@ -8,6 +8,10 @@ const nextConfig = {
         port: "",
         pathname: "/products/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
 
@@ -33,6 +37,9 @@ const nextConfig = {
     NOVA_POSHTA_KEY: process.env.NOVA_POSHTA_KEY,
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+    NEXT_PUBLIC_PUBLIC_KEY: process.env.NEXT_PUBLIC_PUBLIC_KEY,
+    NEXT_PUBLIC_URL_ENDPOINT: process.env.NEXT_PUBLIC_URL_ENDPOINT,
+    PRIVATE_KEY: process.env.PRIVATE_KEY,
   },
 };
 

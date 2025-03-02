@@ -85,7 +85,7 @@ const Slider: FC<SliderProps> = ({ images }) => {
                 >
                   <div className="relative w-full aspect-square flex justify-center overflow-hidden">
                     <Image
-                      src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
+                      src={item?.url}
                       alt="Image slider"
                       fill
                       objectFit="contain"
@@ -117,7 +117,7 @@ const Slider: FC<SliderProps> = ({ images }) => {
                     className="rounded-2xl overflow-hidden h-auto flex items-center justify-center"
                   >
                     <Image
-                      src={`${process.env.BACKEND_URL}/public/products/${item?.url}`}
+                      src={item?.url}
                       alt="Image slider"
                       fill
                       objectFit="contain"
