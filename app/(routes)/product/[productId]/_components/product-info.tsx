@@ -148,7 +148,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
           </div>
 
           <ProductDetails initialData={initialData} />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center flex-wrap gap-3">
             {models?.length > 0 && (
               <h3 className="text-base font-bold">Моделі:</h3>
             )}
@@ -157,7 +157,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
                 <React.Fragment key={item?.id}>
                   <Link
                     href={`${process.env.NEXT_PUBLIC_BASE_URL}/${item?.model?.modelName}`}
-                    className="underline text-[#C0092A] cursor-pointer"
+                    className="underline text-[#C0092A] cursor-pointer max-w-max"
                   >
                     {item?.model?.name}
                     {index < models.length - 1 && ", "}
