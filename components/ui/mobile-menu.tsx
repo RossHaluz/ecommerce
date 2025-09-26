@@ -18,13 +18,12 @@ import Account from "/public/images/account.svg";
 import Phone from "/public/images/phone.svg";
 import Clock from "/public/images/clock.svg";
 import { useRouter } from "next/navigation";
-import LoginForm from "../login-form";
-import RegisterForm from "../register-form";
 import { User2Icon } from "lucide-react";
 import { getCategories, getCurrentUser } from "@/actions/get-data";
 import RenderCategoryItems from "../render-category-items";
 import { cn } from "@/lib/utils";
 import ArrowDown from "/public/images/arrow-down.svg";
+import AuthorizationOtp from "../authirization-otp";
 
 interface Item {
   id: string;
@@ -40,9 +39,7 @@ interface Item {
 }
 
 interface MobileMenuProps {
-  setIsRegister: Dispatch<SetStateAction<boolean>>;
   setIsLogin: Dispatch<SetStateAction<boolean>>;
-  isRegister?: boolean;
   isLogin?: boolean;
   setIsActive: React.Dispatch<React.SetStateAction<string>>;
   isActive: string;
@@ -53,9 +50,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
   setIsActive,
   isActive,
   openBtn,
-  setIsRegister,
   setIsLogin,
-  isRegister,
   isLogin,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -141,7 +136,6 @@ const MobileMenu: FC<MobileMenuProps> = ({
   const handleCloseMenu = () => {
     setIsOpen(false);
     setIsActive("");
-    setIsRegister(false);
     setIsLogin(true);
     router.refresh();
   };
@@ -156,7 +150,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
         {openBtn}
       </Button>
       <div
-        className={`fixed w-full h-screen top-0 left-0 bg-white overflow-hidden z-[100] transform transition-all duration-150 overflow-y-auto ${
+        className={`fixed w-full h-screen top-0 left-0 bg-white overflow-hidden z-50 transform transition-all duration-150 overflow-y-auto ${
           isOpen ? "translate-x-0" : "translate-x-[100%]"
         }`}
       >
@@ -195,12 +189,6 @@ const MobileMenu: FC<MobileMenuProps> = ({
               {isActive === "account" && isLogin && (
                 <h3 className="text-base font-semibold text-[#484848]">
                   Вхід до особистого кабінету
-                </h3>
-              )}
-
-              {isActive === "account" && isRegister && (
-                <h3 className="text-base font-semibold text-[#484848]">
-                  Реєстрація особистого кабінету
                 </h3>
               )}
             </div>
@@ -336,18 +324,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                   : "translate-x-[120%] h-0"
               }`}
             >
-              {isLogin && (
-                <LoginForm
-                  setIsRegister={setIsRegister}
-                  setIsLogin={setIsLogin}
-                />
-              )}
-              {isRegister && (
-                <RegisterForm
-                  setIsRegister={setIsRegister}
-                  setIsLogin={setIsLogin}
-                />
-              )}
+              {isLogin && <AuthorizationOtp setIsOpen={setIsOpen} />}
             </div>
           </div>
         </div>

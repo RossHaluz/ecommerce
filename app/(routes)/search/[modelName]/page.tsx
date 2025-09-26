@@ -14,6 +14,7 @@ interface SearchPageProps {
   };
   searchParams: {
     filterIds: string;
+    stockStatus: string;
     page: string;
     sortByPrice: string;
     searchValue: string;
@@ -29,13 +30,14 @@ export const metadata: Metadata = {
 };
 
 const SearchPage: FC<SearchPageProps> = async ({ searchParams, params }) => {
-  const { page, sortByPrice, searchValue } = searchParams;
+  const { page, sortByPrice, searchValue, stockStatus } = searchParams;
   const { modelName } = params;
 
   const data = await getProductsByModel({
     searchValue,
     page,
     sortByPrice,
+    stockStatus,
     modelName,
   });
 

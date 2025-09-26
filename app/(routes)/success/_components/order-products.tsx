@@ -35,11 +35,11 @@ const OrderProducts: FC<OrderProductsProps> = ({ item }) => {
           className="relative rounded-[5px] overflow-hidden w-[94px] h-[94px]"
         >
           <Image
-            src={item?.images[0]?.url}
+            src={`${process.env.BACKEND_URL}/products/${item?.images[0]?.url}`}
             alt="Order image"
             fill
             className="absolute top-0 right-0 object-cover"
-            unoptimized={true}
+            priority={true}
           />
         </Link>
 

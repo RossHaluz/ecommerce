@@ -1,0 +1,1 @@
+export const selectIsShow = (state: any) => state.scrollUp.isShow;

@@ -16,6 +16,7 @@ interface HomeProps {
   searchParams: {
     page: string;
     searchValue: string;
+    stockStatus: string;
     sortByPrice: string;
   };
   params: {
@@ -39,12 +40,13 @@ export async function generateMetadata({
 }
 
 const ProductsWrapper = async ({ searchParams, params }: HomeProps) => {
-  const { page, sortByPrice } = searchParams;
+  const { page, sortByPrice, stockStatus } = searchParams;
   const { modelName } = params;
 
   const products = await getProductsByModel({
     page,
     sortByPrice,
+    stockStatus,
     pageSize: 30,
     modelName,
   });

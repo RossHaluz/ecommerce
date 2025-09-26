@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addItemToCart, removeItemFromCart } from "@/redux/order/slice";
 import { useSelector } from "react-redux";
@@ -17,30 +17,22 @@ import { nanoid } from "@reduxjs/toolkit";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
 import { cn } from "@/lib/utils";
 import { sendGAEvent } from "@next/third-parties/google";
+import { Product } from "@/actions/get-data";
+import latinToCyrillic from "@/utils/transliterate";
 
 interface ProductItemProps {
-  item: {
-    id: string;
-    title: string;
-    price: string;
-    article: string;
-    priceForOne?: string;
-    catalog_number: string;
-    product_name: string;
-    quantity?: number;
-    images: {
-      id: string;
-      url: string;
-    }[];
-  };
+  index: number;
+  item: Product
 }
 
-const ProductItem: FC<ProductItemProps> = ({ item }) => {
+const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
   const router = useRouter();
   const productImage = item?.images?.map((item) => item?.url)[0];
   const dispatch = useDispatch();
   const orderItems = useSelector(selectOrderItems);
   const currentCustomizer = useSelector(selectCurrentCustomizer);
+  const pathname = usePathname()
+  
 
   const USDollar = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -78,9 +70,8 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
         currency: "USD",
       });
       dispatch(addItemToCart(itemToCart));
-      toast.success("Item success add to cart");
     } catch (error) {
-      toast.error("Something went wrong...");
+      toast.error("Упс, щось сталось...");
     }
   };
 
@@ -88,7 +79,6 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
     try {
       dispatch(removeItemFromCart(id));
       router.refresh();
-      toast.success("Item success delete");
     } catch (error) {
       toast.error("Something went wrong...");
     }
@@ -108,27 +98,36 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
         })}
       >
         <Link
-          href={`/product/${item?.product_name}`}
+          href={`/product/${item?.product_name}${
+            pathname && !pathname.includes('search') ?
+            `?from=${encodeURIComponent(pathname)}` : ''
+          }`}
           className={cn("w-full", {
             "col-span-2": currentCustomizer === "list",
           })}
+          scroll={false}
         >
           <div
             className={cn(
               "relative w-full h-auto overflow-hidden flex justify-center",
               {
                 "h-full w-full": currentCustomizer === "list",
-                "aspect-video w-full": currentCustomizer === "grid",
+                "w-full aspect-square lg:h-[250px] md:h-[320px]":
+                  currentCustomizer === "grid",
               }
             )}
           >
             {productImage ? (
               <Image
-                src={productImage}
+                src={`${process.env.BACKEND_URL}/products/${productImage}`}
                 alt={item?.title || "Фото товару"}
                 fill
-                objectFit="contain"
-                priority={true}
+                className={cn("w-full h-full object-cover", {
+                  "object-contain": currentCustomizer === "list",
+                })}
+                // placeholder="blur"
+                // blurDataURL={`${process.env.BACKEND_URL}/products/${productImage}`}
+                // priority
               />
             ) : (
               <Image
@@ -167,7 +166,7 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
                 className={cn(
                   "text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]",
                   {
-                    "text-center": currentCustomizer === "grid",
+                    "text-left": currentCustomizer === "grid",
                   }
                 )}
               >
@@ -180,7 +179,13 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between space-x-reverse gap-2">
+          {item?.quantity === 0 ? (
+            <span className="text-[#ffa900] font-medium">Під замовлення</span>
+          ) : (
+            <span className="text-[#00a046] font-medium">В наявності</span>
+          )}
+
+          <div className="flex mobile_s:flex-col mobile_m:flex-row mobile_s:items-start mobile_m:items-center justify-between space-x-reverse gap-2">
             <h3
               className={cn("text-sm font-semibold text-[#111111]", {
                 "text-center": currentCustomizer === "grid",
@@ -194,7 +199,7 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
               triggetBtn={
                 <Button
                   variant="ghost"
-                  className="hover:bg-none bg-[#c0092a] max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
+                  className="hover:bg-none bg-[#c0092a] mobile_s:w-full mobile_m:max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
                   onClick={() => handleAddItemToCart(item)}
                 >
                   Купити
@@ -239,7 +244,7 @@ const ProductItem: FC<ProductItemProps> = ({ item }) => {
                               alt={item?.images?.[0]?.id}
                               fill
                               className="object-cover"
-                              unoptimized={true}
+                              priority={true}
                             />
                           </div>
                           <div className="flex flex-col gap-3  w-full">

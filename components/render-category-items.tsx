@@ -10,6 +10,8 @@ import { Button } from "./ui/button";
 import Arrow from "/public/images/arrow-down.svg";
 import queryString from "query-string";
 import { useParams, useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { resetItems } from "@/redux/items/slice";
 
 interface Category {
   name: string;
@@ -34,21 +36,23 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
   const [isInitialization, setIsInitialization] = useState(false);
   const router = useRouter();
   const params = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsInitialization(true);
   }, []);
 
   useEffect(() => {
-    if (!isInitialization) return;
-
     const model = Array.isArray(params?.modelName)
       ? params?.modelName[0]
       : params?.modelName;
+
     if (model) {
       setCurrentModel(model);
+    } else {
+      setCurrentModel("");
     }
-  }, [params, isInitialization]);
+  }, [params?.modelName]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -63,6 +67,7 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
   };
 
   const handleOpenCategory = (categoryName: string) => {
+    dispatch(resetItems());    
     const queryParams = queryString.parse(window.location.search);
     const sortByPrice = queryParams.sortByPrice as string;
 
@@ -91,7 +96,7 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
     >
       <div className="flex items-center justify-between">
         <Button
-          className="flex-1 flex items-center justify-start text-base"
+          className="flex-1 flex items-center justify-start text-base whitespace-normal text-left"
           onClick={() => handleOpenCategory(category.category_name)}
           variant="ghost"
         >
@@ -101,7 +106,7 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
           <Button
             variant="ghost"
             type="button"
-            className="p-0"
+            className="p-0 whitespace-normal text-left"
             onClick={() => toggleCategory(category.id)}
           >
             <Arrow

@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import { selectCategories } from "@/redux/categories/selectors";
 import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { resetItems } from "@/redux/items/slice";
 
 const Footer = () => {
   const categories = useSelector(selectCategories);
@@ -21,6 +23,7 @@ const Footer = () => {
   const pathname = usePathname();
   const isHomePage = pathname === "/" || pathname.startsWith("/categories");
   const numbersRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsidePhoneNumbers);
@@ -150,6 +153,7 @@ const Footer = () => {
                     <Link
                       href={`/categories/${item?.category_name}`}
                       key={item?.id}
+                      onClick={() => dispatch(resetItems())}
                     >
                       {item?.name}
                     </Link>

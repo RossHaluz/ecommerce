@@ -6,6 +6,7 @@ interface SimilarProductsProps {
     id: string;
     title: string;
     price: string;
+    quantity: number;
     product_name: string;
     catalog_number: string;
     article: string;
@@ -18,8 +19,10 @@ interface SimilarProductsProps {
 
 const SimilarProducts: FC<SimilarProductsProps> = ({ similarProducts }) => {
   return (
-    <div className="flex flex-col gap-4 py-6 border-t border-solid border-[#4848484D]">
-      <h2 className="text-xl font-bold">Також вас можуть зацікавити:</h2>
+    <div className="flex flex-col gap-4 py-6">
+      {similarProducts?.length > 0 && (
+        <h2 className="text-xl font-bold">Також вас можуть зацікавити:</h2>
+      )}
       <SimilarProductsSlider similarProducts={similarProducts} />
     </div>
   );

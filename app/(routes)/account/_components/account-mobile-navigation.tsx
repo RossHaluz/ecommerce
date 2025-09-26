@@ -21,6 +21,7 @@ interface AccountMobileNavigationProps {
     city: string;
     firstName: string;
     lastName: string;
+    comment: string;
     phone: string;
     paymentMethod: string;
     orderType: string;

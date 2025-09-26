@@ -12,6 +12,7 @@ interface HistoryOrdersProps {
     firstName: string;
     lastName: string;
     phone: string;
+    comment: string;
     paymentMethod: string;
     orderNumber: string;
     postService: string;

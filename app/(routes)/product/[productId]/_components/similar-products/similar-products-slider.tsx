@@ -24,6 +24,7 @@ interface SimilarProductsSliderProps {
   similarProducts: {
     id: string;
     title: string;
+    quantity: number;
     product_name: string;
     price: string;
     catalog_number: string;
@@ -119,7 +120,7 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
             slidesPerView: 3,
           },
           1280: {
-            slidesPerView: 4,
+            slidesPerView: 5,
           },
         }}
         onSwiper={(swiper) => {
@@ -149,18 +150,19 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
             className="border border-solid border-[#4848484D] rounded-md overflow-hidden"
           >
             <div className="flex flex-col gap-2 bg-[#FFFDFD] rounded">
-              <Link href={`/product/${item?.product_name}`} className="w-full">
+              <Link
+                href={`/product/${item?.product_name}`}
+                className="w-full"
+              >
                 <div className="relative overflow-hidden aspect-video w-full">
                   {item?.images?.length > 0 ? (
                     <Image
-                      src={item?.images[0]?.url}
+                      src={`${process.env.BACKEND_URL}/products/${item?.images[0]?.url}`}
                       alt={item?.title}
                       fill
                       objectFit="contain"
-                      quality={80}
-                      priority
                       objectPosition="center center"
-                      unoptimized={true}
+                      priority
                     />
                   ) : (
                     <Image
@@ -192,7 +194,17 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between space-x-reverse gap-2">
+                {item?.quantity === 0 ? (
+                  <span className="text-[#ffa900] text-sm font-medium text-left">
+                    Під замовлення
+                  </span>
+                ) : (
+                  <span className="text-[#00a046] text-sm font-medium text-left">
+                    В наявності
+                  </span>
+                )}
+
+                <div className="flex mobile_s:flex-col mobile_s:items-start mobile_m:flex-row mobile_m:items-center justify-between space-x-reverse gap-2">
                   <h3 className="text-sm font-semibold text-[#111111] text-center">
                     {Number(item?.price) === 0 && "Ціна договірна"}
                     {Number(item?.price) > 0 &&
@@ -203,7 +215,7 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                     triggetBtn={
                       <Button
                         variant="ghost"
-                        className="hover:bg-none bg-[#c0092a] max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
+                        className="hover:bg-none bg-[#c0092a] mobile_s:w-full mobile_m:max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
                         onClick={() => handleAddItemToCart(item)}
                       >
                         Купити
@@ -229,11 +241,11 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                           >
                             <div className="w-[65px] h-[65px] rounded-[5px] overflow-hidden relative">
                               <Image
-                                src={orderItem?.images?.[0]?.url}
+                                src={`${process.env.BACKEND_URL}/products/${orderItem?.images?.[0]?.url}`}
                                 alt={orderItem?.images?.[0]?.id}
                                 fill
                                 className="object-cover"
-                                unoptimized={true}
+                                priority={true}
                               />
                             </div>
                             <div className="flex flex-col gap-3 w-full">

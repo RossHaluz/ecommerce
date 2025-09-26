@@ -2,10 +2,11 @@
 import axios from "axios";
 import { cookies } from "next/headers";
 
-interface Product {
+export interface Product {
   id: string;
   title: string;
   price: string;
+  quantity: number;
   article: string;
   product_name: string;
   maxPrice: string;
@@ -15,8 +16,7 @@ interface Product {
     id: string;
     url: string;
   }[];
-}
-[];
+};
 
 interface Meta {
   page: number;
@@ -71,9 +71,9 @@ export const getBestSellersProducts = async () => {
 //Get category details
 export const getCategoryDetails = async (data: {
   categoryId: string;
-  filterIds?: string;
   page?: string;
   sortByPrice?: string;
+  stockStatus?: string;
   pageSize?: string;
   modelId?: string;
 }) => {
@@ -81,10 +81,10 @@ export const getCategoryDetails = async (data: {
   const token = tokenCookie ? tokenCookie.value : null;
   try {
     const {
-      filterIds,
       page = 1,
       sortByPrice = "desc",
-      pageSize = 30,
+      pageSize = 50,
+      stockStatus,
       categoryId,
       modelId,
     } = data;
@@ -96,8 +96,8 @@ export const getCategoryDetails = async (data: {
         },
         params: {
           page,
-          filterIds,
           sortByPrice,
+          stockStatus,
           pageSize,
           modelId,
         },
@@ -115,6 +115,7 @@ export const getCategoryDetails = async (data: {
 export const getCategoryByModel = async (data: {
   categoryId: string;
   page?: string;
+  stockStatus?: string;
   sortByPrice?: string;
   pageSize?: string;
   modelName: string;
@@ -125,8 +126,9 @@ export const getCategoryByModel = async (data: {
     const {
       page = 1,
       sortByPrice = "desc",
-      pageSize = 30,
+      pageSize = 50,
       categoryId,
+      stockStatus,
       modelName,
     } = data;
     const { data: category } = await axios.get(
@@ -138,6 +140,7 @@ export const getCategoryByModel = async (data: {
         params: {
           page,
           sortByPrice,
+          stockStatus,
           pageSize,
         },
       }
@@ -166,8 +169,14 @@ export const getFiltersByCategory = async (categoryId: string) => {
 
 //Get product details
 export const getProductDetails = async (productId: string) => {
+  const tokenCookie = cookies().get("token");
+  const token = tokenCookie ? tokenCookie.value : null;
   try {
-    const { data } = await axios.get(`/product/${storeId}/${productId}`);
+    const { data } = await axios.get(`/product/${storeId}/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data?.data;
   } catch (error) {
     console.log("GET_PRODUCT_DETAILS", error);
@@ -231,16 +240,23 @@ export const getSearchProducts = async (data: {
   searchValue?: string;
   page?: string;
   sortByPrice?: string;
+  stockStatus?: string;
   modelId?: string;
 }) => {
+  const tokenCookie = cookies().get("token");
+  const token = tokenCookie ? tokenCookie.value : null;
   try {
-    const { modelId, searchValue, page, sortByPrice } = data;
+    const { modelId, searchValue, page, sortByPrice, stockStatus } = data;
     const { data: products } = await axios.get(`/product/${storeId}`, {
       params: {
         searchValue,
         modelId,
         page,
+        stockStatus,
         sortByPrice,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -255,19 +271,21 @@ export const getSearchProducts = async (data: {
 export const getAllProducts = async (data: {
   filterIds?: string;
   page?: string;
+  stockStatus?: string;
   sortByPrice?: string;
   pageSize?: number;
 }): Promise<ProductsResponse | null> => {
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
   try {
-    const { filterIds, page, sortByPrice, pageSize } = data;
+    const { filterIds, page, sortByPrice, pageSize, stockStatus } = data;
     const { data: products } = await axios.get(`/product/${storeId}`, {
       params: {
         filterIds,
         page,
         sortByPrice,
         pageSize,
+        stockStatus,
       },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -276,7 +294,7 @@ export const getAllProducts = async (data: {
 
     return products?.data;
   } catch (error) {
-    // console.log("GET_ALL_PRODUCTS", error);
+    console.log("GET_ALL_PRODUCTS", error);
     return null;
   }
 };
@@ -285,6 +303,7 @@ export const getAllProducts = async (data: {
 export const getProductsByModel = async (data: {
   page?: string;
   sortByPrice?: string;
+  stockStatus?: string;
   searchValue?: string;
   modelName?: string;
   pageSize?: number;
@@ -292,13 +311,15 @@ export const getProductsByModel = async (data: {
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
   try {
-    const { page, sortByPrice, modelName, pageSize, searchValue } = data;
+    const { page, sortByPrice, modelName, pageSize, searchValue, stockStatus } =
+      data;
     const { data: products } = await axios.get(
       `/product/${storeId}/model/${modelName}`,
       {
         params: {
           page,
           sortByPrice,
+          stockStatus,
           pageSize,
           searchValue,
         },

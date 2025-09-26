@@ -17,12 +17,15 @@ const ProductDetails: FC<ProductDetailsProps> = ({ initialData }) => {
 
   return (
     <div className="flex flex-col gap-[15px]">
-      <ProductNavigation
-        currentNavigation={currentNavigation}
-        setCurrentNavigation={setCurrentNavigation}
-      />
-
-      {description && <ProductDesc description={description} />}
+      {description && (
+        <>
+          <ProductNavigation
+            currentNavigation={currentNavigation}
+            setCurrentNavigation={setCurrentNavigation}
+          />
+          <ProductDesc description={description} />
+        </>
+      )}
     </div>
   );
 };

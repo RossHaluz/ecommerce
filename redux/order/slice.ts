@@ -48,19 +48,20 @@ export const orderSlice = createSlice({
       state.orderDetails = action.payload;
     },
     addItemToCart(state, action) {
+
       const findOrderItem = state.orderItems.find(
         (item: any) => item.id === action?.payload?.id
       );
 
-      const findTheSameOptions = state.orderItems.find((item: any) =>
-        item?.selectOptions?.every((option: any) =>
-          action.payload?.selectOptions.every(
-            (optionItem: any) => optionItem?.optionValue === option?.optionValue
-          )
-        )
-      );
+      // const findTheSameOptions = state.orderItems.find((item: any) =>
+      //   item?.selectOptions?.every((option: any) =>
+      //     action.payload?.selectOptions.every(
+      //       (optionItem: any) => optionItem?.optionValue === option?.optionValue
+      //     )
+      //   )
+      // );
 
-      if (findOrderItem && findTheSameOptions) {
+      if (findOrderItem) {
         findOrderItem.quantity += action.payload.quantity;
         findOrderItem.price =
           Number(findOrderItem.price) + Number(action.payload.price);

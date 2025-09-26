@@ -27,8 +27,7 @@ const MobileSidebar = () => {
   const [isShowCatalog, setIsShowCatalog] = useState(false);
   const categories = useSelector(selectCategories);
   const orderItems = useSelector(selectOrderItems);
-  const [isLogin, setIsLogin] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [isActive, setIsActive] = useState("");
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -94,7 +93,6 @@ const MobileSidebar = () => {
 
         <MobileMenu
           setIsLogin={setIsLogin}
-          setIsRegister={setIsRegister}
           openBtn={
             <div className="p-0 hover:bg-transparent flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium">
               <CatalogIcon />
@@ -104,7 +102,6 @@ const MobileSidebar = () => {
           setIsActive={setIsActive}
           isActive={isActive ? isActive : "catalog"}
           isLogin={isLogin}
-          isRegister={isRegister}
         />
 
         <Modal
@@ -206,7 +203,6 @@ const MobileSidebar = () => {
 
         <MobileMenu
           setIsLogin={setIsLogin}
-          setIsRegister={setIsRegister}
           openBtn={
             <div className="p-0 hover:bg-transparent flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium">
               <InfoIcon />
@@ -216,7 +212,6 @@ const MobileSidebar = () => {
           setIsActive={setIsActive}
           isActive={isActive ? isActive : "menu"}
           isLogin={isLogin}
-          isRegister={isRegister}
         />
 
         {user ? (
@@ -230,7 +225,6 @@ const MobileSidebar = () => {
         ) : (
           <MobileMenu
             setIsLogin={setIsLogin}
-            setIsRegister={setIsRegister}
             openBtn={
               <div className="p-0 hover:bg-transparent flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium">
                 <AccountIcon />
@@ -240,7 +234,6 @@ const MobileSidebar = () => {
             setIsActive={setIsActive}
             isActive={isActive ? isActive : "account"}
             isLogin={isLogin}
-            isRegister={isRegister}
           />
         )}
       </div>

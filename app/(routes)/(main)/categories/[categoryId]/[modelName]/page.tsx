@@ -19,6 +19,7 @@ interface CategoryPageProps {
   };
   searchParams: {
     page?: string;
+    stockStatus: string;
     sortByPrice?: string;
     searchValue?: string;
   };
@@ -55,12 +56,13 @@ const ProductsWrapper = async ({
   modelName: string;
   searchParams: CategoryPageProps["searchParams"];
 }) => {
-  const { page = "1", sortByPrice = "" } = searchParams;
+  const { page = "1", sortByPrice = "", stockStatus } = searchParams;
 
   const category = await getCategoryByModel({
     categoryId,
     page,
     sortByPrice,
+    stockStatus,
     modelName,
   });
 

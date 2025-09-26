@@ -6,11 +6,13 @@ import React, { FC, MouseEvent } from "react";
 interface SuccessModelProps {
   isOpen: boolean;
   handleCloseModel: () => void;
+  orderNumber: number | null;
 }
 
 const SuccessModel: FC<SuccessModelProps> = ({
   isOpen = true,
   handleCloseModel,
+  orderNumber,
 }) => {
   const closeBackdrop = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -41,6 +43,9 @@ const SuccessModel: FC<SuccessModelProps> = ({
         <div className="flex flex-col gap-3">
           <h3 className="text-base font-semibold text-center">
             Дякуємо за замовлення!
+          </h3>
+          <h3 className="text-base font-semibold text-center">
+            Ваше замовлення №{orderNumber}
           </h3>
           <p className="text-center text-sm">
             Найблищим часом ми з Вами зв&apos;яжемось.

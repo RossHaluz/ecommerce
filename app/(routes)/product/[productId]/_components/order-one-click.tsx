@@ -35,12 +35,20 @@ const CustomInputMask = forwardRef<
   return <InputMask {...props} inputRef={ref} />;
 });
 CustomInputMask.displayName = "CustomInputMask";
+
 const formSchema = z.object({
-  phone: z.string().min(1, "Номер телефону обов'язково"),
+  phone: z
+    .string()
+    .min(1, "Номер телефону обов'язково")
+    .regex(
+      /^\+380 \d{3} \d{2} \d{2} \d{2}$/,
+      "Введіть коректний номер у форматі +380 XXX XX XX XX"
+    ),
 });
 
 const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [orderNumber, setOrderNumber] = useState<number | null>(null);
 
   const closeModel = () => {
     setIsOpen(false);
@@ -79,10 +87,13 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
 
       const order = await createOrder(data);
 
+      console.log("order", order);
+
       if (!order) {
         throw new Error();
       }
 
+      setOrderNumber(order?.orderNumber);
       sendGAEvent("event", "make_order_one_click", {
         item_id: item.productId,
         item_name: item.title,
@@ -130,7 +141,11 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
           </Button>
         </form>
       </Form>
-      <SuccessModel isOpen={isOpen} handleCloseModel={closeModel} />
+      <SuccessModel
+        orderNumber={orderNumber}
+        isOpen={isOpen}
+        handleCloseModel={closeModel}
+      />
     </>
   );
 };

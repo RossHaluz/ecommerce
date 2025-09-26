@@ -6,6 +6,8 @@ import qs from "query-string";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FixedSizeList as List } from "react-window";
+import { useDispatch } from "react-redux";
+import { resetItems } from "@/redux/items/slice";
 
 interface SearchByModelProps {
   models: {
@@ -26,6 +28,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!params?.modelName) {
@@ -54,6 +57,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
 
   const handleRemoveModel = () => {
     setCurrentModel(null);
+    dispatch(resetItems())
     const queryParams = qs.parse(window.location.search);
     const selectSort = queryParams?.sortByPrice;
     const searchValue = queryParams?.searchValue;
@@ -62,7 +66,6 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
       .split("/")
       .filter((item) => item !== params?.modelName && item !== "");
 
-    // Правильне формування шляху
     const newPath =
       newPathArray.length > 0 ? `/${newPathArray.join("/")}` : "/";
 
@@ -77,7 +80,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
       { skipEmptyString: true, skipNull: true }
     );
 
-    return router.push(url);
+    return router.replace(url);
   };
 
   const handleSerchProductsByModel = (model: {
@@ -87,6 +90,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   }) => {
     if (!model) return;
     setCurrentModel(model);
+      dispatch(resetItems());
     const queryParams = qs.parse(window.location.search);
     const searchValue = queryParams?.searchValue;
     const sortByPrice = queryParams?.sortByPrice;
@@ -130,9 +134,9 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   const sortedModels = sortCarModels(models);
 
   return (
-    <div className="rounded-lg flex flex-col gap-3 md:gap-6">
+    <div className="rounded-lg flex flex-col gap-3 md:gap-6 w-full">
       <div className="flex items-center gap-4">
-        <div className="relative w-full md:w-[342px]" ref={modelRef}>
+        <div className="relative w-full md:max-w-max" ref={modelRef}>
           <Button
             onClick={() => setIsOpen((prev) => !prev)}
             type="button"
@@ -192,16 +196,16 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
           </div> */}
           <div
             className={cn(
-              "rounded-lg bg-[#FFFDFD] shadow-md p-4 z-20 flex flex-col transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid w-full right-0",
+              "rounded-lg bg-[#FFFDFD] shadow-md p-3 z-30 flex flex-col transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid w-full right-0",
               {
                 "scale-y-1": isOpen,
               }
             )}
           >
             <List
-              height={176} // 4 елементи по 44px (або змінюй за потребою)
+              height={350}
               itemCount={sortedModels.length}
-              itemSize={44} // висота одного елемента
+              itemSize={20} // висота одного елемента
               width="100%"
             >
               {({ index, style }) => {

@@ -33,6 +33,7 @@ const Pagination: FC<PaginationProps> = ({
     const queryParams = qs.parse(window.location.search);
     const sortByPrice = queryParams?.sortByPrice as string;
     const modelId = queryParams?.modelId as string;
+    const stockStatus = queryParams.stockStatus as string;
     const searchValue = queryParams?.searchValue as string;
     const prevPage = currentPage - 1;
     const url = qs.stringifyUrl(
@@ -41,6 +42,7 @@ const Pagination: FC<PaginationProps> = ({
         query: {
           page: prevPage ? prevPage : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
+          stockStatus: stockStatus ? stockStatus : null,
           modelId: modelId ? modelId : null,
           searchValue: searchValue ? searchValue : null,
         },
@@ -55,6 +57,7 @@ const Pagination: FC<PaginationProps> = ({
     if (currentPage === totalPages) return;
     const queryParams = qs.parse(window.location.search);
     const sortByPrice = queryParams?.sortByPrice as string;
+    const stockStatus = queryParams.stockStatus as string;
     const modelId = queryParams?.modelId as string;
     const searchValue = queryParams?.searchValue as string;
 
@@ -65,6 +68,7 @@ const Pagination: FC<PaginationProps> = ({
         query: {
           page: nextPage ? nextPage : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
+          stockStatus: stockStatus ? stockStatus : null,
           modelId: modelId ? modelId : null,
           searchValue: searchValue ? searchValue : null,
         },
@@ -78,6 +82,7 @@ const Pagination: FC<PaginationProps> = ({
   const handlePageClick = (pageNumber: number) => {
     const queryParams = qs.parse(window.location.search);
     const sortByPrice = queryParams?.sortByPrice as string;
+    const stockStatus = queryParams.stockStatus as string;
     const modelId = queryParams?.modelId as string;
     const searchValue = queryParams?.searchValue as string;
     const url = qs.stringifyUrl(
@@ -86,6 +91,7 @@ const Pagination: FC<PaginationProps> = ({
         query: {
           page: pageNumber ? pageNumber : null,
           sortByPrice: sortByPrice ? sortByPrice : null,
+          stockStatus: stockStatus ? stockStatus : null,
           modelId: modelId ? modelId : null,
           searchValue: searchValue ? searchValue : null,
         },

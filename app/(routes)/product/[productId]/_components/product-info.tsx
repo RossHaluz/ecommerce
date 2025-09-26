@@ -9,9 +9,11 @@ import ProductBtn from "./product-btn";
 import ProductAttention from "./product-attention";
 import ProductDetails from "./product-details";
 import OrderOneClick from "./order-one-click";
+import Link from "next/link";
 
 interface ProductInfoProps {
   initialData: {
+    quantity: number;
     images: { url: string; id: string }[];
     productOptions: {
       option: {
@@ -37,6 +39,7 @@ interface ProductInfoProps {
       id: string;
       model: {
         name: string;
+        modelName: string;
       };
     }[];
     article: string;
@@ -49,6 +52,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
     images: imagesProduct,
     title,
     price,
+    quantity,
     catalog_number,
     article,
     productOptions,
@@ -97,9 +101,15 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-[6px] text-[#c0092a] text-xs font-medium">
-                <Available className="stroke-[#c0092a]" />В наявності
-              </div>
+              {quantity === 0 ? (
+                <span className="text-[#ffa900] text-sm font-medium">
+                  Під замовлення
+                </span>
+              ) : (
+                <div className="flex items-center gap-[6px] text-[#00a046] text-xs font-medium">
+                  <Available className="stroke-[#00a046]" />В наявності
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-[15px] lg:gap-[30px] lg:flex-col-reverse">
@@ -139,12 +149,19 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
 
           <ProductDetails initialData={initialData} />
           <div className="flex items-center gap-3">
-            <h3 className="text-base font-bold">Моделі:</h3>
+            {models?.length > 0 && (
+              <h3 className="text-base font-bold">Моделі:</h3>
+            )}
             {models?.map((item, index) => {
               return (
                 <React.Fragment key={item?.id}>
-                  {item?.model?.name}
-                  {index < models.length - 1 && ", "}
+                  <Link
+                    href={`${process.env.NEXT_PUBLIC_BASE_URL}/${item?.model?.modelName}`}
+                    className="underline text-[#C0092A] cursor-pointer"
+                  >
+                    {item?.model?.name}
+                    {index < models.length - 1 && ", "}
+                  </Link>
                 </React.Fragment>
               );
             })}

@@ -74,7 +74,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({ token }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-[30px] lg:border-l lg:border-[#c0092a] lg:pl-[30px] w-full lg:lg:w-[397px]"
+        className="flex flex-col gap-[30px] w-full lg:lg:w-[397px]"
       >
         <div className="flex flex-col gap-[5px]">
           <FormField

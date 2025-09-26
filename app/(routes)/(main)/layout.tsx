@@ -7,11 +7,10 @@ interface HomeLayoutProps {
 
 const HomeLayout: FC<HomeLayoutProps> = async ({ children }) => {
   return (
-    <div>
+    <>
       {children}
-
       <MobileSidebar />
-    </div>
+    </>
   );
 };
 

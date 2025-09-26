@@ -1,55 +1,52 @@
-import dynamic from "next/dynamic";
 import { getAllProducts } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
+import { FC, Suspense } from "react";
 import NotFoundItems from "@/components/not-found-items";
-import { FC } from "react";
-
-export const fetchCache = "force-cache";
-export const revalidate = 300;
-
-const Products = dynamic(() => import("../_components/products"), {
-  ssr: true,
-});
+import dynamic from "next/dynamic";
 
 interface HomeProps {
   searchParams: {
     page: string;
     searchValue: string;
+    stockStatus: string;
     sortByPrice: string;
+    modelId: string;
   };
 }
 
-const ProductsWrapper = async ({ searchParams }: HomeProps) => {
-  const { page, sortByPrice } = searchParams;
+const Products = dynamic(() => import("../_components/products"));
 
-  const products = await getAllProducts({
+const Home: FC<HomeProps> = async ({ searchParams }) => {
+  const { page, sortByPrice, stockStatus } = searchParams;
+
+  const initialProducts = await getAllProducts({
     page,
     sortByPrice,
+    stockStatus,
     pageSize: 20,
   });
 
-  if (!products || !products.products || products.products.length === 0) {
+  if (
+    !initialProducts ||
+    !initialProducts.products ||
+    initialProducts.products.length === 0
+  ) {
     return (
-      <NotFoundItems text="Товарів які відносяться до данної категорії не знайдено..." />
+      <NotFoundItems text="Товарів які відносяться до даної категорії не знайдено..." />
     );
   }
 
-  return products?.products?.length > 0 ? (
-    <Products
-      products={products?.products}
-      page={products?.meta?.page}
-      totalPages={products?.meta?.totalPages}
-      searchParams={searchParams}
-    />
-  ) : (
-    <NotFoundItems text="Товарів які відносяться до данної категорії не знайдено..." />
-  );
-};
 
-const Home: FC<HomeProps> = ({ searchParams }) => {
   return (
     <MainSection title="Запчастини до Audi" params={searchParams}>
-      <ProductsWrapper searchParams={searchParams} />
+      <Suspense fallback={<p>Завантаження продуктів...</p>}>
+        <Products
+          products={initialProducts.products}
+          page={initialProducts.meta.page}
+          totalPages={initialProducts.meta.totalPages}
+          searchParams={searchParams}
+        />
+      </Suspense>
     </MainSection>
   );
 };

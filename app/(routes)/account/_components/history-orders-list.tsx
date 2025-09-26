@@ -35,6 +35,7 @@ interface HistoryOrdersListProps {
   ordersByUser: {
     id: string;
     city: string;
+    comment: string;
     firstName: string;
     lastName: string;
     phone: string;
@@ -122,11 +123,11 @@ const HistoryOrdersList: FC<HistoryOrdersListProps> = ({ ordersByUser }) => {
                           >
                             <div className="relative rounded-[5px] overflow-hidden w-20 h-20">
                               <Image
-                                src={item?.product?.images[0]?.url}
+                                src={`${process.env.BACKEND_URL}/products/${item?.product?.images[0]?.url}`}
                                 alt={item?.product?.title}
                                 fill
                                 objectFit="cover"
-                                unoptimized={true}
+                                priority={true}
                               />
                             </div>
 

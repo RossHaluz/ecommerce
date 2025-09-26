@@ -4,9 +4,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.audiparts.site",
+        hostname: "api.audiparts.com.ua",
         port: "",
-        pathname: "/products/**",
+        pathname: "/**",
       },
       {
         protocol: "https",

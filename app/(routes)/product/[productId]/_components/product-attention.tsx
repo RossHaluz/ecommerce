@@ -8,7 +8,7 @@ const ProductAttention: FC<ProductAttention> = ({ price }) => {
   return (
     <>
       {price === 0 && (
-        <p className="text-[#484848] lg:inline-block hidden">
+        <p className="text-[#C0092A] lg:inline-block hidden">
           Ціну до даного товара уточняйте у менеджера.
         </p>
       )}

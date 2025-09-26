@@ -17,6 +17,10 @@ const config = {
         "search-shadow": "1px 1px 8px 0px #11111126",
       },
       keyframes: {
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -29,21 +33,24 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
     },
     screens: {
-      sm: "320px",
-
+      mobile_s: "319px",
+      mobile_m: "375px",
+      sm: "319px",
       md: "768px",
-
       lg: "1280px",
     },
     container: {
       center: true,
       padding: {
-        sm: "20px",
-        md: "20px",
-        lg: "165px",
+        mobile_s: "16px",
+        mobile_m: "16px",
+        sm: "16px",
+        md: "16px",
+        lg: "16px",
       },
     },
   },

@@ -18,6 +18,8 @@ import { authReducer } from "./auth/slice";
 import { categoryReducer } from "./categories/slice";
 import { modelReducer } from "./models/slice";
 import { customizerReducer } from "./customizer/slice";
+import { itemReducer } from "./items/slice";
+import { scrollUpReducer } from "./scroll-up/slice";
 
 const persistCustomizer = {
   key: "currentCustomizer",
@@ -66,6 +68,8 @@ export const store = configureStore({
     category: categoryReducer,
     model: persistModelReducer,
     customizer: persistCustomizerReducer,
+    item: itemReducer,
+    scrollUp: scrollUpReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

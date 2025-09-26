@@ -58,6 +58,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
     const queryParams = qs.parse(window.location.search);
     const searchValue = queryParams?.searchValue;
     const modelId = queryParams?.modelId;
+    const stockStatus = queryParams.stockStatus;
 
     const url = qs.stringifyUrl(
       {
@@ -65,6 +66,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
         query: {
           sortByPrice: value ? value : null,
           searchValue: searchValue ? searchValue : null,
+          stockStatus: stockStatus ? stockStatus : null,
           modelId: modelId ? modelId : null,
         },
       },

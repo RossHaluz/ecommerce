@@ -1,7 +1,7 @@
 "use client";
 import ImageNotFound from "/public/images/image-not-found.jpg";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,8 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import qs from "query-string";
+import { useDispatch } from "react-redux";
+import { resetItems } from "@/redux/items/slice";
 
 const SearchBar = () => {
   const [searchedItems, setSearchedItems] = useState<Item[]>([]);
@@ -22,6 +24,74 @@ const SearchBar = () => {
   const [isShow, setIsShow] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const texts = useMemo(() => ['Капот Audi Q7 4M', "Крило ліве Audi Q7 4M", "Бампер Audi A6 C7", 'Капот Audi Q5 8R'], []);
+  
+  const TYPING_SPEED = 100;
+  const DELETING_SPEED = 50;
+  const PAUSE_AFTER_FULL = 1000;
+
+  const [placeholder, setPlaceholder] = useState('');
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+   const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pauseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if(typingTimer.current) clearTimeout(typingTimer.current);
+      if(pauseTimer.current) clearTimeout(pauseTimer.current); 
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isPaused) {
+      if (typingTimer.current) {
+        clearTimeout(typingTimer.current);
+        typingTimer.current = null;
+      }
+      if (pauseTimer.current) {
+        clearTimeout(pauseTimer.current);
+        pauseTimer.current = null;
+      }
+      return;
+    }
+
+    const currentText = texts[index] ?? "";
+
+    if (!deleting && subIndex === currentText?.length) {
+      if (pauseTimer.current) clearTimeout(pauseTimer.current);
+      pauseTimer.current = setTimeout(() => {
+        setDeleting(true);
+        pauseTimer.current = null;
+      }, PAUSE_AFTER_FULL);
+
+      return;
+    }
+
+    if (deleting && subIndex === 0) {
+      setDeleting(false);
+      setIndex((prev) => (prev + 1) % texts?.length);
+      return;
+    }
+
+    if (typingTimer.current) clearTimeout(typingTimer.current);
+
+    typingTimer.current = setTimeout(
+      () => {
+        setSubIndex((prev) => prev + (deleting ? -1 : 1));
+        typingTimer.current = null;
+      },
+      deleting ? DELETING_SPEED : TYPING_SPEED
+    );
+  }, [subIndex, deleting, index, isPaused, texts]);
+
+   useEffect(() => {
+     setPlaceholder((texts[index] ?? "").substring(0, subIndex));
+   }, [subIndex, index, texts]);
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsideSearch);
@@ -60,6 +130,8 @@ const SearchBar = () => {
   }, [searchValue]);
 
   const onFocuseInput = async () => {
+    setIsPaused(true);
+    setPlaceholder('')
     setIsFocusInput(true);
     setIsShow(true);
     if (searchValue) {
@@ -75,7 +147,8 @@ const SearchBar = () => {
     }
   };
 
-  const handleShowAll = () => {
+  const handleShowAll = async () => {
+    dispatch(resetItems());
     Cookies.set("__search_value", searchValue, { expires: 7, path: "/" });
     const url = qs.stringifyUrl({
       url: "/search",
@@ -86,7 +159,7 @@ const SearchBar = () => {
 
     setIsShow(false);
     setIsFocusInput(false);
-    return router.push(url);
+    return router.replace(url);
   };
 
   const clickOutsideSearch = (e: MouseEvent) => {
@@ -110,7 +183,8 @@ const SearchBar = () => {
     currency: "USD",
   });
 
-  const onSubmit = (values: { __search_value: string }) => {
+  const onSubmit = async (values: { __search_value: string }) => {
+       dispatch(resetItems());
     Cookies.set("__search_value", searchValue, {
       expires: 7,
       path: "/",
@@ -124,7 +198,7 @@ const SearchBar = () => {
 
     setIsShow(false);
     setIsFocusInput(false);
-    return router.push(url);
+   return router.replace(url);
   };
 
   return (
@@ -144,10 +218,17 @@ const SearchBar = () => {
                     <Input
                       aria-label="Пошук товарів"
                       onFocus={onFocuseInput}
-                      onBlur={() => setIsFocusInput(false)}
+                      onBlur={() => {
+                        setIsFocusInput(false);
+                        setIsPaused(false);
+                        setIndex(0);
+                        setSubIndex(0);
+                        setDeleting(false)
+                      }}
                       value={searchValue}
                       onChange={handleSearchValue}
                       className="pr-14 outline-none text-[#111]"
+                      placeholder={placeholder}
                     />
                   </FormControl>
                 </FormItem>
@@ -186,7 +267,7 @@ const SearchBar = () => {
                         <div className="rounded-md overflow-hidden w-auto h-20 md:w-20  relative">
                           {item?.images[0]?.url ? (
                             <Image
-                              src={item?.images[0]?.url}
+                              src={`${process.env.BACKEND_URL}/products/${item?.images[0]?.url}`}
                               alt={item?.title}
                               fill
                               objectFit="contain"

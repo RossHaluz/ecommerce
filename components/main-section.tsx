@@ -15,6 +15,8 @@ import SortProducts from "@/app/(routes)/(main)/_components/sort";
 import CustomizerLayout from "./сustomizer-layout";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import SearchByStock from "@/app/(routes)/(main)/_components/search-by-stock";
+import Breadcrumbs from "./breadcrumb";
 
 interface MainSectionProps {
   title: string;
@@ -54,18 +56,30 @@ const MainSection: FC<MainSectionProps> = ({
 
   return (
     <section
-      className={cn("mt-3 mb-6", {
-        "mt-[70px]": shouldBeMargin || isHomePage,
+      className={cn("mt-3 mb-6 ", {
+        "mt-[120px] md:mt-[110px]": shouldBeMargin || isHomePage,
       })}
     >
       <div className="container flex flex-col gap-3">
         <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
           <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-3 justify-between">
+            <div className="flex flex-col gap-3">
               {title && (
                 <h1 className="text-[#484848] font-bold text-base">{title}</h1>
               )}
-              <div className="flex md:hidden items-center gap-6">
+              <Breadcrumbs/>
+            </div>
+            <div className="flex items-center md:hidden gap-3 justify-between">
+              {title && (
+                <h1 className="text-[#484848] font-bold text-base hidden lg:inline-block">
+                  {title}
+                </h1>
+              )}
+              <div className="md:hidden flex-1 min-w-0">
+                <SearchByStock />
+              </div>
+
+              <div className="flex md:hidden items-center gap-4">
                 <SortProducts searchParams={params} />
                 <CustomizerLayout />
               </div>
@@ -83,7 +97,12 @@ const MainSection: FC<MainSectionProps> = ({
           </div>
           <div className="flex flex-col gap-3 w-full">
             <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
-              <SearchByModel models={models} />
+              <div className="flex items-center gap-4">
+                <SearchByModel models={models} />
+                <div className="hidden md:block">
+                  <SearchByStock />
+                </div>
+              </div>
 
               <div className="hidden md:flex items-center gap-6 ml-auto">
                 <SortProducts searchParams={params} />

@@ -9,6 +9,8 @@ import React, {
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { resetItems } from "@/redux/items/slice";
 
 interface Category {
   name: string;
@@ -31,6 +33,7 @@ const CatalogItems: FC<CategoriesListProps> = ({
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
     {}
   );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isShowCatalog) {
@@ -45,12 +48,18 @@ const CatalogItems: FC<CategoriesListProps> = ({
     }));
   };
 
+  const selectCategory = () => {
+    
+          dispatch(resetItems());
+          setIsShowCatelog(false);
+  }
+
   const renderCategory = (category: Category): React.ReactNode => (
     <div className="flex flex-col gap-3" key={category?.id}>
       <div className="flex items-center justify-between relative">
         <Link
           href={`/categories/${category?.id}`}
-          onClick={() => setIsShowCatelog(false)}
+          onClick={selectCategory}
         >
           {category?.name}
         </Link>

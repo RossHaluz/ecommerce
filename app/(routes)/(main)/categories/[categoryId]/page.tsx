@@ -5,10 +5,7 @@ import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 
-export const fetchCache = "force-cache";
-export const revalidate = 300;
-
-const Products = dynamic(() => import("./_components/products"), {
+const Products = dynamic(() => import("@/app/(routes)/_components/products"), {
   ssr: true,
 });
 
@@ -17,10 +14,11 @@ interface CategoryPageProps {
     categoryId: string;
   };
   searchParams: {
-    filterIds?: string;
-    page?: string;
+    page: string;
+    stockStatus?: string;
     sortByPrice?: string;
     searchValue?: string;
+    modelId: string;
   };
 }
 
@@ -59,13 +57,18 @@ const ProductsWrapper = async ({
   categoryId: string;
   searchParams: CategoryPageProps["searchParams"];
 }) => {
-  const { filterIds = "", page = "1", sortByPrice = "" } = searchParams;
+  const {
+    page = "1",
+    sortByPrice = "",
+    stockStatus,
+  } = searchParams;
 
   const category = await getCategoryDetails({
     categoryId,
     page,
     sortByPrice,
-    pageSize: "20",
+    stockStatus,
+    pageSize: "50",
   });
 
   if (!category || !category.products || category.products.length === 0) {
@@ -79,7 +82,8 @@ const ProductsWrapper = async ({
       products={category.products}
       page={category.meta?.page || 1}
       totalPages={category.meta?.totalPages || 1}
-      searchParams={{ filterIds, page }}
+      searchParams={searchParams}
+      categoryId={categoryId}
     />
   );
 };

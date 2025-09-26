@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, forwardRef, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
@@ -31,6 +31,15 @@ import { removeUserContactDetails } from "@/redux/auth/slice";
 import { createOrder } from "@/actions/get-data";
 import { motion } from "framer-motion";
 import { sendGAEvent } from "@next/third-parties/google";
+import InputMask from "react-input-mask";
+
+const CustomInputMask = forwardRef<
+  HTMLInputElement,
+  React.ComponentProps<typeof InputMask>
+>((props, ref) => {
+  return <InputMask {...props} inputRef={ref} />;
+});
+CustomInputMask.displayName = "CustomInputMask";
 
 interface OrderFormProps {
   currentUser?: {
@@ -48,14 +57,20 @@ const formSchema = z.object({
   postService: z.enum(["novaPoshta", "pickup", "transporter"]).optional(),
   city: z.string().optional(),
   address: z.string().optional(),
-  paymentMethod: z.enum(["monobank", "cashOnDelivary", "payByCard"]).optional(),
+  paymentMethod: z.enum(["cashOnDelivary", "payByCard"]).optional(),
   ref_city: z.string().optional(),
   ref_separation: z.string().optional(),
   comment: z.string().optional(),
   separation: z.string().optional(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
-  phone: z.string().min(1, { message: "Номер телефону обов'язковий" }),
+  phone: z
+    .string()
+    .min(1, { message: "Номер телефону обов'язковий" })
+    .regex(
+      /^\+380 \d{3} \d{2} \d{2} \d{2}$/,
+      "Введіть коректний номер у форматі +380 XXX XX XX XX"
+    ),
   email: z.string().optional(),
 });
 
@@ -73,7 +88,7 @@ const dropFormSchema = z.object({
   }),
   city: z.string().optional(),
   address: z.string(),
-  paymentMethod: z.enum(["monobank", "cashOnDelivary", "payByCard"], {
+  paymentMethod: z.enum(["cashOnDelivary", "payByCard"], {
     required_error: "You need to select a payment method.",
   }),
   clientFirstName: z.string().min(1, { message: "First name is required" }),
@@ -110,8 +125,6 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const dispatch = useDispatch();
   const cityRef = useRef<HTMLDivElement>(null);
   const detachmentRef = useRef<HTMLDivElement>(null);
-
-  console.log("orderItems", orderItems);
 
   useEffect(() => {
     window.addEventListener("mousedown", handleClickOutsideCities);
@@ -308,75 +321,75 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     try {
       const currentPayment = form.getValues("paymentMethod");
 
-      if (currentPayment === "monobank") {
-        const dataMono = {
-          amount: 0,
-          validity: 3600,
-          paymentType: "debit",
-          merchantPaymInfo: {
-            basketOrder: [] as {
-              name: string;
-              qty: number;
-              sum: number;
-              code: string;
-              icon?: string;
-            }[],
-          },
-          redirectUrl: "https://audiparts.site",
-          webHookUrl: `${process.env.BACKEND_URL}/api/order/${process.env.STORE_ID}/create`,
-        };
-        let amount = 0;
+      // if (currentPayment === "monobank") {
+      //   const dataMono = {
+      //     amount: 0,
+      //     validity: 3600,
+      //     paymentType: "debit",
+      //     merchantPaymInfo: {
+      //       basketOrder: [] as {
+      //         name: string;
+      //         qty: number;
+      //         sum: number;
+      //         code: string;
+      //         icon?: string;
+      //       }[],
+      //     },
+      //     redirectUrl: "https://audiparts.com.ua",
+      //     webHookUrl: `${process.env.BACKEND_URL}/api/order/${process.env.STORE_ID}/create`,
+      //   };
+      //   let amount = 0;
 
-        orderItems?.forEach((item: any) => {
-          amount += item.price;
-          dataMono.merchantPaymInfo.basketOrder.push({
-            name: item?.title,
-            qty: Number(item?.quantity),
-            sum: Number(item?.price * 43 * 100),
-            code: item?.article,
-            icon: item.images[0].url,
-          });
-        });
+      //   orderItems?.forEach((item: any) => {
+      //     amount += item.price;
+      //     dataMono.merchantPaymInfo.basketOrder.push({
+      //       name: item?.title,
+      //       qty: Number(item?.quantity),
+      //       sum: Number(item?.price * 43 * 100),
+      //       code: item?.article,
+      //       icon: item.images[0].url,
+      //     });
+      //   });
 
-        dataMono.amount = Math.round(amount * 43 * 100);
-        const responce = await createInvoice(dataMono);
+      //   dataMono.amount = Math.round(amount * 43 * 100);
+      //   const responce = await createInvoice(dataMono);
 
-        if (responce) {
-          const data: {
-            products?: { productId: string; quantity: number }[];
-            invoiceId: string;
-          } = {
-            products: [],
-            invoiceId: responce.invoiceId,
-            ...values,
-          };
+      //   if (responce) {
+      //     const data: {
+      //       products?: { productId: string; quantity: number }[];
+      //       invoiceId: string;
+      //     } = {
+      //       products: [],
+      //       invoiceId: responce.invoiceId,
+      //       ...values,
+      //     };
 
-          if (orderItems?.length > 0) {
-            data.products = orderItems?.map(
-              (item: {
-                id: string;
-                quantity: number;
-                title: string;
-                article: string;
-                catalog_number: string;
-              }) => ({
-                productId: item?.id,
-                quantity: item?.quantity,
-                title: item?.title,
-                article: item?.article,
-                catalog_number: item?.catalog_number,
-              })
-            );
-          }
+      //     if (orderItems?.length > 0) {
+      //       data.products = orderItems?.map(
+      //         (item: {
+      //           id: string;
+      //           quantity: number;
+      //           title: string;
+      //           article: string;
+      //           catalog_number: string;
+      //         }) => ({
+      //           productId: item?.id,
+      //           quantity: item?.quantity,
+      //           title: item?.title,
+      //           article: item?.article,
+      //           catalog_number: item?.catalog_number,
+      //         })
+      //       );
+      //     }
 
-          const order = await createOrder(data);
+      //     const order = await createOrder(data);
 
-          dispatch(setOrderDetails({ ...order, orderItems }));
-          dispatch(removeUserContactDetails());
-          dispatch(cleareOrderItems());
-          return router.push(responce.pageUrl);
-        }
-      }
+      //     dispatch(setOrderDetails({ ...order, orderItems }));
+      //     dispatch(removeUserContactDetails());
+      //     dispatch(cleareOrderItems());
+      //     return router.push(responce.pageUrl);
+      //   }
+      // }
 
       const data: {
         products?: { productId: string; quantity: number; price: number }[];
@@ -524,20 +537,21 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                 control={form.control}
                 rules={{ required: "Введіть номер телефону" }}
                 render={({ field, fieldState }) => (
-                  <FormItem>
+                  <FormItem className="flex flex-col gap-1">
                     <FormLabel className="text-base font-bold">
                       Номер телефону <span className="text-red-600">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Номер телефону"
+                      <CustomInputMask
+                        mask="+380 999 99 99 99"
+                        placeholder="+380 999 99 99 99"
+                        {...field}
                         className={cn(
                           "py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] text-sm lg:text-base lg:font-semibold lg:border lg:border-solid rounded-[5px]",
                           fieldState.invalid
                             ? "border-red-500"
                             : "border-[#484848]"
                         )}
-                        {...field}
                       />
                     </FormControl>
                     {fieldState.invalid && (
@@ -994,15 +1008,6 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                             </FormControl>
                             <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
                               Оплата на карту
-                            </FormLabel>
-                          </FormItem>
-
-                          <FormItem className="flex items-center gap-[15px] lg:gap-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="monobank" />
-                            </FormControl>
-                            <FormLabel className="text-sm text-[#484848] font-medium lg:text-base">
-                              Онлайн оплата через Monobank
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>

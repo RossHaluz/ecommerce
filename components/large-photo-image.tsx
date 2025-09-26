@@ -60,12 +60,11 @@ const FullscreenGallery: React.FC<FullscreenGalleryProps> = ({
           className="relative h-[90%] w-full"
         >
           <Image
-            src={images[currentIndex]}
+            src={`${process.env.BACKEND_URL}/products/${images[currentIndex]}`}
             alt="Gallery Image"
             fill
             objectFit="contain"
-            priority
-            unoptimized={true}
+            priority={true}
           />
         </motion.div>
       </AnimatePresence>

@@ -20,6 +20,7 @@ interface AccountDescNavigation {
     id: string;
     city: string;
     firstName: string;
+    comment: string;
     lastName: string;
     phone: string;
     paymentMethod: string;

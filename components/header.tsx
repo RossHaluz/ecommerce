@@ -1,7 +1,6 @@
 "use client";
 import LogoWhite from "/public/images/logo-header.svg";
 import ArrowDown from "/public/images/arrow-down.svg";
-import PhoneIcon from "/public/images/phone-icon.svg";
 import Cart from "/public/images/cart.svg";
 import Catalog from "/public/images/catalog.svg";
 import Trash from "/public/images/trash.svg";
@@ -10,8 +9,6 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import Modal from "./ui/modal";
 import React, {
-  Dispatch,
-  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -26,7 +23,7 @@ import ModalAuth from "./ui/modal-auth";
 import LoginForm from "./login-form";
 import RegisterForm from "./register-form";
 import Cookies from "js-cookie";
-import { User2Icon } from "lucide-react";
+import { PhoneCall, User2Icon } from "lucide-react";
 import SearchBar from "./search-bar";
 import { getCurrentUser } from "@/actions/get-data";
 import { selectCategories } from "@/redux/categories/selectors";
@@ -35,6 +32,10 @@ import { useAppDispatch } from "@/hooks/use-dispatch";
 import { cn } from "@/lib/utils";
 import Categories from "@/app/(routes)/(main)/_components/categories";
 import queryString from "query-string";
+import AuthorizationOtp from "./authirization-otp";
+import { useDispatch } from "react-redux";
+import { resetItems } from "@/redux/items/slice";
+import { handleClickOutside } from "@/utils/click-outside";
 
 export interface Item {
   id: string;
@@ -53,7 +54,6 @@ export interface Item {
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isRegister, setIsRegister] = useState(false);
   const [isShowInfo, setIsShowInfo] = useState(false);
   const [isShowPhoneNumbers, setIsShowPhoneNumbers] = useState(false);
   const dispatch = useAppDispatch();
@@ -70,17 +70,6 @@ const Header = () => {
   const params = useParams();
   const shouldBeFixed = pathname.includes("/categories") || params?.modelName;
   const homePage = pathname.endsWith("/");
-
-  const handleClickOutside = (
-    ref: React.RefObject<HTMLDivElement>,
-    settel: Dispatch<SetStateAction<boolean>>
-  ) => {
-    return (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        settel(false);
-      }
-    };
-  };
 
   useEffect(() => {
     const setUser = async () => {
@@ -122,6 +111,9 @@ const Header = () => {
   }, []);
 
   const goToHomePage = () => {
+    if(pathname !== '/') {
+       dispatch(resetItems());
+    }
     const queryParams = queryString.parse(window.location.search);
     const modelId = queryParams?.modelId as string;
     const selectSort = queryParams?.sortByPrice as string;
@@ -141,7 +133,6 @@ const Header = () => {
   };
 
   const onOpenChange = () => {
-    setIsRegister(false);
     setIsLogin(true);
   };
 
@@ -149,7 +140,6 @@ const Header = () => {
     try {
       dispatch(removeItemFromCart(id));
       router.refresh();
-      toast.success("Item success delete");
     } catch (error) {
       toast.error("Something went wrong...");
     }
@@ -172,6 +162,12 @@ const Header = () => {
           "fixed top-0 left-0 w-full": shouldBeFixed || homePage,
         })}
       >
+        <div className="py-2 px-4 flex items-center jutify-center bg-[#c0092a]">
+          <span className="text-white font-medium text-center w-full text-sm">
+            Сайт ще знаходиться на стадії розробки, тому ціни уточнюйте у
+            менеджера.
+          </span>
+        </div>
         <div className={cn("bg-[#484848] text-[#FFFDFD]")}>
           <div className="flex items-center gap-4 justify-between container">
             <Button
@@ -227,10 +223,13 @@ const Header = () => {
               <LogoWhite />
             </Button>
             <SearchBar />
+            <Link href="tel:+380673834283" className="lg:hidden">
+              <PhoneCall className="stroke-[#FFFDFD]" />
+            </Link>
 
             <div className="lg:flex items-center gap-3 hidden">
               <div className="flex items-center gap-2">
-                <PhoneIcon className="stroke-[#FFFDFD]" />
+                <PhoneCall className="stroke-[#FFFDFD]" />
                 <div className="relative" ref={numbersRef}>
                   <Button
                     aria-label="Номет телефони"
@@ -302,18 +301,7 @@ const Header = () => {
                     </Button>
                   }
                 >
-                  {isLogin && (
-                    <LoginForm
-                      setIsRegister={setIsRegister}
-                      setIsLogin={setIsLogin}
-                    />
-                  )}
-                  {isRegister && (
-                    <RegisterForm
-                      setIsRegister={setIsRegister}
-                      setIsLogin={setIsLogin}
-                    />
-                  )}
+                  <AuthorizationOtp setIsOpen={setIsLogin} />
                 </ModalAuth>
               )}
 
@@ -359,11 +347,11 @@ const Header = () => {
                           >
                             <div className="w-[65px] h-[65px]  rounded-[5px] overflow-hidden relative">
                               <Image
-                                src={item?.images?.[0]?.url}
+                                src={`${process.env.BACKEND_URL}/products/${item?.images?.[0]?.url}`}
                                 alt={item?.images?.[0]?.id}
                                 fill
                                 className="object-cover"
-                                unoptimized={true}
+                                priority={true}
                               />
                             </div>
                             <div className="flex flex-col gap-3  w-full">

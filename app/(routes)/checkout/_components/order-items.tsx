@@ -11,6 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { FC, useEffect } from "react";
+import image_not_found from "/public/images/image-not-found.jpg";
 
 interface OrderItemsProps {
   currentUser: {
@@ -76,7 +77,7 @@ const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
                   url: string;
                 }[];
               }) => {
-                const imageUrl = item?.images[0].url;
+                const imageUrl = item?.images[0]?.url;
 
                 totalPrice += Number(item?.price);
                 return (
@@ -89,12 +90,15 @@ const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
                     </Button>
                     <div className="w-[118px] h-[118px] rounded-[5px] overflow-hidden relative">
                       <Image
-                        src={imageUrl}
+                        src={
+                          imageUrl
+                            ? `${process.env.BACKEND_URL}/products/${imageUrl}`
+                            : image_not_found
+                        }
                         alt={item?.title}
                         fill
                         className="object-cover absolute top-0 left-0"
-                        priority
-                        unoptimized={true}
+                        priority={true}
                       />
                     </div>
                     <div className="flex flex-col gap-[15px]">

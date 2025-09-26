@@ -35,6 +35,7 @@ interface PdfGeneratorProps {
     address: string;
     typeDelivary: string;
     createdAt: string;
+    comment: string;
     orderItems: OrderItem[];
     orderType: string;
     dropshipDetails: {
@@ -184,6 +185,17 @@ const PdfContent = React.forwardRef<HTMLDivElement, PdfGeneratorProps>(
         <p style={{ textAlign: "right", fontSize: "12px", fontWeight: "bold" }}>
           Загальна вартість: {formatter.format(Number(totalPrice))}
         </p>
+
+        {item?.comment && (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
+            <h3 style={{ fontSize: "12px", fontWeight: "bold" }}>
+              Коментарії:
+            </h3>
+            <p>{item?.comment}</p>
+          </div>
+        )}
       </div>
     );
   }
