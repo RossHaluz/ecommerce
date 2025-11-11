@@ -306,9 +306,9 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="h-auto"
             >
-              <Telegram />
+              <Telegram  />
             </a>
-          </div>
+          </div> 
 
           {/* Soacials end */}
         </div>

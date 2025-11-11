@@ -5,7 +5,12 @@ const CustomInputMask = forwardRef<
   HTMLInputElement,
   React.ComponentProps<typeof InputMask>
 >((props, ref) => {
-  return <InputMask {...props} inputRef={ref} />;
+  return (
+    <InputMask
+      {...props}
+      inputRef={ref}
+    />
+  );
 });
 CustomInputMask.displayName = "CustomInputMask";
 

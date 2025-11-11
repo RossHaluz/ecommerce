@@ -20,8 +20,6 @@ import { toast } from "react-toastify";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { selectOrderItems } from "@/redux/order/selector";
 import ModalAuth from "./ui/modal-auth";
-import LoginForm from "./login-form";
-import RegisterForm from "./register-form";
 import Cookies from "js-cookie";
 import { PhoneCall, User2Icon } from "lucide-react";
 import SearchBar from "./search-bar";
@@ -33,9 +31,11 @@ import { cn } from "@/lib/utils";
 import Categories from "@/app/(routes)/(main)/_components/categories";
 import queryString from "query-string";
 import AuthorizationOtp from "./authirization-otp";
-import { useDispatch } from "react-redux";
 import { resetItems } from "@/redux/items/slice";
 import { handleClickOutside } from "@/utils/click-outside";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import CallMeForm from "./call-me/call-me-form";
+import SearchByVinCode from "./search-by-vin-code/search-by-vin-code";
 
 export interface Item {
   id: string;
@@ -70,6 +70,26 @@ const Header = () => {
   const params = useParams();
   const shouldBeFixed = pathname.includes("/categories") || params?.modelName;
   const homePage = pathname.endsWith("/");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isShow, setIsShow] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setIsShow(true);
+      } else {
+        setIsShow(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [])
 
   useEffect(() => {
     const setUser = async () => {
@@ -112,6 +132,7 @@ const Header = () => {
 
   const goToHomePage = () => {
     if(pathname !== '/') {
+      
        dispatch(resetItems());
     }
     const queryParams = queryString.parse(window.location.search);
@@ -122,6 +143,7 @@ const Header = () => {
       {
         url: "/",
         query: {
+          page: 1,
           modelId: modelId ? modelId : null,
           sortByPrice: selectSort ? selectSort : null,
         },
@@ -160,14 +182,15 @@ const Header = () => {
       <header
         className={cn("bg-[#FFFDFD] z-20", {
           "fixed top-0 left-0 w-full": shouldBeFixed || homePage,
+          "z-30": isShowCatalog
         })}
       >
-        <div className="py-2 px-4 flex items-center jutify-center bg-[#c0092a]">
+        {/* <div className="py-2 px-4 flex items-center jutify-center bg-[#c0092a]">
           <span className="text-white font-medium text-center w-full text-sm">
             Сайт ще знаходиться на стадії розробки, тому ціни уточнюйте у
             менеджера.
           </span>
-        </div>
+        </div> */}
         <div className={cn("bg-[#484848] text-[#FFFDFD]")}>
           <div className="flex items-center gap-4 justify-between container">
             <Button
@@ -223,11 +246,12 @@ const Header = () => {
               <LogoWhite />
             </Button>
             <SearchBar />
+            <SearchByVinCode />
             <Link href="tel:+380673834283" className="lg:hidden">
               <PhoneCall className="stroke-[#FFFDFD]" />
             </Link>
 
-            <div className="lg:flex items-center gap-3 hidden">
+            <div className="lg:flex lg:flex-col gap-1 hidden">
               <div className="flex items-center gap-2">
                 <PhoneCall className="stroke-[#FFFDFD]" />
                 <div className="relative" ref={numbersRef}>
@@ -235,7 +259,7 @@ const Header = () => {
                     aria-label="Номет телефони"
                     variant="ghost"
                     onClick={() => setIsShowPhoneNumbers((prev) => !prev)}
-                    className="p-0 flex items-center gap-2 text-[16px] leading-[19.5px] font-medium"
+                    className="p-0 h-auto flex items-center gap-2 text-[16px] leading-[19.5px] font-medium"
                   >
                     +38 (067) 383 42 83
                     <ArrowDown
@@ -278,6 +302,28 @@ const Header = () => {
                   </div>
                 </div>
               </div>
+              <Dialog>
+                <DialogTrigger className="underline">
+                  Замовити дзвінок
+                </DialogTrigger>
+                <DialogContent className="bg-white">
+                  <div className="flex flex-col gap-3">
+                    <DialogHeader className="flex flex-col gap-3">
+                      <DialogTitle className="font-bold">
+                        {isSuccess
+                          ? "Дякуємо за Ваше звернення!"
+                          : "Передзвоніть мені"}
+                      </DialogTitle>
+                      <DialogDescription>
+                        {isSuccess
+                          ? "Найближчим часом наш консультант зв'яжеться з вами."
+                          : "Є питання чи потрібна консультація? Залиште свій номер телефону і ми вам передзвонимо."}
+                      </DialogDescription>
+                    </DialogHeader>
+                    {!isSuccess && <CallMeForm setIsSuccess={setIsSuccess} />}
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
 
             <div className="items-center gap-3 hidden lg:flex ">
@@ -411,8 +457,16 @@ const Header = () => {
           </div>
         </div>
       </header>
+      {/* <div
+        className={cn(
+          "fixed w-full p-6 bg-white shadow-md left-0 top-14 z-20 transform transition-all duration-300 origin-top", {
+            'scale-y-100': isShow,
+            "scale-y-0": !isShow
+          }
+        )}
+      ></div> */}
       {isShowCatalog && (
-        <div className="bg-[#4848484D] fixed top-0 left-0 w-full h-full z-10" />
+        <div className="bg-[#4848484D] fixed top-0 left-0 w-full h-full z-20" />
       )}
     </>
   );

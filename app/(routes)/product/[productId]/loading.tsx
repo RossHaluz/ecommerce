@@ -1,6 +1,8 @@
+'use client'
+import { NextPage } from "next";
 import React from "react";
 
-const Loading = () => {
+const Loading: NextPage = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 container my-6">
       <div className="w-full h-[400px] bg-gray-200 rounded-md" />

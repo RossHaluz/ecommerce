@@ -32,19 +32,20 @@ export async function generateMetadata({
   };
 }
 
-const ProductPage: FC<ProductPageProps> = async ({ params }) => {
+const ProductPage = async ({
+  params,
+}: ProductPageProps) => {
   const { productId } = params;
   const data = await getProductDetails(productId);
   const similarProducts = await getSimilarProducts(productId);
-  
 
   return (
     <>
       <div className="container my-6 flex flex-col gap-4">
-        <Breadcrumbs productName={data?.product?.title}/>
-        <Separator/>
+        <Breadcrumbs productName={data?.product?.title} />
+        <Separator />
         {data?.product && <ProductInfo initialData={data?.product} />}
-        <Separator/>
+        <Separator />
         <SimilarProducts similarProducts={similarProducts} />
       </div>
     </>

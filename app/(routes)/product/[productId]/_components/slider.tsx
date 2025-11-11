@@ -80,16 +80,16 @@ const Slider: FC<SliderProps> = ({ images }) => {
               return (
                 <SwiperSlide
                   key={item?.id}
-                  className="rounded-2xl overflow-hidden"
+                  className="rounded-2xl overflow-hidden max-h-max"
                   onClick={() => onOpenGallery(index)}
                 >
-                  <div className="relative w-full aspect-square flex justify-center overflow-hidden">
+                  <div className="relative aspect-video flex justify-center bg-[#f2f2f2] items-center overflow-hidden">
                     <Image
                       src={`${process.env.BACKEND_URL}/products/${item?.url}`}
                       alt="Image slider"
                       fill
-                      objectFit="contain"
-                      objectPosition="center center"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain"
                       priority={true}
                     />
                   </div>
@@ -106,21 +106,21 @@ const Slider: FC<SliderProps> = ({ images }) => {
               watchSlidesProgress={true}
               onSwiper={setThumbsSwiper}
               direction="vertical"
-              style={{ height: "260px", width: "65px", overflow: "hidden" }}
+              style={{ height: "200px", width: "65px", overflow: "hidden" }}
               className="flex flex-col ml-0"
             >
               {images?.map((item) => {
                 return (
                   <SwiperSlide
                     key={item?.id}
-                    className="rounded-2xl overflow-hidden h-auto flex items-center justify-center"
+                    className="rounded-2xl overflow-hidden relative w-full h-auto flex items-center justify-center"
                   >
                     <Image
                       src={`${process.env.BACKEND_URL}/products/${item?.url}`}
                       alt="Image slider"
-                      fill
-                      objectFit="contain"
-                      priority
+                      className="object-contain"
+                      width={500}
+                      height={500}
                     />
                   </SwiperSlide>
                 );
@@ -158,7 +158,7 @@ const Slider: FC<SliderProps> = ({ images }) => {
             src={ImageNotFound}
             alt="Image not found"
             fill
-            objectFit="cover"
+            className="object-contain"
           />
         </div>
       )}

@@ -3,6 +3,8 @@ import Categories from "./_components/categories";
 import { getCategories } from "@/actions/get-data";
 import Section from "@/components/section";
 
+export const revalidate = 60; 
+
 const CategoriesPage = async () => {
   const categories = (await getCategories()) || [];
 

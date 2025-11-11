@@ -156,8 +156,9 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
               return (
                 <React.Fragment key={item?.id}>
                   <Link
-                    href={`${process.env.NEXT_PUBLIC_BASE_URL}/${item?.model?.modelName}`}
+                    href={`/${item?.model?.modelName}`}
                     className="underline text-[#C0092A] cursor-pointer max-w-max"
+                    scroll={false}
                   >
                     {item?.model?.name}
                     {index < models.length - 1 && ", "}

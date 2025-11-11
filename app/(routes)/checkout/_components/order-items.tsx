@@ -56,75 +56,81 @@ const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
   });
 
   return (
-    <div className="p-[30px] rounded-[5px] bg-[#FFFDFD] sticky top-10  transition-all">
+    <div className="p-[30px] rounded-[5px] bg-[#FFFDFD] sticky top-1  transition-all">
       <div className="flex flex-col gap-[30px]">
         <h3 className="text-[#484848] text-2xl font-bold">Ваш кошик</h3>
 
         {orderItems?.length > 0 ? (
           <div className="flex flex-col gap-[30px]">
-            {orderItems?.map(
-              (item: {
-                id: string;
-                quantity: number;
-                price: number;
-                product_name: string;
-                orderItemId: string;
-                priceForOne: number;
-                title: string;
-                article: string;
-                images: {
+            <div className="max-h-80 overflow-y-auto">
+              {orderItems?.map(
+                (item: {
                   id: string;
-                  url: string;
-                }[];
-              }) => {
-                const imageUrl = item?.images[0]?.url;
+                  quantity: number;
+                  price: number;
+                  product_name: string;
+                  orderItemId: string;
+                  priceForOne: number;
+                  title: string;
+                  article: string;
+                  images: {
+                    id: string;
+                    url: string;
+                  }[];
+                }) => {
+                  const imageUrl = item?.images[0]?.url;
 
-                totalPrice += Number(item?.price);
-                return (
-                  <div className="flex items-center gap-[30px]" key={item?.id}>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleRemoveItem(item?.orderItemId)}
+                  totalPrice += Number(item?.price);
+                  return (
+                    <div
+                      className="flex items-center gap-[30px]"
+                      key={item?.id}
                     >
-                      X
-                    </Button>
-                    <div className="w-[118px] h-[118px] rounded-[5px] overflow-hidden relative">
-                      <Image
-                        src={
-                          imageUrl
-                            ? `${process.env.BACKEND_URL}/products/${imageUrl}`
-                            : image_not_found
-                        }
-                        alt={item?.title}
-                        fill
-                        className="object-cover absolute top-0 left-0"
-                        priority={true}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-[15px]">
-                      <Link
-                        href={`/product/${item?.product_name}`}
-                        className="text-base font-bold text-[#484848] underline"
+                      <Button
+                        variant="ghost"
+                        onClick={() => handleRemoveItem(item?.orderItemId)}
                       >
-                        {capitalizeFirstLetter(item?.title)}
-                      </Link>
+                        X
+                      </Button>
+                      <div className="w-[118px] h-[118px] rounded-[5px] overflow-hidden relative">
+                        <Image
+                          src={
+                            imageUrl
+                              ? `${process.env.BACKEND_URL}/products/${imageUrl}`
+                              : image_not_found
+                          }
+                          alt={item?.title}
+                          fill
+                          className="object-cover absolute top-0 left-0"
+                          priority={true}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-[15px]">
+                        <Link
+                          href={`/product/${item?.product_name}`}
+                          className="text-base font-bold text-[#484848] underline"
+                        >
+                          {capitalizeFirstLetter(item?.title)}
+                        </Link>
 
-                      <div className="flex items-center gap-[10px]">
-                        <span className="text-[#484848] font-medium text-base">
-                          {item?.quantity}
-                        </span>
-                        <span className="text-[#484848]">x</span>
-                        <span className="text-[#c0092a] text-base font-bold">
-                          {Number(item?.priceForOne) === 0 && "Ціна договірна"}
-                          {Number(item?.priceForOne) > 0 &&
-                            USDollar.format(Number(item?.priceForOne))}
-                        </span>
+                        <div className="flex items-center gap-[10px]">
+                          <span className="text-[#484848] font-medium text-base">
+                            {item?.quantity}
+                          </span>
+                          <span className="text-[#484848]">x</span>
+                          <span className="text-[#c0092a] text-base font-bold">
+                            {Number(item?.priceForOne) === 0 &&
+                              "Ціна договірна"}
+                            {Number(item?.priceForOne) > 0 &&
+                              USDollar.format(Number(item?.priceForOne))}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              }
-            )}
+                  );
+                }
+              )}
+            </div>
 
             <div className="w-full h-[1px] bg-[#c0092a]" />
 

@@ -1,6 +1,6 @@
 "use client";
 import Categories from "@/app/(routes)/(main)/_components/categories";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import SearchByModel from "../app/(routes)/(main)/_components/search-by-model";
 import { useAppDispatch } from "@/redux/store";
 import { getCategories } from "@/redux/categories/operetions";
@@ -48,6 +48,22 @@ const MainSection: FC<MainSectionProps> = ({
   const shouldBeMargin =
     pathname.includes("/categories") || queryParams?.modelName;
   const isHomePage = pathname.endsWith("/");
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!ref.current) return;
+      const { top } = ref.current.getBoundingClientRect();
+      setIsSticky(top <= 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -57,7 +73,7 @@ const MainSection: FC<MainSectionProps> = ({
   return (
     <section
       className={cn("mt-3 mb-6 ", {
-        "mt-[120px] md:mt-[110px]": shouldBeMargin || isHomePage,
+        "mt-20": shouldBeMargin || isHomePage,
       })}
     >
       <div className="container flex flex-col gap-3">
@@ -67,7 +83,7 @@ const MainSection: FC<MainSectionProps> = ({
               {title && (
                 <h1 className="text-[#484848] font-bold text-base">{title}</h1>
               )}
-              <Breadcrumbs/>
+              <Breadcrumbs />
             </div>
             <div className="flex items-center md:hidden gap-3 justify-between">
               {title && (
@@ -85,17 +101,17 @@ const MainSection: FC<MainSectionProps> = ({
               </div>
             </div>
 
-            <div className="hidden lg:block">
+            <div className="hidden lg:block h-full">
               {isLoading ? (
                 <div className="w-[302px] h-[500px] rounded-md bg-[#FFFDFD]" />
               ) : (
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 h-full">
                   <Categories categories={categories} />
                 </div>
               )}
             </div>
           </div>
-          <div className="flex flex-col gap-3 w-full">
+          <div className="flex flex-col gap-3 w-full h-full">
             <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
               <div className="flex items-center gap-4">
                 <SearchByModel models={models} />
@@ -109,6 +125,7 @@ const MainSection: FC<MainSectionProps> = ({
                 <CustomizerLayout />
               </div>
             </div>
+
             {children}
           </div>
         </div>

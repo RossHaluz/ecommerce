@@ -120,7 +120,7 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
     <>
       <div
         className={cn(
-          "hidden lg:flex flex-col rounded-md  bg-[#FFFDFD] border border-solid border-[#111] w-full py-2 relative",
+          "hidden lg:flex flex-col rounded-md  bg-[#FFFDFD] border border-solid shadow-lg  w-full py-2 relative",
           {
             "z-50 rounded-l-md rounded-r-none": hoveredOnMenu,
           }
@@ -134,7 +134,7 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
       {hoveredOnMenu && (
         <div
           className={cn("fixed top-0 left-0 w-full h-full bg-[#4848484D]", {
-            "z-10": hoveredOnMenu,
+            "z-30": hoveredOnMenu,
           })}
         />
       )}

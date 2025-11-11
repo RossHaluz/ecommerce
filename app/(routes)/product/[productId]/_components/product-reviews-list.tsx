@@ -1,4 +1,4 @@
-'use cliemt'
+'use client'
 import React, { FC, useEffect, useState } from "react";
 import QuotesLeft from "/public/images/quotes-left.svg";
 import QuotesRight from "/public/images/quotes-right.svg";

@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllProducts, getCategoryProducts } from "./operetions";
-import { Product, ProductsResponse } from "@/actions/get-data";
+import {
+  getAllProducts,
+  getCategoryProducts,
+  getCategoryModelsProducts,
+  getProductsByModel,
+} from "./operetions";
+import { Product } from "@/lib/types";
 
 const initialState: {
   isLoading: boolean;
@@ -8,12 +13,22 @@ const initialState: {
   totalPages: number;
   currentPage: number;
   searchParams: Record<string, any>;
+  isLoadMore: boolean;
 } = {
   isLoading: false,
   items: [],
   searchParams: {},
   totalPages: 1,
   currentPage: 1,
+  isLoadMore: false
+};
+
+const handleFulfilled = (state: typeof initialState, action: any) => {
+  
+  state.isLoading = false;
+  state.items = [...state.items, ...(action.payload?.products || [])];
+  state.currentPage = action.payload?.meta?.page || state.currentPage;
+  state.totalPages = action.payload?.meta?.totalPages || state.totalPages;
 };
 
 const itemSlice = createSlice({
@@ -32,6 +47,12 @@ const itemSlice = createSlice({
             state.currentPage = page,
             state.totalPages = totalPages,
             state.searchParams = searchParams
+        },
+        setCurrentPage: (state, action) => {
+          state.currentPage = action.payload
+        },
+        setLoadMore: (state, action) => {
+          state.isLoadMore = action.payload
         }
     },
     extraReducers: builder => {
@@ -39,31 +60,26 @@ const itemSlice = createSlice({
           .addCase(getAllProducts.pending, (state, __) => {
             state.isLoading = true;
           })
-          .addCase(getAllProducts.fulfilled, (state, action) => {
-            (state.isLoading = false),
-              (state.items = [
-                ...state.items,
-                ...(action.payload?.products || []),
-              ]);
-            state.currentPage = action.payload?.meta?.page || state.currentPage;
-            state.totalPages =
-              action.payload?.meta?.totalPages || state.totalPages;
-          })
+          .addCase(getAllProducts.fulfilled, handleFulfilled)
           .addCase(getAllProducts.rejected, (state) => {
             state.isLoading = false;
           })
           .addCase(getCategoryProducts.pending, (state) => {
-            state.isLoading = true
+            state.isLoading = true;
           })
-          .addCase(getCategoryProducts.fulfilled, (state, action) => {
-        (state.isLoading = false),
-          (state.items = [...state.items, ...(action.payload?.products || [])]);
-        state.currentPage = action.payload?.meta?.page || state.currentPage;
-        state.totalPages = action.payload?.meta?.totalPages || state.totalPages;
+          .addCase(getCategoryProducts.fulfilled, handleFulfilled)
+          .addCase(getCategoryModelsProducts.pending, (state) => {
+            state.isLoading = true;
           })
+          .addCase(getCategoryModelsProducts.fulfilled, handleFulfilled)
+          .addCase(getProductsByModel.pending, (state) => {
+            state.isLoading = true;
+          })
+          .addCase(getProductsByModel.fulfilled, handleFulfilled);
     }
 });
 
-export const { setInitialItems, resetItems } = itemSlice.actions;
+export const { setInitialItems, resetItems, setCurrentPage, setLoadMore } =
+  itemSlice.actions;
 
 export const itemReducer = itemSlice.reducer;

@@ -1,8 +1,12 @@
 import { getAllProducts } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
-import { FC, Suspense } from "react";
 import NotFoundItems from "@/components/not-found-items";
 import dynamic from "next/dynamic";
+
+const Products = dynamic(() => import("../_components/products"), {
+  ssr: true,
+});
+
 
 interface HomeProps {
   searchParams: {
@@ -14,39 +18,31 @@ interface HomeProps {
   };
 }
 
-const Products = dynamic(() => import("../_components/products"));
 
-const Home: FC<HomeProps> = async ({ searchParams }) => {
+const Home = async ({ searchParams }: HomeProps) => {
   const { page, sortByPrice, stockStatus } = searchParams;
 
   const initialProducts = await getAllProducts({
     page,
     sortByPrice,
     stockStatus,
-    pageSize: 20,
+    pageSize: 52,
   });
 
-  if (
-    !initialProducts ||
-    !initialProducts.products ||
-    initialProducts.products.length === 0
-  ) {
+  if (!initialProducts?.products?.length) {
     return (
       <NotFoundItems text="Товарів які відносяться до даної категорії не знайдено..." />
     );
   }
 
-
   return (
     <MainSection title="Запчастини до Audi" params={searchParams}>
-      <Suspense fallback={<p>Завантаження продуктів...</p>}>
-        <Products
-          products={initialProducts.products}
-          page={initialProducts.meta.page}
-          totalPages={initialProducts.meta.totalPages}
-          searchParams={searchParams}
-        />
-      </Suspense>
+      <Products
+        products={initialProducts.products}
+        page={initialProducts.meta.page}
+        totalPages={initialProducts.meta.totalPages}
+        searchParams={searchParams}
+      />
     </MainSection>
   );
 };

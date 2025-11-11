@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { resetItems } from "@/redux/items/slice";
 import Link from "next/link";
 import React, { FC } from "react";

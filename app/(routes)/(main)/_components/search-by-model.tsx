@@ -141,7 +141,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
             onClick={() => setIsOpen((prev) => !prev)}
             type="button"
             className={cn(
-              "bg-[#FFFDFD] border border-solid border-[#111] p-5 rounded-lg w-full flex items-center gap-2 justify-between hover:bg-[#FFFDFD] hover:text-current text-base",
+              "bg-[#FFFDFD] border border-solid shadow-md p-5 rounded-lg w-full flex items-center gap-2 justify-between hover:bg-[#FFFDFD] hover:text-current text-base",
               {
                 "text-[#111111]": currentModel,
               }
@@ -196,7 +196,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
           </div> */}
           <div
             className={cn(
-              "rounded-lg bg-[#FFFDFD] shadow-md p-3 z-30 flex flex-col transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid w-full right-0",
+              "rounded-lg bg-[#FFFDFD] shadow-md p-3 z-[12] flex flex-col transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid w-full right-0",
               {
                 "scale-y-1": isOpen,
               }
@@ -205,7 +205,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
             <List
               height={350}
               itemCount={sortedModels.length}
-              itemSize={20} // висота одного елемента
+              itemSize={20} 
               width="100%"
             >
               {({ index, style }) => {
@@ -219,7 +219,7 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
                       "text-[#c0092a] font-medium":
                         params?.modelName === item?.modelName,
                     })}
-                    style={style} // Важливо додати для коректного відображення
+                    style={style}
                   >
                     {item?.name}
                   </Button>

@@ -5,8 +5,6 @@ import { FC } from "react";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
-export const fetchCache = "force-cache";
-export const revalidate = 300;
 
 const Products = dynamic(() => import("../../_components/products"), {
   ssr: true,
@@ -47,9 +45,10 @@ const ProductsWrapper = async ({ searchParams, params }: HomeProps) => {
     page,
     sortByPrice,
     stockStatus,
-    pageSize: 30,
+    pageSize: 52,
     modelName,
   });
+  
 
   if (!products || !products.products || products.products.length === 0) {
     return (
@@ -63,6 +62,7 @@ const ProductsWrapper = async ({ searchParams, params }: HomeProps) => {
       page={products?.meta?.page}
       totalPages={products?.meta?.totalPages}
       searchParams={searchParams}
+      modelId={modelName}
     />
   ) : (
     <NotFoundItems text="Товарів які відносяться до данної категорії не знайдено..." />

@@ -150,26 +150,22 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
             className="border border-solid border-[#4848484D] rounded-md overflow-hidden"
           >
             <div className="flex flex-col gap-2 bg-[#FFFDFD] rounded">
-              <Link
-                href={`/product/${item?.product_name}`}
-                className="w-full"
-              >
-                <div className="relative overflow-hidden aspect-video w-full">
+              <Link href={`/product/${item?.product_name}`} className="w-full">
+                <div className="relative overflow-hidden aspect-video bg-white flex items-center justify-center">
                   {item?.images?.length > 0 ? (
                     <Image
                       src={`${process.env.BACKEND_URL}/products/${item?.images[0]?.url}`}
                       alt={item?.title}
                       fill
-                      objectFit="contain"
-                      objectPosition="center center"
-                      priority
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain"
                     />
                   ) : (
                     <Image
                       src={ImageNotFound}
                       alt="Image not found"
                       fill
-                      objectFit="cover"
+                      className="object-contain"
                     />
                   )}
                 </div>

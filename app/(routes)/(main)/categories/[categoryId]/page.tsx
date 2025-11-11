@@ -71,6 +71,7 @@ const ProductsWrapper = async ({
     pageSize: "50",
   });
 
+
   if (!category || !category.products || category.products.length === 0) {
     return (
       <NotFoundItems text="Товарів які відносяться до даної категорії не знайдено..." />
@@ -79,6 +80,7 @@ const ProductsWrapper = async ({
 
   return (
     <Products
+      key={categoryId}
       products={category.products}
       page={category.meta?.page || 1}
       totalPages={category.meta?.totalPages || 1}

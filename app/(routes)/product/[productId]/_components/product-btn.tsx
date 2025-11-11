@@ -56,7 +56,6 @@ const ProductBtn: FC<ProductBtnProps & ProductBtnCountProps> = ({
     try {
       dispatch(removeItemFromCart(id));
       router.refresh();
-      toast.success("Item success delete");
     } catch (error) {
       toast.error("Something went wrong...");
     }
@@ -82,7 +81,6 @@ const ProductBtn: FC<ProductBtnProps & ProductBtnCountProps> = ({
         currency: "USD",
       });
 
-      toast.success("Item success add to cart");
     } catch (error) {
       toast.error("Something went wrong...");
     }

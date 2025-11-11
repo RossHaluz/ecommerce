@@ -139,7 +139,7 @@ const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
 
         <div
           className={cn(
-            "rounded-lg bg-[#FFFDFD] shadow-md p-4 z-20 max-h-44 overflow-y-auto flex flex-col gap-4 transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid max-w-max right-0",
+            "rounded-lg bg-[#FFFDFD] shadow-md p-4 z-[12] max-h-44 overflow-y-auto flex flex-col gap-4 transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid max-w-max right-0",
             {
               "scale-y-1": isOpen,
             }

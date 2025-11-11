@@ -1,7 +1,7 @@
 
 const Loading = () => {
   return (
-    <div className="flex items-start gap-4 container mt-[70px] mb-6">
+    <div className="flex items-start gap-4 container mt-20 mb-6">
       <div className="hidden lg:block bg-gray-200 w-1/3 h-[500px] rounded-md" />
 
       <div className="flex flex-col gap-4 w-full h-full">

@@ -4,6 +4,8 @@ import { FC, useEffect } from "react";
 import Arrow from "/public/images/arrow.svg";
 import qs from "query-string";
 import { cn } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { resetItems, setCurrentPage, setLoadMore } from "@/redux/items/slice";
 
 interface PaginationProps {
   currentPage: number;
@@ -22,10 +24,19 @@ const Pagination: FC<PaginationProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const { page } = searchParams;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!page) return;
     localStorage.setItem("currentPage", page);
+  }, [page]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    dispatch(setCurrentPage(page))
   }, [page]);
 
   const handlePreviousPage = () => {
@@ -50,7 +61,9 @@ const Pagination: FC<PaginationProps> = ({
       { skipEmptyString: true, skipNull: true }
     );
 
-    router.push(url);
+    router.replace(url);
+    dispatch(resetItems());
+     dispatch(setLoadMore(false));
   };
 
   const handleNextPage = () => {
@@ -76,7 +89,9 @@ const Pagination: FC<PaginationProps> = ({
       { skipEmptyString: true, skipNull: true }
     );
 
-    router.push(url);
+    router.replace(url);
+    dispatch(resetItems());
+     dispatch(setLoadMore(false));
   };
 
   const handlePageClick = (pageNumber: number) => {
@@ -99,7 +114,9 @@ const Pagination: FC<PaginationProps> = ({
       { skipEmptyString: true, skipNull: true }
     );
 
-    router.push(url);
+    router.replace(url);
+    dispatch(resetItems());
+     dispatch(setLoadMore(false));
   };
 
   const renderPageNumbers = () => {
@@ -136,7 +153,7 @@ const Pagination: FC<PaginationProps> = ({
   };
 
   return (
-    <div className="flex items-center gap-4 mx-auto py-[10px]">
+    <div className="flex items-center gap-4 mx-auto">
       <button
         aria-label="Повередня сторінка"
         className="flex items-center gap-2 disabled:text-gray-500 hover:bg-accent px-4 py-2 rounded-md"

@@ -7,7 +7,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProviderWrapper from "@/redux/provider";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import ViberConnect from "@/components/contacts-widget";
 import ReactQueryProvider from "@/components/react-query-provider";
 import ScrollToTop from "@/components/scroll-to-top";
 import ScrollUp from "@/components/scroll-up";
@@ -38,15 +37,15 @@ export default function RootLayout({
       <body className={inter.className}>
         <ProviderWrapper>
           <ReactQueryProvider>
-            <ScrollToTop />
-            <ScrollUp />
-            <div className="flex flex-col gap-4 fixed right-3 bottom-20 lg:bottom-10 lg:right-10 z-50">
+              <ScrollToTop />
+              <ScrollUp />
+
               <ContactsWidget />
-            </div>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-            <ToastContainer />
+
+              <Header />
+              <main>{children}</main>
+              <Footer />
+              <ToastContainer />
           </ReactQueryProvider>
         </ProviderWrapper>
       </body>

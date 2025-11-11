@@ -1,27 +1,8 @@
 "use server";
+import { Meta, Product } from "@/lib/types";
 import axios from "axios";
 import { cookies } from "next/headers";
 
-export interface Product {
-  id: string;
-  title: string;
-  price: string;
-  quantity: number;
-  article: string;
-  product_name: string;
-  maxPrice: string;
-  catalog_number: string;
-  productOptions: any[];
-  images: {
-    id: string;
-    url: string;
-  }[];
-};
-
-interface Meta {
-  page: number;
-  totalPages: number;
-}
 
 export interface ProductsResponse {
   products: Product[];
@@ -75,7 +56,6 @@ export const getCategoryDetails = async (data: {
   sortByPrice?: string;
   stockStatus?: string;
   pageSize?: string;
-  modelId?: string;
 }) => {
   const tokenCookie = cookies().get("token");
   const token = tokenCookie ? tokenCookie.value : null;
@@ -86,7 +66,6 @@ export const getCategoryDetails = async (data: {
       pageSize = 50,
       stockStatus,
       categoryId,
-      modelId,
     } = data;
     const { data: category } = await axios.get(
       `/category/${storeId}/${categoryId}`,
@@ -99,7 +78,6 @@ export const getCategoryDetails = async (data: {
           sortByPrice,
           stockStatus,
           pageSize,
-          modelId,
         },
       }
     );
@@ -126,7 +104,7 @@ export const getCategoryByModel = async (data: {
     const {
       page = 1,
       sortByPrice = "desc",
-      pageSize = 50,
+      pageSize = 52,
       categoryId,
       stockStatus,
       modelName,
@@ -254,6 +232,7 @@ export const getSearchProducts = async (data: {
         page,
         stockStatus,
         sortByPrice,
+        pageSize: 52
       },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -320,7 +299,7 @@ export const getProductsByModel = async (data: {
           page,
           sortByPrice,
           stockStatus,
-          pageSize,
+          pageSize: 52,
           searchValue,
         },
         headers: {
@@ -329,7 +308,6 @@ export const getProductsByModel = async (data: {
       }
     );
 
-    console.log(products);
 
     return products?.data;
   } catch (error) {

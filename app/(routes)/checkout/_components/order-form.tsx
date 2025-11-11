@@ -25,7 +25,6 @@ import { useDispatch } from "react-redux";
 import { cleareOrderItems, setOrderDetails } from "@/redux/order/slice";
 import ArrowDown from "/public/images/arrow-down.svg";
 import { getSeparation } from "@/services/services";
-import { createInvoice } from "@/services/monobank";
 import { selectUserContactDetails } from "@/redux/auth/selectors";
 import { removeUserContactDetails } from "@/redux/auth/slice";
 import { createOrder } from "@/actions/get-data";
@@ -102,8 +101,8 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
     currentUser?.type === "drop" ? false : true
   );
   const [isShowContactClient, setIsShowContactClient] = useState(true);
-  const [isShowDelivary, setIsShowDelivary] = useState(false);
-  const [isShowPayment, setIsShowPayment] = useState(false);
+  const [isShowDelivary, setIsShowDelivary] = useState(true);
+  const [isShowPayment, setIsShowPayment] = useState(true);
   const [separatios, setSeparatios] = useState<
     | {
         Present: string;
@@ -116,8 +115,8 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const [detachments, setDetachments] = useState<
     { Description: string; Ref: string }[]
   >([]);
-  const [isShowSeparatios, setIsShowSeparatios] = useState(false);
-  const [isShowDetachment, setIsShowDetachment] = useState(false);
+  const [isShowSeparatios, setIsShowSeparatios] = useState(true);
+  const [isShowDetachment, setIsShowDetachment] = useState(true);
   const [currentCity, setCurrentCity] = useState("");
   const userDetails = useSelector(selectUserContactDetails);
   const orderItems = useSelector(selectOrderItems);
@@ -776,7 +775,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
                   />
 
                   {currentPostService !== "pickup" && (
-                    <div className="flex items-center gap-2 justify-between overflow-x-auto no-scrollbar">
+                    <div className="flex items-center gap-2 lg:gap-6 overflow-x-auto no-scrollbar">
                       <Button
                         variant="ghost"
                         disabled={currentPostService === "transporter"}

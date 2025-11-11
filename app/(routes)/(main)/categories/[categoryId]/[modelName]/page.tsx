@@ -5,9 +5,6 @@ import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 
-export const fetchCache = "force-cache";
-export const revalidate = 300;
-
 const Products = dynamic(() => import("@/app/(routes)/_components/products"), {
   ssr: true,
 });
@@ -78,6 +75,8 @@ const ProductsWrapper = async ({
       page={category.meta?.page || 1}
       totalPages={category.meta?.totalPages || 1}
       searchParams={{ page }}
+      modelId={modelName}
+      categoryId={categoryId}
     />
   );
 };

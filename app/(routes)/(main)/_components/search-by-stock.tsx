@@ -132,7 +132,7 @@ const SearchByStock = () => {
             onClick={() => setIsOpen((prev) => !prev)}
             type="button"
             className={cn(
-              "bg-[#FFFDFD] border border-solid text-[#111111] border-[#111] p-3 md:p-5 rounded-lg w-full flex items-center gap-2 justify-between hover:bg-[#FFFDFD] hover:text-current text-base",
+              "bg-[#FFFDFD] border border-solid text-[#111111] shadow-md p-3 md:p-5 rounded-lg w-full flex items-center gap-2 justify-between hover:bg-[#FFFDFD] hover:text-current text-base",
               {
                 "text-[#111111]": selectStock,
               }
@@ -156,7 +156,7 @@ const SearchByStock = () => {
           </Button>
           <div
             className={cn(
-              "rounded-lg bg-[#FFFDFD] shadow-md p-3 z-30 flex flex-col transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid w-full right-0",
+              "rounded-lg bg-[#FFFDFD] shadow-md p-3 z-[12] flex flex-col transform transition-all origin-top duration-300 absolute top-[105%] scale-y-0 border border-solid w-full right-0",
               {
                 "scale-y-1": isOpen,
               }

@@ -72,20 +72,20 @@ const MobileSidebar = () => {
 
   return (
     <>
-      <div className="fixed w-full bottom-0 right-0 py-3 z-20 shadow-custom-shadow container bg-[#FFFDFD] flex items-center justify-between gap-4 lg:hidden">
+      <div className="fixed w-full bottom-0 right-0 py-3 z-[12] shadow-custom-shadow container bg-[#FFFDFD] flex items-center justify-between gap-4 lg:hidden">
         <Link
           href="/"
           className={cn(
             "flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium",
             {
-              "text-[#C0092A]": pathname === "/",
+              "text-[#C0092A]": pathname === "/" || pathname.includes("/categories"),
             }
           )}
         >
           <HomeIcon
             className={cn("fill-[#111111]", {
               "fill-[#C0092A]":
-                pathname === "/" || pathname.startsWith("/categories"),
+                pathname === "/" || pathname.includes("/categories"),
             })}
           />
           Головна

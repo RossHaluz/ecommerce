@@ -17,10 +17,7 @@ const ImageUpload: FC<ImageUploadProps> = ({
   onRemove,
   value,
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  console.log('images', value);
-  
+  const [isMounted, setIsMounted] = useState(false);  
 
   useEffect(() => {
     setIsMounted(true);

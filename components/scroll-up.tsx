@@ -34,7 +34,7 @@ const ScrollUp = () => {
     <Button
       type="button"
       onClick={handleScrollUp}
-      className={cn('fixed group right-3 bottom-36 lg:bottom-28 lg:right-10 z-50 h-12 w-12 p-3 rounded-full cursor-pointer shadow-custom-shadow bg-[#ffffff]  text-[#303030] border-none transition-all duration-300 flex items-center justify-center', {
+      className={cn('fixed group right-8 bottom-36 lg:bottom-32  z-[11] h-12 w-12 p-3 rounded-full cursor-pointer shadow-custom-shadow bg-[#ffffff]  text-[#303030] border-none transition-all duration-300 flex items-center justify-center', {
         "opacity-100 translate-y-0": isShow,
         "opacity-0 translate-y-10 pointer-events-none": !isShow
       })}

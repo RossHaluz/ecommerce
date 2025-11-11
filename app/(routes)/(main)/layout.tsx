@@ -1,14 +1,14 @@
 import MobileSidebar from "@/components/mobile-sidebar";
-import React, { FC } from "react";
+import React, { FC, Suspense } from "react";
 
 interface HomeLayoutProps {
   children: React.ReactNode;
 }
 
-const HomeLayout: FC<HomeLayoutProps> = async ({ children }) => {
+const HomeLayout: FC<HomeLayoutProps> = ({ children }) => {
   return (
     <>
-      {children}
+      <Suspense fallback={<div>Loading..</div>}>{children}</Suspense>
       <MobileSidebar />
     </>
   );

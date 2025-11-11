@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Products from "../../_components/products";
 import NotFoundItems from "@/components/not-found-items";
-import { getProductsByModel, getSearchProducts } from "@/actions/get-data";
+import { getProductsByModel } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import { Metadata } from "next";
 

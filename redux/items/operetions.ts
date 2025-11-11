@@ -1,5 +1,7 @@
-import api from "@/lib/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+axios.defaults.baseURL = `${process.env.BACKEND_URL}/api`;
 
 export const getAllProducts = createAsyncThunk(
   "api/getAllProducts",
@@ -15,12 +17,14 @@ export const getAllProducts = createAsyncThunk(
     };
   }, {rejectWithValue}) => {
   try {
-      const { data } = await api.get(`/api/product/${process.env.STORE_ID}`, {
+    
+      const { data } = await axios.get(`/product/${process.env.STORE_ID}`, {
         params: {
           ...searchParams,
           page,
+          pageSize: 52
         },
-      });
+      });      
 
       return data?.data;
   } catch (error) {
@@ -37,10 +41,12 @@ export const getCategoryProducts = createAsyncThunk(
     {
       categoryId,
       page,
+      modelId,
       searchParams,
     }: {
       categoryId: string;
       page: number;
+      modelId?: string,
       searchParams: {
         stockStatus?: string;
         sortByPrice?: string;
@@ -50,12 +56,13 @@ export const getCategoryProducts = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const { data } = await api.get(
-        `/api/category/${process.env.STORE_ID}/${categoryId}`,
+      const { data } = await axios.get(
+        `/category/${process.env.STORE_ID}/${categoryId}`,
         {
           params: {
             ...searchParams,
             page,
+            modelId
           },
         }
       );
@@ -67,3 +74,79 @@ export const getCategoryProducts = createAsyncThunk(
     }
   }
 );
+
+
+export const getCategoryModelsProducts = createAsyncThunk('api/getCategoryModelsProducts',
+  async (
+    data: {
+      categoryId: string;
+      page?: string;
+      stockStatus?: string;
+      sortByPrice?: string;
+      pageSize?: string;
+      modelName: string;
+    }, {rejectWithValue}
+  ) => {
+    try {
+     const {
+       page = 1,
+       sortByPrice = "desc",
+       pageSize = 50,
+       categoryId,
+       stockStatus,
+       modelName,
+     } = data;
+      const { data: category } = await axios.get(
+        `/category/${process.env.STORE_ID}/${categoryId}/${modelName}`,
+        {
+          params: {
+            page,
+            sortByPrice,
+            stockStatus,
+            pageSize,
+          },
+        }
+      );
+
+      return category?.data;
+    } catch (error) {
+      return rejectWithValue(error)
+    }
+  }
+);
+
+export const getProductsByModel = createAsyncThunk("api/getProductsByModel", async (data: {
+  page?: string;
+  sortByPrice?: string;
+  stockStatus?: string;
+  searchValue?: string;
+  modelName?: string;
+  pageSize?: number;
+}, {rejectWithValue}) => {
+  try {
+      const {
+        page,
+        sortByPrice,
+        modelName,
+        pageSize,
+        searchValue,
+        stockStatus,
+      } = data;
+      const { data: products } = await axios.get(
+        `/product/${process.env.STORE_ID}/model/${modelName}`,
+        {
+          params: {
+            page,
+            sortByPrice,
+            stockStatus,
+            pageSize,
+            searchValue,
+          },
+        }
+      );
+
+      return products?.data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
