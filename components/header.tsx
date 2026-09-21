@@ -1,5 +1,5 @@
 "use client";
-import LogoWhite from "/public/images/logo-header.svg";
+import Logo from "@/components/ui/logo";
 import ArrowDown from "/public/images/arrow-down.svg";
 import Cart from "/public/images/cart.svg";
 import Catalog from "/public/images/catalog.svg";
@@ -200,7 +200,7 @@ const Header = () => {
               className="hidden lg:block py-3 cursor-pointer"
               onClick={goToHomePage}
             >
-              <LogoWhite />
+              <Logo className="h-[34px] w-[56px]" priority />
             </Button>
 
             <div className="relative" ref={catelogRef}>
@@ -243,7 +243,7 @@ const Header = () => {
               className="lg:hidden py-3 cursor-pointer"
               onClick={goToHomePage}
             >
-              <LogoWhite />
+              <Logo className="h-[34px] w-[56px]" priority />
             </Button>
             <SearchBar />
             <SearchByVinCode />

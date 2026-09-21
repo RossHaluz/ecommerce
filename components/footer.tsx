@@ -1,6 +1,6 @@
 "use client";
 import { CopyrightIcon, PhoneIcon } from "lucide-react";
-import Logo from "/public/images/logo-header.svg";
+import Logo from "@/components/ui/logo";
 import Telegram from "/public/images/telegram-icon.svg";
 import ArrowDown from "/public/images/arrow-down.svg";
 import { Button } from "./ui/button";
@@ -51,7 +51,7 @@ const Footer = () => {
         <div className="md:flex justify-between md:gap-8 lg:gap-[90px]">
           {/* Contact info start */}
           <div className="flex flex-col gap-[10px] mb-[15px] items-start">
-            <Logo />
+            <Logo className="h-[34px] w-[56px]" />
             <div className="flex flex-col gap-[15px]">
               <div className="flex items-center gap-2">
                 <PhoneIcon className="stroke-[#FFFDFD]" />
