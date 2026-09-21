@@ -303,7 +303,7 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
                       >
                         <div className="w-[65px] h-[65px]  rounded-[5px] overflow-hidden relative">
                           <Image
-                            src={`${process.env.BACKEND_URL}/public/products/${item?.images?.[0]?.url}`}
+                            src={`${process.env.BACKEND_URL}/products/${item?.images?.[0]?.url}`}
                             alt={item?.images?.[0]?.id}
                             fill
                             className="object-cover"

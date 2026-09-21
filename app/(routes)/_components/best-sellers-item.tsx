@@ -37,7 +37,7 @@ const BestSellersItem: FC<BesrSellersItemProps> = ({ item }) => {
       <Link href={`/${item?.id}`} className="flex flex-col">
         <div className="aspect-video lg:aspect-square relative overflow-hidden">
           <Image
-            src={`${process.env.BACKEND_URL}/public/products/${productImage}`}
+            src={`${process.env.BACKEND_URL}/products/${productImage}`}
             alt={item?.title}
             fill
             className="absolute top-0 left-0 object-cover"
