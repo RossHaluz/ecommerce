@@ -29,7 +29,7 @@ export async function generateMetadata({
 
   let title: string;
   const model = await getModelDetails(modelName);
-  title = model.name || "Запчастини під усі моделі Audi";
+  title = model?.name || "Запчастини під усі моделі Audi";
 
   return {
     title: `Купити запчастини на Audi (Ауді) ${title} за вигідною ціною в магазині Audiparts`,

@@ -25,11 +25,9 @@ interface CategoryPageProps {
 export async function generateStaticParams() {
   const categories = await getCategories();
 
-  return categories.map(
-    (category: { id: string; name: string; category_name: string }) => ({
-      categoryId: category.category_name,
-    })
-  );
+  return (categories ?? []).map((category) => ({
+    categoryId: category.category_name,
+  }));
 }
 
 export async function generateMetadata({

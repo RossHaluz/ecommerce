@@ -2,23 +2,11 @@
 import { resetItems } from "@/redux/items/slice";
 import Link from "next/link";
 import React, { FC } from "react";
+import type { Category } from "@/lib/types";
 import { useDispatch } from "react-redux";
 
 interface CategoriesProps {
-  categories: {
-    id: string;
-    name: string;
-    category_name: string;
-    children: {
-      category_name: string;
-      name: string;
-      id: string;
-    }[];
-    billboard: {
-      label: string;
-      imageUrl: string;
-    };
-  }[];
+  categories: Category[];
 }
 
 const Categories: FC<CategoriesProps> = ({ categories }) => {

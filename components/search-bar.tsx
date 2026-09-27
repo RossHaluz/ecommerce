@@ -17,7 +17,8 @@ import qs from "query-string";
 import { useDispatch } from "react-redux";
 import { resetItems } from "@/redux/items/slice";
 import { Search, X } from "lucide-react";
-import api from "@/lib/api";
+import browserClient from "@/lib/browser-client";
+import { ENDPOINTS } from "@/lib/api/endpoints";
 import { toast } from "react-toastify";
 
 const SearchBar = () => {
@@ -73,7 +74,7 @@ const SearchBar = () => {
   useEffect(() => {
     const getPopularQueries = async () => {
       try {
-        const { data } = await api.get("/api/search/popular");
+        const { data } = await browserClient.get(ENDPOINTS.searchPopular());
         setPopularQueries(data);
       } catch (error) {
         console.log(error);
@@ -93,9 +94,9 @@ const SearchBar = () => {
 
      const delay = setTimeout(async () => {
        try {
-         const { data } = await api.get(
-           `/api/search/suggestions?query=${searchValue}`
-         );
+         const { data } = await browserClient.get(ENDPOINTS.searchSuggestions(), {
+           params: { query: searchValue },
+         });
          setSearchedItems(data);
        } catch (error) {
          console.log(error);
@@ -168,7 +169,7 @@ const SearchBar = () => {
   //   const delaySearch = setTimeout(async () => {
   //     setIsShow(true);
   //     try {
-        // const { data } = await api.get(
+        // const { data } = await browserClient.get(
         //   `/api/search/suggestions?query=${searchValue}`
         // );
 
@@ -189,9 +190,9 @@ const SearchBar = () => {
     setIsFocusInput(true);
     setIsShow(true);
     if (searchValue) {
-             const { data } = await api.get(
-               `/api/search/suggestions?query=${searchValue}`
-             )
+             const { data } = await browserClient.get(ENDPOINTS.searchSuggestions(), {
+               params: { query: searchValue },
+             })
 
       setSearchedItems(data);
     }
@@ -271,7 +272,7 @@ const SearchBar = () => {
       }
 
       localStorage.setItem("searchQueries", JSON.stringify(queries));
-      await api.post("/api/search", { query });
+      await browserClient.post(ENDPOINTS.search(), { query });
 
       setIsShow(false);
       setIsFocusInput(false);
@@ -311,7 +312,7 @@ const SearchBar = () => {
         queries.push(searchValue);
 
       localStorage.setItem("searchQueries", JSON.stringify(queries));
-      await api.post("/api/search", { query: searchValue });
+      await browserClient.post(ENDPOINTS.search(), { query: searchValue });
       setIsShow(false);
       setIsFocusInput(false);
       return router.replace(url);

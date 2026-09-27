@@ -433,7 +433,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
             item_id: item.id,
           })
         ),
-        total_value: order.totalPrice,
+        total_value: order?.totalPrice,
       });
 
       dispatch(setOrderDetails({ ...order, orderItems }));

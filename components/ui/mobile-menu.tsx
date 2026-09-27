@@ -26,6 +26,7 @@ import ArrowDown from "/public/images/arrow-down.svg";
 import AuthorizationOtp from "../authirization-otp";
 import { createPortal } from "react-dom";
 import { useMounted } from "@/hooks/use-mounted";
+import type { Category } from "@/lib/types";
 
 interface Item {
   id: string;
@@ -59,7 +60,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchedItems, setSearchedItems] = useState<Item[]>([]);
   const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isShowSearch, setIsShowSearch] = useState(false);
   const inputContainerRef = useRef<HTMLInputElement>(null);
