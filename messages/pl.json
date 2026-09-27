@@ -1,0 +1,77 @@
+{
+  "common": {
+    "currency": "Waluta",
+    "language": "Język",
+    "loading": "Wczytywanie…",
+    "somethingWentWrong": "Ups, coś poszło nie tak…",
+    "showAll": "Zobacz wszystkie",
+    "showMore": "Pokaż więcej"
+  },
+  "nav": {
+    "home": "Strona główna",
+    "catalog": "Katalog",
+    "catalogProducts": "Katalog produktów",
+    "categories": "Kategorie",
+    "information": "Informacje",
+    "contacts": "Kontakt",
+    "about": "O nas",
+    "deliveryPayment": "Dostawa i płatność",
+    "account": "Konto",
+    "cart": "Koszyk",
+    "menu": "Menu",
+    "socials": "Media społecznościowe"
+  },
+  "product": {
+    "buy": "Kup",
+    "oneClick": "Kup na raz",
+    "negotiablePrice": "Cena do negocjacji",
+    "inStock": "Dostępne",
+    "onOrder": "Na zamówienie",
+    "catalogNumber": "Numer katalogowy",
+    "article": "Numer artykułu",
+    "fitsModels": "Pasuje do modeli",
+    "similar": "Może Cię również zainteresować:"
+  },
+  "cart": {
+    "added": "Produkt dodany do koszyka!",
+    "empty": "Twój koszyk jest pusty",
+    "checkout": "Składanie zamówienia",
+    "total": "Do zapłaty"
+  },
+  "filters": {
+    "availability": "Dostępność",
+    "allProducts": "Wszystkie produkty",
+    "inStock": "Dostępne",
+    "onOrder": "Na zamówienie",
+    "sorting": "Sortowanie",
+    "priceAsc": "Od najtańszych",
+    "priceDesc": "Od najdroższych",
+    "chooseModel": "Wybierz model",
+    "notFoundInCategory": "Nie znaleziono produktów w tej kategorii…"
+  },
+  "search": {
+    "placeholder": "Nazwa lub numer katalogowy",
+    "byVin": "Dobór po numerze VIN",
+    "popular": "Popularne zapytania",
+    "nothingFound": "Nic nie znaleziono"
+  },
+  "contact": {
+    "callMe": "Zamów rozmowę",
+    "orderCall": "Zamów rozmowę",
+    "address": "Adres",
+    "workingHours": "Godziny pracy"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Taka strona nie istnieje",
+    "description": "Możliwe, że produkt został już sprzedany albo link jest nieaktualny. Spróbuj znaleźć część po nazwie lub numerze katalogowym — mamy ponad 7000 pozycji do Audi.",
+    "toHome": "Strona główna",
+    "allCategories": "Wszystkie kategorie",
+    "metaTitle": "Strona nie znaleziona"
+  },
+  "meta": {
+    "defaultTitle": "Części do Audi — kup części samochodowe Audi w sklepie internetowym Audiparts",
+    "defaultDescription": "Kup części do Audi w sklepie internetowym. ✓ Ponad 7000 pozycji. ✓ Części do Audi A4, A5, A6, A7, A8, Q5, Q7, Q8. Wysyłka do Polski.",
+    "siteName": "Audiparts"
+  }
+}

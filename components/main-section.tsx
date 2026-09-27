@@ -1,7 +1,7 @@
 "use client";
-import Categories from "@/app/(routes)/(main)/_components/categories";
+import Categories from "@/app/[locale]/(routes)/(main)/_components/categories";
 import React, { FC, useEffect, useRef, useState } from "react";
-import SearchByModel from "../app/(routes)/(main)/_components/search-by-model";
+import SearchByModel from "../app/[locale]/(routes)/(main)/_components/search-by-model";
 import { useAppDispatch } from "@/redux/store";
 import { getCategories } from "@/redux/categories/operetions";
 import { useSelector } from "react-redux";
@@ -11,11 +11,11 @@ import {
 } from "@/redux/categories/selectors";
 import { selectModels } from "@/redux/models/selectors";
 import { getModels } from "@/redux/models/operetions";
-import SortProducts from "@/app/(routes)/(main)/_components/sort";
+import SortProducts from "@/app/[locale]/(routes)/(main)/_components/sort";
 import CustomizerLayout from "./сustomizer-layout";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import SearchByStock from "@/app/(routes)/(main)/_components/search-by-stock";
+import SearchByStock from "@/app/[locale]/(routes)/(main)/_components/search-by-stock";
 import Breadcrumbs from "./breadcrumb";
 
 interface MainSectionProps {

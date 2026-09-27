@@ -69,14 +69,37 @@ test.describe("відомі дефекти (фіксуємо як є)", () => {
     ).toBe(2);
   });
 
-  test("канонікала немає ні на одній сторінці — крок 8.1", async ({
+  /**
+   * Уже НЕ дефект — canonical з'явився разом із i18n (крок 8.1 частково).
+   * Лишаємо тест як охорону: root layout тепер задає metadataBase, canonical і
+   * hreflang, і це не має зникнути при наступних правках метаданих.
+   */
+  test("canonical і hreflang присутні на обох мовах", async ({ request }) => {
+    for (const path of ["/", "/pl"]) {
+      const html = await (await request.get(path)).text();
+
+      expect(html, `${path}: немає canonical`).toContain('rel="canonical"');
+      expect(html, `${path}: немає hreflang`).toMatch(/hrefLang=|hreflang=/);
+      expect(html, `${path}: немає x-default`).toContain("x-default");
+    }
+  });
+
+  test("на сторінці категорії канонікала ще немає — крок 8.1", async ({
     request,
     catalog,
   }) => {
-    for (const path of ["/", `/categories/${catalog.categorySlug}`]) {
-      const html = await (await request.get(path)).text();
-      expect(html).not.toContain('rel="canonical"');
-    }
+    // Root layout дає canonical на себе, але сторінки поки не перекривають його
+    // власним шляхом, тому категорія успадковує канонікал головної. Це гірше за
+    // відсутність: Google бачить, що категорія «каноністься» на / .
+    const html = await (
+      await request.get(`/categories/${catalog.categorySlug}`)
+    ).text();
+    const canonical = html.match(/rel="canonical" href="([^"]*)"/)?.[1] ?? "";
+
+    expect(
+      canonical.includes(catalog.categorySlug),
+      "Якщо тут true — сторінки почали задавати власний канонікал, крок 8.1 закрито"
+    ).toBe(false);
   });
 
   test("JSON-LD мікророзмітки немає — крок 8.6", async ({

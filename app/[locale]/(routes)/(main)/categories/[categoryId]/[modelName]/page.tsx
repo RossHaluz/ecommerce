@@ -5,7 +5,7 @@ import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 
-const Products = dynamic(() => import("@/app/(routes)/_components/products"), {
+const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
 });
 

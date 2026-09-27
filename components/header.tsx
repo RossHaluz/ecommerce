@@ -28,7 +28,7 @@ import { selectCategories } from "@/redux/categories/selectors";
 import { getCategories } from "@/redux/categories/operetions";
 import { useAppDispatch } from "@/hooks/use-dispatch";
 import { cn } from "@/lib/utils";
-import Categories from "@/app/(routes)/(main)/_components/categories";
+import Categories from "@/app/[locale]/(routes)/(main)/_components/categories";
 import queryString from "query-string";
 import AuthorizationOtp from "./authirization-otp";
 import { resetItems } from "@/redux/items/slice";
