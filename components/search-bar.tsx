@@ -7,17 +7,16 @@ import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import SearchIcon from "/public/images/search-icon.svg";
-import { Item } from "./header";
+import { SearchResultItem } from "@/lib/types";
 import { getSearchProducts } from "@/actions/get-data";
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import qs from "query-string";
-import { useDispatch } from "react-redux";
-import { resetItems } from "@/redux/items/slice";
 import { Search, X } from "lucide-react";
-import api from "@/lib/api";
+import browserClient from "@/lib/browser-client";
+import { ENDPOINTS } from "@/lib/api/endpoints";
 import { toast } from "react-toastify";
 
 const SearchBar = () => {
@@ -29,7 +28,6 @@ const SearchBar = () => {
   const [isShow, setIsShow] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const dispatch = useDispatch();
   const texts = useMemo(
     () => ["Капот Q7 4M", "Крило ліве Q7 4M", "Бампер A6 C7", "Капот Q5 8R"],
     []
@@ -73,7 +71,7 @@ const SearchBar = () => {
   useEffect(() => {
     const getPopularQueries = async () => {
       try {
-        const { data } = await api.get("/api/search/popular");
+        const { data } = await browserClient.get(ENDPOINTS.searchPopular());
         setPopularQueries(data);
       } catch (error) {
         console.log(error);
@@ -93,9 +91,9 @@ const SearchBar = () => {
 
      const delay = setTimeout(async () => {
        try {
-         const { data } = await api.get(
-           `/api/search/suggestions?query=${searchValue}`
-         );
+         const { data } = await browserClient.get(ENDPOINTS.searchSuggestions(), {
+           params: { query: searchValue },
+         });
          setSearchedItems(data);
        } catch (error) {
          console.log(error);
@@ -168,7 +166,7 @@ const SearchBar = () => {
   //   const delaySearch = setTimeout(async () => {
   //     setIsShow(true);
   //     try {
-        // const { data } = await api.get(
+        // const { data } = await browserClient.get(
         //   `/api/search/suggestions?query=${searchValue}`
         // );
 
@@ -189,16 +187,15 @@ const SearchBar = () => {
     setIsFocusInput(true);
     setIsShow(true);
     if (searchValue) {
-             const { data } = await api.get(
-               `/api/search/suggestions?query=${searchValue}`
-             )
+             const { data } = await browserClient.get(ENDPOINTS.searchSuggestions(), {
+               params: { query: searchValue },
+             })
 
       setSearchedItems(data);
     }
   };
 
   const handleShowAll = async () => {
-    dispatch(resetItems());
     Cookies.set("__search_value", searchValue, { expires: 7, path: "/" });
     const url = qs.stringifyUrl({
       url: "/search",
@@ -247,7 +244,6 @@ const SearchBar = () => {
 
   const handleSelectQuery = async (query: string) => {
     try {
-      dispatch(resetItems());
       Cookies.set("__search_value", query, {
         expires: 7,
         path: "/",
@@ -271,7 +267,7 @@ const SearchBar = () => {
       }
 
       localStorage.setItem("searchQueries", JSON.stringify(queries));
-      await api.post("/api/search", { query });
+      await browserClient.post(ENDPOINTS.search(), { query });
 
       setIsShow(false);
       setIsFocusInput(false);
@@ -289,7 +285,6 @@ const SearchBar = () => {
 
   const onSubmit = async (values: { __search_value: string }) => {
     try {
-      dispatch(resetItems());
       Cookies.set("__search_value", searchValue, {
         expires: 7,
         path: "/",
@@ -311,7 +306,7 @@ const SearchBar = () => {
         queries.push(searchValue);
 
       localStorage.setItem("searchQueries", JSON.stringify(queries));
-      await api.post("/api/search", { query: searchValue });
+      await browserClient.post(ENDPOINTS.search(), { query: searchValue });
       setIsShow(false);
       setIsFocusInput(false);
       return router.replace(url);

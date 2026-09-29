@@ -15,21 +15,13 @@ import { useDispatch } from "react-redux";
 import { OrderReducer } from "./order/slice";
 import { searchReducer } from "./search/slice";
 import { authReducer } from "./auth/slice";
-import { categoryReducer } from "./categories/slice";
-import { modelReducer } from "./models/slice";
 import { customizerReducer } from "./customizer/slice";
 import { itemReducer } from "./items/slice";
 import { scrollUpReducer } from "./scroll-up/slice";
 
 const persistCustomizer = {
   key: "currentCustomizer",
-  whitelist: ["currentCustomizer"],
-  storage,
-};
-
-const persistModel = {
-  key: "currentModel",
-  whitelist: ["currentModel"],
+  whitelist: ["currentCustomizer", "currency"],
   storage,
 };
 
@@ -54,7 +46,6 @@ const persistOrder = {
 const persistedAuthReducer = persistReducer(persistAuth, authReducer);
 const persistedOrderReducer = persistReducer(persistOrder, OrderReducer);
 const persisterSearchReducer = persistReducer(persistSearch, searchReducer);
-const persistModelReducer = persistReducer(persistModel, modelReducer);
 const persistCustomizerReducer = persistReducer(
   persistCustomizer,
   customizerReducer
@@ -65,8 +56,6 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     order: persistedOrderReducer,
     search: persisterSearchReducer,
-    category: categoryReducer,
-    model: persistModelReducer,
     customizer: persistCustomizerReducer,
     item: itemReducer,
     scrollUp: scrollUpReducer

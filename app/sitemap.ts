@@ -13,31 +13,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
       .filter(Boolean) || [];
 
-  const categoryEntries: MetadataRoute.Sitemap =
-    categories?.map((item: { category_name: string }) => ({
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${item?.category_name}`,
-    })) || [];
-
-  const childCategoryEntries: MetadataRoute.Sitemap =
-    categories
-      ?.map((item: { children: [] }) => item?.children?.map((item) => item))
-      .flatMap((item: []) => item)
-      ?.map((item: { category_name: string }) => ({
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${item?.category_name}`,
-      })) || [];
-
-  const modelEntries: MetadataRoute.Sitemap = models?.map(
-    (item: { modelName: string }) => ({
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${item?.modelName}`,
+  const categoryEntries: MetadataRoute.Sitemap = (categories ?? []).map(
+    (category) => ({
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${category.category_name}`,
     })
   );
 
-  const categoryModelEntries =
-    categories?.flatMap((category: { category_name: string }) =>
-      models.map((model: { modelName: string }) => ({
+  const childCategoryEntries: MetadataRoute.Sitemap = (categories ?? [])
+    .flatMap((category) => category.children ?? [])
+    .map((child) => ({
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${child.category_name}`,
+    }));
+
+  const modelEntries: MetadataRoute.Sitemap = (models ?? []).map((model) => ({
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/${model.modelName}`,
+  }));
+
+  const categoryModelEntries: MetadataRoute.Sitemap = (categories ?? []).flatMap(
+    (category) =>
+      (models ?? []).map((model) => ({
         url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${category.category_name}/${model.modelName}`,
       }))
-    ) || [];
+  );
 
   return [
     {

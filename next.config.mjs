@@ -1,3 +1,7 @@
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -11,6 +15,13 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+      },
+      // Local backend (BACKEND_URL=http://localhost:3005) serves images too.
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3005",
+        pathname: "/**",
       },
     ],
   },
@@ -43,4 +54,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

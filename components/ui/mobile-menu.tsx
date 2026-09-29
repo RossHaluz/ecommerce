@@ -11,7 +11,7 @@ import Link from "next/link";
 import { Button } from "./button";
 import Cookies from "js-cookie";
 
-import Logo from "/public/images/logo.svg";
+import Logo from "@/components/ui/logo";
 import Catalog from "/public/images/catalog.svg";
 import Arrow from "/public/images/arrow-down.svg";
 import Account from "/public/images/account.svg";
@@ -25,6 +25,8 @@ import { cn } from "@/lib/utils";
 import ArrowDown from "/public/images/arrow-down.svg";
 import AuthorizationOtp from "../authirization-otp";
 import { createPortal } from "react-dom";
+import { useMounted } from "@/hooks/use-mounted";
+import type { Category } from "@/lib/types";
 
 interface Item {
   id: string;
@@ -54,10 +56,11 @@ const MobileMenu: FC<MobileMenuProps> = ({
   setIsLogin,
   isLogin,
 }) => {
+  const mounted = useMounted();
   const [isOpen, setIsOpen] = useState(false);
   const [searchedItems, setSearchedItems] = useState<Item[]>([]);
   const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isShowSearch, setIsShowSearch] = useState(false);
   const inputContainerRef = useRef<HTMLInputElement>(null);
@@ -159,7 +162,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
     >
       <div className="px-5 pb-2 flex flex-col gap-[10px]">
         <div className="p-4">
-          <Logo className="w-[158px] mx-auto" />
+          <Logo className="w-[158px] h-auto mx-auto" />
         </div>
         <div className="flex flex-col gap-[15px]">
           <div
@@ -343,7 +346,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
       >
         {openBtn}
       </Button>
-      {createPortal(mobileMenu, document.body)}
+      {mounted && createPortal(mobileMenu, document.body)}
     </>
   );
 };

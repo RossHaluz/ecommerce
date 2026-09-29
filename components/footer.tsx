@@ -1,20 +1,17 @@
 "use client";
 import { CopyrightIcon, PhoneIcon } from "lucide-react";
-import Logo from "/public/images/logo-header.svg";
+import Logo from "@/components/ui/logo";
 import Telegram from "/public/images/telegram-icon.svg";
 import ArrowDown from "/public/images/arrow-down.svg";
 import { Button } from "./ui/button";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useSelector } from "react-redux";
-import { selectCategories } from "@/redux/categories/selectors";
+import { useCategories } from "@/features/catalog";
 import { usePathname } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { resetItems } from "@/redux/items/slice";
 
 const Footer = () => {
-  const categories = useSelector(selectCategories);
+  const { data: categories = [] } = useCategories();
   const [isShowCategories, setIsShowCategories] = useState(false);
   const [isShowPhoneNumbers, setIsShowPhoneNumbers] = useState(false);
   const [isShowInfo, setIsShowInfo] = useState(false);
@@ -22,7 +19,6 @@ const Footer = () => {
   const pathname = usePathname();
   const isHomePage = pathname === "/" || pathname.startsWith("/categories");
   const numbersRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     window.addEventListener("mousedown", clickOutsidePhoneNumbers);
@@ -51,7 +47,7 @@ const Footer = () => {
         <div className="md:flex justify-between md:gap-8 lg:gap-[90px]">
           {/* Contact info start */}
           <div className="flex flex-col gap-[10px] mb-[15px] items-start">
-            <Logo />
+            <Logo className="h-[34px] w-[56px]" />
             <div className="flex flex-col gap-[15px]">
               <div className="flex items-center gap-2">
                 <PhoneIcon className="stroke-[#FFFDFD]" />
@@ -152,8 +148,7 @@ const Footer = () => {
                     <Link
                       href={`/categories/${item?.category_name}`}
                       key={item?.id}
-                      onClick={() => dispatch(resetItems())}
-                    >
+                      >
                       {item?.name}
                     </Link>
                   );

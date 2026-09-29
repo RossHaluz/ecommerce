@@ -1,21 +1,13 @@
 "use client";
-import Categories from "@/app/(routes)/(main)/_components/categories";
-import React, { FC, useEffect, useRef, useState } from "react";
-import SearchByModel from "../app/(routes)/(main)/_components/search-by-model";
-import { useAppDispatch } from "@/redux/store";
-import { getCategories } from "@/redux/categories/operetions";
-import { useSelector } from "react-redux";
-import {
-  selectCategories,
-  selectIsLoading,
-} from "@/redux/categories/selectors";
-import { selectModels } from "@/redux/models/selectors";
-import { getModels } from "@/redux/models/operetions";
-import SortProducts from "@/app/(routes)/(main)/_components/sort";
+import Categories from "@/app/[locale]/(routes)/(main)/_components/categories";
+import React, { FC } from "react";
+import SearchByModel from "../app/[locale]/(routes)/(main)/_components/search-by-model";
+import { useCategories, useModels } from "@/features/catalog";
+import SortProducts from "@/app/[locale]/(routes)/(main)/_components/sort";
 import CustomizerLayout from "./сustomizer-layout";
 import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import SearchByStock from "@/app/(routes)/(main)/_components/search-by-stock";
+import SearchByStock from "@/app/[locale]/(routes)/(main)/_components/search-by-stock";
 import Breadcrumbs from "./breadcrumb";
 
 interface MainSectionProps {
@@ -24,7 +16,6 @@ interface MainSectionProps {
   shouldBeCategories?: boolean;
   shouldBeModels?: boolean;
   params: {
-    filterIds?: string;
     page?: string;
     searchValue?: string;
     sortByPrice?: string;
@@ -39,36 +30,13 @@ const MainSection: FC<MainSectionProps> = ({
   shouldBeCategories = true,
   shouldBeModels = true,
 }) => {
-  const dispatch = useAppDispatch();
-  const categories = useSelector(selectCategories);
-  const isLoading = useSelector(selectIsLoading);
-  const models = useSelector(selectModels);
+  const { data: categories = [], isLoading } = useCategories();
+  const { data: models = [] } = useModels();
   const pathname = usePathname();
   const queryParams = useParams();
   const shouldBeMargin =
     pathname.includes("/categories") || queryParams?.modelName;
   const isHomePage = pathname.endsWith("/");
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [isSticky, setIsSticky] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!ref.current) return;
-      const { top } = ref.current.getBoundingClientRect();
-      setIsSticky(top <= 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    dispatch(getCategories());
-    dispatch(getModels());
-  }, [dispatch]);
 
   return (
     <section
@@ -101,20 +69,22 @@ const MainSection: FC<MainSectionProps> = ({
               </div>
             </div>
 
-            <div className="hidden lg:block h-full">
-              {isLoading ? (
-                <div className="w-[302px] h-[500px] rounded-md bg-[#FFFDFD]" />
-              ) : (
-                <div className="flex flex-col gap-4 h-full">
-                  <Categories categories={categories} />
-                </div>
-              )}
-            </div>
+            {shouldBeCategories && (
+              <div className="hidden lg:block h-full">
+                {isLoading ? (
+                  <div className="w-[302px] h-[500px] rounded-md bg-[#FFFDFD]" />
+                ) : (
+                  <div className="flex flex-col gap-4 h-full">
+                    <Categories categories={categories} />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-3 w-full h-full">
             <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
               <div className="flex items-center gap-4">
-                <SearchByModel models={models} />
+                {shouldBeModels && <SearchByModel models={models} />}
                 <div className="hidden md:block">
                   <SearchByStock />
                 </div>

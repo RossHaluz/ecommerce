@@ -11,9 +11,8 @@ import {
 import { Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import latinToCyrillic from "@/utils/transliterate";
-import React, { FC} from "react";
-import { useSelector } from "react-redux";
-import { selectCategories } from "@/redux/categories/selectors";
+import React, { FC } from "react";
+import { useCategories } from "@/features/catalog";
 
 interface BreadcrumbsProps {
   productName?: string;
@@ -29,14 +28,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({productName}) => {
     const from = query.get('from');
     const searchValue = query.get("searchValue");
     const categoryName = from?.split('/').filter(item => item !== 'categories' && item !== 'product').filter(Boolean);
-    const categories = useSelector(selectCategories) as {
-      category_name: string;
-      id: string;
-      children: {
-        category_name: string;
-        id: string;
-      }[]
-    }[];
+    const { data: categories = [] } = useCategories();
 const parentCategories = categories.map((item) => item?.category_name);
 
 const childCategories = categories.flatMap(

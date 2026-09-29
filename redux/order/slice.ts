@@ -1,20 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PersistPartial } from "redux-persist/es/persistReducer";
 
-interface Option {
-  id: string;
-  option: string;
-  optionValue: string;
-  price: string;
-}
-
-interface OrderItem {
+export interface OrderItem {
   id: string;
   quantity: number;
   price: number;
   priceForOne: number;
   orderItemId: string;
-  selectOptions: Option[];
   productPrices: {
     id: string;
     drop_price: number;
@@ -22,6 +14,9 @@ interface OrderItem {
   }[];
   title: string;
   article: string;
+  /** Реально в стані від додавання (`...product` у add-to-cart), тип раніше
+   *  цього не відображав. */
+  product_name: string;
   images: {
     id: string;
     url: string;
@@ -48,18 +43,9 @@ export const orderSlice = createSlice({
       state.orderDetails = action.payload;
     },
     addItemToCart(state, action) {
-
       const findOrderItem = state.orderItems.find(
         (item: any) => item.id === action?.payload?.id
       );
-
-      // const findTheSameOptions = state.orderItems.find((item: any) =>
-      //   item?.selectOptions?.every((option: any) =>
-      //     action.payload?.selectOptions.every(
-      //       (optionItem: any) => optionItem?.optionValue === option?.optionValue
-      //     )
-      //   )
-      // );
 
       if (findOrderItem) {
         findOrderItem.quantity += action.payload.quantity;
@@ -90,6 +76,10 @@ export const orderSlice = createSlice({
         (item: any) => item.orderItemId !== action.payload
       );
     },
+    /** Степер кількості в мобільному кошику (`mobile-sidebar.tsx` ->
+     *  `product-count.tsx` з `isFromOrder`). Помилково видалено як "мертвий"
+     *  — grep на живих споживачів шукав лише в `app/`, а цей рендериться в
+     *  `components/`. */
     changeProductCount(
       state,
       action: PayloadAction<{ itemId: string; type: "increase" | "decrease" }>
