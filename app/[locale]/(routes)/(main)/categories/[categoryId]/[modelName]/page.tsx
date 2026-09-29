@@ -4,6 +4,7 @@ import { getCategoryByModel, getModelDetails } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { getTranslations } from "next-intl/server";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
@@ -64,9 +65,8 @@ const ProductsWrapper = async ({
   });
 
   if (!category || !category.products || category.products.length === 0) {
-    return (
-      <NotFoundItems text="Товарів які відносяться до даної категорії не знайдено..." />
-    );
+    const t = await getTranslations("filters");
+    return <NotFoundItems text={t("notFoundInCategory")} />;
   }
 
   return (

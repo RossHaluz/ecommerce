@@ -12,18 +12,18 @@ import { useTranslations } from "next-intl";
 import { Button } from "./ui/button";
 import CatalogItems from "./catalog-items";
 import { useSelector } from "react-redux";
-import { selectCategories } from "@/redux/categories/selectors";
 import MobileMenu from "./ui/mobile-menu";
 import Modal from "./ui/modal";
 import { selectOrderItems } from "@/redux/order/selector";
 import ProductCount from "@/app/[locale]/(routes)/product/[productId]/_components/product-count";
 import { getCurrentUser } from "@/actions/get-data";
 import { CartPreview, useRemoveFromCart } from "@/features/cart";
+import { useCategories } from "@/features/catalog";
 
 const MobileSidebar = () => {
   const pathname = usePathname();
   const [isShowCatalog, setIsShowCatalog] = useState(false);
-  const categories = useSelector(selectCategories);
+  const { data: categories = [] } = useCategories();
   const orderItems = useSelector(selectOrderItems);
   const [isLogin, setIsLogin] = useState(true);
   const [isActive, setIsActive] = useState("");

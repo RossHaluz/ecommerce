@@ -34,7 +34,11 @@
     "similar": "Також вас можуть зацікавити:",
     "modelSingular": "Модель:",
     "modelPlural": "Моделі:",
-    "imageAlt": "Фото товару"
+    "imageAlt": "Фото товару",
+    "description": "Опис",
+    "readMore": "Читати далі",
+    "collapse": "Згорнути",
+    "negotiablePriceNote": "Ціну до даного товару уточнюйте у менеджера."
   },
   "cart": {
     "added": "Товар доданий до Вашого кошика!",
@@ -54,7 +58,8 @@
     "priceAsc": "Від дешевшого до дорожчого",
     "priceDesc": "Від дорожчого до дешевшого",
     "chooseModel": "Оберіть модель",
-    "notFoundInCategory": "Товарів які відносяться до даної категорії не знайдено…"
+    "notFoundInCategory": "Товарів які відносяться до даної категорії не знайдено…",
+    "goToCatalog": "Перейти в каталог"
   },
   "search": {
     "placeholder": "Назва або каталожний номер",
@@ -84,5 +89,20 @@
     "defaultTitle": "Запчастини до Audi (Ауді) — купити запчастини на Audi в інтернет-магазині Audiparts",
     "defaultDescription": "Купити запчастини на Audi (Ауді) в інтернет-магазині. ✓ Більше 7000 позицій. ✓ Запчастини на Audi під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка 2-3 дні по всій Україні.",
     "siteName": "Audiparts"
+  },
+  "advantages": {
+    "deliveryUkraine": "Доставка по всій Україні",
+    "exchangeGuarantee": "Гарантія обміну чи повернення протягом 14 днів",
+    "securePayment": "Безпечна online-оплата на сайті через сервіс Monobank"
+  },
+  "orderOneClick": {
+    "phoneRequired": "Номер телефону обов'язковий",
+    "phoneInvalid": "Введіть коректний номер у форматі +380 XXX XX XX XX",
+    "phonePlaceholder": "+380 999 99 99 99"
+  },
+  "successModel": {
+    "thanks": "Дякуємо за замовлення!",
+    "orderNumber": "Ваше замовлення №{number}",
+    "willContact": "Найближчим часом ми з Вами зв'яжемось."
   }
 }

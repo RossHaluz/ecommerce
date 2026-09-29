@@ -7,12 +7,11 @@ import { Button } from "./ui/button";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useSelector } from "react-redux";
-import { selectCategories } from "@/redux/categories/selectors";
+import { useCategories } from "@/features/catalog";
 import { usePathname } from "next/navigation";
 
 const Footer = () => {
-  const categories = useSelector(selectCategories);
+  const { data: categories = [] } = useCategories();
   const [isShowCategories, setIsShowCategories] = useState(false);
   const [isShowPhoneNumbers, setIsShowPhoneNumbers] = useState(false);
   const [isShowInfo, setIsShowInfo] = useState(false);

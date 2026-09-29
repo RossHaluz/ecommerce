@@ -4,6 +4,7 @@ import NotFoundItems from "@/components/not-found-items";
 import { FC } from "react";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { getTranslations } from "next-intl/server";
 
 
 const Products = dynamic(() => import("../../_components/products"), {
@@ -51,12 +52,11 @@ const ProductsWrapper = async ({ searchParams, params }: HomeProps) => {
   
 
   if (!products || !products.products || products.products.length === 0) {
-    return (
-      <NotFoundItems text="Товарів які відносяться до данної категорії не знайдено..." />
-    );
+    const t = await getTranslations("filters");
+    return <NotFoundItems text={t("notFoundInCategory")} />;
   }
 
-  return products?.products?.length > 0 ? (
+  return (
     <Products
       products={products?.products}
       page={products?.meta?.page}
@@ -64,8 +64,6 @@ const ProductsWrapper = async ({ searchParams, params }: HomeProps) => {
       searchParams={searchParams}
       modelId={modelName}
     />
-  ) : (
-    <NotFoundItems text="Товарів які відносяться до данної категорії не знайдено..." />
   );
 };
 

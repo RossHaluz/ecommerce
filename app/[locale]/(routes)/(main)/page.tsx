@@ -2,6 +2,7 @@ import { getAllProducts } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import NotFoundItems from "@/components/not-found-items";
 import dynamic from "next/dynamic";
+import { getTranslations } from "next-intl/server";
 
 const Products = dynamic(() => import("../_components/products"), {
   ssr: true,
@@ -30,9 +31,8 @@ const Home = async ({ searchParams }: HomeProps) => {
   });
 
   if (!initialProducts?.products?.length) {
-    return (
-      <NotFoundItems text="Товарів які відносяться до даної категорії не знайдено..." />
-    );
+    const t = await getTranslations("filters");
+    return <NotFoundItems text={t("notFoundInCategory")} />;
   }
 
   return (

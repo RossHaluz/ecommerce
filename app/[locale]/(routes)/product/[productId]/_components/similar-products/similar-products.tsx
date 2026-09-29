@@ -1,27 +1,26 @@
-import React, { FC } from "react";
+import { FC } from "react";
+import { getTranslations } from "next-intl/server";
 import SimilarProductsSlider from "./similar-products-slider";
+import type { Product } from "@/lib/types";
 
 interface SimilarProductsProps {
-  similarProducts: {
-    id: string;
-    title: string;
-    price: string;
-    quantity: number;
-    product_name: string;
-    catalog_number: string;
-    article: string;
-    images: {
-      id: string;
-      url: string;
-    }[];
-  }[];
+  similarProducts: Product[];
 }
 
-const SimilarProducts: FC<SimilarProductsProps> = ({ similarProducts }) => {
+/**
+ * Лишається серверним компонентом (не "use client") — переклад тут не
+ * потребує жодного клієнтського стану, `getTranslations` працює асинхронно
+ * на сервері. Менше JS у клієнтському бандлі.
+ */
+const SimilarProducts: FC<SimilarProductsProps> = async ({
+  similarProducts,
+}) => {
+  const t = await getTranslations("product");
+
   return (
     <div className="flex flex-col gap-4 py-6">
       {similarProducts?.length > 0 && (
-        <h2 className="text-xl font-bold">Також вас можуть зацікавити:</h2>
+        <h2 className="text-xl font-bold">{t("similar")}</h2>
       )}
       <SimilarProductsSlider similarProducts={similarProducts} />
     </div>

@@ -1,27 +1,25 @@
 "use client";
+import { FC, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import React, { FC, useEffect, useRef, useState } from "react";
 
 interface ProductDescProps {
   description: string;
 }
 
+const MAX_COLLAPSED_HEIGHT = 80;
+
 const ProductDesc: FC<ProductDescProps> = ({ description }) => {
   const [isHidden, setIsHidden] = useState(true);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
-
-  const maxHeigth = 80;
+  const t = useTranslations("product");
 
   useEffect(() => {
-    if (descriptionRef.current) {
-      const contenctHeight = descriptionRef.current.scrollHeight;
-      if (contenctHeight > maxHeigth) {
-        setIsOverflowing(true);
-      } else {
-        setIsOverflowing(false);
-      }
-    }
+    if (!descriptionRef.current) return;
+    setIsOverflowing(
+      descriptionRef.current.scrollHeight > MAX_COLLAPSED_HEIGHT
+    );
   }, [description]);
 
   return (
@@ -39,7 +37,7 @@ const ProductDesc: FC<ProductDescProps> = ({ description }) => {
           onClick={() => setIsHidden((prev) => !prev)}
           className="text-[#111] underline text-sm font-bold px-0"
         >
-          {isHidden ? "Читати далі" : "Згорнути"}
+          {isHidden ? t("readMore") : t("collapse")}
         </Button>
       )}
     </div>

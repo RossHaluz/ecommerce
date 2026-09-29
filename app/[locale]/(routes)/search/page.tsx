@@ -11,7 +11,6 @@ const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/produ
 
 interface SearchPageProps {
   searchParams: {
-    filterIds: string;
     page: string;
     stockStatus: string;
     sortByPrice: string;

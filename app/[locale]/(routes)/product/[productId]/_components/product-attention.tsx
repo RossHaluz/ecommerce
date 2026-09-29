@@ -1,18 +1,20 @@
-import React, { FC } from "react";
+"use client";
+import { FC } from "react";
+import { useTranslations } from "next-intl";
 
-type ProductAttention = {
+interface ProductAttentionProps {
   price: number;
-};
+}
 
-const ProductAttention: FC<ProductAttention> = ({ price }) => {
+const ProductAttention: FC<ProductAttentionProps> = ({ price }) => {
+  const t = useTranslations("product");
+
+  if (price !== 0) return null;
+
   return (
-    <>
-      {price === 0 && (
-        <p className="text-[#C0092A] lg:inline-block hidden">
-          Ціну до даного товара уточняйте у менеджера.
-        </p>
-      )}
-    </>
+    <p className="text-[#C0092A] lg:inline-block hidden">
+      {t("negotiablePriceNote")}
+    </p>
   );
 };
 

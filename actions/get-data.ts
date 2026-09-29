@@ -43,7 +43,6 @@ export const getSimilarProducts = (productId: string) =>
   api.getSimilarProducts(productId);
 
 export const getAllProducts = (data: {
-  filterIds?: string;
   page?: string;
   stockStatus?: string;
   sortByPrice?: string;

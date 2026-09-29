@@ -13,7 +13,6 @@ interface SearchPageProps {
     modelName: string;
   };
   searchParams: {
-    filterIds: string;
     stockStatus: string;
     page: string;
     sortByPrice: string;

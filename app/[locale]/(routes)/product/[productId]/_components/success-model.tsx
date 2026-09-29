@@ -1,8 +1,9 @@
-'use client'
+"use client";
+import { FC, MouseEvent } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
-import React, { FC, MouseEvent } from "react";
 
 interface SuccessModelProps {
   isOpen: boolean;
@@ -15,6 +16,8 @@ const SuccessModel: FC<SuccessModelProps> = ({
   handleCloseModel,
   orderNumber,
 }) => {
+  const t = useTranslations("successModel");
+
   const closeBackdrop = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       handleCloseModel();
@@ -43,14 +46,14 @@ const SuccessModel: FC<SuccessModelProps> = ({
         </Button>
         <div className="flex flex-col gap-3">
           <h3 className="text-base font-semibold text-center">
-            Дякуємо за замовлення!
+            {t("thanks")}
           </h3>
-          <h3 className="text-base font-semibold text-center">
-            Ваше замовлення №{orderNumber}
-          </h3>
-          <p className="text-center text-sm">
-            Найблищим часом ми з Вами зв&apos;яжемось.
-          </p>
+          {orderNumber && (
+            <h3 className="text-base font-semibold text-center">
+              {t("orderNumber", { number: orderNumber })}
+            </h3>
+          )}
+          <p className="text-center text-sm">{t("willContact")}</p>
         </div>
       </div>
     </div>

@@ -14,7 +14,6 @@ export interface ProductListParams {
   pageSize?: string | number;
   searchValue?: string;
   modelId?: string;
-  filterIds?: string;
 }
 
 const CATALOG_TTL = 300;

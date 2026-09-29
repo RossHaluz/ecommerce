@@ -9,13 +9,7 @@ import React, {
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-
-interface Category {
-  name: string;
-  id: string;
-  children?: Category[];
-  parentId: string;
-}
+import type { Category } from "@/lib/types";
 
 interface CategoriesListProps {
   categories: Category[];
@@ -54,7 +48,7 @@ const CatalogItems: FC<CategoriesListProps> = ({
     <div className="flex flex-col gap-3" key={category?.id}>
       <div className="flex items-center justify-between relative">
         <Link
-          href={`/categories/${category?.id}`}
+          href={`/categories/${category?.category_name}`}
           onClick={selectCategory}
         >
           {category?.name}

@@ -13,6 +13,7 @@ import { z } from "zod";
 import InputMask from "react-input-mask";
 import { Button } from "@/components/ui/button";
 import { FC, forwardRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
 import { createOrder } from "@/actions/get-data";
 import SuccessModel from "./success-model";
@@ -36,19 +37,21 @@ const CustomInputMask = forwardRef<
 });
 CustomInputMask.displayName = "CustomInputMask";
 
-const formSchema = z.object({
-  phone: z
-    .string()
-    .min(1, "Номер телефону обов'язково")
-    .regex(
-      /^\+380 \d{3} \d{2} \d{2} \d{2}$/,
-      "Введіть коректний номер у форматі +380 XXX XX XX XX"
-    ),
-});
+const buildFormSchema = (t: (key: string) => string) =>
+  z.object({
+    phone: z
+      .string()
+      .min(1, t("phoneRequired"))
+      .regex(/^\+380 \d{3} \d{2} \d{2} \d{2}$/, t("phoneInvalid")),
+  });
 
 const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [orderNumber, setOrderNumber] = useState<number | null>(null);
+  const t = useTranslations("orderOneClick");
+  const tCommon = useTranslations("common");
+  const tProduct = useTranslations("product");
+  const formSchema = buildFormSchema(t);
 
   const closeModel = () => {
     setIsOpen(false);
@@ -87,8 +90,6 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
 
       const order = await createOrder(data);
 
-      console.log("order", order);
-
       if (!order) {
         throw new Error();
       }
@@ -103,8 +104,7 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
       setIsOpen(true);
       reset();
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      toast.error(tCommon("somethingWentWrong"));
     }
   };
 
@@ -123,7 +123,7 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
                 <FormControl>
                   <CustomInputMask
                     mask="+380 999 99 99 99"
-                    placeholder="+380 999 99 99 99"
+                    placeholder={t("phonePlaceholder")}
                     {...field}
                     className="w-full px-4 border rounded-md h-12"
                   />
@@ -137,7 +137,7 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
             className="h-12 px-6"
             disabled={!isValid || isSubmitting}
           >
-            В один клік
+            {tProduct("oneClick")}
           </Button>
         </form>
       </Form>

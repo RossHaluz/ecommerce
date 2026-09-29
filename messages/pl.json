@@ -34,7 +34,11 @@
     "similar": "Może Cię również zainteresować:",
     "modelSingular": "Model:",
     "modelPlural": "Modele:",
-    "imageAlt": "Zdjęcie produktu"
+    "imageAlt": "Zdjęcie produktu",
+    "description": "Opis",
+    "readMore": "Czytaj dalej",
+    "collapse": "Zwiń",
+    "negotiablePriceNote": "Cenę tego produktu skonsultuj z menedżerem."
   },
   "cart": {
     "added": "Produkt dodany do koszyka!",
@@ -54,7 +58,8 @@
     "priceAsc": "Od najtańszych",
     "priceDesc": "Od najdroższych",
     "chooseModel": "Wybierz model",
-    "notFoundInCategory": "Nie znaleziono produktów w tej kategorii…"
+    "notFoundInCategory": "Nie znaleziono produktów w tej kategorii…",
+    "goToCatalog": "Przejdź do katalogu"
   },
   "search": {
     "placeholder": "Nazwa lub numer katalogowy",
@@ -84,5 +89,20 @@
     "defaultTitle": "Części do Audi — kup części samochodowe Audi w sklepie internetowym Audiparts",
     "defaultDescription": "Kup części do Audi w sklepie internetowym. ✓ Ponad 7000 pozycji. ✓ Części do Audi A4, A5, A6, A7, A8, Q5, Q7, Q8. Wysyłka do Polski.",
     "siteName": "Audiparts"
+  },
+  "advantages": {
+    "deliveryUkraine": "Dostawa na terenie całej Ukrainy",
+    "exchangeGuarantee": "Gwarancja wymiany lub zwrotu w ciągu 14 dni",
+    "securePayment": "Bezpieczna płatność online przez Monobank"
+  },
+  "orderOneClick": {
+    "phoneRequired": "Numer telefonu jest wymagany",
+    "phoneInvalid": "Wprowadź poprawny numer w formacie +380 XXX XX XX XX",
+    "phonePlaceholder": "+380 999 99 99 99"
+  },
+  "successModel": {
+    "thanks": "Dziękujemy za zamówienie!",
+    "orderNumber": "Twoje zamówienie nr {number}",
+    "willContact": "Nasz konsultant skontaktuje się z Tobą wkrótce."
   }
 }

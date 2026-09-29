@@ -1,19 +1,17 @@
-import React, { FC } from "react";
+import { useTranslations } from "next-intl";
 
-interface ProductNavigationProps {
-  currentNavigation: string;
-  setCurrentNavigation: React.Dispatch<React.SetStateAction<string>>;
-}
+/**
+ * Раніше приймав `currentNavigation`/`setCurrentNavigation` — плюмбінг під
+ * перемикач вкладок (опис/характеристики/відгуки), якого так і не
+ * побудували: рендерилась завжди тільки одна вкладка (опис), стан ніде не
+ * читався. Прибрано разом з мертвими `ProductCharacteristics`/`ProductReviews`.
+ */
+const ProductNavigation = () => {
+  const t = useTranslations("product");
 
-const ProductNavigation: FC<ProductNavigationProps> = ({
-  currentNavigation,
-  setCurrentNavigation,
-}) => {
   return (
     <div className="flex items-center gap-4 overflow-hidden overflow-x-auto">
-      <div className="relative">
-        <h3 className="text-base font-bold">Опис:</h3>
-      </div>
+      <h3 className="text-base font-bold">{t("description")}:</h3>
     </div>
   );
 };
