@@ -12,6 +12,7 @@ import HeaderCatalogMenu from "./header-catalog-menu";
 import HeaderContact from "./header-contact";
 import HeaderAccountMenu from "./header-account-menu";
 import HeaderCartMenu from "./header-cart-menu";
+import LanguageSwitcher from "@/components/language-switcher";
 
 /**
  * Композиційний корінь — тільки розкладка й компонування фіч, без власної
@@ -63,6 +64,7 @@ const Header = () => {
             <HeaderContact />
 
             <div className="items-center gap-3 hidden lg:flex">
+              <LanguageSwitcher />
               <HeaderAccountMenu />
               <HeaderCartMenu />
             </div>
