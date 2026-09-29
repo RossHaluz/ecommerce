@@ -11,8 +11,8 @@ interface InitialState {
 const initialState: InitialState = {
   currentCustomizer: "grid",
   // Каталог веде ціни в доларах (перевірено: GA currency: "USD" + масштаб
-  // цін), але покупець платить у гривні — тому дефолт для показу саме UAH.
-  currency: "UAH",
+  // цін) — дефолт показу теж USD; UAH лише коли покупець сам перемкне.
+  currency: "USD",
 };
 
 export const customizerSlice = createSlice({

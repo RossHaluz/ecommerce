@@ -12,7 +12,13 @@
  */
 const FORMATTERS: Record<"USD" | "UAH", Intl.NumberFormat> = {
   USD: new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }),
-  UAH: new Intl.NumberFormat("uk-UA", { style: "currency", currency: "UAH" }),
+  // Без копійок — гривневе значення й так похідне (курс НБУ), точність до
+  // копійки тут нічого не додає, лише захаращує ціну на екрані.
+  UAH: new Intl.NumberFormat("uk-UA", {
+    style: "currency",
+    currency: "UAH",
+    maximumFractionDigits: 0,
+  }),
 };
 
 export interface FormatPriceOptions {

@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useParams } from "next/navigation";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,16 +18,22 @@ interface BreadcrumbsProps {
   productName?: string;
 }
 
+const NON_CATEGORY_SEGMENTS = ["categories", "product", "search"];
+
 const Breadcrumbs: FC<BreadcrumbsProps> = ({productName}) => {
   const pathname = usePathname();
+  const params = useParams();
+  const locale = params?.locale as string | undefined;
+  const isStructuralSegment = (item: string) =>
+    NON_CATEGORY_SEGMENTS.includes(item) || item === locale;
   const segments = pathname
     .split("/")
-    .filter((item) => item !== "categories" && item !== "product")
+    .filter((item) => !isStructuralSegment(item))
     .filter(Boolean);
     const query = useSearchParams();
     const from = query.get('from');
     const searchValue = query.get("searchValue");
-    const categoryName = from?.split('/').filter(item => item !== 'categories' && item !== 'product').filter(Boolean);
+    const categoryName = from?.split('/').filter(item => !isStructuralSegment(item)).filter(Boolean);
     const { data: categories = [] } = useCategories();
 const parentCategories = categories.map((item) => item?.category_name);
 
@@ -77,6 +83,11 @@ const allCategories = [...parentCategories, ...childCategories]
                 </>
               )}
               <BreadcrumbPage>{productName}</BreadcrumbPage>
+            </>
+          ) : segments.length === 0 && searchValue ? (
+            <>
+              <BreadcrumbSeparator />
+              <BreadcrumbPage className="break-word">{searchValue}</BreadcrumbPage>
             </>
           ) : (
             segments
