@@ -6,6 +6,10 @@ export const routing = defineRouting({
   locales: LOCALES,
   defaultLocale: DEFAULT_LOCALE,
   localePrefix: LOCALE_PREFIX,
+  // Крамниця українська за задумом ("Українська живе на корені" вище) — без
+  // цього next-intl сам вгадує локаль із Accept-Language браузера й ставить
+  // NEXT_LOCALE=pl, після чого навіть ручний перехід на "/" повертає на "/pl".
+  localeDetection: false,
 });
 
 /**

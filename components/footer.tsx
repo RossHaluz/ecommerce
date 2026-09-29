@@ -9,6 +9,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/features/catalog";
 import { usePathname } from "next/navigation";
+import LanguageSwitcher from "@/components/language-switcher";
 
 const Footer = () => {
   const { data: categories = [] } = useCategories();
@@ -307,6 +308,8 @@ const Footer = () => {
 
           {/* Soacials end */}
         </div>
+
+        <LanguageSwitcher className="justify-center md:justify-start" />
 
         {/* Copyright start */}
         <div className="flex flex-col gap-[15px] md:gap-12">
