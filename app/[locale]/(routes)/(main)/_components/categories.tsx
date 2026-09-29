@@ -4,29 +4,10 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useParams, useRouter } from "next/navigation";
 import qs from "query-string";
-import { useDispatch } from "react-redux";
-import { resetItems } from "@/redux/items/slice";
-
-interface Category {
-  name: string;
-  id: string;
-  category_name: string;
-  children?: Category[];
-  parentId: string;
-}
+import type { Category } from "@/lib/types";
 
 interface CategoriesProps {
-  categories: {
-    id: string;
-    name: string;
-    category_name: string;
-    billboard: {
-      label: string;
-      imageUrl: string;
-    };
-    children?: Category[];
-    parentId: string;
-  }[];
+  categories: Category[];
 }
 
 const Categories: FC<CategoriesProps> = ({ categories }) => {
@@ -36,7 +17,6 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
   const [isInitialization, setIsInitialization] = useState(false);
   const router = useRouter();
   const params = useParams();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsInitialization(true);
@@ -54,7 +34,6 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
   }, [params, isInitialization]);
 
   const handleClickCategory = (id: string) => {
-    dispatch(resetItems());
     const queryParams = qs.parse(window.location.search);
     const sortByPrice = queryParams.sortByPrice as string;
 

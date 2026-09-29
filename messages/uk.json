@@ -19,7 +19,8 @@
     "account": "Акаунт",
     "cart": "Кошик",
     "menu": "Меню",
-    "socials": "Соціальні мережі"
+    "socials": "Соціальні мережі",
+    "logoAriaLabel": "Логотип Audiparts"
   },
   "product": {
     "buy": "Купити",
@@ -30,13 +31,19 @@
     "catalogNumber": "Каталожний номер",
     "article": "Артикул",
     "fitsModels": "Підходить до моделей",
-    "similar": "Також вас можуть зацікавити:"
+    "similar": "Також вас можуть зацікавити:",
+    "modelSingular": "Модель:",
+    "modelPlural": "Моделі:",
+    "imageAlt": "Фото товару"
   },
   "cart": {
     "added": "Товар доданий до Вашого кошика!",
     "empty": "Ваш кошик порожній",
     "checkout": "Оформлення замовлення",
-    "total": "До сплати"
+    "total": "До сплати",
+    "removeItem": "Видалити товар з кошика",
+    "continueShopping": "Продовжити покупки",
+    "placeOrder": "Оформити замовлення"
   },
   "filters": {
     "availability": "Наявність",
@@ -59,7 +66,11 @@
     "callMe": "Перезвоніть мені",
     "orderCall": "Замовити дзвінок",
     "address": "Адреса",
-    "workingHours": "Графік роботи"
+    "workingHours": "Графік роботи",
+    "phoneNumbersAriaLabel": "Номери телефонів",
+    "callMeDialogThanks": "Дякуємо за Ваше звернення!",
+    "callMeDialogDescription": "Є питання чи потрібна консультація? Залиште свій номер телефону і ми вам передзвонимо.",
+    "callMeDialogSuccessDescription": "Найближчим часом наш консультант зв'яжеться з вами."
   },
   "notFound": {
     "code": "404",

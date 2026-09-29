@@ -23,7 +23,7 @@ import { scrollUpReducer } from "./scroll-up/slice";
 
 const persistCustomizer = {
   key: "currentCustomizer",
-  whitelist: ["currentCustomizer"],
+  whitelist: ["currentCustomizer", "currency"],
   storage,
 };
 

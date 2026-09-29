@@ -5,7 +5,7 @@ import ProductDesc from "./product-desc";
 
 interface ProductDetailsProps {
   initialData: {
-    description: string;
+    description?: string;
     id: string;
   };
 }

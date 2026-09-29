@@ -9,8 +9,6 @@ import React, {
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
-import { resetItems } from "@/redux/items/slice";
 
 interface Category {
   name: string;
@@ -33,7 +31,6 @@ const CatalogItems: FC<CategoriesListProps> = ({
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
     {}
   );
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isShowCatalog) {
@@ -50,7 +47,6 @@ const CatalogItems: FC<CategoriesListProps> = ({
 
   const selectCategory = () => {
     
-          dispatch(resetItems());
           setIsShowCatelog(false);
   }
 

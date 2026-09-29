@@ -1,12 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { resetItems } from "@/redux/items/slice";
 import { ChevronDown, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import queryString from "query-string";
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 
 const stocks = [
   {
@@ -36,7 +34,6 @@ const SearchByStock = () => {
   const stockRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const queryParams = queryString.parse(window.location.search);
@@ -68,7 +65,6 @@ const SearchByStock = () => {
   };
 
   const handleRemoveStock = () => {
-    dispatch(resetItems());
     const queryParams = queryString.parse(window.location.search);
     const sortByPrice = queryParams?.sortByPrice as string;
     const modelId = queryParams?.modelId as string;
@@ -101,7 +97,6 @@ const SearchByStock = () => {
     } | null
   ) => {
     if (!stock) return;
-        dispatch(resetItems());
     const queryParams = queryString.parse(window.location.search);
     const searchValue = queryParams.searchValue;
     const sortByPrice = queryParams?.sortByPrice as string;

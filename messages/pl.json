@@ -19,7 +19,8 @@
     "account": "Konto",
     "cart": "Koszyk",
     "menu": "Menu",
-    "socials": "Media społecznościowe"
+    "socials": "Media społecznościowe",
+    "logoAriaLabel": "Logo Audiparts"
   },
   "product": {
     "buy": "Kup",
@@ -30,13 +31,19 @@
     "catalogNumber": "Numer katalogowy",
     "article": "Numer artykułu",
     "fitsModels": "Pasuje do modeli",
-    "similar": "Może Cię również zainteresować:"
+    "similar": "Może Cię również zainteresować:",
+    "modelSingular": "Model:",
+    "modelPlural": "Modele:",
+    "imageAlt": "Zdjęcie produktu"
   },
   "cart": {
     "added": "Produkt dodany do koszyka!",
     "empty": "Twój koszyk jest pusty",
     "checkout": "Składanie zamówienia",
-    "total": "Do zapłaty"
+    "total": "Do zapłaty",
+    "removeItem": "Usuń produkt z koszyka",
+    "continueShopping": "Kontynuuj zakupy",
+    "placeOrder": "Złóż zamówienie"
   },
   "filters": {
     "availability": "Dostępność",
@@ -56,10 +63,14 @@
     "nothingFound": "Nic nie znaleziono"
   },
   "contact": {
-    "callMe": "Zamów rozmowę",
+    "callMe": "Oddzwoń do mnie",
     "orderCall": "Zamów rozmowę",
     "address": "Adres",
-    "workingHours": "Godziny pracy"
+    "workingHours": "Godziny pracy",
+    "phoneNumbersAriaLabel": "Numery telefonów",
+    "callMeDialogThanks": "Dziękujemy za zgłoszenie!",
+    "callMeDialogDescription": "Masz pytania lub potrzebujesz konsultacji? Zostaw swój numer telefonu, a oddzwonimy.",
+    "callMeDialogSuccessDescription": "Nasz konsultant skontaktuje się z Tobą wkrótce."
   },
   "notFound": {
     "code": "404",

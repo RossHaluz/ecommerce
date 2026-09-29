@@ -1,3 +1,11 @@
-export const selectOrderItems = (state: any) => state.order.orderItems;
+import type { OrderState } from "./slice";
 
-export const selectOrderDetails = (state: any) => state.order.orderDetails;
+interface RootStateWithOrder {
+  order: OrderState;
+}
+
+export const selectOrderItems = (state: RootStateWithOrder) =>
+  state.order.orderItems;
+
+export const selectOrderDetails = (state: RootStateWithOrder) =>
+  state.order.orderDetails;

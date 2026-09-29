@@ -6,8 +6,6 @@ import qs from "query-string";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FixedSizeList as List } from "react-window";
-import { useDispatch } from "react-redux";
-import { resetItems } from "@/redux/items/slice";
 
 interface SearchByModelProps {
   models: {
@@ -28,7 +26,6 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!params?.modelName) {
@@ -57,7 +54,6 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
 
   const handleRemoveModel = () => {
     setCurrentModel(null);
-    dispatch(resetItems())
     const queryParams = qs.parse(window.location.search);
     const selectSort = queryParams?.sortByPrice;
     const searchValue = queryParams?.searchValue;
@@ -90,7 +86,6 @@ const SearchByModel: FC<SearchByModelProps> = ({ models }) => {
   }) => {
     if (!model) return;
     setCurrentModel(model);
-      dispatch(resetItems());
     const queryParams = qs.parse(window.location.search);
     const searchValue = queryParams?.searchValue;
     const sortByPrice = queryParams?.sortByPrice;

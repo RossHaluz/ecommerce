@@ -10,8 +10,6 @@ import { Button } from "./ui/button";
 import Arrow from "/public/images/arrow-down.svg";
 import queryString from "query-string";
 import { useParams, useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { resetItems } from "@/redux/items/slice";
 
 interface Category {
   name: string;
@@ -36,7 +34,6 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
   const [isInitialization, setIsInitialization] = useState(false);
   const router = useRouter();
   const params = useParams();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsInitialization(true);
@@ -67,7 +64,6 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
   };
 
   const handleOpenCategory = (categoryName: string) => {
-    dispatch(resetItems());    
     const queryParams = queryString.parse(window.location.search);
     const sortByPrice = queryParams.sortByPrice as string;
 

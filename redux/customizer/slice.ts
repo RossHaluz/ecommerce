@@ -1,13 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type EnumCustomizer = "grid" | "list";
+export type DisplayCurrency = "USD" | "UAH";
 
 interface InitialState {
   currentCustomizer: EnumCustomizer;
+  currency: DisplayCurrency;
 }
 
 const initialState: InitialState = {
   currentCustomizer: "grid",
+  // Каталог веде ціни в доларах (перевірено: GA currency: "USD" + масштаб
+  // цін), але покупець платить у гривні — тому дефолт для показу саме UAH.
+  currency: "UAH",
 };
 
 export const customizerSlice = createSlice({
@@ -17,8 +22,11 @@ export const customizerSlice = createSlice({
     setCurrentCustomizer(state, action) {
       state.currentCustomizer = action.payload;
     },
+    setCurrency(state, action: { payload: DisplayCurrency }) {
+      state.currency = action.payload;
+    },
   },
 });
 
-export const { setCurrentCustomizer } = customizerSlice.actions;
+export const { setCurrentCustomizer, setCurrency } = customizerSlice.actions;
 export const customizerReducer = customizerSlice.reducer;

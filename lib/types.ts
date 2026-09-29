@@ -6,11 +6,13 @@ export interface Product {
   article: string;
   product_name: string;
   maxPrice: string;
+  /** Не завжди присутній (список товарів не тягне його) — тому опційний;
+   *  сторінка товару отримує повний запис і читає його. */
+  description?: string;
   models: {
     model: Model;
   }[];
   catalog_number: string;
-  productOptions: any[];
   images: {
     id: string;
     url: string;
@@ -46,4 +48,19 @@ export interface CreatedOrder {
   orderNumber: number;
   totalPrice: number;
   [key: string]: unknown;
+}
+
+/** Форма, яку віддає /search/suggestions — вужча за Product. */
+export interface SearchResultItem {
+  id: string;
+  title: string;
+  price: string;
+  article: string;
+  catalog_number: string;
+  product_name: string;
+  maxPrice: string;
+  images: {
+    id: string;
+    url: string;
+  }[];
 }

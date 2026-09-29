@@ -398,23 +398,18 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       };
 
       if (orderItems?.length > 0) {
-        data.products = orderItems?.map(
-          (item: {
-            id: string;
-            quantity: number;
-            price: number;
-            title: string;
-            article: string;
-            catalog_number: string;
-          }) => ({
-            productId: item?.id,
-            quantity: item?.quantity,
-            price: Number(item?.price),
-            title: item?.title,
-            article: item?.article,
-            catalog_number: item?.catalog_number,
-          })
-        );
+        // catalog_number тут ніколи не було: OrderItem його не містить, і
+        // додавання в кошик (product-item.tsx) його не передає. Поле йшло
+        // в payload як undefined і зникало при JSON.stringify — бекенд
+        // ніколи його не отримував. TODO: заповнити наскрізно, коли
+        // entities/order-item уніфікує форму рядка кошика.
+        data.products = orderItems?.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+          price: Number(item.price),
+          title: item.title,
+          article: item.article,
+        }));
       }
 
       const order = await createOrder(data);

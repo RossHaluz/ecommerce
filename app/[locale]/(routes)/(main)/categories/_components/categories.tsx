@@ -1,16 +1,13 @@
 "use client"
-import { resetItems } from "@/redux/items/slice";
 import Link from "next/link";
 import React, { FC } from "react";
 import type { Category } from "@/lib/types";
-import { useDispatch } from "react-redux";
 
 interface CategoriesProps {
   categories: Category[];
 }
 
 const Categories: FC<CategoriesProps> = ({ categories }) => {
-  const dispatch = useDispatch();
 
   return (
     <>
@@ -23,7 +20,6 @@ const Categories: FC<CategoriesProps> = ({ categories }) => {
                   <Link
                     href={`/categories/${item?.category_name}`}
                     className="text-base font-bold"
-                    onClick={() => dispatch(resetItems())}
                   >
                     {item?.name}
                   </Link>

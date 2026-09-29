@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import HomeIcon from "/public/images/home-icon.svg";
-import Trash from "/public/images/trash.svg";
 import ShopIcon from "/public/images/shop-icon.svg";
 import InfoIcon from "/public/images/info-icon.svg";
 import AccountIcon from "/public/images/account-icon.svg";
@@ -9,18 +8,17 @@ import CatalogIcon from "/public/images/catalog-icon.svg";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "./ui/button";
 import CatalogItems from "./catalog-items";
 import { useSelector } from "react-redux";
 import { selectCategories } from "@/redux/categories/selectors";
 import MobileMenu from "./ui/mobile-menu";
-import Image from "next/image";
 import Modal from "./ui/modal";
 import { selectOrderItems } from "@/redux/order/selector";
-import { useAppDispatch } from "@/redux/store";
-import { removeItemFromCart } from "@/redux/order/slice";
 import ProductCount from "@/app/[locale]/(routes)/product/[productId]/_components/product-count";
 import { getCurrentUser } from "@/actions/get-data";
+import { CartPreview, useRemoveFromCart } from "@/features/cart";
 
 const MobileSidebar = () => {
   const pathname = usePathname();
@@ -29,10 +27,11 @@ const MobileSidebar = () => {
   const orderItems = useSelector(selectOrderItems);
   const [isLogin, setIsLogin] = useState(true);
   const [isActive, setIsActive] = useState("");
-  const dispatch = useAppDispatch();
+  const removeFromCart = useRemoveFromCart();
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [isInitialization, setIsInitialization] = useState(false);
+  const t = useTranslations();
 
   useEffect(() => {
     setIsInitialization(true);
@@ -49,26 +48,6 @@ const MobileSidebar = () => {
 
     setCurrentUser();
   }, [isInitialization]);
-
-  const capitalizeFirstLetter = (str: string) => {
-    if (!str) return;
-
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-  const hansleDeleteItem = async (id: string) => {
-    try {
-      dispatch(removeItemFromCart(id));
-      router.refresh();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const USDollar = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
 
   return (
     <>
@@ -111,94 +90,24 @@ const MobileSidebar = () => {
               className="p-0 hover:bg-transparent flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium"
             >
               <ShopIcon />
-              Кошик
+              {t("nav.cart")}
             </Button>
           }
-          title="Кошик"
-          dialogCancel={"Продовжити покупки"}
+          title={t("nav.cart")}
+          dialogCancel={t("cart.continueShopping")}
         >
-          {orderItems?.length > 0 ? (
-            orderItems?.map(
-              (item: {
-                id: string;
-                quantity: number;
-                price: number;
-                priceForOne: number;
-                selectOptions: any[];
-                orderItemId: string;
-                title: string;
-                article: string;
-                images: {
-                  id: string;
-                  url: string;
-                }[];
-              }) => {
-                return (
-                  <div
-                    className="flex items-start lg:items-center gap-[15px] w-full lg:border lg:border-solid lg:border-[#c0092a] rounded-[5px]"
-                    key={item?.orderItemId}
-                  >
-                    <div className="w-[65px] h-[65px] lg:w-[138px] lg:h-full rounded-[5px] overflow-hidden relative">
-                      <Image
-                        src={`${process.env.BACKEND_URL}/products/${item?.images?.[0]?.url}`}
-                        alt={item?.images?.[0]?.id}
-                        fill
-                        className="object-cover"
-                        unoptimized={true}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-[15px] lg:gap-[10px]  w-full lg:py-[10px]">
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex flex-col gap-2">
-                          <h3 className="text-[#484848] text-sm underline w-[167px] lg:w-full">
-                            {capitalizeFirstLetter(item?.title)}
-                          </h3>
-                          {item?.selectOptions?.map(
-                            (item: {
-                              optionTitle: string;
-                              optionValue: string;
-                              id: string;
-                            }) => {
-                              return (
-                                <h3
-                                  className="text-xs text-foreground"
-                                  key={item?.id}
-                                >
-                                  {item?.optionTitle}: {item?.optionValue}
-                                </h3>
-                              );
-                            }
-                          )}
-                        </div>
-                        <Button
-                          variant="ghost"
-                          onClick={() => hansleDeleteItem(item?.orderItemId)}
-                        >
-                          <Trash />
-                        </Button>
-                      </div>
-
-                      <div className=" flex items-center  justify-between lg:items-start w-full lg:flex-col  lg:gap-[10px] ">
-                        <span className="text-lg text-[#c0092a] font-bold">
-                          {USDollar.format(Number(item?.price))}
-                        </span>
-                        <ProductCount
-                          count={item?.quantity}
-                          itemId={item?.orderItemId}
-                          isFromOrder={true}
-                          savePrice={item?.priceForOne}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-            )
-          ) : (
-            <div className="w-full h-full flex justify-center items-center">
-              <h3 className="text-[#484848] text-sm">Корзина пуста:(</h3>
-            </div>
-          )}
+          <CartPreview
+            items={orderItems}
+            onRemove={removeFromCart}
+            renderExtra={(item) => (
+              <ProductCount
+                count={item.quantity}
+                itemId={item.orderItemId}
+                isFromOrder
+                savePrice={item.priceForOne}
+              />
+            )}
+          />
         </Modal>
 
         <MobileMenu

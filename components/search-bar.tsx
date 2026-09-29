@@ -7,15 +7,13 @@ import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import SearchIcon from "/public/images/search-icon.svg";
-import { Item } from "./header";
+import { SearchResultItem } from "@/lib/types";
 import { getSearchProducts } from "@/actions/get-data";
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import qs from "query-string";
-import { useDispatch } from "react-redux";
-import { resetItems } from "@/redux/items/slice";
 import { Search, X } from "lucide-react";
 import browserClient from "@/lib/browser-client";
 import { ENDPOINTS } from "@/lib/api/endpoints";
@@ -30,7 +28,6 @@ const SearchBar = () => {
   const [isShow, setIsShow] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const dispatch = useDispatch();
   const texts = useMemo(
     () => ["Капот Q7 4M", "Крило ліве Q7 4M", "Бампер A6 C7", "Капот Q5 8R"],
     []
@@ -199,7 +196,6 @@ const SearchBar = () => {
   };
 
   const handleShowAll = async () => {
-    dispatch(resetItems());
     Cookies.set("__search_value", searchValue, { expires: 7, path: "/" });
     const url = qs.stringifyUrl({
       url: "/search",
@@ -248,7 +244,6 @@ const SearchBar = () => {
 
   const handleSelectQuery = async (query: string) => {
     try {
-      dispatch(resetItems());
       Cookies.set("__search_value", query, {
         expires: 7,
         path: "/",
@@ -290,7 +285,6 @@ const SearchBar = () => {
 
   const onSubmit = async (values: { __search_value: string }) => {
     try {
-      dispatch(resetItems());
       Cookies.set("__search_value", searchValue, {
         expires: 7,
         path: "/",
