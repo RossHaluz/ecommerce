@@ -14,6 +14,7 @@ import ImageNotFound from "/public/images/image-not-found.jpg";
 import { useIsSmallScreen } from "@/hooks/useIsSmallScreen";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
+import { productHref } from "@/entities/product/model/product-href";
 import { Product } from "@/lib/types";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
@@ -35,6 +36,10 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
   const orderItems = useHydratedSelector(selectOrderItems);
   const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
   const pathname = usePathname();
+  const href = productHref(item?.product_name, pathname);
+  // Повне підвантаження (код + дані) лише коли людина вже тягнеться до
+  // картки: до кліку лишається 100–300 мс, і перехід стає миттєвим.
+  const [prefetchIntent, setPrefetchIntent] = useState(false);
   const [isMouseEnter, setIsMouseEnter] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const isMobile = useIsSmallScreen();
@@ -52,16 +57,18 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
           "grid-cols-1": currentCustomizer === "grid",
         }
       )}
-      onMouseEnter={() => setIsMouseEnter(item?.id)}
+      onMouseEnter={() => {
+        setIsMouseEnter(item?.id);
+        setPrefetchIntent(true);
+      }}
       onMouseLeave={() => setIsMouseEnter(null)}
+      onTouchStart={() => setPrefetchIntent(true)}
     >
       <Link
-        href={`/product/${item?.product_name}${
-          pathname.split("/").filter(Boolean)?.length > 0 &&
-          !pathname.includes("search")
-            ? `?from=${encodeURIComponent(pathname)}`
-            : ""
-        }`}
+        href={href}
+        // false до наміру, а не "авто": Link префетчить кожен href лише раз,
+        // і неповний авто-префетч при появі на екрані блокував би повний.
+        prefetch={prefetchIntent}
         className={cn("w-full", {
           "col-span-2": currentCustomizer === "list",
         })}
@@ -104,7 +111,7 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
         })}
       >
         <div className="flex flex-col gap-2 md:gap-4">
-          <Link href={`/product/${item?.product_name}`}>
+          <Link href={href} prefetch={prefetchIntent}>
             <h2
               className={cn(
                 "text-[14px] leading-[17.07px] font-medium text-[#111111] uppercase line-clamp-1 md:text-[24px] md:leading-[33.6px]",
