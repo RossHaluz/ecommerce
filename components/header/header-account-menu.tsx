@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import Cookies from "js-cookie";
 import { User2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import ModalAuth from "@/components/ui/modal-auth";
 import AuthorizationOtp from "@/components/authirization-otp";
-import { getCurrentUser } from "@/actions/get-data";
+import { useCurrentUser } from "@/features/account";
 
 /**
  * Іконка кабінету: посилання на `/account`, якщо є токен і реально
@@ -16,21 +15,10 @@ import { getCurrentUser } from "@/actions/get-data";
  */
 const HeaderAccountMenu = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(true);
-  const [currentUser, setCurrentUser] = useState<{ role: string } | null>(
-    null
-  );
-  const token = Cookies.get("token");
+  const { data: currentUser } = useCurrentUser();
   const t = useTranslations("nav");
 
-  useEffect(() => {
-    if (!token) return;
-
-    getCurrentUser()
-      .then(setCurrentUser)
-      .catch((error) => console.error(error));
-  }, [token]);
-
-  if (token && currentUser) {
+  if (currentUser) {
     return (
       <Link href="/account" aria-label={t("account")}>
         <User2Icon className="text-[#FFFDFD]" strokeWidth="0.75px" />

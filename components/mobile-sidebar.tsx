@@ -6,8 +6,8 @@ import InfoIcon from "/public/images/info-icon.svg";
 import AccountIcon from "/public/images/account-icon.svg";
 import CatalogIcon from "/public/images/catalog-icon.svg";
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "./ui/button";
 import CatalogItems from "./catalog-items";
@@ -15,7 +15,7 @@ import MobileMenu from "./ui/mobile-menu";
 import Modal from "./ui/modal";
 import { selectOrderItems } from "@/redux/order/selector";
 import ProductCount from "@/app/[locale]/(routes)/product/[productId]/_components/product-count";
-import { getCurrentUser } from "@/actions/get-data";
+import { useCurrentUser } from "@/features/account";
 import { CartPreview, useRemoveFromCart } from "@/features/cart";
 import { useCategories } from "@/features/catalog";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
@@ -28,26 +28,8 @@ const MobileSidebar = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isActive, setIsActive] = useState("");
   const removeFromCart = useRemoveFromCart();
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [isInitialization, setIsInitialization] = useState(false);
+  const { data: user } = useCurrentUser();
   const t = useTranslations();
-
-  useEffect(() => {
-    setIsInitialization(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isInitialization) return;
-
-    const setCurrentUser = async () => {
-      const currentUser = await getCurrentUser();
-
-      setUser(currentUser);
-    };
-
-    setCurrentUser();
-  }, [isInitialization]);
 
   return (
     <>

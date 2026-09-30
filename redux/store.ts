@@ -16,7 +16,6 @@ import { OrderReducer } from "./order/slice";
 import { searchReducer } from "./search/slice";
 import { authReducer } from "./auth/slice";
 import { customizerReducer } from "./customizer/slice";
-import { itemReducer } from "./items/slice";
 import { scrollUpReducer } from "./scroll-up/slice";
 
 const persistCustomizer = {
@@ -57,7 +56,6 @@ export const store = configureStore({
     order: persistedOrderReducer,
     search: persisterSearchReducer,
     customizer: persistCustomizerReducer,
-    item: itemReducer,
     scrollUp: scrollUpReducer
   },
   middleware: (getDefaultMiddleware) =>

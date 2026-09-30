@@ -17,8 +17,8 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useSession } from "@/features/account";
 
 const formSchema = z.object({
   firstName: z.string().min(1, {
@@ -55,6 +55,7 @@ const formSchemaRegister = z
   });
 
 const NewClientForm = () => {
+  const { signIn } = useSession();
   const dispatch = useDispatch<AppDispatch>();
   const [isRegister, setIsRegister] = useState<boolean | string>(false);
   const router = useRouter();
@@ -99,8 +100,7 @@ const NewClientForm = () => {
           formData
         );
 
-        Cookies.set("token", data?.data?.newUser?.token, { expires: 1 });
-        axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
+        signIn(data?.data?.newUser?.token, { days: 1 });
 
         dispatch(createUserContactDetails(values));
         toast.success("Success register");

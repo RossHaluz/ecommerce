@@ -17,8 +17,8 @@ import { EyeOff, Eye } from "lucide-react";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useSession } from "@/features/account";
 
 interface RegisterFormPops {
   setIsRegister: Dispatch<SetStateAction<boolean>>;
@@ -40,6 +40,7 @@ const formSchema = z
   });
 
 const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
+  const { signIn } = useSession();
   const [isShow, setIsShow] = useState(false);
   const [isShowConfirmPass, setIsShowConfirmPass] = useState(false);
   const router = useRouter();
@@ -76,8 +77,7 @@ const RegisterForm: FC<RegisterFormPops> = ({ setIsRegister, setIsLogin }) => {
         formData
       );
 
-      Cookies.set("token", data?.data?.newUser?.token, { expires: 1 });
-      axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
+      signIn(data?.data?.newUser?.token, { days: 1 });
 
       setIsLogin(true);
       router.refresh();

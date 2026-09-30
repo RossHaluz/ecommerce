@@ -9,7 +9,6 @@ import {
 } from "react";
 import Link from "next/link";
 import { Button } from "./button";
-import Cookies from "js-cookie";
 
 import Logo from "@/components/ui/logo";
 import Catalog from "/public/images/catalog.svg";
@@ -19,27 +18,14 @@ import Phone from "/public/images/phone.svg";
 import Clock from "/public/images/clock.svg";
 import { useRouter } from "next/navigation";
 import { User2Icon } from "lucide-react";
-import { getCategories, getCurrentUser } from "@/actions/get-data";
+import { useCurrentUser } from "@/features/account";
+import { useCategories } from "@/features/catalog";
 import RenderCategoryItems from "../render-category-items";
 import { cn } from "@/lib/utils";
 import ArrowDown from "/public/images/arrow-down.svg";
 import AuthorizationOtp from "../authirization-otp";
 import { createPortal } from "react-dom";
 import { useMounted } from "@/hooks/use-mounted";
-import type { Category } from "@/lib/types";
-
-interface Item {
-  id: string;
-  title: string;
-  price: string;
-  article: string;
-  maxPrice: string;
-  productOptions: any[];
-  images: {
-    id: string;
-    url: string;
-  }[];
-}
 
 interface MobileMenuProps {
   setIsLogin: Dispatch<SetStateAction<boolean>>;
@@ -58,16 +44,9 @@ const MobileMenu: FC<MobileMenuProps> = ({
 }) => {
   const mounted = useMounted();
   const [isOpen, setIsOpen] = useState(false);
-  const [searchedItems, setSearchedItems] = useState<Item[]>([]);
-  const [allItemsSearched, setAllItemSearched] = useState<Item[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [isShowSearch, setIsShowSearch] = useState(false);
-  const inputContainerRef = useRef<HTMLInputElement>(null);
-  const searchBtnRef = useRef<HTMLButtonElement>(null);
+  const { data: categories = [] } = useCategories();
   const router = useRouter();
-  const [user, setUser] = useState<{ role: string } | null>(null);
-  const [isInitialization, setIsInitialization] = useState(false);
+  const { data: user } = useCurrentUser();
   const [isShowPhoneNumbers, setIsShowPhoneNumbers] = useState(false);
   const numbersRef = useRef<HTMLDivElement>(null);
 
@@ -84,68 +63,6 @@ const MobileMenu: FC<MobileMenuProps> = ({
       setIsShowPhoneNumbers(false);
     }
   };
-
-  useEffect(() => {
-    setIsInitialization(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isInitialization) return;
-
-    const setCurrentUser = async () => {
-      const currentUser = await getCurrentUser();
-
-      setUser(currentUser);
-    };
-
-    setCurrentUser();
-  }, [isInitialization]);
-
-  const clickOutsideInput = (e: MouseEvent) => {
-    if (
-      inputContainerRef.current &&
-      !inputContainerRef.current.contains(e.target as Node) &&
-      searchBtnRef.current &&
-      !searchBtnRef.current.contains(e.target as Node)
-    ) {
-      setIsShowSearch(false);
-      setSearchedItems([]);
-      setAllItemSearched([]);
-      setSearchValue("");
-    }
-  };
-
- useEffect(() => {
-   let isMounted = true;
-
-   const fetchCategories = async () => {
-     try {
-       const data = (await getCategories()) || [];
-       if (isMounted) setCategories(data);
-     } catch (err) {
-       console.error("Error fetching categories:", err);
-     }
-   };
-
-   fetchCategories();
-
-   return () => {
-     isMounted = false; 
-   };
- }, []);
-
-
-  useEffect(() => {
-    window.addEventListener("mousedown", clickOutsideInput);
-
-    () => {
-      window.removeEventListener("mousedown", clickOutsideInput);
-    };
-  }, []);
-
-  useEffect(() => {
-    Cookies.set("searchValue", searchValue);
-  }, [searchValue]);
 
   const handleCloseMenu = () => {
     setIsOpen(false);
