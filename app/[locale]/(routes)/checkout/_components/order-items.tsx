@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { selectOrderItems } from "@/redux/order/selector";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import {
   currentPriceOrderItems,
   removeItemFromCart,
@@ -12,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { FC, useEffect } from "react";
 import image_not_found from "/public/images/image-not-found.jpg";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface OrderItemsProps {
   currentUser: {
@@ -21,7 +21,7 @@ interface OrderItemsProps {
 
 const OrderItems: FC<OrderItemsProps> = ({ currentUser }) => {
   const dispatch = useDispatch();
-  const orderItems = useSelector(selectOrderItems);
+  const orderItems = useHydratedSelector(selectOrderItems);
   let totalPrice = 0;
 
   useEffect(() => {

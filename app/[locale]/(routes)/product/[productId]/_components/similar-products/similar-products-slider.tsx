@@ -8,7 +8,6 @@ import { FC, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useSelector } from "react-redux";
 
 import ImageNotFound from "/public/images/image-not-found.jpg";
 import Modal from "@/components/ui/modal";
@@ -19,6 +18,7 @@ import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
 import type { Product } from "@/lib/types";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface SimilarProductsSliderProps {
   similarProducts: Product[];
@@ -34,7 +34,7 @@ interface SimilarProductsSliderProps {
 const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
   similarProducts,
 }) => {
-  const orderItems = useSelector(selectOrderItems);
+  const orderItems = useHydratedSelector(selectOrderItems);
   const addToCart = useAddToCart();
   const removeFromCart = useRemoveFromCart();
   const { format } = usePriceFormatter();

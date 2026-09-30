@@ -1,5 +1,7 @@
 "use client";
-import { usePathname, useSearchParams, useParams } from "next/navigation";
+import React, { FC } from "react";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { Home } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,48 +10,27 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Home } from "lucide-react";
 import { cn } from "@/lib/utils";
-import latinToCyrillic from "@/utils/transliterate";
-import React, { FC } from "react";
-import { useCategories } from "@/features/catalog";
+import { buildBreadcrumbTrail, type Crumb } from "@/lib/breadcrumbs/build-breadcrumb-trail";
 
 interface BreadcrumbsProps {
   productName?: string;
 }
 
-const NON_CATEGORY_SEGMENTS = ["categories", "product", "search"];
-
-const Breadcrumbs: FC<BreadcrumbsProps> = ({productName}) => {
+const Breadcrumbs: FC<BreadcrumbsProps> = ({ productName }) => {
   const pathname = usePathname();
-  const params = useParams();
-  const locale = params?.locale as string | undefined;
-  const isStructuralSegment = (item: string) =>
-    NON_CATEGORY_SEGMENTS.includes(item) || item === locale;
-  const segments = pathname
-    .split("/")
-    .filter((item) => !isStructuralSegment(item))
-    .filter(Boolean);
-    const query = useSearchParams();
-    const from = query.get('from');
-    const searchValue = query.get("searchValue");
-    const categoryName = from?.split('/').filter(item => !isStructuralSegment(item)).filter(Boolean);
-    const { data: categories = [] } = useCategories();
-const parentCategories = categories.map((item) => item?.category_name);
+  const query = useSearchParams();
+  const locale = useParams()?.locale as string | undefined;
 
-const childCategories = categories.flatMap(
-  (item) => item?.children?.map((child) => child?.category_name) || []
-);
+  const trail: Crumb[] = productName
+    ? [
+        ...buildBreadcrumbTrail({ path: query.get("from") ?? "", locale, lastIsCurrent: false }),
+        { label: productName, href: null },
+      ]
+    : buildBreadcrumbTrail({ path: pathname, locale, searchValue: query.get("searchValue") });
 
-const allCategories = [...parentCategories, ...childCategories]
-   
-   
   return (
-    <Breadcrumb
-      className={cn("", {
-        hidden: pathname === "/",
-      })}
-    >
+    <Breadcrumb className={cn({ hidden: pathname === "/" })}>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">
@@ -57,83 +38,20 @@ const allCategories = [...parentCategories, ...childCategories]
           </BreadcrumbLink>
         </BreadcrumbItem>
 
-        <>
-          {productName ? (
-            <>
-              <BreadcrumbSeparator className="text-gray-500" />
-              {from && categoryName && categoryName?.length > 0 && (
-                <>
-                  {categoryName?.map((item: string, index: number) => {                   
-                    
-                    return (
-                      <BreadcrumbItem key={index} className="text-gray-600">
-                        <BreadcrumbLink
-                          href={
-                            allCategories.includes(item)
-                              ? `/categories/${item}`
-                              : `/${item}`
-                          }
-                        >
-                          {latinToCyrillic(item)}
-                        </BreadcrumbLink>
-                        <BreadcrumbSeparator />
-                      </BreadcrumbItem>
-                    );
-                  })}
-                </>
+        {trail.map(({ label, href }, index) => (
+          <React.Fragment key={`${index}-${href ?? label}`}>
+            <BreadcrumbSeparator className="text-gray-500" />
+            <BreadcrumbItem>
+              {href ? (
+                <BreadcrumbLink href={href} className="break-words text-gray-500">
+                  {label}
+                </BreadcrumbLink>
+              ) : (
+                <BreadcrumbPage className="break-words">{label}</BreadcrumbPage>
               )}
-              <BreadcrumbPage>{productName}</BreadcrumbPage>
-            </>
-          ) : segments.length === 0 && searchValue ? (
-            <>
-              <BreadcrumbSeparator />
-              <BreadcrumbPage className="break-word">{searchValue}</BreadcrumbPage>
-            </>
-          ) : (
-            segments
-              .map((segment, index) => {
-                const href = "/" + segments.slice(0, index + 1).join("/");
-                const isLast = index === segments.length - 1;
-                
-                return (
-                  <React.Fragment key={href}>
-                    <BreadcrumbItem>
-                      {isLast ? (
-                        <>
-                          <BreadcrumbSeparator />
-                          <BreadcrumbPage className="break-word">
-                            {segments?.length < 2
-                              ? searchValue
-                                ? searchValue
-                                : latinToCyrillic(segment)
-                              : latinToCyrillic(segment)}
-                          </BreadcrumbPage>
-                        </>
-                      ) : (
-                        <>
-                          <BreadcrumbSeparator className="text-gray-500" />
-                          <BreadcrumbLink
-                            href={
-                              allCategories.includes(segment)
-                                ? `/categories/${segment}`
-                                : `/${segment}${
-                                    searchValue && `?searchValue=${searchValue}`
-                                  }`
-                            }
-                            className="break-words text-gray-500"
-                          >
-                            {searchValue
-                              ? searchValue
-                              : latinToCyrillic(segment)}
-                          </BreadcrumbLink>
-                        </>
-                      )}
-                    </BreadcrumbItem>
-                  </React.Fragment>
-                );
-              })
-          )}
-        </>
+            </BreadcrumbItem>
+          </React.Fragment>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );

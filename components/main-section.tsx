@@ -30,7 +30,9 @@ const MainSection: FC<MainSectionProps> = ({
   shouldBeCategories = true,
   shouldBeModels = true,
 }) => {
-  const { data: categories = [], isLoading } = useCategories();
+  // isPending, не isLoading: у TanStack v5 isLoading на сервері false, а на
+  // першому клієнтському рендері true — скелетон ламав гідратацію.
+  const { data: categories = [], isPending } = useCategories();
   const { data: models = [] } = useModels();
   const pathname = usePathname();
   const queryParams = useParams();
@@ -71,7 +73,7 @@ const MainSection: FC<MainSectionProps> = ({
 
             {shouldBeCategories && (
               <div className="hidden lg:block h-full">
-                {isLoading ? (
+                {isPending ? (
                   <div className="w-[302px] h-[500px] rounded-md bg-[#FFFDFD]" />
                 ) : (
                   <div className="flex flex-col gap-4 h-full">

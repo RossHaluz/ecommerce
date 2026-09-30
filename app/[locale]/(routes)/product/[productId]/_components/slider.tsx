@@ -70,10 +70,14 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
             }}
             modules={[Pagination, Thumbs, Navigation]}
             parallax
-            thumbs={{ swiper: thumbsSwiper }}
+            // Лише справжня стрічка мініатюр і лише живий екземпляр: раніше головний
+            // слайдер ставив себе ж своїми thumbs, а після розмонтування Swiper
+            // отримував знищений екземпляр і валив сторінку ("Application error").
+            thumbs={{
+              swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+            }}
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
-              setThumbsSwiper(swiper);
             }}
             style={{
               display: "flex",
@@ -126,6 +130,7 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
                       className="object-contain"
                       width={500}
                       height={500}
+                      sizes="80px"
                     />
                   </SwiperSlide>
                 );

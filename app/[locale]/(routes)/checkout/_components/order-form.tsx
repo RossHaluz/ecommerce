@@ -17,7 +17,6 @@ import { FC, forwardRef, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { selectOrderItems } from "@/redux/order/selector";
 import { useRouter } from "next/navigation";
@@ -31,6 +30,7 @@ import { createOrder } from "@/actions/get-data";
 import { motion } from "framer-motion";
 import { sendGAEvent } from "@next/third-parties/google";
 import InputMask from "react-input-mask";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 const CustomInputMask = forwardRef<
   HTMLInputElement,
@@ -118,8 +118,8 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
   const [isShowSeparatios, setIsShowSeparatios] = useState(true);
   const [isShowDetachment, setIsShowDetachment] = useState(true);
   const [currentCity, setCurrentCity] = useState("");
-  const userDetails = useSelector(selectUserContactDetails);
-  const orderItems = useSelector(selectOrderItems);
+  const userDetails = useHydratedSelector(selectUserContactDetails);
+  const orderItems = useHydratedSelector(selectOrderItems);
   const router = useRouter();
   const dispatch = useDispatch();
   const cityRef = useRef<HTMLDivElement>(null);

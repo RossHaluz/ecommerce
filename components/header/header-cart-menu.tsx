@@ -1,15 +1,15 @@
 "use client";
 
-import { useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import CartIcon from "/public/images/cart.svg";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { selectOrderItems } from "@/redux/order/selector";
 import { CartPreview, useRemoveFromCart } from "@/features/cart";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 const HeaderCartMenu = () => {
-  const orderItems = useSelector(selectOrderItems);
+  const orderItems = useHydratedSelector(selectOrderItems);
   const removeFromCart = useRemoveFromCart();
   const t = useTranslations();
 

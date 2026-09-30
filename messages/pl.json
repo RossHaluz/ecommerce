@@ -59,7 +59,8 @@
     "priceDesc": "Od najdroższych",
     "chooseModel": "Wybierz model",
     "notFoundInCategory": "Nie znaleziono produktów w tej kategorii…",
-    "goToCatalog": "Przejdź do katalogu"
+    "goToCatalog": "Przejdź do katalogu",
+    "sortAriaLabel": "Sortowanie produktów"
   },
   "search": {
     "placeholder": "Nazwa lub numer katalogowy",

@@ -7,10 +7,10 @@ import { FC,  useRef, useState } from "react";
 import Image from "next/image";
 import ImageNotFound from "/public/images/image-not-found.jpg";
 import { cn } from "@/lib/utils";
-import { useSelector } from "react-redux";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
 import { nanoid } from "nanoid";
 import Arrow from "/public/images/arrow.svg";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface SlideProps {
   images: { url: string }[];
@@ -21,7 +21,7 @@ interface SlideProps {
 
 const Slider: FC<SlideProps> = ({ images, title, isMouseEnter, currentId }) => {
   const [loading, setLoading] = useState(true);
-  const currentCustomizer = useSelector(selectCurrentCustomizer);
+  const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
   const swiperRef = useRef<any>(null);
 
   return (

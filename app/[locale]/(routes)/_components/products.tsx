@@ -25,6 +25,7 @@ import { Product } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import RefreshIcon from "/public/refresh.svg";
 import Pagination from "@/components/pagination";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface ProductsProps {
   products: Product[];
@@ -48,7 +49,7 @@ const Products: FC<ProductsProps> = ({
   categoryId,
   modelId,
 }) => {
-  const currentCustomizer = useSelector(selectCurrentCustomizer);
+  const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
   const isLoading = useSelector(selectIsLoading);
   const items = useSelector(selectItems);
   const total = useSelector(selectTotalPages);

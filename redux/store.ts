@@ -72,4 +72,7 @@ export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
+// Знімок до рехідрації — те саме, що бачить сервер (див. useHydratedSelector).
+export const initialState = store.getState();
+
 export const persistor = persistStore(store);
