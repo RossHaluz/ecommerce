@@ -61,4 +61,13 @@ test.describe("серверний рендер", () => {
     // 4.6 МБ HTML був наслідком інлайну PNG у SVG-обгортці.
     expect(html.length).toBeLessThan(1_500_000);
   });
+
+  test("лого на товарі — справжнє посилання на головну ще до JS", async ({
+    request,
+    catalog,
+  }) => {
+    // Кнопка з onClick на повільному телефоні ігнорувала тап до гідратації.
+    const html = await (await request.get(`/product/${catalog.productSlug}`)).text();
+    expect(html).toMatch(/<a[^>]*aria-label="Логотип Audiparts"[^>]*href="\/\?page=1"/);
+  });
 });

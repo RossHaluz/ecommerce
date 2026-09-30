@@ -1,57 +1,49 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import queryString from "query-string";
+import { Link } from "@/i18n/routing";
 import Logo from "@/components/ui/logo";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface HeaderLogoLinkProps {
   className?: string;
 }
 
-/**
- * Клік по лого веде на головну, зберігаючи вибрану модель і сортування, якщо
- * вони були в URL (тому це не звичайний `<Link href="/">`, а `router.replace`
- * з перебудованим query). Рендериться двічі — десктоп/мобільний слот — з
- * різними класами видимості; це один компонент, а не дві копії розмітки.
- */
-const HeaderLogoLink = ({ className }: HeaderLogoLinkProps) => {
-  const router = useRouter();
+type HomeHref = { pathname: "/"; query: Record<string, string> };
+
+const HOME: HomeHref = { pathname: "/", query: { page: "1" } };
+
+const LogoAnchor = ({ className, href }: HeaderLogoLinkProps & { href: HomeHref }) => {
   const t = useTranslations("nav");
-
-  const goToHomePage = () => {
-    const queryParams = queryString.parse(window.location.search);
-    const modelId = queryParams?.modelId as string;
-    const selectSort = queryParams?.sortByPrice as string;
-
-    const url = queryString.stringifyUrl(
-      {
-        url: "/",
-        query: {
-          page: 1,
-          modelId: modelId ? modelId : null,
-          sortByPrice: selectSort ? selectSort : null,
-        },
-      },
-      { skipEmptyString: true, skipNull: true }
-    );
-
-    router.replace(url);
-  };
-
   return (
-    <Button
-      aria-label={t("logoAriaLabel")}
-      size="reset"
-      variant="ghost"
-      className={cn("py-3 cursor-pointer", className)}
-      onClick={goToHomePage}
-    >
+    <Link href={href} aria-label={t("logoAriaLabel")} className={cn("py-3", className)}>
       <Logo className="h-[34px] w-[56px]" priority />
-    </Button>
+    </Link>
   );
 };
+
+/** Зберігає вибрану модель і сортування з поточного URL. */
+const LogoWithFilters = (props: HeaderLogoLinkProps) => {
+  const params = useSearchParams();
+  const query = { ...HOME.query };
+  const modelId = params.get("modelId");
+  const sortByPrice = params.get("sortByPrice");
+  if (modelId) query.modelId = modelId;
+  if (sortByPrice) query.sortByPrice = sortByPrice;
+  return <LogoAnchor {...props} href={{ pathname: "/", query }} />;
+};
+
+/**
+ * Справжнє посилання, а не кнопка з onClick: працює ще до гідратації (на
+ * повільному телефоні тап по кнопці в ці секунди губився). Suspense-запасний
+ * варіант — те саме посилання без фільтрів, воно й потрапляє в SSR-HTML.
+ */
+const HeaderLogoLink = (props: HeaderLogoLinkProps) => (
+  <Suspense fallback={<LogoAnchor {...props} href={HOME} />}>
+    <LogoWithFilters {...props} />
+  </Suspense>
+);
 
 export default HeaderLogoLink;
