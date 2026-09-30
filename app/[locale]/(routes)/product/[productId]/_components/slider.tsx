@@ -97,7 +97,7 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
                       src={productImageUrl(item?.url) ?? ""}
                       alt={imageAlt}
                       fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 1279px) 100vw, 45vw"
                       className="object-contain"
                       priority={index === 0}
                     />

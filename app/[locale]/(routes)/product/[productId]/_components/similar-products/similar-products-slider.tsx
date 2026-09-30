@@ -60,12 +60,11 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
       <Swiper
         ref={swiperRef}
         modules={[Navigation]}
-        spaceBetween={20}
-        slidesPerView={2}
-        breakpoints={{
-          768: { slidesPerView: 3 },
-          1280: { slidesPerView: 5 },
-        }}
+        // Ширини слайдів і відступ — у CSS (див. SwiperSlide), щоб розкладка в
+        // SSR-HTML збігалась із розкладкою після ініціалізації: інакше до JS
+        // кожен слайд займав всю ширину, а потім блок стискався (CLS 0,17).
+        slidesPerView="auto"
+        spaceBetween={0}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
         }}
@@ -93,7 +92,7 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
           return (
             <SwiperSlide
               key={item?.id}
-              className="border border-solid border-[#4848484D] rounded-md overflow-hidden"
+              className="mr-5 !w-[calc(50%-10px)] md:!w-[calc(33.333%-13.334px)] lg:!w-[calc(20%-16px)] border border-solid border-[#4848484D] rounded-md overflow-hidden"
             >
               <div className="flex flex-col gap-2 bg-[#FFFDFD] rounded">
                 <Link href={`/product/${item?.product_name}`} className="w-full">
@@ -102,7 +101,7 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                       src={imageUrl ?? ImageNotFound}
                       alt={item?.title || t("product.imageAlt")}
                       fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 767px) 50vw, (max-width: 1279px) 33vw, 20vw"
                       className="object-contain"
                     />
                   </div>
