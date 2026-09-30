@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Link, usePathname } from "@/i18n/routing";
 import { LOCALES, LOCALE_LABELS } from "@/i18n/locales";
 import { cn } from "@/lib/utils";
+import { switcherOptionClass } from "@/components/ui/switcher-option";
 
 interface LanguageSwitcherProps {
   className?: string;
@@ -30,13 +31,14 @@ const LanguageSwitcherLinks = ({ className }: LanguageSwitcherProps) => {
           key={code}
           href={href}
           locale={code}
-          aria-label={LOCALE_LABELS[code]}
-          className={cn("uppercase transition-colors", {
-            "text-[#c0092a]": code === locale,
-            "opacity-60 hover:opacity-100": code !== locale,
-          })}
+          // next-intl будує посилання на поточну мову з префіксом (/uk/...),
+          // сервер відповідає 307 — фоновий префетч лише марнував запит.
+          prefetch={false}
+          aria-current={code === locale ? "true" : undefined}
+          className={switcherOptionClass(code === locale)}
         >
           {code}
+          <span className="sr-only"> {LOCALE_LABELS[code]}</span>
         </Link>
       ))}
     </div>

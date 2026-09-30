@@ -17,6 +17,7 @@ const SuccessModel: FC<SuccessModelProps> = ({
   orderNumber,
 }) => {
   const t = useTranslations("successModel");
+  const tA11y = useTranslations("a11y");
 
   const closeBackdrop = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -40,18 +41,19 @@ const SuccessModel: FC<SuccessModelProps> = ({
           type="button"
           variant="ghost"
           className="absolute top-0 right-0"
+          aria-label={tA11y("close")}
           onClick={handleCloseModel}
         >
           <X size={16} />
         </Button>
         <div className="flex flex-col gap-3">
-          <h3 className="text-base font-semibold text-center">
+          <h2 className="text-base font-semibold text-center">
             {t("thanks")}
-          </h3>
+          </h2>
           {orderNumber && (
-            <h3 className="text-base font-semibold text-center">
+            <p className="text-base font-semibold text-center">
               {t("orderNumber", { number: orderNumber })}
-            </h3>
+            </p>
           )}
           <p className="text-center text-sm">{t("willContact")}</p>
         </div>

@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import type { Category } from "@/lib/types";
 
@@ -25,6 +26,7 @@ const CatalogItems: FC<CategoriesListProps> = ({
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
     {}
   );
+  const t = useTranslations("a11y");
 
   useEffect(() => {
     if (!isShowCatalog) {
@@ -53,20 +55,22 @@ const CatalogItems: FC<CategoriesListProps> = ({
         >
           {category?.name}
         </Link>
-        <Button
-          type="button"
-          variant="ghost"
-          className="p-0 h-auto"
-          onClick={() => toggleCategory(category?.id)}
-        >
-          {category.children && category.children.length > 0 && (
+        {category.children && category.children.length > 0 && (
+          <Button
+            type="button"
+            variant="ghost"
+            className="p-0 h-auto"
+            aria-label={t("toggleSubcategories")}
+            aria-expanded={Boolean(openCategories[category?.id])}
+            onClick={() => toggleCategory(category?.id)}
+          >
             <ChevronDown
               className={`transform transition-all duration-300 ${
                 openCategories[category?.id] ? "rotate-180" : "rotate-0"
               }`}
             />
-          )}
-        </Button>
+          </Button>
+        )}
 
         <div
           className={`w-full h-[1px] bg-[#c0092a] absolute -bottom-1 right-0 ${

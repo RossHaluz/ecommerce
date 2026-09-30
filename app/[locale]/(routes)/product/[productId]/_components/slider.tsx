@@ -24,6 +24,7 @@ interface SliderProps {
 
 const Slider: FC<SliderProps> = ({ images, title }) => {
   const t = useTranslations("product");
+  const tA11y = useTranslations("a11y");
   const imageAlt = title || t("imageAlt");
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const prevRef = useRef<HTMLButtonElement | null>(null);
@@ -140,6 +141,7 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
               {images?.length > 3 && (
                 <Button
                   ref={prevRef}
+                  aria-label={tA11y("previousPhoto")}
                   variant="ghost"
                   type="button"
                   className="swiper-btn-prev"
@@ -151,6 +153,7 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
               {images?.length > 3 && (
                 <Button
                   ref={nextRef}
+                  aria-label={tA11y("nextPhoto")}
                   variant="ghost"
                   type="button"
                   className="swiper-btn-next"

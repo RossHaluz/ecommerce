@@ -16,6 +16,7 @@ import Arrow from "/public/images/arrow.svg";
 import { selectOrderItems } from "@/redux/order/selector";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
+import { StockStatus } from "@/entities/product/ui/stock-status";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
 import type { Product } from "@/lib/types";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
@@ -126,15 +127,7 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                     </div>
                   </div>
 
-                  {item?.quantity === 0 ? (
-                    <span className="text-[#ffa900] text-sm font-medium text-left">
-                      {t("product.onOrder")}
-                    </span>
-                  ) : (
-                    <span className="text-[#00a046] text-sm font-medium text-left">
-                      {t("product.inStock")}
-                    </span>
-                  )}
+                  <StockStatus quantity={item?.quantity} className="text-sm" />
 
                   <div className="flex mobile_s:flex-col mobile_s:items-start mobile_m:flex-row mobile_m:items-center justify-between space-x-reverse gap-2">
                     <h3 className="text-sm font-semibold text-[#111111] text-center">

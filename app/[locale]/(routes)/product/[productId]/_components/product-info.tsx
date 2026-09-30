@@ -1,5 +1,5 @@
 "use client";
-import Available from "/public/images/available.svg";
+import { StockStatus } from "@/entities/product/ui/stock-status";
 
 import React, { FC } from "react";
 import { useTranslations } from "next-intl";
@@ -61,16 +61,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              {quantity === 0 ? (
-                <span className="text-[#ffa900] text-sm font-medium">
-                  {t("onOrder")}
-                </span>
-              ) : (
-                <div className="flex items-center gap-[6px] text-[#00a046] text-xs font-medium">
-                  <Available className="stroke-[#00a046]" />
-                  {t("inStock")}
-                </div>
-              )}
+              <StockStatus quantity={quantity} className="text-sm" withIcon />
             </div>
 
             <div className="flex flex-col gap-[15px] lg:gap-[30px] lg:flex-col-reverse">

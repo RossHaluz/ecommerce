@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { MessagesSquareIcon, Phone, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { handleClickOutside } from "@/utils/click-outside";
 import { useDispatch } from "react-redux";
 import { handleIsShowScrollUp } from "@/redux/scroll-up/slice";
@@ -16,18 +17,13 @@ import { useMounted } from "@/hooks/use-mounted";
 
 const ContactsWidget = () => {
   const pathname = usePathname();
-  const params = useParams();
-  const isHomeOrCategoryPage =
-    pathname.endsWith("/") ||
-    pathname.includes("categories") ||
-    params?.modelName;
-  const isCheckout = pathname.includes("checkout");
 
   const [isOpen, setIsOpen] = useState(false);
   const [showMore, setShowMore] = useState("");
   const widgetRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const isMobile = useIsSmallScreen(1280);
+  const t = useTranslations("a11y");
   const mounted = useMounted();
 
   useEffect(() => {
@@ -213,6 +209,8 @@ const ContactsWidget = () => {
         </div>
 
         <Button
+          aria-label={isOpen ? t("close") : t("openChat")}
+          aria-expanded={isOpen}
           onClick={() => setIsOpen((prev) => !prev)}
           className={cn(
             "p-3 rounded-full shadow-2xl border-none h-12 w-12 bg-[#c0092a] flex items-center justify-center group hover:bg-[#ffffff] transition-all duration-300",
