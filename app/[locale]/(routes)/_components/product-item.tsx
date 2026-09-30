@@ -6,7 +6,6 @@ import Link from "next/link";
 import React, { FC, useState } from "react";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
-import { useSelector } from "react-redux";
 import { selectOrderItems } from "@/redux/order/selector";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
 import { cn } from "@/lib/utils";
@@ -17,6 +16,7 @@ import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { Product } from "@/lib/types";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface ProductItemProps {
   index: number;
@@ -30,8 +30,8 @@ interface ProductItemProps {
  */
 const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
   const imageUrl = productImageUrl(item?.images?.[0]?.url);
-  const orderItems = useSelector(selectOrderItems);
-  const currentCustomizer = useSelector(selectCurrentCustomizer);
+  const orderItems = useHydratedSelector(selectOrderItems);
+  const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
   const pathname = usePathname();
   const [isMouseEnter, setIsMouseEnter] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);

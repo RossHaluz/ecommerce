@@ -4,11 +4,11 @@ import { Button } from "./ui/button";
 import { LayoutGrid, List } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { setCurrentCustomizer } from "@/redux/customizer/slice";
-import { useSelector } from "react-redux";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 const CustomizerLayout = () => {
-  const currentCustomizer = useSelector(selectCurrentCustomizer);
+  const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
   const dispatch = useDispatch();
 
   const handleSelectCustomizer = (customizer: string) => {

@@ -2,18 +2,18 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
-import { useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import { selectOrderItems } from "@/redux/order/selector";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
 import type { Product } from "@/lib/types";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface ProductBtnProps {
   item: Product;
 }
 
 const ProductBtn = ({ item }: ProductBtnProps) => {
-  const orderItems = useSelector(selectOrderItems);
+  const orderItems = useHydratedSelector(selectOrderItems);
   const addToCart = useAddToCart();
   const removeFromCart = useRemoveFromCart();
   const t = useTranslations();

@@ -12,6 +12,7 @@ import CallMe from "./call-me/call-me";
 import Image from "next/image";
 import { useIsSmallScreen } from "@/hooks/useIsSmallScreen";
 import { createPortal } from "react-dom";
+import { useMounted } from "@/hooks/use-mounted";
 
 const ContactsWidget = () => {
   const pathname = usePathname();
@@ -27,6 +28,7 @@ const ContactsWidget = () => {
   const widgetRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const isMobile = useIsSmallScreen(1280);
+  const mounted = useMounted();
 
   useEffect(() => {
     window.addEventListener(
@@ -230,7 +232,9 @@ const ContactsWidget = () => {
     </>
   );
 
-  if (typeof window === "undefined") return null;
+  // typeof window дає null на сервері, але портал на першому клієнтському
+  // рендері — розбіжність гідратації (#418) на кожній сторінці.
+  if (!mounted) return null;
   return createPortal(widget, document.body);
 };
 

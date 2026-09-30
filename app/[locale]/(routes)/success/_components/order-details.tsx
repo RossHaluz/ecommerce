@@ -1,6 +1,5 @@
 "use client";
 import { selectOrderDetails } from "@/redux/order/selector";
-import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import OrderProducts from "./order-products";
 import OrderDelivary from "./order-delivary";
@@ -11,9 +10,10 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import OrderDropClient from "./order-drop-client";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 const OrderDetails = () => {
-  const orderDetails = useSelector(selectOrderDetails);
+  const orderDetails = useHydratedSelector(selectOrderDetails);
   const formatDate =
     orderDetails && format(orderDetails?.createdAt, "dd-MM-yyyy");
   const formatTime = orderDetails && format(orderDetails?.createdAt, "HH:mm");

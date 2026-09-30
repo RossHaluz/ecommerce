@@ -9,6 +9,7 @@ import {
 } from "next-intl/server";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ToastContainer } from "react-toastify";
+import { HydrationBoundary } from "@tanstack/react-query";
 
 import "../globals.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +21,7 @@ import ReactQueryProvider from "@/components/react-query-provider";
 import ScrollToTop from "@/components/scroll-to-top";
 import ScrollUp from "@/components/scroll-up";
 import ContactsWidget from "@/components/contacts-widget";
+import { prefetchCatalog } from "@/features/catalog/prefetch-catalog";
 import {
   DEFAULT_LOCALE,
   LOCALES,
@@ -62,7 +64,7 @@ export async function generateMetadata({
           LOCALES.map((item) => [
             LOCALE_HTML_LANG[item],
             item === DEFAULT_LOCALE ? "/" : `/${item}`,
-          ])
+          ]),
         ),
         "x-default": "/",
       },
@@ -91,7 +93,10 @@ const LocaleLayout = async ({
 
   const locale = params.locale as Locale;
   setRequestLocale(locale);
-  const messages = await getMessages();
+  const [messages, catalogState] = await Promise.all([
+    getMessages(),
+    prefetchCatalog(),
+  ]);
 
   return (
     <html lang={LOCALE_HTML_LANG[locale]}>
@@ -99,14 +104,16 @@ const LocaleLayout = async ({
         <NextIntlClientProvider messages={messages}>
           <ProviderWrapper>
             <ReactQueryProvider>
-              <ScrollToTop />
-              <ScrollUp />
-              <ContactsWidget />
+              <HydrationBoundary state={catalogState}>
+                <ScrollToTop />
+                <ScrollUp />
+                <ContactsWidget />
 
-              <Header />
-              <main>{children}</main>
-              <Footer />
-              <ToastContainer />
+                <Header />
+                <main>{children}</main>
+                <Footer />
+                <ToastContainer />
+              </HydrationBoundary>
             </ReactQueryProvider>
           </ProviderWrapper>
         </NextIntlClientProvider>

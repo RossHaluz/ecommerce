@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useCategories } from "@/features/catalog";
 import { usePathname } from "next/navigation";
 import LanguageSwitcher from "@/components/language-switcher";
+import CurrencySwitcher from "@/components/currency-switcher";
 
 const Footer = () => {
   const { data: categories = [] } = useCategories();
@@ -309,7 +310,10 @@ const Footer = () => {
           {/* Soacials end */}
         </div>
 
-        <LanguageSwitcher className="justify-center md:justify-start" />
+        <div className="flex items-center justify-center gap-6 md:justify-start">
+          <CurrencySwitcher />
+          <LanguageSwitcher />
+        </div>
 
         {/* Copyright start */}
         <div className="flex flex-col gap-[15px] md:gap-12">

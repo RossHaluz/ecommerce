@@ -10,9 +10,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "./button";
-import { useSelector } from "react-redux";
 import Link from "next/link";
 import { selectOrderItems } from "@/redux/order/selector";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface ModalProps {
   children: ReactNode;
@@ -23,7 +23,7 @@ interface ModalProps {
 }
 
 const Modal: FC<ModalProps> = ({ children, title, triggetBtn }) => {
-  const orderItems = useSelector(selectOrderItems);
+  const orderItems = useHydratedSelector(selectOrderItems);
 
   return (
     <Dialog>
