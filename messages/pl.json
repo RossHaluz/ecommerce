@@ -7,6 +7,15 @@
     "showAll": "Zobacz wszystkie",
     "showMore": "Pokaż więcej"
   },
+  "a11y": {
+    "scrollToTop": "Przewiń do góry",
+    "callUs": "Zadzwoń",
+    "openChat": "Skontaktuj się z nami",
+    "close": "Zamknij",
+    "toggleSubcategories": "Pokaż podkategorie",
+    "previousPhoto": "Poprzednie zdjęcie",
+    "nextPhoto": "Następne zdjęcie"
+  },
   "nav": {
     "home": "Strona główna",
     "catalog": "Katalog",

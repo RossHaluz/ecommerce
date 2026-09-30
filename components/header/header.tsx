@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { PhoneCall } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import SearchBar from "@/components/search-bar";
 import SearchByVinCode from "@/components/search-by-vin-code/search-by-vin-code";
@@ -31,6 +32,7 @@ import CurrencySwitcher from "@/components/currency-switcher";
 const Header = () => {
   const [isShowCatalog, setIsShowCatalog] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations("a11y");
   const params = useParams();
   const shouldBeFixed =
     pathname.includes("/categories") || Boolean(params?.modelName);
@@ -58,7 +60,7 @@ const Header = () => {
             <SearchBar />
             <SearchByVinCode />
 
-            <Link href="tel:+380673834283" className="lg:hidden">
+            <Link href="tel:+380673834283" className="lg:hidden" aria-label={t("callUs")}>
               <PhoneCall className="stroke-[#FFFDFD]" />
             </Link>
 

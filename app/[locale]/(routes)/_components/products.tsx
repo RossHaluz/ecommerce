@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import ProductItem from "./product-item";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
-import { useProductList } from "@/features/catalog";
+import { useProductList, useWarmProductRoute } from "@/features/catalog";
 import { cn } from "@/lib/utils";
 import { Product } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,7 @@ const Products: FC<ProductsProps> = ({
   const pages = data.pages;
   const items = pages.flatMap((p) => p.products);
   const lastPage = pages[pages.length - 1];
+  useWarmProductRoute(items[0]?.product_name);
 
   return (
     <div className="flex flex-col gap-6 w-full">

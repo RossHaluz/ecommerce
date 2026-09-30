@@ -7,6 +7,15 @@
     "showAll": "Переглянути усі",
     "showMore": "Показати ще"
   },
+  "a11y": {
+    "scrollToTop": "Прокрутити вгору",
+    "callUs": "Зателефонувати",
+    "openChat": "Зв'язатися з нами",
+    "close": "Закрити",
+    "toggleSubcategories": "Показати підкатегорії",
+    "previousPhoto": "Попереднє фото",
+    "nextPhoto": "Наступне фото"
+  },
   "nav": {
     "home": "Головна",
     "catalog": "Каталог",
