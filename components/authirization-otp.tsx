@@ -11,7 +11,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { usePathname, useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import { useSession } from "@/features/account";
 
 const CustomInputMask = forwardRef<
   HTMLInputElement,
@@ -31,6 +31,7 @@ const AuthorizationOtp = ({
   const [code, setCode] = useState("");
   const router = useRouter();
   const pathname = usePathname();
+  const { signIn } = useSession();
 
   const nextStep = async () => {
     try {
@@ -54,8 +55,7 @@ const AuthorizationOtp = ({
         }
       );
 
-      Cookies.set("token", data?.data?.token, { expires: 7 });
-      axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
+      signIn(data?.data?.token);
 
       if (!pathname.includes("checkout")) {
         router.push("/account");

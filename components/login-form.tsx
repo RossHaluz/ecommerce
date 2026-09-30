@@ -16,8 +16,8 @@ import { Input } from "@/components/ui/input";
 import { EyeOff, Eye } from "lucide-react";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useSession } from "@/features/account";
 import { cn } from "@/lib/utils";
 
 interface LoginFormProps {
@@ -38,6 +38,7 @@ const LoginForm: FC<LoginFormProps> = ({
   anotherStylesInput = false,
   isCheckoutContactForm = false,
 }) => {
+  const { signIn } = useSession();
   const [isShow, setIsShow] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
@@ -68,8 +69,7 @@ const LoginForm: FC<LoginFormProps> = ({
         throw new Error("Користувача не знайдено");
       }
 
-      Cookies.set("token", data?.data?.token, { expires: 7 });
-      axios.defaults.headers.common.Authorization = `Bearer ${data?.data?.token}`;
+      signIn(data?.data?.token);
       if (!isCheckoutContactForm) {
         router.push("/account");
       }

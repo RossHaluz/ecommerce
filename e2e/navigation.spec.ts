@@ -17,11 +17,15 @@ const roundTrips = async (page: Page, categorySlug: string, productSlug: string)
   await page.goto(`/product/${productSlug}`);
   await page.waitForLoadState("networkidle");
   await page.goto(`/categories/${categorySlug}`);
+  // Посилання тепер є вже в SSR-HTML — чекаємо гідратації, інакше під
+  // навантаженням dev-сервера клік потрапляє у ще не "живу" сторінку.
+  await page.waitForLoadState("networkidle");
   for (let i = 0; i < 2; i++) {
     await page.locator('a[href*="/product/"]').nth(i).click();
     await expect(page).toHaveURL(/\/product\//);
     await page.goBack();
     await expect(page).toHaveURL(new RegExp(`/categories/${categorySlug}`));
+    await page.waitForLoadState("networkidle");
   }
   await expect(page.getByText("Application error")).toHaveCount(0);
 };

@@ -19,6 +19,7 @@ export const queryKeys = {
       searchParams.searchValue ?? null,
     ] as const,
   categories: () => ["categories"] as const,
+  currentUser: () => ["current-user"] as const,
   models: () => ["models"] as const,
   exchangeRate: (pair: string) => ["exchange-rate", pair] as const,
 } as const;

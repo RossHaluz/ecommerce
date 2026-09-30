@@ -1,23 +1,22 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { FC } from "react";
 import { toast } from "react-toastify";
 import Logout from "/public/images/logout.svg";
 import { useRouter } from "next/navigation";
+import { useSession } from "@/features/account";
 
 interface LogoutBtnProps {
   token: string;
 }
 
 const LogoutBtn: FC<LogoutBtnProps> = ({ token }) => {
+  const { signOut } = useSession();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      Cookies.remove("token");
-      delete axios.defaults.headers.common["Authorization"];
+      signOut();
       router.push("/");
       router.refresh();
       toast.success("Success logout");
