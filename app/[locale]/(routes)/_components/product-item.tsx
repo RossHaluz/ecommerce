@@ -18,6 +18,8 @@ import { Product } from "@/lib/types";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
+const ABOVE_THE_FOLD_ITEMS = 4;
+
 interface ProductItemProps {
   index: number;
   item: Product
@@ -79,8 +81,17 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
             src={imageUrl ?? ImageNotFound}
             alt={item?.title || t("product.imageAlt")}
             fill
-            sizes="(max-width: 768px) 100vw, 50vw"
+            // Має відповідати реальній ширині в сітці (2 кол. / 4 кол. поряд
+            // з колонкою категорій; у списку фото — 2/5 рядка), інакше браузер
+            // тягне версію у 2–4 рази більшу за потрібну.
+            sizes={
+              currentCustomizer === "list"
+                ? "(max-width: 1279px) 40vw, 25vw"
+                : "(max-width: 1279px) 50vw, 20vw"
+            }
             className="object-contain"
+            // Перше фото сітки — LCP сторінки списку; lazy відкладав саме його.
+            priority={index < ABOVE_THE_FOLD_ITEMS}
             onLoad={() => setLoading(false)}
           />
         </div>
