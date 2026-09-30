@@ -15,6 +15,7 @@ import { useIsSmallScreen } from "@/hooks/useIsSmallScreen";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { productHref } from "@/entities/product/model/product-href";
+import { StockStatus } from "@/entities/product/ui/stock-status";
 import { Product } from "@/lib/types";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
@@ -141,11 +142,7 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
           </div>
         </div>
 
-        {item?.quantity === 0 ? (
-          <span className="text-[#ffa900] font-medium">{t("product.onOrder")}</span>
-        ) : (
-          <span className="text-[#00a046] font-medium">{t("product.inStock")}</span>
-        )}
+        <StockStatus quantity={item?.quantity} />
 
         <div className="flex mobile_s:flex-col mobile_m:flex-row mobile_s:items-start mobile_m:items-center justify-between space-x-reverse gap-2">
           <h3

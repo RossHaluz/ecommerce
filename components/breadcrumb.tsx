@@ -2,6 +2,7 @@
 import React, { FC } from "react";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { Home } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,6 +22,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ productName }) => {
   const pathname = usePathname();
   const query = useSearchParams();
   const locale = useParams()?.locale as string | undefined;
+  const t = useTranslations("nav");
 
   const trail: Crumb[] = productName
     ? [
@@ -33,7 +35,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ productName }) => {
     <Breadcrumb className={cn({ hidden: pathname === "/" })}>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">
+          <BreadcrumbLink href="/" aria-label={t("home")}>
             <Home size={16} className="stroke-gray-500" />
           </BreadcrumbLink>
         </BreadcrumbItem>

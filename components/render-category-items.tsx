@@ -10,13 +10,8 @@ import { Button } from "./ui/button";
 import Arrow from "/public/images/arrow-down.svg";
 import queryString from "query-string";
 import { useParams, useRouter } from "next/navigation";
-
-interface Category {
-  name: string;
-  id: string;
-  category_name: string;
-  children?: Category[];
-}
+import { useTranslations } from "next-intl";
+import type { Category } from "@/lib/types";
 
 interface RenderCategoryItemsProps {
   categories: Category[];
@@ -31,13 +26,9 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
 }) => {
   const [openCategories, setOpenCategories] = useState<string[]>([]);
   const [currenrtModel, setCurrentModel] = useState("");
-  const [isInitialization, setIsInitialization] = useState(false);
   const router = useRouter();
   const params = useParams();
-
-  useEffect(() => {
-    setIsInitialization(true);
-  }, []);
+  const t = useTranslations("a11y");
 
   useEffect(() => {
     const model = Array.isArray(params?.modelName)
@@ -103,6 +94,8 @@ const RenderCategoryItems: FC<RenderCategoryItemsProps> = ({
             variant="ghost"
             type="button"
             className="p-0 whitespace-normal text-left"
+            aria-label={t("toggleSubcategories")}
+            aria-expanded={openCategories.includes(category.id)}
             onClick={() => toggleCategory(category.id)}
           >
             <Arrow

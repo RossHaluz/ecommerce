@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setCurrency, type DisplayCurrency } from "@/redux/customizer/slice";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { cn } from "@/lib/utils";
+import { switcherOptionClass } from "@/components/ui/switcher-option";
 
 const CURRENCIES: { code: DisplayCurrency; label: string }[] = [
   { code: "USD", label: "$" },
@@ -25,15 +26,12 @@ const CurrencySwitcher = ({ className }: CurrencySwitcherProps) => {
         <button
           key={code}
           type="button"
-          aria-label={code}
           aria-pressed={code === currency}
           onClick={() => dispatch(setCurrency(code))}
-          className={cn("transition-colors", {
-            "text-[#c0092a]": code === currency,
-            "opacity-60 hover:opacity-100": code !== currency,
-          })}
+          className={switcherOptionClass(code === currency)}
         >
           {label}
+          <span className="sr-only"> {code}</span>
         </button>
       ))}
     </div>
