@@ -3,6 +3,7 @@ import NotFoundItems from "@/components/not-found-items";
 import { getCategoryByModel, getModelDetails } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
+import { buildAlternates } from "@/lib/seo/alternates";
 import dynamic from "next/dynamic";
 import { getTranslations } from "next-intl/server";
 
@@ -12,6 +13,7 @@ const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/produ
 
 interface CategoryPageProps {
   params: {
+    locale: string;
     categoryId: string;
     modelName: string;
   };
@@ -38,6 +40,7 @@ export async function generateMetadata({
   categoryName = category?.category?.name || "Запчастини під усі моделі Audi";
 
   return {
+    alternates: buildAlternates(`/categories/${categoryId}/${modelName}`, params.locale),
     title: `Купити ${categoryName.toLowerCase()} на Audi (Ауді) ${
       model?.name
     }  за вигідною ціною в магазині Audiparts`,

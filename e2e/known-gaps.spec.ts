@@ -84,22 +84,23 @@ test.describe("відомі дефекти (фіксуємо як є)", () => {
     }
   });
 
-  test("на сторінці категорії канонікала ще немає — крок 8.1", async ({
-    request,
-    catalog,
-  }) => {
-    // Root layout дає canonical на себе, але сторінки поки не перекривають його
-    // власним шляхом, тому категорія успадковує канонікал головної. Це гірше за
-    // відсутність: Google бачить, що категорія «каноністься» на / .
-    const html = await (
-      await request.get(`/categories/${catalog.categorySlug}`)
-    ).text();
-    const canonical = html.match(/rel="canonical" href="([^"]*)"/)?.[1] ?? "";
+  /**
+   * Крок 8.1 закрито. До фіксу всі сторінки успадковували canonical головної з
+   * layout — Google вважав категорії й товари копіями головної.
+   */
+  test("кожна сторінка каноніться на саму себе", async ({ request, catalog }) => {
+    const cases: [string, string][] = [
+      [`/categories/${catalog.categorySlug}`, `/categories/${catalog.categorySlug}`],
+      [`/categories/${catalog.categorySlug}/${catalog.modelSlug}`, `/categories/${catalog.categorySlug}/${catalog.modelSlug}`],
+      [`/product/${catalog.productSlug}?from=%2Fcategories%2F${catalog.categorySlug}`, `/product/${catalog.productSlug}`],
+      [`/pl/categories/${catalog.categorySlug}`, `/pl/categories/${catalog.categorySlug}`],
+    ];
 
-    expect(
-      canonical.includes(catalog.categorySlug),
-      "Якщо тут true — сторінки почали задавати власний канонікал, крок 8.1 закрито"
-    ).toBe(false);
+    for (const [requested, expected] of cases) {
+      const html = await (await request.get(requested)).text();
+      const canonical = html.match(/rel="canonical" href="([^"]*)"/)?.[1] ?? "";
+      expect(new URL(canonical).pathname, requested).toBe(expected);
+    }
   });
 
   test("JSON-LD мікророзмітки немає — крок 8.6", async ({
