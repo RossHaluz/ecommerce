@@ -3,11 +3,16 @@ import MainSection from "@/components/main-section";
 import NotFoundItems from "@/components/not-found-items";
 import dynamic from "next/dynamic";
 import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+import { buildAlternates } from "@/lib/seo/alternates";
 
 const Products = dynamic(() => import("../_components/products"), {
   ssr: true,
 });
 
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  return { alternates: buildAlternates("/", params.locale) };
+}
 
 interface HomeProps {
   searchParams: {

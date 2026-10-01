@@ -50,25 +50,14 @@ export async function generateMetadata({
   params: { locale: string };
 }): Promise<Metadata> {
   const locale = isLocale(params.locale) ? params.locale : DEFAULT_LOCALE;
-  const path = locale === DEFAULT_LOCALE ? "" : `/${locale}`;
   const t = await getTranslations({ locale, namespace: "meta" });
 
   return {
     metadataBase: new URL(SITE_URL),
     title: t("defaultTitle"),
     description: t("defaultDescription"),
-    alternates: {
-      canonical: path || "/",
-      languages: {
-        ...Object.fromEntries(
-          LOCALES.map((item) => [
-            LOCALE_HTML_LANG[item],
-            item === DEFAULT_LOCALE ? "/" : `/${item}`,
-          ]),
-        ),
-        "x-default": "/",
-      },
-    },
+    // canonical/hreflang/og:url — лише в сторінках (buildAlternates): layout не
+    // знає шляху, і раніше всі сторінки оголошували себе копією головної.
     icons: { icon: "/favicon.ico" },
     openGraph: {
       type: "website",
@@ -76,7 +65,6 @@ export async function generateMetadata({
       title: t("defaultTitle"),
       description: t("defaultDescription"),
       locale: LOCALE_HTML_LANG[locale].replace("-", "_"),
-      url: path || "/",
     },
     twitter: { card: "summary_large_image" },
   };

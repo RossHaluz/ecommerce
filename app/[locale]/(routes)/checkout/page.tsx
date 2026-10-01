@@ -7,6 +7,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `Оформлення замовлення`,
     description: `Створюйте замовлення швидко та зручно в інтернет магазині Audiparts`,
+    // Кошик/оформлення не мають сенсу у видачі.
+    robots: { index: false, follow: true },
   };
 }
 

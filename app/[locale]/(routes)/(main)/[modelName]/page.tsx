@@ -3,6 +3,7 @@ import MainSection from "@/components/main-section";
 import NotFoundItems from "@/components/not-found-items";
 import { FC } from "react";
 import { Metadata } from "next";
+import { buildAlternates } from "@/lib/seo/alternates";
 import dynamic from "next/dynamic";
 import { getTranslations } from "next-intl/server";
 
@@ -19,6 +20,7 @@ interface HomeProps {
     sortByPrice: string;
   };
   params: {
+    locale: string;
     modelName: string;
   };
 }
@@ -33,6 +35,7 @@ export async function generateMetadata({
   title = model?.name || "Запчастини під усі моделі Audi";
 
   return {
+    alternates: buildAlternates(`/${modelName}`, params.locale),
     title: `Купити запчастини на Audi (Ауді) ${title} за вигідною ціною в магазині Audiparts`,
     description: `Купити запчастини на Audi (Ауді) ${title} в інтернет-магазині. ✓ Більше 4000 оригінальних деталей. ✓ Запчастини на Audi (Ауді) під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка протягом 2-3 днів по всій Україні.`,
   };
