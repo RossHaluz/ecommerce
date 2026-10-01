@@ -12,6 +12,7 @@ export interface Product {
   models: {
     model: Model;
   }[];
+  categories?: { categoryId: string }[];
   catalog_number: string;
   images: {
     id: string;

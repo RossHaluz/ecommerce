@@ -1,10 +1,10 @@
-import { getAllProducts, getCategories, getModels } from "@/actions/get-data";
+import { getAllProducts, getCategories } from "@/actions/get-data";
 import { MetadataRoute } from "next";
+import { categoryModelPaths, modelPaths } from "@/lib/seo/catalog-paths";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categories = await getCategories();
   const data = await getAllProducts({ pageSize: 10000 });
-  const models = await getModels();
 
   const productEntries: MetadataRoute.Sitemap =
     data?.products
@@ -25,16 +25,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${child.category_name}`,
     }));
 
-  const modelEntries: MetadataRoute.Sitemap = (models ?? []).map((model) => ({
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/${model.modelName}`,
-  }));
+  // Лише сторінки з товарами: порожні Google вважає низькоякісними дублями.
+  const products = data?.products ?? [];
+  const toEntry = (path: string) => ({ url: `${process.env.NEXT_PUBLIC_BASE_URL}${path}` });
 
-  const categoryModelEntries: MetadataRoute.Sitemap = (categories ?? []).flatMap(
-    (category) =>
-      (models ?? []).map((model) => ({
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${category.category_name}/${model.modelName}`,
-      }))
-  );
+  const modelEntries: MetadataRoute.Sitemap = modelPaths(products).map(toEntry);
+
+  const categoryModelEntries: MetadataRoute.Sitemap = categoryModelPaths(
+    products,
+    categories ?? []
+  ).map(toEntry);
 
   return [
     {
