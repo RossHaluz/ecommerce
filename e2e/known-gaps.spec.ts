@@ -103,12 +103,12 @@ test.describe("відомі дефекти (фіксуємо як є)", () => {
     }
   });
 
-  test("JSON-LD мікророзмітки немає — крок 8.6", async ({
-    request,
-    catalog,
-  }) => {
+  /** Крок 8.6 закрито для товару; категорії й хлібні крихти — ще ні. */
+  test("товар має JSON-LD Product", async ({ request, catalog }) => {
     const html = await (await request.get(`/product/${catalog.productSlug}`)).text();
+    const raw = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1];
 
-    expect(html).not.toContain("application/ld+json");
+    expect(raw, "немає JSON-LD").toBeTruthy();
+    expect(JSON.parse(raw!)).toMatchObject({ "@type": "Product" });
   });
 });
