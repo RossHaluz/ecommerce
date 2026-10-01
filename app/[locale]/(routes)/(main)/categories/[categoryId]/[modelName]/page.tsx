@@ -38,9 +38,12 @@ export async function generateMetadata({
   });
   const model = await getModelDetails(modelName);
   categoryName = category?.category?.name || "Запчастини під усі моделі Audi";
+  const isEmpty = !category?.products?.length;
 
   return {
     alternates: buildAlternates(`/categories/${categoryId}/${modelName}`, params.locale),
+    // Порожня пара — тонка сторінка: не індексуємо, але посилання з неї Google проходить.
+    ...(isEmpty && { robots: { index: false, follow: true } }),
     title: `Купити ${categoryName.toLowerCase()} на Audi (Ауді) ${
       model?.name
     }  за вигідною ціною в магазині Audiparts`,
