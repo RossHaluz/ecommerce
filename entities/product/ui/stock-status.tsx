@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import Available from "/public/images/available.svg";
 import { cn } from "@/lib/utils";
+import { isInStock } from "../model/is-in-stock";
 
 interface StockStatusProps {
   quantity: number;
@@ -16,7 +17,7 @@ interface StockStatusProps {
  */
 export const StockStatus = ({ quantity, className, withIcon = false }: StockStatusProps) => {
   const t = useTranslations("product");
-  const inStock = quantity !== 0;
+  const inStock = isInStock(quantity);
 
   return (
     <span

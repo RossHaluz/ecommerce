@@ -9,6 +9,8 @@ import { buildAlternates } from "@/lib/seo/alternates";
 import SimilarProducts from "./_components/similar-products/similar-products";
 import Breadcrumbs from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
+import { JsonLd } from "@/components/seo/json-ld";
+import { buildProductJsonLd } from "@/entities/product/model/product-json-ld";
 
 interface ProductPageProps {
   params: {
@@ -47,7 +49,12 @@ const ProductPage = async ({
       <div className="container my-6 flex flex-col gap-4">
         <Breadcrumbs productName={data?.product?.title} />
         <Separator />
-        {data?.product && <ProductInfo initialData={data?.product} />}
+        {data?.product && (
+          <>
+            <JsonLd data={buildProductJsonLd(data.product)} />
+            <ProductInfo initialData={data.product} />
+          </>
+        )}
         <Separator />
         <SimilarProducts similarProducts={similarProducts} />
       </div>
