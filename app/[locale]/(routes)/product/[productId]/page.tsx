@@ -11,6 +11,7 @@ import Breadcrumbs from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildProductJsonLd } from "@/entities/product/model/product-json-ld";
+import { buildProductMeta } from "@/entities/product/model/product-meta";
 
 interface ProductPageProps {
   params: {
@@ -24,16 +25,10 @@ export async function generateMetadata({
 }: ProductPageProps): Promise<Metadata> {
   const { productId } = params;
   const data = await getProductDetails(productId);
-  const productName = data?.product?.title || "Товар";
-  const catalog_number = data?.product?.catalog_number;
-  const models = data?.product?.models
-    ?.map((item: any) => item?.model?.name)
-    .join(", ");
 
   return {
     alternates: buildAlternates(`/product/${productId}`, params.locale),
-    title: `Купити ${productName.toLowerCase()} ${catalog_number} на Audi (Ауді) ${models} за вигідною ціною в магазині Audiparts`,
-    description: `Купити ${productName} на Audi (Ауді) ${models} в інтернет-магазині. Каталожний номер ${catalog_number} ✓ Більше 4000 оригінальних деталей. ✓ Зачастини на Audi (Ауді) під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка протягом 2-3 днів по всій Україні.`,
+    ...(data?.product && buildProductMeta(data.product)),
   };
 }
 
