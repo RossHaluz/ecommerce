@@ -1,12 +1,11 @@
 "use client";
-import Link from "next/link";
+import { Link, usePathname } from "@/i18n/routing";
 import HomeIcon from "/public/images/home-icon.svg";
 import ShopIcon from "/public/images/shop-icon.svg";
 import InfoIcon from "/public/images/info-icon.svg";
 import AccountIcon from "/public/images/account-icon.svg";
 import CatalogIcon from "/public/images/catalog-icon.svg";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "./ui/button";
@@ -34,8 +33,11 @@ const MobileSidebar = () => {
   return (
     <>
       <div className="fixed w-full bottom-0 right-0 py-3 z-[12] shadow-custom-shadow container bg-[#FFFDFD] flex items-center justify-between gap-4 lg:hidden">
+        {/* prefetch={false}: панель видно на кожній мобільній сторінці, і Next щоразу
+            тягнув 56 КБ головної, відбираючи канал у головного фото. */}
         <Link
           href="/"
+          prefetch={false}
           className={cn(
             "flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium",
             {
@@ -49,7 +51,7 @@ const MobileSidebar = () => {
                 pathname === "/" || pathname.includes("/categories"),
             })}
           />
-          Головна
+          {t("nav.home")}
         </Link>
 
         <MobileMenu
@@ -57,7 +59,7 @@ const MobileSidebar = () => {
           openBtn={
             <div className="p-0 hover:bg-transparent flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium">
               <CatalogIcon />
-              Категорії
+              {t("nav.categories")}
             </div>
           }
           setIsActive={setIsActive}
@@ -76,7 +78,6 @@ const MobileSidebar = () => {
             </Button>
           }
           title={t("nav.cart")}
-          dialogCancel={t("cart.continueShopping")}
         >
           <CartPreview
             items={orderItems}
@@ -97,7 +98,7 @@ const MobileSidebar = () => {
           openBtn={
             <div className="p-0 hover:bg-transparent flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium">
               <InfoIcon />
-              Інформація
+              {t("nav.information")}
             </div>
           }
           setIsActive={setIsActive}
@@ -108,10 +109,11 @@ const MobileSidebar = () => {
         {user ? (
           <Link
             href="/account"
+            prefetch={false}
             className="flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium"
           >
             <AccountIcon />
-            Акаунт
+            {t("nav.account")}
           </Link>
         ) : (
           <MobileMenu
@@ -119,7 +121,7 @@ const MobileSidebar = () => {
             openBtn={
               <div className="p-0 hover:bg-transparent flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium">
                 <AccountIcon />
-                Акаунт
+                {t("nav.account")}
               </div>
             }
             setIsActive={setIsActive}
