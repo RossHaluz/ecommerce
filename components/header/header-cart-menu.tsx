@@ -12,6 +12,7 @@ const HeaderCartMenu = () => {
   const orderItems = useHydratedSelector(selectOrderItems);
   const removeFromCart = useRemoveFromCart();
   const t = useTranslations();
+  const count = orderItems?.length ?? 0;
 
   return (
     <Modal
@@ -19,13 +20,12 @@ const HeaderCartMenu = () => {
         <Button
           variant="ghost"
           className="p-0 relative"
-          aria-label={t("nav.cart")}
+          // Назва мусить містити видиме число, інакше Lighthouse: label-content-name-mismatch.
+          aria-label={`${t("nav.cart")}: ${count}`}
         >
           <CartIcon className="stroke-[#FFFDFD]" />
           <div className="w-4 h-4 p-[5px] rounded-full bg-[#FFFDFD] absolute top-5 right-0 flex items-center justify-center">
-            <span className="text-[#C0092A] text-xs">
-              {orderItems?.length > 0 ? orderItems.length : 0}
-            </span>
+            <span className="text-[#C0092A] text-xs">{count}</span>
           </div>
         </Button>
       }

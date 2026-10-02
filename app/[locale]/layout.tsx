@@ -15,7 +15,7 @@ import "../globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import Header from "@/components/header";
-import Footer from "@/components/footer";
+import Footer from "@/components/footer/footer";
 import ProviderWrapper from "@/redux/provider";
 import ReactQueryProvider from "@/components/react-query-provider";
 import ScrollToTop from "@/components/scroll-to-top";

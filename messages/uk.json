@@ -77,12 +77,20 @@
     "popular": "Популярні запити",
     "nothingFound": "Нічого не знайдено"
   },
+  "footer": {
+    "copyright": "2020 Audiparts. Усі права захищені",
+    "developedBy": "Розробка сайту",
+    "writeTelegram": "Написати у Telegram"
+  },
   "contact": {
     "callMe": "Перезвоніть мені",
     "orderCall": "Замовити дзвінок",
     "address": "Адреса",
     "workingHours": "Графік роботи",
-    "phoneNumbersAriaLabel": "Номери телефонів",
+    "managers": { "ihor": "Ігор", "ivan": "Іван", "bohdan": "Богдан" },
+    "addressValue": "м. Хмельницький, вул. Молодіжна 15/1",
+    "scheduleWeekdays": "Пн-Пт: 10:00 - 19:00",
+    "scheduleWeekend": "Сб-Нд: вихідний",
     "callMeDialogThanks": "Дякуємо за Ваше звернення!",
     "callMeDialogDescription": "Є питання чи потрібна консультація? Залиште свій номер телефону і ми вам передзвонимо.",
     "callMeDialogSuccessDescription": "Найближчим часом наш консультант зв'яжеться з вами."

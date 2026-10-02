@@ -77,12 +77,20 @@
     "popular": "Popularne zapytania",
     "nothingFound": "Nic nie znaleziono"
   },
+  "footer": {
+    "copyright": "2020 Audiparts. Wszelkie prawa zastrzeżone",
+    "developedBy": "Wykonanie strony",
+    "writeTelegram": "Napisz na Telegramie"
+  },
   "contact": {
     "callMe": "Oddzwoń do mnie",
     "orderCall": "Zamów rozmowę",
     "address": "Adres",
     "workingHours": "Godziny pracy",
-    "phoneNumbersAriaLabel": "Numery telefonów",
+    "managers": { "ihor": "Ihor", "ivan": "Iwan", "bohdan": "Bohdan" },
+    "addressValue": "Chmielnicki, ul. Mołodiżna 15/1",
+    "scheduleWeekdays": "Pon.-Pt.: 10:00 - 19:00",
+    "scheduleWeekend": "Sob.-Niedz.: nieczynne",
     "callMeDialogThanks": "Dziękujemy za zgłoszenie!",
     "callMeDialogDescription": "Masz pytania lub potrzebujesz konsultacji? Zostaw swój numer telefonu, a oddzwonimy.",
     "callMeDialogSuccessDescription": "Nasz konsultant skontaktuje się z Tobą wkrótce."
