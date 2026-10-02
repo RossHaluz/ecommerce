@@ -45,7 +45,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ productName }) => {
             <BreadcrumbSeparator className="text-gray-500" />
             <BreadcrumbItem>
               {href ? (
-                <BreadcrumbLink href={href} className="break-words text-gray-500">
+                <BreadcrumbLink href={href} className="break-words text-gray-600">
                   {label}
                 </BreadcrumbLink>
               ) : (
