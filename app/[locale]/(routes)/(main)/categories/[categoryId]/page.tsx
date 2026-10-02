@@ -4,6 +4,7 @@ import { getCategories, getCategoryDetails } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo/alternates";
+import { toProductPage } from "@/features/catalog/fetch-product-page";
 import dynamic from "next/dynamic";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -56,14 +57,16 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
     getTranslations(),
   ]);
 
+  const first = toProductPage(category);
+
   return (
     <MainSection title={category?.category?.name || t("common.allPartsTitle")}>
-      {category?.products?.length ? (
+      {first.products.length ? (
         <Products
           key={categoryId}
-          products={category.products}
-          page={category.meta?.page || 1}
-          totalPages={category.meta?.totalPages || 1}
+          products={first.products}
+          page={first.page}
+          totalPages={first.totalPages}
           categoryId={categoryId}
         />
       ) : (

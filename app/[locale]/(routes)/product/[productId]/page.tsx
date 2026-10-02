@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildProductJsonLd } from "@/entities/product/model/product-json-ld";
 import { buildProductMeta } from "@/entities/product/model/product-meta";
+import { toProductCard } from "@/entities/product/model/product-card";
 
 interface ProductPageProps {
   params: {
@@ -51,7 +52,7 @@ const ProductPage = async ({
           </>
         )}
         <Separator />
-        <SimilarProducts similarProducts={similarProducts} />
+        <SimilarProducts similarProducts={(similarProducts ?? []).map(toProductCard)} />
       </div>
     </>
   );
