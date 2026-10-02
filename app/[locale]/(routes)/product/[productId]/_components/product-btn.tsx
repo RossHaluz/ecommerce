@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { useTranslations } from "next-intl";
@@ -30,15 +29,6 @@ const ProductBtn = ({ item }: ProductBtnProps) => {
           </Button>
         }
         title={t("cart.added")}
-        dialogCancel={t("cart.continueShopping")}
-        dialogAction={
-          <Link
-            href="/"
-            className="flex items-center justify-center text-white text-base font-semibold y-[10px]"
-          >
-            {t("cart.placeOrder")}
-          </Link>
-        }
       >
         <CartPreview items={orderItems} onRemove={removeFromCart} />
       </Modal>

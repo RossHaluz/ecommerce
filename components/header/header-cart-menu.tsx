@@ -30,7 +30,6 @@ const HeaderCartMenu = () => {
         </Button>
       }
       title={t("nav.cart")}
-      dialogCancel={t("cart.continueShopping")}
     >
       <CartPreview items={orderItems} onRemove={removeFromCart} />
     </Modal>

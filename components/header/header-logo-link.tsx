@@ -13,13 +13,15 @@ interface HeaderLogoLinkProps {
 
 type HomeHref = { pathname: "/"; query: Record<string, string> };
 
-const HOME: HomeHref = { pathname: "/", query: { page: "1" } };
+const HOME: HomeHref = { pathname: "/", query: {} };
 
+// prefetch={false}: лого видно на кожній сторінці, і Next щоразу тягнув 56 КБ
+// головної, відбираючи канал у головного фото на телефоні. Головна й так з кешу.
 const LogoAnchor = ({ className, href }: HeaderLogoLinkProps & { href: HomeHref }) => {
   const t = useTranslations("nav");
   return (
-    <Link href={href} aria-label={t("logoAriaLabel")} className={cn("py-3", className)}>
-      <Logo className="h-[34px] w-[56px]" priority />
+    <Link href={href} prefetch={false} aria-label={t("logoAriaLabel")} className={cn("py-3", className)}>
+      <Logo className="h-[34px] w-[56px]" />
     </Link>
   );
 };

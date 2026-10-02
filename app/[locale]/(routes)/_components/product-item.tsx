@@ -2,9 +2,10 @@
 import Modal from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import React, { FC, useState } from "react";
 import { useTranslations } from "next-intl";
+// Шлях з префіксом мови: з нього (`from`) хлібні крихти товару будують посилання.
 import { usePathname } from "next/navigation";
 import { selectOrderItems } from "@/redux/order/selector";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
@@ -20,7 +21,8 @@ import { Product } from "@/lib/types";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
-const ABOVE_THE_FOLD_ITEMS = 4;
+// Перший ряд на телефоні. Більше — і фото ділять вузький канал з LCP-фото.
+const ABOVE_THE_FOLD_ITEMS = 2;
 
 interface ProductItemProps {
   index: number;
@@ -89,13 +91,12 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
             src={imageUrl ?? ImageNotFound}
             alt={item?.title || t("product.imageAlt")}
             fill
-            // Має відповідати реальній ширині в сітці (2 кол. / 4 кол. поряд
-            // з колонкою категорій; у списку фото — 2/5 рядка), інакше браузер
-            // тягне версію у 2–4 рази більшу за потрібну.
+            // Має відповідати реальній ширині фото, а не колонки: на телефоні відступи
+            // й рамка картки з'їдають третину з 50vw (Lighthouse: 384px для показу в 138px).
             sizes={
               currentCustomizer === "list"
                 ? "(max-width: 1279px) 40vw, 25vw"
-                : "(max-width: 1279px) 50vw, 20vw"
+                : "(max-width: 767px) 33vw, (max-width: 1279px) 45vw, 20vw"
             }
             className="object-contain"
             // Перше фото сітки — LCP сторінки списку; lazy відкладав саме його.
@@ -166,15 +167,6 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
               </Button>
             }
             title={t("cart.added")}
-            dialogCancel={t("cart.continueShopping")}
-            dialogAction={
-              <Link
-                href="/"
-                className="flex items-center justify-center text-white text-base font-semibold px-[25.5px] py-[10px]"
-              >
-                {t("cart.placeOrder")}
-              </Link>
-            }
           >
             <CartPreview items={orderItems} onRemove={removeFromCart} />
           </Modal>

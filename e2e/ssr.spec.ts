@@ -68,6 +68,7 @@ test.describe("серверний рендер", () => {
   }) => {
     // Кнопка з onClick на повільному телефоні ігнорувала тап до гідратації.
     const html = await (await request.get(`/product/${catalog.productSlug}`)).text();
-    expect(html).toMatch(/<a[^>]*aria-label="Логотип Audiparts"[^>]*href="\/\?page=1"/);
+    // Просто "/": перша сторінка — типова, а ?page=1 робив окремий URL для префетчу.
+    expect(html).toMatch(/<a[^>]*aria-label="Логотип Audiparts"[^>]*href="\/"/);
   });
 });

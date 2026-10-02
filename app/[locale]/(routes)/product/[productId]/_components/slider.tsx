@@ -101,6 +101,9 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
                       sizes="(max-width: 1279px) 100vw, 45vw"
                       className="object-contain"
                       priority={index === 0}
+                      // Сусідні слайди Chrome вантажить одразу, бо вони «поруч» з екраном,
+                      // і вони ділили канал з головним фото — LCP на телефоні.
+                      fetchPriority={index === 0 ? undefined : "low"}
                     />
                   </div>
                 </SwiperSlide>

@@ -6,7 +6,7 @@ import "swiper/css/navigation";
 
 import { FC, useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 import ImageNotFound from "/public/images/image-not-found.jpg";
@@ -147,15 +147,6 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                         </Button>
                       }
                       title={t("cart.added")}
-                      dialogCancel={t("cart.continueShopping")}
-                      dialogAction={
-                        <Link
-                          href="/"
-                          className="flex items-center justify-center text-white text-base font-semibold px-[25.5px] py-[10px]"
-                        >
-                          {t("cart.placeOrder")}
-                        </Link>
-                      }
                     >
                       <CartPreview items={orderItems} onRemove={removeFromCart} />
                     </Modal>

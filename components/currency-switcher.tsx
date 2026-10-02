@@ -30,7 +30,9 @@ const CurrencySwitcher = ({ className }: CurrencySwitcherProps) => {
           onClick={() => dispatch(setCurrency(code))}
           className={switcherOptionClass(code === currency)}
         >
-          {label}
+          {/* Системний шрифт: ₴ (U+20B4) є лише в latin-ext Mulish — 26 КБ шрифту
+              на кожній сторінці заради одного символу. */}
+          <span className="font-['Arial',sans-serif]">{label}</span>
           <span className="sr-only"> {code}</span>
         </button>
       ))}
