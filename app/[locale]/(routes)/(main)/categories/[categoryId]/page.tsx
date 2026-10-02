@@ -5,7 +5,7 @@ import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo/alternates";
 import dynamic from "next/dynamic";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
@@ -15,13 +15,6 @@ interface CategoryPageProps {
   params: {
     locale: string;
     categoryId: string;
-  };
-  searchParams: {
-    page: string;
-    stockStatus?: string;
-    sortByPrice?: string;
-    searchValue?: string;
-    modelId: string;
   };
 }
 
@@ -52,60 +45,30 @@ export async function generateMetadata({
   };
 }
 
-const ProductsWrapper = async ({
-  categoryId,
-  searchParams,
-}: {
-  categoryId: string;
-  searchParams: CategoryPageProps["searchParams"];
-}) => {
-  const {
-    page = "1",
-    sortByPrice = "",
-    stockStatus,
-  } = searchParams;
-
-  const category = await getCategoryDetails({
-    categoryId,
-    page,
-    sortByPrice,
-    stockStatus,
-    pageSize: "50",
-  });
-
-
-  if (!category || !category.products || category.products.length === 0) {
-    const t = await getTranslations("filters");
-    return <NotFoundItems text={t("notFoundInCategory")} />;
-  }
-
-  return (
-    <Products
-      key={categoryId}
-      products={category.products}
-      page={category.meta?.page || 1}
-      totalPages={category.meta?.totalPages || 1}
-      searchParams={searchParams}
-      categoryId={categoryId}
-    />
-  );
-};
-
-const CategoryPage: FC<CategoryPageProps> = async ({
-  params,
-  searchParams,
-}) => {
+// searchParams навмисно не читаємо: сторінка кешується, а фільтри з адреси
+// підхоплює список у браузері (useListParams).
+const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
   const { categoryId } = params;
-
-  const category = await getCategoryDetails({
-    categoryId,
-  });
-
-  const categoryName = category?.category?.name || "Запчастини до Audi";
+  // Без цього getTranslations читає мову з headers() і сторінка стає динамічною.
+  setRequestLocale(params.locale);
+  const [category, t] = await Promise.all([
+    getCategoryDetails({ categoryId, pageSize: "50" }),
+    getTranslations(),
+  ]);
 
   return (
-    <MainSection title={categoryName} params={searchParams}>
-      <ProductsWrapper categoryId={categoryId} searchParams={searchParams} />
+    <MainSection title={category?.category?.name || t("common.allPartsTitle")}>
+      {category?.products?.length ? (
+        <Products
+          key={categoryId}
+          products={category.products}
+          page={category.meta?.page || 1}
+          totalPages={category.meta?.totalPages || 1}
+          categoryId={categoryId}
+        />
+      ) : (
+        <NotFoundItems text={t("filters.notFoundInCategory")} />
+      )}
     </MainSection>
   );
 };

@@ -2,7 +2,7 @@
 import React, { FC } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "./ui/button";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 interface NotFoundItemsProps {
   text: string;
@@ -16,7 +16,7 @@ const NotFoundItems: FC<NotFoundItemsProps> = ({ text }) => {
       <div className="p-[15px] bg-[#FFFDFD] rounded-[5px]">
         <h3 className="md:text-base text-[#484848]">{text}</h3>
       </div>
-      <Button type="button" className="mx-auto max-w-max">
+      <Button asChild className="mx-auto max-w-max">
         <Link href="/categories">{t("goToCatalog")}</Link>
       </Button>
     </div>

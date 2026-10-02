@@ -5,7 +5,8 @@
     "loading": "Wczytywanie…",
     "somethingWentWrong": "Ups, coś poszło nie tak…",
     "showAll": "Zobacz wszystkie",
-    "showMore": "Pokaż więcej"
+    "showMore": "Pokaż więcej",
+    "allPartsTitle": "Części do Audi"
   },
   "a11y": {
     "scrollToTop": "Przewiń do góry",
@@ -14,7 +15,10 @@
     "close": "Zamknij",
     "toggleSubcategories": "Pokaż podkategorie",
     "previousPhoto": "Poprzednie zdjęcie",
-    "nextPhoto": "Następne zdjęcie"
+    "nextPhoto": "Następne zdjęcie",
+    "previousPage": "Poprzednia strona",
+    "nextPage": "Następna strona",
+    "page": "Strona {number}"
   },
   "nav": {
     "home": "Strona główna",
@@ -75,7 +79,10 @@
     "placeholder": "Nazwa lub numer katalogowy",
     "byVin": "Dobór po numerze VIN",
     "popular": "Popularne zapytania",
-    "nothingFound": "Nic nie znaleziono"
+    "nothingFound": "Nic nie znaleziono",
+    "resultsTitle": "Wyniki wyszukiwania: {query}",
+    "noResults": "Nie znaleziono produktów pasujących do zapytania…",
+    "pageTitle": "Wyszukiwanie"
   },
   "footer": {
     "copyright": "2020 Audiparts. Wszelkie prawa zastrzeżone",

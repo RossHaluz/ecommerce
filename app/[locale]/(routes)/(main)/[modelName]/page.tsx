@@ -5,7 +5,7 @@ import { FC } from "react";
 import { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo/alternates";
 import dynamic from "next/dynamic";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 
 const Products = dynamic(() => import("../../_components/products"), {
@@ -13,17 +13,15 @@ const Products = dynamic(() => import("../../_components/products"), {
 });
 
 interface HomeProps {
-  searchParams: {
-    page: string;
-    searchValue: string;
-    stockStatus: string;
-    sortByPrice: string;
-  };
   params: {
     locale: string;
     modelName: string;
   };
 }
+
+// Порожній список: сторінка моделі рендериться при першому запиті й далі
+// віддається з кешу. Без цієї функції Next 14 рендерить її на кожен запит.
+export const generateStaticParams = () => [];
 
 export async function generateMetadata({
   params,
@@ -41,44 +39,32 @@ export async function generateMetadata({
   };
 }
 
-const ProductsWrapper = async ({ searchParams, params }: HomeProps) => {
-  const { page, sortByPrice, stockStatus } = searchParams;
+// searchParams навмисно не читаємо: сторінка кешується, а фільтри з адреси
+// підхоплює список у браузері (useListParams).
+const Home: FC<HomeProps> = async ({ params }) => {
   const { modelName } = params;
+  // Без цього getTranslations читає мову з headers() і сторінка стає динамічною.
+  setRequestLocale(params.locale);
+  const [products, model, t] = await Promise.all([
+    getProductsByModel({ pageSize: 52, modelName }),
+    getModelDetails(modelName),
+    getTranslations(),
+  ]);
 
-  const products = await getProductsByModel({
-    page,
-    sortByPrice,
-    stockStatus,
-    pageSize: 52,
-    modelName,
-  });
-  
-
-  if (!products || !products.products || products.products.length === 0) {
-    const t = await getTranslations("filters");
-    return <NotFoundItems text={t("notFoundInCategory")} />;
-  }
+  const title = [t("common.allPartsTitle"), model?.name].filter(Boolean).join(" ");
 
   return (
-    <Products
-      products={products?.products}
-      page={products?.meta?.page}
-      totalPages={products?.meta?.totalPages}
-      searchParams={searchParams}
-      modelId={modelName}
-    />
-  );
-};
-
-const Home: FC<HomeProps> = async ({ searchParams, params }) => {
-  const { modelName } = params;
-  const model = await getModelDetails(modelName);
-  const title = modelName
-    ? `Запчастини до Audi ${model?.name}`
-    : "Запчастини до Audi";
-  return (
-    <MainSection title={title} params={searchParams}>
-      <ProductsWrapper searchParams={searchParams} params={params} />
+    <MainSection title={title}>
+      {products?.products?.length ? (
+        <Products
+          products={products.products}
+          page={products.meta?.page}
+          totalPages={products.meta?.totalPages}
+          modelId={modelName}
+        />
+      ) : (
+        <NotFoundItems text={t("filters.notFoundInCategory")} />
+      )}
     </MainSection>
   );
 };

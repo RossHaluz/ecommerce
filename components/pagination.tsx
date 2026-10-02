@@ -1,164 +1,72 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { FC, useEffect } from "react";
+import { FC } from "react";
+import { useTranslations } from "next-intl";
 import Arrow from "/public/images/arrow.svg";
-import qs from "query-string";
 import { cn } from "@/lib/utils";
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
-  searchParams: {
-    page?: string;
-    sortByPrice?: string;
-  };
 }
 
-const Pagination: FC<PaginationProps> = ({
-  currentPage,
-  totalPages,
-  searchParams,
-}) => {
+const MAX_PAGES_TO_SHOW = 5;
+
+const visiblePages = (currentPage: number, totalPages: number) => {
+  let start = Math.max(1, currentPage - Math.floor(MAX_PAGES_TO_SHOW / 2));
+  const end = Math.min(totalPages, start + MAX_PAGES_TO_SHOW - 1);
+  start = Math.max(1, end - MAX_PAGES_TO_SHOW + 1);
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+};
+
+/** Фільтри й сортування беруться з поточної адреси — змінюється лише номер сторінки. */
+const Pagination: FC<PaginationProps> = ({ currentPage, totalPages }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { page } = searchParams;
+  const t = useTranslations("a11y");
 
-  useEffect(() => {
-    if (!page) return;
-    localStorage.setItem("currentPage", page);
-  }, [page]);
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [page]);
-
-  const handlePreviousPage = () => {
-    if (currentPage === 1) return;
-    const queryParams = qs.parse(window.location.search);
-    const sortByPrice = queryParams?.sortByPrice as string;
-    const modelId = queryParams?.modelId as string;
-    const stockStatus = queryParams.stockStatus as string;
-    const searchValue = queryParams?.searchValue as string;
-    const prevPage = currentPage - 1;
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query: {
-          page: prevPage ? prevPage : null,
-          sortByPrice: sortByPrice ? sortByPrice : null,
-          stockStatus: stockStatus ? stockStatus : null,
-          modelId: modelId ? modelId : null,
-          searchValue: searchValue ? searchValue : null,
-        },
-      },
-      { skipEmptyString: true, skipNull: true }
-    );
-
-    router.replace(url);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage === totalPages) return;
-    const queryParams = qs.parse(window.location.search);
-    const sortByPrice = queryParams?.sortByPrice as string;
-    const stockStatus = queryParams.stockStatus as string;
-    const modelId = queryParams?.modelId as string;
-    const searchValue = queryParams?.searchValue as string;
-
-    const nextPage = currentPage + 1;
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query: {
-          page: nextPage ? nextPage : null,
-          sortByPrice: sortByPrice ? sortByPrice : null,
-          stockStatus: stockStatus ? stockStatus : null,
-          modelId: modelId ? modelId : null,
-          searchValue: searchValue ? searchValue : null,
-        },
-      },
-      { skipEmptyString: true, skipNull: true }
-    );
-
-    router.replace(url);
-  };
-
-  const handlePageClick = (pageNumber: number) => {
-    const queryParams = qs.parse(window.location.search);
-    const sortByPrice = queryParams?.sortByPrice as string;
-    const stockStatus = queryParams.stockStatus as string;
-    const modelId = queryParams?.modelId as string;
-    const searchValue = queryParams?.searchValue as string;
-    const url = qs.stringifyUrl(
-      {
-        url: pathname,
-        query: {
-          page: pageNumber ? pageNumber : null,
-          sortByPrice: sortByPrice ? sortByPrice : null,
-          stockStatus: stockStatus ? stockStatus : null,
-          modelId: modelId ? modelId : null,
-          searchValue: searchValue ? searchValue : null,
-        },
-      },
-      { skipEmptyString: true, skipNull: true }
-    );
-
-    router.replace(url);
-  };
-
-  const renderPageNumbers = () => {
-    const pageNumbers = [];
-    const maxPagesToShow = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
-    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-
-    if (endPage - startPage < maxPagesToShow - 1) {
-      startPage = Math.max(1, endPage - maxPagesToShow + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      const isCurrentPage = i === Number(currentPage);
-
-      pageNumbers.push(
-        <button
-          key={i}
-          className={cn(
-            "text-[#484848] flex items-center justify-center w-[30px] h-[30px]",
-            {
-              "bg-[#c0092a] text-white rounded-full": isCurrentPage,
-              "hover:bg-accent": !isCurrentPage,
-            }
-          )}
-          onClick={() => handlePageClick(i)}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    return pageNumbers;
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    const query = new URLSearchParams(window.location.search);
+    if (page === 1) query.delete("page");
+    else query.set("page", String(page));
+    const search = query.toString();
+    router.replace(search ? `${pathname}?${search}` : pathname);
   };
 
   return (
     <div className="flex items-center gap-4 mx-auto">
       <button
-        aria-label="Повередня сторінка"
+        aria-label={t("previousPage")}
         className="flex items-center gap-2 disabled:text-gray-500 hover:bg-accent px-4 py-2 rounded-md"
-        onClick={handlePreviousPage}
+        onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
         <Arrow size={24} />
       </button>
 
-      {renderPageNumbers()}
+      {visiblePages(currentPage, totalPages).map((page) => {
+        const isCurrentPage = page === currentPage;
+        return (
+          <button
+            key={page}
+            aria-label={t("page", { number: page })}
+            aria-current={isCurrentPage ? "page" : undefined}
+            className={cn("text-[#484848] flex items-center justify-center w-[30px] h-[30px]", {
+              "bg-[#c0092a] text-white rounded-full": isCurrentPage,
+              "hover:bg-accent": !isCurrentPage,
+            })}
+            onClick={() => goToPage(page)}
+          >
+            {page}
+          </button>
+        );
+      })}
 
       <button
-        aria-label="Наступна сторінка"
+        aria-label={t("nextPage")}
         className="flex items-center gap-2 disabled:text-gray-500 hover:bg-accent px-4 py-2 rounded-md"
-        onClick={handleNextPage}
+        onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
         <Arrow size={24} className="rotate-180" />

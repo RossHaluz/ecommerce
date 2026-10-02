@@ -5,7 +5,7 @@ import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo/alternates";
 import dynamic from "next/dynamic";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
@@ -17,13 +17,12 @@ interface CategoryPageProps {
     categoryId: string;
     modelName: string;
   };
-  searchParams: {
-    page?: string;
-    stockStatus: string;
-    sortByPrice?: string;
-    searchValue?: string;
-  };
 }
+
+// Порожній список: пар «категорія + модель» понад тисячу, тому не генеруємо їх
+// при збірці — Next рендерить сторінку при першому запиті й далі віддає з кешу.
+// Без цієї функції Next 14 рендерить такий маршрут на кожен запит (no-store).
+export const generateStaticParams = () => [];
 
 export async function generateMetadata({
   params,
@@ -51,63 +50,35 @@ export async function generateMetadata({
   };
 }
 
-const ProductsWrapper = async ({
-  categoryId,
-  modelName,
-  searchParams,
-}: {
-  categoryId: string;
-  modelName: string;
-  searchParams: CategoryPageProps["searchParams"];
-}) => {
-  const { page = "1", sortByPrice = "", stockStatus } = searchParams;
-
-  const category = await getCategoryByModel({
-    categoryId,
-    page,
-    sortByPrice,
-    stockStatus,
-    modelName,
-  });
-
-  if (!category || !category.products || category.products.length === 0) {
-    const t = await getTranslations("filters");
-    return <NotFoundItems text={t("notFoundInCategory")} />;
-  }
-
-  return (
-    <Products
-      products={category.products}
-      page={category.meta?.page || 1}
-      totalPages={category.meta?.totalPages || 1}
-      searchParams={{ page }}
-      modelId={modelName}
-      categoryId={categoryId}
-    />
-  );
-};
-
-const CategoryPage: FC<CategoryPageProps> = async ({
-  params,
-  searchParams,
-}) => {
+// searchParams навмисно не читаємо: сторінка кешується, а фільтри з адреси
+// підхоплює список у браузері (useListParams).
+const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
   const { categoryId, modelName } = params;
+  // Без цього getTranslations читає мову з headers() і сторінка стає динамічною.
+  setRequestLocale(params.locale);
+  const [category, model, t] = await Promise.all([
+    getCategoryByModel({ categoryId, modelName }),
+    getModelDetails(modelName),
+    getTranslations(),
+  ]);
 
-  const category = await getCategoryByModel({
-    categoryId,
-    modelName,
-  });
-
-  const categoryName = category?.category?.name || "Запчастини до Audi";
-  const model = await getModelDetails(modelName);
+  const title = [category?.category?.name || t("common.allPartsTitle"), model?.name]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <MainSection title={`${categoryName} ${model?.name}`} params={searchParams}>
-      <ProductsWrapper
-        categoryId={categoryId}
-        modelName={modelName}
-        searchParams={searchParams}
-      />
+    <MainSection title={title}>
+      {category?.products?.length ? (
+        <Products
+          products={category.products}
+          page={category.meta?.page || 1}
+          totalPages={category.meta?.totalPages || 1}
+          modelId={modelName}
+          categoryId={categoryId}
+        />
+      ) : (
+        <NotFoundItems text={t("filters.notFoundInCategory")} />
+      )}
     </MainSection>
   );
 };
