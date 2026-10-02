@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { getTranslations } from "next-intl/server";
 import { parseListParams } from "@/features/catalog/lib/list-params";
+import { toProductPage } from "@/features/catalog/fetch-product-page";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
@@ -32,6 +33,7 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
     }),
     getTranslations("search"),
   ]);
+  const first = toProductPage(data, listParams.page);
 
   return (
     <MainSection
@@ -39,12 +41,12 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
       shouldBeCategories={false}
       shouldBeModels={false}
     >
-      {data?.products?.length ? (
+      {first.products.length ? (
         <Products
           key={listParams.searchValue}
-          products={data.products}
-          page={data.meta?.page}
-          totalPages={data.meta?.totalPages}
+          products={first.products}
+          page={first.page}
+          totalPages={first.totalPages}
           renderedFor={listParams}
         />
       ) : (

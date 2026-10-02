@@ -6,6 +6,7 @@ import {
   getSearchProducts,
 } from "@/actions/get-data";
 import type { Product } from "@/lib/types";
+import { toProductCard } from "@/entities/product/model/product-card";
 import type { ProductListIdentity } from "@/lib/query-keys";
 
 export interface ProductPage {
@@ -17,8 +18,9 @@ export interface ProductPage {
 /** Те, що визначає ендпоінт списку — зрізи каталогу, а не довільні провайдери. */
 export type ProductListSource = ProductListIdentity;
 
-const toPage = (data: any, fallbackPage: number): ProductPage => ({
-  products: data?.products ?? [],
+/** Відповідь API списку → сторінка з легкими картками (і для SSR, і для «Показати ще»). */
+export const toProductPage = (data: any, fallbackPage = 1): ProductPage => ({
+  products: (data?.products ?? []).map(toProductCard),
   page: Number(data?.meta?.page ?? fallbackPage),
   totalPages: Number(data?.meta?.totalPages ?? fallbackPage),
 });
@@ -32,16 +34,16 @@ export async function fetchProductPage(
   const common = { page: String(page), sortByPrice, stockStatus };
 
   if (categoryId && modelId) {
-    return toPage(await getCategoryByModel({ ...common, categoryId, modelName: modelId, pageSize: "50" }), page);
+    return toProductPage(await getCategoryByModel({ ...common, categoryId, modelName: modelId, pageSize: "50" }), page);
   }
   if (categoryId) {
-    return toPage(await getCategoryDetails({ ...common, categoryId, pageSize: "50" }), page);
+    return toProductPage(await getCategoryDetails({ ...common, categoryId, pageSize: "50" }), page);
   }
   if (modelId) {
-    return toPage(await getProductsByModel({ ...common, modelName: modelId, searchValue, pageSize: 52 }), page);
+    return toProductPage(await getProductsByModel({ ...common, modelName: modelId, searchValue, pageSize: 52 }), page);
   }
   if (searchValue) {
-    return toPage(await getSearchProducts({ ...common, searchValue }), page);
+    return toProductPage(await getSearchProducts({ ...common, searchValue }), page);
   }
-  return toPage(await getAllProducts({ ...common, pageSize: 52 }), page);
+  return toProductPage(await getAllProducts({ ...common, pageSize: 52 }), page);
 }

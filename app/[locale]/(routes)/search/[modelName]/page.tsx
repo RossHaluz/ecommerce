@@ -6,6 +6,7 @@ import MainSection from "@/components/main-section";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { parseListParams } from "@/features/catalog/lib/list-params";
+import { toProductPage } from "@/features/catalog/fetch-product-page";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
@@ -28,6 +29,7 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams, params }) => {
     getProductsByModel({ ...listParams, page: String(listParams.page), modelName }),
     getTranslations("search"),
   ]);
+  const first = toProductPage(data, listParams.page);
 
   return (
     <MainSection
@@ -35,11 +37,11 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams, params }) => {
       shouldBeCategories={false}
       shouldBeModels={false}
     >
-      {data?.products?.length ? (
+      {first.products.length ? (
         <Products
-          products={data.products}
-          page={data.meta?.page}
-          totalPages={data.meta?.totalPages}
+          products={first.products}
+          page={first.page}
+          totalPages={first.totalPages}
           modelId={modelName}
           renderedFor={listParams}
         />

@@ -4,6 +4,7 @@ import NotFoundItems from "@/components/not-found-items";
 import { FC } from "react";
 import { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo/alternates";
+import { toProductPage } from "@/features/catalog/fetch-product-page";
 import dynamic from "next/dynamic";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -52,14 +53,15 @@ const Home: FC<HomeProps> = async ({ params }) => {
   ]);
 
   const title = [t("common.allPartsTitle"), model?.name].filter(Boolean).join(" ");
+  const first = toProductPage(products);
 
   return (
     <MainSection title={title}>
-      {products?.products?.length ? (
+      {first.products.length ? (
         <Products
-          products={products.products}
-          page={products.meta?.page}
-          totalPages={products.meta?.totalPages}
+          products={first.products}
+          page={first.page}
+          totalPages={first.totalPages}
           modelId={modelName}
         />
       ) : (
