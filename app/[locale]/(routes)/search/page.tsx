@@ -4,57 +4,51 @@ import { getSearchProducts } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { getTranslations } from "next-intl/server";
+import { parseListParams } from "@/features/catalog/lib/list-params";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
 });
 
 interface SearchPageProps {
-  searchParams: {
-    page: string;
-    stockStatus: string;
-    sortByPrice: string;
-    searchValue: string;
-    modelId: string;
-  };
+  searchParams: Record<string, string | undefined>;
 }
 
-export const metadata: Metadata = {
-  title: "Пошук",
-  robots: {
-    index: false,
-    follow: true,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("search");
+  return { title: t("pageTitle"), robots: { index: false, follow: true } };
+}
 
+/** Пошук лишається динамічним: запит і є вмістом сторінки. */
 const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
-  const { modelId, page, sortByPrice, searchValue, stockStatus } = searchParams;
-
-  const data = await getSearchProducts({
-    searchValue,
-    page,
-    stockStatus,
-    sortByPrice,
-    modelId,
-  });
+  const listParams = parseListParams(new URLSearchParams(searchParams as Record<string, string>));
+  const [data, t] = await Promise.all([
+    getSearchProducts({
+      ...listParams,
+      page: String(listParams.page),
+      searchValue: listParams.searchValue ?? "",
+      modelId: searchParams.modelId,
+    }),
+    getTranslations("search"),
+  ]);
 
   return (
     <MainSection
-      title={`Результати пошуку: ${searchValue ? searchValue : ""}`}
+      title={t("resultsTitle", { query: listParams.searchValue ?? "" })}
       shouldBeCategories={false}
       shouldBeModels={false}
-      params={searchParams}
     >
-      {data?.products && data?.products?.length > 0 ? (
+      {data?.products?.length ? (
         <Products
-          key={searchParams.searchValue}
-          products={data?.products}
-          page={data?.meta?.page}
-          totalPages={data?.meta?.totalPages}
-          searchParams={searchParams}
+          key={listParams.searchValue}
+          products={data.products}
+          page={data.meta?.page}
+          totalPages={data.meta?.totalPages}
+          renderedFor={listParams}
         />
       ) : (
-        <NotFoundItems text="Товарів які відносяться до вашого запиту не знайдено..." />
+        <NotFoundItems text={t("noResults")} />
       )}
     </MainSection>
   );

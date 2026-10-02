@@ -15,18 +15,11 @@ interface MainSectionProps {
   children: React.ReactNode;
   shouldBeCategories?: boolean;
   shouldBeModels?: boolean;
-  params: {
-    page?: string;
-    searchValue?: string;
-    sortByPrice?: string;
-    modelName?: string;
-  };
 }
 
 const MainSection: FC<MainSectionProps> = ({
   children,
   title,
-  params,
   shouldBeCategories = true,
   shouldBeModels = true,
 }) => {
@@ -66,7 +59,7 @@ const MainSection: FC<MainSectionProps> = ({
               </div>
 
               <div className="flex md:hidden items-center gap-4">
-                <SortProducts searchParams={params} />
+                <SortProducts />
                 <CustomizerLayout />
               </div>
             </div>
@@ -93,7 +86,7 @@ const MainSection: FC<MainSectionProps> = ({
               </div>
 
               <div className="hidden md:flex items-center gap-6 ml-auto">
-                <SortProducts searchParams={params} />
+                <SortProducts />
                 <CustomizerLayout />
               </div>
             </div>

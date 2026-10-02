@@ -4,58 +4,47 @@ import NotFoundItems from "@/components/not-found-items";
 import { getProductsByModel } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import { parseListParams } from "@/features/catalog/lib/list-params";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 interface SearchPageProps {
-  params: {
-    modelName: string;
-  };
-  searchParams: {
-    stockStatus: string;
-    page: string;
-    sortByPrice: string;
-    searchValue: string;
-  };
+  params: { modelName: string };
+  searchParams: Record<string, string | undefined>;
 }
 
-export const metadata: Metadata = {
-  title: "Пошук",
-  robots: {
-    index: false,
-    follow: true,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("search");
+  return { title: t("pageTitle"), robots: { index: false, follow: true } };
+}
 
+/** Пошук у межах моделі — динамічний, як і загальний пошук. */
 const SearchPage: FC<SearchPageProps> = async ({ searchParams, params }) => {
-  const { page, sortByPrice, searchValue, stockStatus } = searchParams;
   const { modelName } = params;
-
-  const data = await getProductsByModel({
-    searchValue,
-    page,
-    sortByPrice,
-    stockStatus,
-    modelName,
-  });
+  const listParams = parseListParams(new URLSearchParams(searchParams as Record<string, string>));
+  const [data, t] = await Promise.all([
+    getProductsByModel({ ...listParams, page: String(listParams.page), modelName }),
+    getTranslations("search"),
+  ]);
 
   return (
     <MainSection
-      title={`Результати пошуку: ${searchValue ? searchValue : ""}`}
+      title={t("resultsTitle", { query: listParams.searchValue ?? "" })}
       shouldBeCategories={false}
       shouldBeModels={false}
-      params={searchParams}
     >
-      {data?.products && data?.products?.length > 0 ? (
+      {data?.products?.length ? (
         <Products
-          products={data?.products}
-          page={data?.meta?.page}
-          totalPages={data?.meta?.totalPages}
-          searchParams={searchParams}
+          products={data.products}
+          page={data.meta?.page}
+          totalPages={data.meta?.totalPages}
+          modelId={modelName}
+          renderedFor={listParams}
         />
       ) : (
-        <NotFoundItems text="Товарів які відносяться до вашого запиту не знайдено..." />
+        <NotFoundItems text={t("noResults")} />
       )}
     </MainSection>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, Suspense } from "react";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { Home } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -18,18 +18,22 @@ interface BreadcrumbsProps {
   productName?: string;
 }
 
-const Breadcrumbs: FC<BreadcrumbsProps> = ({ productName }) => {
+interface QueryCrumbs {
+  from?: string | null;
+  searchValue?: string | null;
+}
+
+const BreadcrumbsView: FC<BreadcrumbsProps & QueryCrumbs> = ({ productName, from, searchValue }) => {
   const pathname = usePathname();
-  const query = useSearchParams();
   const locale = useParams()?.locale as string | undefined;
   const t = useTranslations("nav");
 
   const trail: Crumb[] = productName
     ? [
-        ...buildBreadcrumbTrail({ path: query.get("from") ?? "", locale, lastIsCurrent: false }),
+        ...buildBreadcrumbTrail({ path: from ?? "", locale, lastIsCurrent: false }),
         { label: productName, href: null },
       ]
-    : buildBreadcrumbTrail({ path: pathname, locale, searchValue: query.get("searchValue") });
+    : buildBreadcrumbTrail({ path: pathname, locale, searchValue });
 
   return (
     <Breadcrumb className={cn({ hidden: pathname === "/" })}>
@@ -58,5 +62,20 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ productName }) => {
     </Breadcrumb>
   );
 };
+
+const BreadcrumbsFromQuery: FC<BreadcrumbsProps> = (props) => {
+  const query = useSearchParams();
+  return <BreadcrumbsView {...props} from={query.get("from")} searchValue={query.get("searchValue")} />;
+};
+
+/**
+ * Власна Suspense-межа: без неї useSearchParams на кешованій сторінці віддає
+ * весь вміст найближчому fallback (у layout це «Loading..»), і HTML порожніє.
+ */
+const Breadcrumbs: FC<BreadcrumbsProps> = (props) => (
+  <Suspense fallback={<BreadcrumbsView {...props} />}>
+    <BreadcrumbsFromQuery {...props} />
+  </Suspense>
+);
 
 export default Breadcrumbs;

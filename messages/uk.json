@@ -5,7 +5,8 @@
     "loading": "Завантаження…",
     "somethingWentWrong": "Упс, щось сталось…",
     "showAll": "Переглянути усі",
-    "showMore": "Показати ще"
+    "showMore": "Показати ще",
+    "allPartsTitle": "Запчастини до Audi"
   },
   "a11y": {
     "scrollToTop": "Прокрутити вгору",
@@ -14,7 +15,10 @@
     "close": "Закрити",
     "toggleSubcategories": "Показати підкатегорії",
     "previousPhoto": "Попереднє фото",
-    "nextPhoto": "Наступне фото"
+    "nextPhoto": "Наступне фото",
+    "previousPage": "Попередня сторінка",
+    "nextPage": "Наступна сторінка",
+    "page": "Сторінка {number}"
   },
   "nav": {
     "home": "Головна",
@@ -75,7 +79,10 @@
     "placeholder": "Назва або каталожний номер",
     "byVin": "Підбір по VIN коду",
     "popular": "Популярні запити",
-    "nothingFound": "Нічого не знайдено"
+    "nothingFound": "Нічого не знайдено",
+    "resultsTitle": "Результати пошуку: {query}",
+    "noResults": "Товарів які відносяться до вашого запиту не знайдено…",
+    "pageTitle": "Пошук"
   },
   "footer": {
     "copyright": "2020 Audiparts. Усі права захищені",

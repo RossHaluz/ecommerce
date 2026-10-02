@@ -1,6 +1,6 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { FC, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import qs from "query-string";
 import { Button } from "@/components/ui/button";
 import SortIcon from "/public/images/sort-icon.svg";
@@ -11,16 +11,7 @@ import { Label } from "@/components/ui/label";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
 
-interface SortProductsProps {
-  searchParams: {
-    page?: string;
-    searchValue?: string;
-    sortByPrice?: string;
-    modelId?: string;
-  };
-}
-
-const SortProducts: FC<SortProductsProps> = ({ searchParams }) => {
+const SortProducts = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [selectSort, setSelectSort] = useState("");
