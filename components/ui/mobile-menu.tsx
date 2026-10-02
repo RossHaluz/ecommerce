@@ -79,7 +79,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
     >
       <div className="px-5 pb-2 flex flex-col gap-[10px]">
         <div className="p-4">
-          <Logo className="w-[158px] h-auto mx-auto" />
+          <Logo className="w-[158px] h-auto mx-auto" sizes="158px" />
         </div>
         <div className="flex flex-col gap-[15px]">
           <div

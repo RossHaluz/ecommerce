@@ -7,7 +7,8 @@ const LOGO_HEIGHT = 167;
 
 interface LogoProps {
   className?: string;
-  priority?: boolean;
+  /** Ширина, у якій лого показується; без неї Next віддає 640px для показу в 56px. */
+  sizes?: string;
 }
 
 /**
@@ -18,12 +19,12 @@ interface LogoProps {
  * 1.47 МБ на файл, тобто ~4.4 МБ у кожну сторінку. Тепер це звичайна картинка:
  * браузер тягне її один раз і кешує.
  */
-const Logo = ({ className, priority = false }: LogoProps) => (
+const Logo = ({ className, sizes = "56px" }: LogoProps) => (
   <Image
     src={LOGO_SRC}
     width={LOGO_WIDTH}
     height={LOGO_HEIGHT}
-    priority={priority}
+    sizes={sizes}
     alt="Audiparts — запчастини до Audi"
     className={cn("object-contain", className)}
   />
