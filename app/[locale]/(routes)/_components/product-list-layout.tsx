@@ -10,6 +10,11 @@ import { Product } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import RefreshIcon from "/public/refresh.svg";
 import Pagination from "@/components/pagination";
+import { useAfterLoad } from "@/hooks/use-after-load";
+
+// ~6 екранів телефона. Решта сторінки домальовується після завантаження: 52
+// картки одразу — це HTML, фото «біля екрана» і гідратація, що відсували перше фото.
+const FIRST_PAINT_ITEMS = 12;
 
 interface ProductListLayoutProps {
   items: Product[];
@@ -33,6 +38,8 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
 }) => {
   const t = useTranslations("common");
   const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
+  const isLoaded = useAfterLoad();
+  const visibleItems = isLoaded ? items : items.slice(0, FIRST_PAINT_ITEMS);
   useWarmProductRoute(items[0]?.product_name);
 
   return (
@@ -45,7 +52,7 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
           "opacity-60": isStale,
         })}
       >
-        {items.map((item, index) => (
+        {visibleItems.map((item, index) => (
           <ProductItem key={item.id} item={item} index={index} />
         ))}
       </ul>
