@@ -31,7 +31,8 @@ export const PhoneNumbersDropdown = () => {
       >
         {MAIN_PHONE.display}
         <ArrowDown
-          className={cn("stroke-[#FFFDFD] transform transition-all duration-300", {
+          // Колір тексту батька: біла в шапці й футері, темна в мобільному меню.
+          className={cn("stroke-current transform transition-all duration-300", {
             "rotate-180": isOpen,
           })}
         />

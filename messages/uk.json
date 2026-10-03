@@ -33,7 +33,11 @@
     "cart": "Кошик",
     "menu": "Меню",
     "socials": "Соціальні мережі",
-    "logoAriaLabel": "Логотип Audiparts"
+    "logoAriaLabel": "Логотип Audiparts",
+    "signIn": "Вхід у кабінет",
+    "goToAccount": "Перейти у кабінет",
+    "signInTitle": "Вхід до особистого кабінету",
+    "back": "Назад"
   },
   "product": {
     "buy": "Купити",
