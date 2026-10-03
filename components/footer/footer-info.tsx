@@ -1,12 +1,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { INFO_LINKS } from "@/lib/navigation/info-links";
 import { FooterSection } from "./footer-section";
-
-const INFO_LINKS = [
-  { href: "/contacts", labelKey: "contacts" },
-  { href: "/about-us", labelKey: "about" },
-  { href: "/delivary-payment", labelKey: "deliveryPayment" },
-] as const;
 
 export const FooterInfo = () => {
   const t = useTranslations("nav");

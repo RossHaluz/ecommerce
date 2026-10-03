@@ -33,7 +33,11 @@
     "cart": "Koszyk",
     "menu": "Menu",
     "socials": "Media społecznościowe",
-    "logoAriaLabel": "Logo Audiparts"
+    "logoAriaLabel": "Logo Audiparts",
+    "signIn": "Zaloguj się",
+    "goToAccount": "Przejdź do konta",
+    "signInTitle": "Logowanie do konta",
+    "back": "Wstecz"
   },
   "product": {
     "buy": "Kup",
