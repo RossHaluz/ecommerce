@@ -137,7 +137,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
             {user && user?.role === "user" ? (
               <div className="bg-[#F2F2F2] rounded-[5px] p-4 flex items-center justify-start gap-[10px] hover:bg-[#F2F2F2] text-[#484848]">
                 <User2Icon className="text-[#c0092a]" strokeWidth="0.75px" />{" "}
-                <Link href="/account" onClick={() => setIsOpen(false)}>
+                <Link href="/account" prefetch={false} onClick={() => setIsOpen(false)}>
                   Перейти у кабінет
                 </Link>
               </div>
@@ -152,13 +152,15 @@ const MobileMenu: FC<MobileMenuProps> = ({
             )}
 
             <div className="bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex flex-col gap-[30px]">
-              <Link href="/" className="text-base text-[#484848]">
+              {/* prefetch={false}: сховане меню стоїть біля правого краю екрана, і Next
+                  вважав посилання видимими — тягнув /contacts з картою (143 КБ) на кожній сторінці. */}
+              <Link href="/" prefetch={false} className="text-base text-[#484848]">
                 Про магазин
               </Link>
-              <Link href="/" className="text-base text-[#484848]">
+              <Link href="/" prefetch={false} className="text-base text-[#484848]">
                 Доставка та оплата
               </Link>
-              <Link href="/contacts" className="text-base text-[#484848]">
+              <Link href="/contacts" prefetch={false} className="text-base text-[#484848]">
                 Контакти
               </Link>
             </div>

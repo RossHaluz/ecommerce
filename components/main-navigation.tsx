@@ -37,7 +37,8 @@ const MainNavigation = () => {
     <nav className="hidden lg:flex items-center gap-[100px]">
       {routes?.map(({ id, name, href, active }) => {
         return (
-          <Link key={id} href={href}>
+          // Без префетчу: «Контакти» тягнули Google Maps (143 КБ) на кожній сторінці.
+          <Link key={id} href={href} prefetch={false}>
             {name}
           </Link>
         );
