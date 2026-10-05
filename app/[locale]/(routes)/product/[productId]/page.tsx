@@ -5,6 +5,7 @@ import {
   getSimilarProducts,
 } from "@/actions/get-data";
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 import { buildAlternates } from "@/lib/seo/alternates";
 import SimilarProducts from "./_components/similar-products/similar-products";
 import Breadcrumbs from "@/components/breadcrumb";
@@ -20,6 +21,11 @@ interface ProductPageProps {
     productId: string;
   };
 }
+
+// Порожній список: товари рендеряться при першому запиті й далі віддаються з кешу
+// (ціна/наявність оновлюються за revalidate каталогу). Без цього — рендер на кожен
+// перехід, і на повільному телефоні товар відкривався ~2 с.
+export const generateStaticParams = () => [];
 
 export async function generateMetadata({
   params,
@@ -37,8 +43,12 @@ const ProductPage = async ({
   params,
 }: ProductPageProps) => {
   const { productId } = params;
-  const data = await getProductDetails(productId);
-  const similarProducts = await getSimilarProducts(productId);
+  // Без цього getTranslations у дочірніх компонентах читає мову з headers() — сторінка стає динамічною.
+  setRequestLocale(params.locale);
+  const [data, similarProducts] = await Promise.all([
+    getProductDetails(productId),
+    getSimilarProducts(productId),
+  ]);
 
   return (
     <>
