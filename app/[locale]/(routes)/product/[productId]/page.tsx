@@ -1,9 +1,8 @@
 import React from "react";
 import ProductInfo from "./_components/product-info";
-import {
-  getProductDetails,
-  getSimilarProducts,
-} from "@/actions/get-data";
+import { getSimilarProducts } from "@/actions/get-data";
+import { fetchProductDetails } from "@/lib/api";
+import { notFoundOn404 } from "@/lib/api/not-found-on-404";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { buildAlternates } from "@/lib/seo/alternates";
@@ -31,7 +30,7 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { productId } = params;
-  const data = await getProductDetails(productId);
+  const data = await fetchProductDetails(productId).catch(notFoundOn404);
 
   return {
     alternates: buildAlternates(`/product/${productId}`, params.locale),
@@ -46,7 +45,8 @@ const ProductPage = async ({
   // Без цього getTranslations у дочірніх компонентах читає мову з headers() — сторінка стає динамічною.
   setRequestLocale(params.locale);
   const [data, similarProducts] = await Promise.all([
-    getProductDetails(productId),
+    // Проданий чи вигаданий товар — справжня 404, а не порожній каркас зі статусом 200.
+    fetchProductDetails(productId).catch(notFoundOn404),
     getSimilarProducts(productId),
   ]);
 

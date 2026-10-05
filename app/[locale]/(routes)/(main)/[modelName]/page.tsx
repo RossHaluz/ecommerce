@@ -1,4 +1,4 @@
-import { getModelDetails, getProductsByModel } from "@/actions/get-data";
+import { getProductsByModel } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import NotFoundItems from "@/components/not-found-items";
 import { FC } from "react";
@@ -7,7 +7,10 @@ import { buildAlternates } from "@/lib/seo/alternates";
 import { toProductPage } from "@/features/catalog/fetch-product-page";
 import dynamic from "next/dynamic";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-
+import { fetchModelDetails } from "@/lib/api";
+import { notFoundOn404 } from "@/lib/api/not-found-on-404";
+import { RelatedCategoryLinks } from "@/components/seo/related-category-links";
+import { getModelSeo } from "./model-seo";
 
 const Products = dynamic(() => import("../../_components/products"), {
   ssr: true,
@@ -28,16 +31,25 @@ export async function generateMetadata({
   params,
 }: HomeProps): Promise<Metadata> {
   const { modelName } = params;
+  const [model, products] = await Promise.all([
+    // Невідома адреса (/about-us) — справжня 404. Саме тут, а не в сторінці:
+    // метадані резолвляться до стрімінгу, а після loading.tsx статус уже 200.
+    fetchModelDetails(modelName).catch(notFoundOn404),
+    getProductsByModel({ pageSize: 52, modelName }),
+  ]);
+  const alternates = buildAlternates(`/${modelName}`, params.locale);
 
-  let title: string;
-  const model = await getModelDetails(modelName);
-  title = model?.name || "Запчастини під усі моделі Audi";
+  // Модель без товарів — тонка сторінка: не індексуємо, але посилання Google проходить.
+  if (!products?.products?.length) {
+    return { alternates, robots: { index: false, follow: true } };
+  }
 
-  return {
-    alternates: buildAlternates(`/${modelName}`, params.locale),
-    title: `Купити запчастини на Audi (Ауді) ${title} за вигідною ціною в магазині Audiparts`,
-    description: `Купити запчастини на Audi (Ауді) ${title} в інтернет-магазині. ✓ Більше 4000 оригінальних деталей. ✓ Запчастини на Audi (Ауді) під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка протягом 2-3 днів по всій Україні.`,
-  };
+  const seo = await getModelSeo({
+    locale: params.locale,
+    modelName: model.name,
+    productCount: products.meta?.totalProducts ?? products.products.length,
+  });
+  return { alternates, title: seo.title, description: seo.description };
 }
 
 // searchParams навмисно не читаємо: сторінка кешується, а фільтри з адреси
@@ -46,17 +58,21 @@ const Home: FC<HomeProps> = async ({ params }) => {
   const { modelName } = params;
   // Без цього getTranslations читає мову з headers() і сторінка стає динамічною.
   setRequestLocale(params.locale);
-  const [products, model, t] = await Promise.all([
+  const [model, products, t] = await Promise.all([
+    fetchModelDetails(modelName).catch(notFoundOn404),
     getProductsByModel({ pageSize: 52, modelName }),
-    getModelDetails(modelName),
     getTranslations(),
   ]);
 
-  const title = [t("common.allPartsTitle"), model?.name].filter(Boolean).join(" ");
   const first = toProductPage(products);
+  const seo = await getModelSeo({
+    locale: params.locale,
+    modelName: model.name,
+    productCount: products?.meta?.totalProducts ?? first.products.length,
+  });
 
   return (
-    <MainSection title={title}>
+    <MainSection title={seo.h1}>
       {first.products.length ? (
         <Products
           products={first.products}
@@ -66,6 +82,15 @@ const Home: FC<HomeProps> = async ({ params }) => {
         />
       ) : (
         <NotFoundItems text={t("filters.notFoundInCategory")} />
+      )}
+      {products?.related && (
+        <div className="mt-6">
+          <RelatedCategoryLinks
+            title={t("seo.modelCategoriesTitle", { model: seo.model })}
+            categories={products.related.categories}
+            modelSlug={modelName}
+          />
+        </div>
       )}
     </MainSection>
   );

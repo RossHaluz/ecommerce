@@ -42,11 +42,8 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
     <div className="flex flex-col gap-[30px]">
       <div className="grid grid-cols-1 gap-[15px] lg:grid-cols-2 lg:gap-4 items-start">
         <Slider images={images} title={title} />
-        <h1 className="text-[#484848] text-base font-bold lg:hidden">
-          {capitalizeFirstLetter(title)}
-        </h1>
         <div className="flex flex-col gap-[15px] lg:gap-4">
-          <h1 className="text-[#484848] hidden lg:inline-block font-bold text-[30px] leading-[32px]">
+          <h1 className="text-[#484848] text-base font-bold lg:text-[30px] lg:leading-[32px]">
             {capitalizeFirstLetter(title)}
           </h1>
           <div className="flex flex-col gap-[15px]">

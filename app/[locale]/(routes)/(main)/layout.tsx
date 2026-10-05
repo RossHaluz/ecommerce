@@ -1,14 +1,16 @@
 import MobileSidebar from "@/components/mobile-sidebar";
-import React, { FC, Suspense } from "react";
+import React, { FC } from "react";
 
 interface HomeLayoutProps {
   children: React.ReactNode;
 }
 
+// Без Suspense навколо сторінки (і без loading.tsx): notFound() усередині межі
+// стрімиться вже після статусу 200, і невідома адреса кешувалась як «200 + noindex».
 const HomeLayout: FC<HomeLayoutProps> = ({ children }) => {
   return (
     <>
-      <Suspense fallback={<div>Loading..</div>}>{children}</Suspense>
+      {children}
       <MobileSidebar />
     </>
   );

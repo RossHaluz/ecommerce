@@ -36,9 +36,6 @@ export const getCategoryByModel = (data: {
     pageSize: data.pageSize ?? 52,
   });
 
-export const getProductDetails = (productId: string) =>
-  api.getProductDetails(productId);
-
 export const getSimilarProducts = (productId: string) =>
   api.getSimilarProducts(productId);
 

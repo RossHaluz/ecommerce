@@ -1,12 +1,16 @@
 import React, { FC } from "react";
 import NotFoundItems from "@/components/not-found-items";
-import { getCategories, getCategoryDetails } from "@/actions/get-data";
+import { getCategories } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo/alternates";
 import { toProductPage } from "@/features/catalog/fetch-product-page";
 import dynamic from "next/dynamic";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { fetchCategoryProducts } from "@/lib/api";
+import { notFoundOn404 } from "@/lib/api/not-found-on-404";
+import { RelatedModelLinks } from "@/components/seo/related-model-links";
+import { getCategorySeo } from "./category-seo";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
@@ -31,19 +35,21 @@ export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
   const { categoryId } = params;
+  // 404 саме тут: метадані резолвляться до стрімінгу, а після loading.tsx статус уже 200.
+  // Ті самі параметри, що й у сторінки: один запит у кеші даних на обидва виклики.
+  const category = await fetchCategoryProducts({ categorySlug: categoryId, pageSize: "50" }).catch(notFoundOn404);
+  const alternates = buildAlternates(`/categories/${categoryId}`, params.locale);
 
-  let categoryName: string;
+  if (!category.products?.length) {
+    return { alternates, robots: { index: false, follow: true } };
+  }
 
-  const category = await getCategoryDetails({
-    categoryId,
+  const seo = await getCategorySeo({
+    locale: params.locale,
+    categoryName: category.category.name,
+    productCount: category.meta?.totalItem ?? category.products.length,
   });
-  categoryName = category?.category?.name || "Запчастини під усі моделі Audi";
-
-  return {
-    alternates: buildAlternates(`/categories/${categoryId}`, params.locale),
-    title: `Купити ${categoryName.toLowerCase()} на Audi (Ауді) за вигідною ціною в магазині Audiparts`,
-    description: `Купити ${categoryName} на Audi (Ауді) в інтернет-магазині. ✓ Більше 4000 оригінальних деталей. ✓ Запчастини на Audi (Ауді) під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка протягом 2-3 днів по всій Україні.`,
-  };
+  return { alternates, title: seo.title, description: seo.description };
 }
 
 // searchParams навмисно не читаємо: сторінка кешується, а фільтри з адреси
@@ -53,14 +59,19 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
   // Без цього getTranslations читає мову з headers() і сторінка стає динамічною.
   setRequestLocale(params.locale);
   const [category, t] = await Promise.all([
-    getCategoryDetails({ categoryId, pageSize: "50" }),
+    fetchCategoryProducts({ categorySlug: categoryId, pageSize: "50" }).catch(notFoundOn404),
     getTranslations(),
   ]);
 
   const first = toProductPage(category);
+  const seo = await getCategorySeo({
+    locale: params.locale,
+    categoryName: category.category.name,
+    productCount: category.meta?.totalItem ?? first.products.length,
+  });
 
   return (
-    <MainSection title={category?.category?.name || t("common.allPartsTitle")}>
+    <MainSection title={seo.h1}>
       {first.products.length ? (
         <Products
           key={categoryId}
@@ -71,6 +82,15 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
         />
       ) : (
         <NotFoundItems text={t("filters.notFoundInCategory")} />
+      )}
+      {category.related && (
+        <div className="mt-6">
+          <RelatedModelLinks
+            title={t("seo.categoryModelsTitle", { category: seo.category })}
+            models={category.related.models}
+            categorySlug={categoryId}
+          />
+        </div>
       )}
     </MainSection>
   );
