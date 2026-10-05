@@ -47,6 +47,23 @@ describe("gtag", () => {
     ]);
   });
 
+  it("starts the queue at once but appends the heavy script later, when idle", async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal("window", {
+      setTimeout: (fn: () => void, ms: number) => setTimeout(fn, ms),
+      requestIdleCallback: (fn: () => void) => setTimeout(fn, 0),
+    });
+    const { loadAnalytics } = await import("./gtag");
+
+    loadAnalytics();
+    expect(commands()).toHaveLength(2);
+    expect(appended).toHaveLength(0);
+
+    vi.runAllTimers();
+    expect(appended).toHaveLength(1);
+    vi.useRealTimers();
+  });
+
   it("pushes Arguments objects, as gtag.js requires", async () => {
     const { trackEvent } = await import("./gtag");
 
