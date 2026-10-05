@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useTranslations } from "next-intl";
 import ProductItem from "./product-item";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
@@ -10,11 +10,13 @@ import { Product } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import RefreshIcon from "/public/refresh.svg";
 import Pagination from "@/components/pagination";
-import { useAfterLoad } from "@/hooks/use-after-load";
+import { isHistoryNavigation } from "@/hooks/back-navigation";
+import { useNearViewport } from "@/hooks/use-near-viewport";
 
-// ~6 екранів телефона. Решта сторінки домальовується після завантаження: 52
-// картки одразу — це HTML, фото «біля екрана» і гідратація, що відсували перше фото.
-const FIRST_PAINT_ITEMS = 12;
+// Перший екран телефона з запасом. Решта — коли людина догортає: інакше Chrome
+// заздалегідь тягне фото «біля екрана» (25+ шт.) і вони відсувають перше фото.
+const FIRST_PAINT_ITEMS = 8;
+const EXPAND_MARGIN = "400px";
 
 interface ProductListLayoutProps {
   items: Product[];
@@ -38,8 +40,12 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
 }) => {
   const t = useTranslations("common");
   const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
-  const isLoaded = useAfterLoad();
-  const visibleItems = isLoaded ? items : items.slice(0, FIRST_PAINT_ITEMS);
+  // «Назад» до списку — одразу весь, щоб браузер відновив прокрутку на потрібну картку.
+  const [startsFull] = useState(isHistoryNavigation);
+  const [expandedByUser, setExpandedByUser] = useState(false);
+  const [sentinelRef, isNearEnd] = useNearViewport<HTMLDivElement>(EXPAND_MARGIN, !startsFull);
+  const showAll = startsFull || expandedByUser || isNearEnd || items.length <= FIRST_PAINT_ITEMS;
+  const visibleItems = showAll ? items : items.slice(0, FIRST_PAINT_ITEMS);
   useWarmProductRoute(items[0]?.product_name);
 
   return (
@@ -56,13 +62,17 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
           <ProductItem key={item.id} item={item} index={index} />
         ))}
       </ul>
+      {!showAll && <div ref={sentinelRef} aria-hidden />}
 
       <div className="flex flex-col gap-2">
         <Button
           type="button"
           className="flex items-center gap-4 max-w-max border border-solid shadow-md text-[#111111] bg-white hover:text-white mx-auto"
           disabled={!canShowMore || isFetchingMore}
-          onClick={onShowMore}
+          onClick={() => {
+            setExpandedByUser(true);
+            onShowMore?.();
+          }}
         >
           <RefreshIcon
             className={cn({
