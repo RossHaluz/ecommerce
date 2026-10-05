@@ -49,11 +49,6 @@ const MainSection: FC<MainSectionProps> = ({
               <Breadcrumbs />
             </div>
             <div className="flex items-center md:hidden gap-3 justify-between">
-              {title && (
-                <h1 className="text-[#484848] font-bold text-base hidden lg:inline-block">
-                  {title}
-                </h1>
-              )}
               <div className="md:hidden flex-1 min-w-0">
                 <SearchByStock />
               </div>

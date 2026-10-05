@@ -42,12 +42,13 @@ const HeroSlider: FC<HeroSliderProps> = ({ heroBillboards }) => {
 
               <div className="relative container w-full h-full  flex flex-col justify-center gap-[42.97px]">
                 <div className="flex flex-col  gap-7 lg:w-[656px]">
-                  <h1 className="font-bold text-[24px] text-left text-white leading-[30.12px] lg:text-[48px] lg:font-bold lg:leading-[60.24px]">
+                  {/* Не h1: H1 сторінки — заголовок каталогу, а слайдів кілька. */}
+                  <h2 className="font-bold text-[24px] text-left text-white leading-[30.12px] lg:text-[48px] lg:font-bold lg:leading-[60.24px]">
                     {item?.title}
-                  </h1>
-                  <h2 className="text-sm text-white text-left lg:text-[24px] lg:leading-[29.26px]">
-                    {item?.subtitle}
                   </h2>
+                  <p className="text-sm text-white text-left lg:text-[24px] lg:leading-[29.26px]">
+                    {item?.subtitle}
+                  </p>
                 </div>
 
                 <Button className="py-[11.5px] px-5 max-w-max cursor-pointer lg:px-[25px] lg:py-[15px] lg:text-base lg:font-semibold rounded-[5px]">
