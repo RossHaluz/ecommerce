@@ -4,6 +4,9 @@ type GtagWindow = { dataLayer?: IArguments[] };
 
 let loaded = false;
 
+const SCRIPT_DELAY_MS = 2500;
+const SCRIPT_IDLE_TIMEOUT_MS = 3000;
+
 // gtag.js читає з dataLayer саме об'єкти arguments — як у стандартному сніпеті Google.
 function gtag(..._args: unknown[]) {
   // eslint-disable-next-line prefer-rest-params
@@ -21,10 +24,19 @@ export function loadAnalytics() {
   gtag("js", new Date());
   gtag("config", GA_MEASUREMENT_ID);
 
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  document.head.appendChild(script);
+  // Черга вже є — події не губляться. Сам скрипт (~172 КБ) — трохи згодом, у простої:
+  // перша дія часто і є натисканням на товар, і на повільному інтернеті він ділив канал з переходом.
+  const append = () => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+    document.head.appendChild(script);
+  };
+  if (typeof window.requestIdleCallback === "function") {
+    window.setTimeout(() => window.requestIdleCallback(append, { timeout: SCRIPT_IDLE_TIMEOUT_MS }), SCRIPT_DELAY_MS);
+  } else {
+    append();
+  }
 }
 
 /** Подія GA4. Стає в чергу й відправиться, щойно скрипт завантажиться — не губиться. */
