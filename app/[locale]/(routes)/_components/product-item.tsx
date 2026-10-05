@@ -23,6 +23,9 @@ import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 // Перший ряд на телефоні. Більше — і фото ділять вузький канал з LCP-фото.
 const ABOVE_THE_FOLD_ITEMS = 2;
+// Перший екран телефона (3 ряди). LCP — найбільше видиме фото, і ним часто стає не
+// перше, а, скажімо, 4-те; lazy відкладав його на ~1,3 с (PageSpeed, категорія).
+const FIRST_SCREEN_ITEMS = 6;
 
 interface ProductItemProps {
   index: number;
@@ -103,6 +106,7 @@ const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
             className="object-contain"
             // Перше фото сітки — LCP сторінки списку; lazy відкладав саме його.
             priority={index < ABOVE_THE_FOLD_ITEMS}
+            loading={index >= ABOVE_THE_FOLD_ITEMS && index < FIRST_SCREEN_ITEMS ? "eager" : undefined}
             onLoad={() => setLoading(false)}
           />
         </div>
