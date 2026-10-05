@@ -1,4 +1,4 @@
-import { getModelDetails, getProductsByModel } from "@/actions/get-data";
+import { getProductsByModel } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import NotFoundItems from "@/components/not-found-items";
 import { FC } from "react";
@@ -32,13 +32,15 @@ export async function generateMetadata({
 }: HomeProps): Promise<Metadata> {
   const { modelName } = params;
   const [model, products] = await Promise.all([
-    getModelDetails(modelName),
+    // Невідома адреса (/about-us) — справжня 404. Саме тут, а не в сторінці:
+    // метадані резолвляться до стрімінгу, а після loading.tsx статус уже 200.
+    fetchModelDetails(modelName).catch(notFoundOn404),
     getProductsByModel({ pageSize: 52, modelName }),
   ]);
   const alternates = buildAlternates(`/${modelName}`, params.locale);
 
   // Модель без товарів — тонка сторінка: не індексуємо, але посилання Google проходить.
-  if (!model?.name || !products?.products?.length) {
+  if (!products?.products?.length) {
     return { alternates, robots: { index: false, follow: true } };
   }
 
@@ -57,7 +59,6 @@ const Home: FC<HomeProps> = async ({ params }) => {
   // Без цього getTranslations читає мову з headers() і сторінка стає динамічною.
   setRequestLocale(params.locale);
   const [model, products, t] = await Promise.all([
-    // Невідома адреса (/about-us) — справжня 404, а не сторінка-заглушка.
     fetchModelDetails(modelName).catch(notFoundOn404),
     getProductsByModel({ pageSize: 52, modelName }),
     getTranslations(),

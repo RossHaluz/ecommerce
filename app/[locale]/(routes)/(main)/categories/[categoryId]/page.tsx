@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import NotFoundItems from "@/components/not-found-items";
-import { getCategories, getCategoryDetails } from "@/actions/get-data";
+import { getCategories } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import type { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo/alternates";
@@ -35,11 +35,12 @@ export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
   const { categoryId } = params;
+  // 404 саме тут: метадані резолвляться до стрімінгу, а після loading.tsx статус уже 200.
   // Ті самі параметри, що й у сторінки: один запит у кеші даних на обидва виклики.
-  const category = await getCategoryDetails({ categoryId, pageSize: "50" });
+  const category = await fetchCategoryProducts({ categorySlug: categoryId, pageSize: "50" }).catch(notFoundOn404);
   const alternates = buildAlternates(`/categories/${categoryId}`, params.locale);
 
-  if (!category?.category?.name || !category.products?.length) {
+  if (!category.products?.length) {
     return { alternates, robots: { index: false, follow: true } };
   }
 
