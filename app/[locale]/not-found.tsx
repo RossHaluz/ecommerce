@@ -2,9 +2,12 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/api";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 
+// not-found не отримує params, а метадані рендеряться поза layout із setRequestLocale:
+// без явної мови next-intl читає headers(), і в кешованому маршруті 404 стає 500.
 export async function generateMetadata() {
-  const t = await getTranslations("notFound");
+  const t = await getTranslations({ locale: DEFAULT_LOCALE, namespace: "notFound" });
 
   return {
     title: `${t("metaTitle")} — Audiparts`,
