@@ -1,3 +1,4 @@
+import { formatCategoryName } from "@/lib/seo/format-category-name";
 import { LinkChips } from "./link-chips";
 
 export interface RelatedCategory {
@@ -19,7 +20,7 @@ export const RelatedCategoryLinks = ({
     title={title}
     links={categories.map((c) => ({
       href: `/categories/${c.category_name}/${modelSlug}`,
-      label: c.name.replace(/\s+/g, " ").trim(),
+      label: formatCategoryName(c.name),
     }))}
   />
 );

@@ -93,7 +93,7 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
           categorySlug={categoryId}
           modelSlug={modelName}
           categoriesTitle={t("seo.relatedCategoriesTitle", { model: seo.model })}
-          modelsTitle={t("seo.relatedModelsTitle", { category: category.category.name.replace(/\s+/g, " ").trim() })}
+          modelsTitle={t("seo.relatedModelsTitle", { category: seo.category })}
         />
       )}
     </MainSection>
