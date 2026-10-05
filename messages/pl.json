@@ -129,6 +129,13 @@
     "phoneInvalid": "Wprowadź poprawny numer w formacie +380 XXX XX XX XX",
     "phonePlaceholder": "+380 999 99 99 99"
   },
+  "seo": {
+    "categoryModelTitle": "{category} Audi {model} — kup, cena | Audiparts",
+    "categoryModelH1": "{category} Audi {model}",
+    "categoryModelDescription": "{category} do Audi {model}: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
+    "relatedCategoriesTitle": "Inne części do Audi {model}",
+    "relatedModelsTitle": "{category} do innych modeli Audi"
+  },
   "successModel": {
     "thanks": "Dziękujemy za zamówienie!",
     "orderNumber": "Twoje zamówienie nr {number}",

@@ -133,5 +133,12 @@
     "thanks": "Дякуємо за замовлення!",
     "orderNumber": "Ваше замовлення №{number}",
     "willContact": "Найближчим часом ми з Вами зв'яжемось."
+  },
+  "seo": {
+    "categoryModelTitle": "{category} Audi {model} — купити, ціна | Audiparts",
+    "categoryModelH1": "{category} Audi {model}",
+    "categoryModelDescription": "{category} для Audi {model}: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні запчастини з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",
+    "relatedCategoriesTitle": "Інші запчастини для Audi {model}",
+    "relatedModelsTitle": "{category} для інших моделей Audi"
   }
 }
