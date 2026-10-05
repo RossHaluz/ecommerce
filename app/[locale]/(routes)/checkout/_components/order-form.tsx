@@ -28,7 +28,7 @@ import { selectUserContactDetails } from "@/redux/auth/selectors";
 import { removeUserContactDetails } from "@/redux/auth/slice";
 import { createOrder } from "@/actions/get-data";
 import { motion } from "framer-motion";
-import { sendGAEvent } from "@next/third-parties/google";
+import { trackEvent } from "@/lib/analytics/gtag";
 import InputMask from "react-input-mask";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
@@ -414,7 +414,7 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
 
       const order = await createOrder(data);
 
-      sendGAEvent("event", "make_new_order", {
+      trackEvent("make_new_order", {
         items: orderItems?.map(
           (item: {
             title: string;

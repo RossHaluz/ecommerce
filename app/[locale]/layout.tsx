@@ -7,7 +7,7 @@ import {
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
-import { DeferredGoogleAnalytics } from "@/components/analytics/deferred-google-analytics";
+import { AnalyticsOnFirstInteraction } from "@/components/analytics/analytics-on-first-interaction";
 import { ToastContainer } from "react-toastify";
 import { HydrationBoundary } from "@tanstack/react-query";
 
@@ -106,7 +106,7 @@ const LocaleLayout = async ({
           </ProviderWrapper>
         </NextIntlClientProvider>
       </body>
-      <DeferredGoogleAnalytics />
+      <AnalyticsOnFirstInteraction />
     </html>
   );
 };

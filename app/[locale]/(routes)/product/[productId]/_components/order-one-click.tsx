@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
 import { createOrder } from "@/actions/get-data";
 import SuccessModel from "./success-model";
-import { sendGAEvent } from "@next/third-parties/google";
+import { trackEvent } from "@/lib/analytics/gtag";
 
 interface OrderOneClickProps {
   item: {
@@ -95,7 +95,7 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
       }
 
       setOrderNumber(order?.orderNumber);
-      sendGAEvent("event", "make_order_one_click", {
+      trackEvent("make_order_one_click", {
         item_id: item.productId,
         item_name: item.title,
         price: Number(item.price),
