@@ -13,8 +13,9 @@ import Pagination from "@/components/pagination";
 import { isHistoryNavigation } from "@/hooks/back-navigation";
 import { useNearViewport } from "@/hooks/use-near-viewport";
 
-// Перший екран телефона з запасом. Решта — коли людина догортає: інакше Chrome
-// заздалегідь тягне фото «біля екрана» (25+ шт.) і вони відсувають перше фото.
+// Перший екран телефона з запасом. Решта до lg прихована (display:none), доки людина
+// не догорне: інакше Chrome заздалегідь тягне 25+ фото «біля екрана» і вони
+// відсувають перше фото. На ПК видно все одразу — домальовування там зсувало футер (CLS).
 const FIRST_PAINT_ITEMS = 8;
 const EXPAND_MARGIN = "400px";
 
@@ -45,7 +46,6 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
   const [expandedByUser, setExpandedByUser] = useState(false);
   const [sentinelRef, isNearEnd] = useNearViewport<HTMLDivElement>(EXPAND_MARGIN, !startsFull);
   const showAll = startsFull || expandedByUser || isNearEnd || items.length <= FIRST_PAINT_ITEMS;
-  const visibleItems = showAll ? items : items.slice(0, FIRST_PAINT_ITEMS);
   useWarmProductRoute(items[0]?.product_name);
 
   return (
@@ -58,8 +58,13 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
           "opacity-60": isStale,
         })}
       >
-        {visibleItems.map((item, index) => (
-          <ProductItem key={item.id} item={item} index={index} />
+        {items.map((item, index) => (
+          <ProductItem
+            key={item.id}
+            item={item}
+            index={index}
+            className={!showAll && index >= FIRST_PAINT_ITEMS ? "max-lg:hidden" : undefined}
+          />
         ))}
       </ul>
       {!showAll && <div ref={sentinelRef} aria-hidden />}

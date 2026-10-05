@@ -26,7 +26,8 @@ const ABOVE_THE_FOLD_ITEMS = 2;
 
 interface ProductItemProps {
   index: number;
-  item: Product
+  item: Product;
+  className?: string;
 }
 
 /**
@@ -34,7 +35,7 @@ interface ProductItemProps {
  * `isMobile` / інше) — усі три рендерили той самий блок; десктопний слайдер
  * тут лишається закоментованим (не наш scope прямо зараз). Звели до однієї.
  */
-const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
+const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
   const imageUrl = productImageUrl(item?.images?.[0]?.url);
   const orderItems = useHydratedSelector(selectOrderItems);
   const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
@@ -58,7 +59,8 @@ const ProductItem: FC<ProductItemProps> = ({ item, index }) => {
         {
           "grid-cols-5 p-4 md:p-6": currentCustomizer === "list",
           "grid-cols-1": currentCustomizer === "grid",
-        }
+        },
+        className
       )}
       onMouseEnter={() => {
         setIsMouseEnter(item?.id);
