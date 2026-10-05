@@ -11,46 +11,28 @@ import { test, expect } from "./fixtures";
  * Кожен тест називає крок плану, який його перевертає.
  */
 test.describe("відомі дефекти (фіксуємо як є)", () => {
-  test("неіснуючий слаг товару віддає 200 замість 404 — крок 8.5", async ({
+  /**
+   * Крок 8.5 закрито. Раніше вигадані адреси віддавали 200 (soft 404), а
+   * /about-us і /delivary-payment з футера падали в /[modelName] і показували весь каталог.
+   */
+  test("вигадані товар, категорія, модель дають 404, футер на них не посилається", async ({
+    page,
     request,
   }) => {
-    const response = await request.get("/product/takogo-tovaru-ne-isnuye-12345");
-
-    expect(
-      response.status(),
-      "Якщо тут 404 — крок 8.5 зроблено. Онови очікування на 404."
-    ).toBe(200);
-  });
-
-  test("неіснуюча категорія віддає 200 замість 404 — крок 8.5", async ({
-    request,
-  }) => {
-    const response = await request.get("/categories/vygadana-kategoriya-12345");
-
-    expect(response.status()).toBe(200);
-  });
-
-  test("посилання футера ведуть в нікуди з кодом 200 — крок 8.5", async ({
-    request,
-  }) => {
-    // /about-us і /delivary-payment є в футері КОЖНОЇ сторінки, але таких
-    // маршрутів немає: вони падають у динамічний /[modelName].
-    //
-    // Перевіряємо саме статус, а не обсяг тексту. Довжина була слабким проксі:
-    // доки `model.name` кидав виняток на неіснуючій моделі, сторінка вмирала в
-    // error-boundary і виходила куцою. Після null-guard у шарі даних вона
-    // рендериться повністю — з fallback-заголовком, тобто стала гіршою для
-    // Google, а не кращою. Справжній дефект тут один: код 200 замість 404.
-    for (const path of ["/about-us", "/delivary-payment"]) {
-      const response = await request.get(path);
-      expect(
-        response.status(),
-        `${path}: якщо тут 404 — крок 8.5 зроблено, онови очікування`
-      ).toBe(200);
+    for (const path of [
+      "/product/takogo-tovaru-ne-isnuye-12345",
+      "/categories/vygadana-kategoriya-12345",
+      "/about-us",
+      "/delivary-payment",
+    ]) {
+      expect((await request.get(path)).status(), path).toBe(404);
     }
+    await page.goto("/");
+    await expect(page.locator('footer a[href="/about-us"], footer a[href="/delivary-payment"]')).toHaveCount(0);
   });
 
-  test("у розмітці два <h1> замість одного — крок 8.8", async ({
+  /** Крок 8.8 закрито: прихована копія H1 у MainSection прибрана. */
+  test("у розмітці рівно один <h1>", async ({
     request,
     catalog,
   }) => {
@@ -63,10 +45,7 @@ test.describe("відомі дефекти (фіксуємо як є)", () => {
     ).text();
     const markup = html.replace(/<script[\s\S]*?<\/script>/g, "");
 
-    expect(
-      (markup.match(/<h1/g) ?? []).length,
-      "Якщо тут 1 — крок 8.8 зроблено. Онови очікування."
-    ).toBe(2);
+    expect((markup.match(/<h1/g) ?? []).length).toBe(1);
   });
 
   /**
