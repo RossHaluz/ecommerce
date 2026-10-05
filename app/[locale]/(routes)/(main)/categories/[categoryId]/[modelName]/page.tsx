@@ -7,6 +7,8 @@ import { buildAlternates } from "@/lib/seo/alternates";
 import { toProductPage } from "@/features/catalog/fetch-product-page";
 import dynamic from "next/dynamic";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { RelatedLinks } from "@/components/seo/related-links";
+import { getCategoryModelSeo } from "./category-model-seo";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
@@ -29,26 +31,24 @@ export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
   const { categoryId, modelName } = params;
+  const [category, model] = await Promise.all([
+    getCategoryByModel({ categoryId, modelName }),
+    getModelDetails(modelName),
+  ]);
+  const alternates = buildAlternates(`/categories/${categoryId}/${modelName}`, params.locale);
 
-  let categoryName: string;
+  // Порожня пара чи невідома модель — тонка сторінка: не індексуємо, але посилання Google проходить.
+  if (!category?.products?.length || !category?.category?.name || !model?.name) {
+    return { alternates, robots: { index: false, follow: true } };
+  }
 
-  const category = await getCategoryByModel({
-    categoryId,
-    modelName,
+  const seo = await getCategoryModelSeo({
+    locale: params.locale,
+    categoryName: category.category.name,
+    modelName: model.name,
+    productCount: category.meta?.totalItem ?? category.products.length,
   });
-  const model = await getModelDetails(modelName);
-  categoryName = category?.category?.name || "Запчастини під усі моделі Audi";
-  const isEmpty = !category?.products?.length;
-
-  return {
-    alternates: buildAlternates(`/categories/${categoryId}/${modelName}`, params.locale),
-    // Порожня пара — тонка сторінка: не індексуємо, але посилання з неї Google проходить.
-    ...(isEmpty && { robots: { index: false, follow: true } }),
-    title: `Купити ${categoryName.toLowerCase()} на Audi (Ауді) ${
-      model?.name
-    }  за вигідною ціною в магазині Audiparts`,
-    description: `Купити ${categoryName}  на Audi (Ауді) ${model?.name} в інтернет-магазині. ✓ Більше 4000 оригінальних деталей. ✓ Запчастини на Audi (Ауді) під модель A4, A5, A6, A7, A8, Q5, Q7, Q8. Доставка протягом 2-3 днів по всій Україні.`,
-  };
+  return { alternates, title: seo.title, description: seo.description };
 }
 
 // searchParams навмисно не читаємо: сторінка кешується, а фільтри з адреси
@@ -63,13 +63,19 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
     getTranslations(),
   ]);
 
-  const title = [category?.category?.name || t("common.allPartsTitle"), model?.name]
-    .filter(Boolean)
-    .join(" ");
   const first = toProductPage(category);
+  const seo =
+    category?.category?.name && model?.name
+      ? await getCategoryModelSeo({
+          locale: params.locale,
+          categoryName: category.category.name,
+          modelName: model.name,
+          productCount: category.meta?.totalItem ?? first.products.length,
+        })
+      : null;
 
   return (
-    <MainSection title={title}>
+    <MainSection title={seo?.h1 ?? t("common.allPartsTitle")}>
       {first.products.length ? (
         <Products
           products={first.products}
@@ -80,6 +86,15 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
         />
       ) : (
         <NotFoundItems text={t("filters.notFoundInCategory")} />
+      )}
+      {seo && category?.related && (
+        <RelatedLinks
+          related={category.related}
+          categorySlug={categoryId}
+          modelSlug={modelName}
+          categoriesTitle={t("seo.relatedCategoriesTitle", { model: seo.model })}
+          modelsTitle={t("seo.relatedModelsTitle", { category: category.category.name.replace(/\s+/g, " ").trim() })}
+        />
       )}
     </MainSection>
   );
