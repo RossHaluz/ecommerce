@@ -21,6 +21,7 @@ import ReactQueryProvider from "@/components/react-query-provider";
 import ScrollToTop from "@/components/scroll-to-top";
 import ScrollUp from "@/components/scroll-up";
 import ContactsWidget from "@/components/contacts-widget";
+import { NavigationProgress } from "@/components/navigation-progress";
 import { prefetchCatalog } from "@/features/catalog/prefetch-catalog";
 import {
   DEFAULT_LOCALE,
@@ -93,6 +94,7 @@ const LocaleLayout = async ({
           <ProviderWrapper>
             <ReactQueryProvider>
               <HydrationBoundary state={catalogState}>
+                <NavigationProgress />
                 <ScrollToTop />
                 <ScrollUp />
                 <ContactsWidget />
