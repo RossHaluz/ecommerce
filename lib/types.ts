@@ -28,6 +28,9 @@ export interface Model {
 export interface Meta {
   page: number;
   totalPages: number;
+  /** Всього товарів у списку: totalProducts у моделі, totalItem у категорії. */
+  totalProducts?: number;
+  totalItem?: number;
 }
 export interface Category {
   id: string;

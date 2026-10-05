@@ -134,7 +134,15 @@
     "categoryModelH1": "{category} Audi {model}",
     "categoryModelDescription": "{category} do Audi {model}: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
     "relatedCategoriesTitle": "Inne części do Audi {model}",
-    "relatedModelsTitle": "{category} do innych modeli Audi"
+    "relatedModelsTitle": "{category} do innych modeli Audi",
+    "modelTitle": "Części Audi {model} — kup, cena | Audiparts",
+    "modelH1": "Części Audi {model}",
+    "modelDescription": "Części do Audi {model}: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
+    "modelCategoriesTitle": "Części Audi {model} według kategorii",
+    "categoryTitle": "{category} Audi — kup, cena | Audiparts",
+    "categoryH1": "{category} Audi",
+    "categoryDescription": "{category} do Audi: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
+    "categoryModelsTitle": "{category} według modeli Audi"
   },
   "successModel": {
     "thanks": "Dziękujemy za zamówienie!",
