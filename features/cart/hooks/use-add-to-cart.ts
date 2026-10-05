@@ -4,7 +4,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
-import { sendGAEvent } from "@next/third-parties/google";
+import { trackEvent } from "@/lib/analytics/gtag";
 import { addItemToCart } from "@/redux/order/slice";
 import type { Product } from "@/lib/types";
 
@@ -37,7 +37,7 @@ export const useAddToCart = () => {
         })
       );
 
-      sendGAEvent("event", "add_to_cart", {
+      trackEvent("add_to_cart", {
         item_id: product.id,
         item_name: product.title,
         price: Number(product.price),
