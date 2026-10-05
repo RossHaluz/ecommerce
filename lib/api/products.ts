@@ -58,22 +58,13 @@ export const getProductsByModel = (
   params: ProductListParams = {}
 ) => orNull("productsByModel", fetchProductsByModel(modelSlug, params));
 
-/**
- * Кидає `ApiError`, а не повертає null.
- *
- * Сторінка товару мусить відрізняти «такого товару немає» від «бекенд лежить»:
- * перше — це `notFound()` і код 404, друге — сторінка помилки. Зараз обидва
- * випадки дають 200 з порожнім каркасом (крок 8.5).
- */
+/** Кидає `ApiError`: сторінка товару відрізняє «немає» (404) від «бекенд лежить» (помилка). */
 export function fetchProductDetails(productSlug: string) {
   return request<any>(ENDPOINTS.productDetails(STORE_ID, productSlug), {
     revalidate: CATALOG_TTL,
     tags: [CACHE_TAGS.product(productSlug)],
   });
 }
-
-export const getProductDetails = (productSlug: string) =>
-  orNull("productDetails", fetchProductDetails(productSlug));
 
 /** Допоміжний блок: порожній список кращий за зламану сторінку товару. */
 export const getSimilarProducts = (productSlug: string) =>
