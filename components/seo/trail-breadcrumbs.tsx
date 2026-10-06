@@ -28,12 +28,12 @@ export const TrailBreadcrumbs = ({ trail, homeLabel }: { trail: Crumb[]; homeLab
           <BreadcrumbItem>
             {href ? (
               <BreadcrumbLink asChild>
-                <Link href={href} prefetch={false} className="break-words text-gray-600">
+                <Link href={href} prefetch={false} className="text-gray-600">
                   {label}
                 </Link>
               </BreadcrumbLink>
             ) : (
-              <BreadcrumbPage className="break-words">{label}</BreadcrumbPage>
+              <BreadcrumbPage>{label}</BreadcrumbPage>
             )}
           </BreadcrumbItem>
         </Fragment>
