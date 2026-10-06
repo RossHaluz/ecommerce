@@ -55,7 +55,22 @@
     "description": "Opis",
     "readMore": "Czytaj dalej",
     "collapse": "Zwiń",
-    "negotiablePriceNote": "Cenę tego produktu skonsultuj z menedżerem."
+    "negotiablePriceNote": "Cenę tego produktu skonsultuj z menedżerem.",
+    "lastUnit": "ostatnia 1 szt.",
+    "copyCatalogNumber": "Skopiuj numer katalogowy",
+    "copied": "Skopiowano",
+    "approxUah": "≈ {price} wg kursu NBU · płatność w hrywnach",
+    "oneClickCta": "Kup w 1 klik — tylko telefon",
+    "fitsTitle": "Pasuje do",
+    "fitsHint": "Porównaj numer katalogowy {oe} ze swoją częścią lub sprawdź po VIN — to najpewniejsze.",
+    "checkByVin": "Sprawdź po numerze VIN",
+    "specsTitle": "Dane techniczne",
+    "category": "Kategoria",
+    "model": "Model",
+    "helpTitle": "Nie masz pewności, czy pasuje?",
+    "helpText": "Wyślij VIN lub zdjęcie swojej części — menedżer sprawdzi zgodność przed wysyłką.",
+    "call": "Zadzwoń",
+    "similarForModel": "Więcej do Audi {model}"
   },
   "cart": {
     "added": "Produkt dodany do koszyka!",
@@ -128,9 +143,9 @@
     "siteName": "Audiparts"
   },
   "advantages": {
-    "deliveryUkraine": "Dostawa na terenie całej Ukrainy",
+    "deliveryUkraine": "Dostawa Nova Poshta na terenie całej Ukrainy",
     "exchangeGuarantee": "Gwarancja wymiany lub zwrotu w ciągu 14 dni",
-    "securePayment": "Bezpieczna płatność online przez Monobank"
+    "securePayment": "Płatność przy odbiorze lub na kartę"
   },
   "orderOneClick": {
     "phoneRequired": "Numer telefonu jest wymagany",

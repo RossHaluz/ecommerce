@@ -55,7 +55,22 @@
     "description": "Опис",
     "readMore": "Читати далі",
     "collapse": "Згорнути",
-    "negotiablePriceNote": "Ціну до даного товару уточнюйте у менеджера."
+    "negotiablePriceNote": "Ціну до даного товару уточнюйте у менеджера.",
+    "lastUnit": "остання 1 шт.",
+    "copyCatalogNumber": "Скопіювати каталожний номер",
+    "copied": "Скопійовано",
+    "approxUah": "≈ {price} за курсом НБУ · оплата в гривнях",
+    "oneClickCta": "Купити в 1 клік — лише телефон",
+    "fitsTitle": "Підходить до",
+    "fitsHint": "Звірте каталожний номер {oe} зі своєю деталлю або перевірте за VIN — це найнадійніше.",
+    "checkByVin": "Перевірити за VIN-кодом",
+    "specsTitle": "Характеристики",
+    "category": "Категорія",
+    "model": "Модель",
+    "helpTitle": "Не впевнені, що підійде?",
+    "helpText": "Напишіть VIN або фото своєї деталі — менеджер перевірить сумісність до відправки.",
+    "call": "Дзвінок",
+    "similarForModel": "Ще для Audi {model}"
   },
   "cart": {
     "added": "Товар доданий до Вашого кошика!",
@@ -128,9 +143,9 @@
     "siteName": "Audiparts"
   },
   "advantages": {
-    "deliveryUkraine": "Доставка по всій Україні",
+    "deliveryUkraine": "Доставка Новою поштою по всій Україні",
     "exchangeGuarantee": "Гарантія обміну чи повернення протягом 14 днів",
-    "securePayment": "Безпечна online-оплата на сайті через сервіс Monobank"
+    "securePayment": "Оплата при отриманні або на картку"
   },
   "orderOneClick": {
     "phoneRequired": "Номер телефону обов'язковий",

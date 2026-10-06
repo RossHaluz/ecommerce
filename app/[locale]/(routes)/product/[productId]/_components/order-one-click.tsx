@@ -65,7 +65,7 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
     },
   });
 
-  const { isValid, isSubmitting } = form.formState;
+  const { isSubmitting } = form.formState;
   const { reset } = form;
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
@@ -110,34 +110,42 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
   return (
     <>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-start gap-3 "
-        >
-          <FormField
-            name="phone"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormControl>
-                  <CustomInputMask
-                    mask="+380 999 99 99 99"
-                    placeholder={t("phonePlaceholder")}
-                    {...field}
-                    className="w-full px-4 border rounded-md h-12"
-                  />
-                </FormControl>
-                <FormMessage className=" text-red-600 text-sm" />
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className="h-12 px-6"
-            disabled={!isValid || isSubmitting}
-          >
-            {tProduct("oneClick")}
-          </Button>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-1.5">
+          <label htmlFor="one-click-phone" className="text-sm font-bold text-[#2E2E2E]">
+            {tProduct("oneClickCta")}
+          </label>
+          <div className="flex flex-wrap items-start gap-2">
+            <FormField
+              name="phone"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex-1 min-w-[180px]">
+                  <FormControl>
+                    <CustomInputMask
+                      id="one-click-phone"
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      mask="+380 999 99 99 99"
+                      placeholder={t("phonePlaceholder")}
+                      {...field}
+                      className="w-full h-12 px-4 rounded-lg border border-[#CFCFCF] text-base"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[#A30722] text-sm" />
+                </FormItem>
+              )}
+            />
+            {/* Не вимикаємо до валідного номера: бліда кнопка читалась як зламана, помилку покаже сабміт. */}
+            <Button
+              type="submit"
+              variant="outline"
+              className="h-12 px-5 rounded-lg border-2 border-[#C0092A] text-[#C0092A] font-extrabold"
+              disabled={isSubmitting}
+            >
+              {tProduct("oneClick")}
+            </Button>
+          </div>
         </form>
       </Form>
       <SuccessModel

@@ -22,7 +22,7 @@ const ProductBtn = ({ item }: ProductBtnProps) => {
       <Modal
         triggetBtn={
           <Button
-            className="w-full md:px-14 md:py-[10px] md:max-w-max"
+            className="w-full h-[52px] lg:h-14 rounded-lg text-[17px] lg:text-lg font-extrabold"
             onClick={() => addToCart(item)}
           >
             {t("product.buy")}
