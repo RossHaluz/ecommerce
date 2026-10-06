@@ -32,6 +32,8 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
   const swiperRef = useRef<any>(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [initialImageIndex, setInitialImageIndex] = useState(0);
+  // Лічильник «1 / 4»: крапки пагінації на телефоні не кажуть, скільки фото, і їх гортали рідко.
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const onOpenGallery = (index: number) => {
     setInitialImageIndex(index);
@@ -63,8 +65,15 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
     <>
       {images?.length > 0 ? (
         <div className="flex flex-col lg:flex-row-reverse gap-[15px]">
+          <div className="relative min-w-0 flex-1">
+          {images.length > 1 && (
+            <span className="pointer-events-none absolute right-3 bottom-3 z-10 rounded-full bg-[rgba(30,30,30,0.72)] px-2.5 py-1 text-[13px] font-bold text-white">
+              {activeIndex + 1} / {images.length}
+            </span>
+          )}
           <Swiper
             ref={swiperRef}
+            onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
             pagination={{
               el: ".swiper-pagination-custom",
               dynamicBullets: true,
@@ -110,6 +119,7 @@ const Slider: FC<SliderProps> = ({ images, title }) => {
               );
             })}
           </Swiper>
+          </div>
 
           <div className="hidden lg:block">
             <Swiper

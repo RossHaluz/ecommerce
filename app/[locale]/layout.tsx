@@ -23,6 +23,7 @@ import ScrollUp from "@/components/scroll-up";
 import ContactsWidget from "@/components/contacts-widget";
 import { NavigationProgress } from "@/components/navigation-progress";
 import { prefetchCatalog } from "@/features/catalog/prefetch-catalog";
+import { SITE_URL } from "@/lib/seo/site-url";
 import {
   DEFAULT_LOCALE,
   LOCALES,
@@ -33,7 +34,6 @@ import {
 
 const mulish = Mulish({ subsets: ["latin", "cyrillic"] });
 
-const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://audiparts.com.ua";
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));

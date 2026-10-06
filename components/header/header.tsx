@@ -15,6 +15,7 @@ import HeaderAccountMenu from "./header-account-menu";
 import HeaderCartMenu from "./header-cart-menu";
 import LanguageSwitcher from "@/components/language-switcher";
 import CurrencySwitcher from "@/components/currency-switcher";
+import { MAIN_PHONE_HREF } from "@/entities/store/model/contacts";
 
 /**
  * Композиційний корінь — тільки розкладка й компонування фіч, без власної
@@ -37,6 +38,8 @@ const Header = () => {
   const shouldBeFixed =
     pathname.includes("/categories") || Boolean(params?.modelName);
   const homePage = pathname.endsWith("/");
+  // На картці товару VIN є в блоці «Підходить до», а плаваюча кнопка на телефоні закривала «Купити».
+  const isProductPage = pathname.includes("/product/");
 
   return (
     <>
@@ -58,9 +61,11 @@ const Header = () => {
             <HeaderLogoLink className="lg:hidden" />
 
             <SearchBar />
-            <SearchByVinCode />
+            <div className={isProductPage ? "hidden md:contents" : "contents"}>
+              <SearchByVinCode />
+            </div>
 
-            <Link href="tel:+380673834283" className="lg:hidden" aria-label={t("callUs")}>
+            <Link href={MAIN_PHONE_HREF} className="lg:hidden" aria-label={t("callUs")}>
               <PhoneCall className="stroke-[#FFFDFD]" />
             </Link>
 

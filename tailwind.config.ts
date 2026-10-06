@@ -7,6 +7,11 @@ const config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    // Без цих тек класи, що трапляються лише в features/ чи entities/, мовчки не потрапляли в CSS.
+    "./features/**/*.{ts,tsx}",
+    "./entities/**/*.{ts,tsx}",
+    "./redux/**/*.{ts,tsx}",
+    "./utils/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {

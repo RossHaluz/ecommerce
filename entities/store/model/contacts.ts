@@ -7,4 +7,9 @@ export const PHONE_NUMBERS = [
 
 export const MAIN_PHONE = PHONE_NUMBERS[0];
 
-export const TELEGRAM_URL = "https://t.me/+380673834283";
+const MAIN_DIGITS = MAIN_PHONE.tel.slice(1);
+
+export const MAIN_PHONE_HREF = `tel:${MAIN_PHONE.tel}`;
+export const TELEGRAM_URL = `https://t.me/+${MAIN_DIGITS}`;
+export const VIBER_URL = `https://invite.viber.com/?number=${MAIN_DIGITS}`;
+export const STORE_EMAIL = "audipartshm@gmail.com";

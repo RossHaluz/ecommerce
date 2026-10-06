@@ -55,10 +55,25 @@
     "description": "Opis",
     "readMore": "Czytaj dalej",
     "collapse": "Zwiń",
-    "negotiablePriceNote": "Cenę tego produktu skonsultuj z menedżerem."
+    "negotiablePriceNote": "Cenę tego produktu skonsultuj z menedżerem.",
+    "lastUnit": "ostatnia 1 szt.",
+    "copyCatalogNumber": "Skopiuj numer katalogowy",
+    "copied": "Skopiowano",
+    "approxUah": "≈ {price} wg kursu NBU · płatność w hrywnach",
+    "oneClickCta": "Kup w 1 klik — tylko telefon",
+    "fitsTitle": "Pasuje do",
+    "fitsHint": "Porównaj numer katalogowy <b>{oe}</b> ze swoją częścią lub sprawdź po VIN — to najpewniejsze.",
+    "checkByVin": "Sprawdź po numerze VIN",
+    "specsTitle": "Dane techniczne",
+    "category": "Kategoria",
+    "model": "Model",
+    "helpTitle": "Nie masz pewności, czy pasuje?",
+    "helpText": "Wyślij VIN lub zdjęcie swojej części — menedżer sprawdzi zgodność przed wysyłką.",
+    "call": "Zadzwoń",
+    "similarForModel": "Więcej do Audi {model}"
   },
   "cart": {
-    "added": "Produkt dodany do koszyka!",
+    "added": "Dodano do koszyka",
     "empty": "Twój koszyk jest pusty",
     "checkout": "Składanie zamówienia",
     "total": "Do zapłaty",
@@ -104,7 +119,15 @@
     "scheduleWeekend": "Sob.-Niedz.: nieczynne",
     "callMeDialogThanks": "Dziękujemy za zgłoszenie!",
     "callMeDialogDescription": "Masz pytania lub potrzebujesz konsultacji? Zostaw swój numer telefonu, a oddzwonimy.",
-    "callMeDialogSuccessDescription": "Nasz konsultant skontaktuje się z Tobą wkrótce."
+    "callMeDialogSuccessDescription": "Nasz konsultant skontaktuje się z Tobą wkrótce.",
+    "pageTitle": "Kontakt",
+    "metaTitle": "Kontakt Audiparts — sklep z częściami do Audi, Chmielnicki",
+    "metaDescription": "Telefony, Viber i Telegram menedżerów, godziny pracy i adres sklepu Audiparts w Chmielnickim. Dobierzemy część do Audi po numerze VIN.",
+    "phones": "Telefony",
+    "email": "Email",
+    "followUs": "Obserwuj nas",
+    "instagram": "Audiparts na Instagramie",
+    "telegram": "Napisz na Telegramie"
   },
   "notFound": {
     "code": "404",
@@ -120,14 +143,22 @@
     "siteName": "Audiparts"
   },
   "advantages": {
-    "deliveryUkraine": "Dostawa na terenie całej Ukrainy",
+    "deliveryUkraine": "Dostawa Nova Poshta na terenie całej Ukrainy",
     "exchangeGuarantee": "Gwarancja wymiany lub zwrotu w ciągu 14 dni",
-    "securePayment": "Bezpieczna płatność online przez Monobank"
+    "securePayment": "Płatność przy odbiorze lub na kartę"
   },
   "orderOneClick": {
     "phoneRequired": "Numer telefonu jest wymagany",
     "phoneInvalid": "Wprowadź poprawny numer w formacie +380 XXX XX XX XX",
-    "phonePlaceholder": "+380 999 99 99 99"
+    "phonePlaceholder": "+380 999 99 99 99",
+    "sheetTitle": "Kup w 1 klik",
+    "phoneLabel": "Twój numer telefonu",
+    "benefitCall": "Menedżer zadzwoni, potwierdzi dostępność i ustali dostawę",
+    "benefitNoPay": "Teraz nic nie płacisz",
+    "submit": "Zamów",
+    "successTitle": "Zamówienie nr {number} przyjęte",
+    "successText": "Menedżer zadzwoni pod {phone} w godzinach pracy: {hours}.",
+    "faster": "Chcesz szybciej? Napisz do nas:"
   },
   "seo": {
     "categoryModelTitle": "{category} Audi {model} — kup, cena | Audiparts",
@@ -144,9 +175,17 @@
     "categoryDescription": "{category} do Audi: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
     "categoryModelsTitle": "{category} według modeli Audi"
   },
-  "successModel": {
-    "thanks": "Dziękujemy za zamówienie!",
-    "orderNumber": "Twoje zamówienie nr {number}",
-    "willContact": "Nasz konsultant skontaktuje się z Tobą wkrótce."
+  "vin": {
+    "trigger": "Dobór po numerze VIN",
+    "title": "Dobór części przez specjalistę",
+    "description": "Podaj VIN — menedżer dobierze części i zadzwoni z ceną.",
+    "vinLabel": "Numer VIN",
+    "vinPlaceholder": "17 znaków, np. WAUZZZ4M0KD000000",
+    "vinRequired": "Podaj numer VIN — 17 znaków",
+    "phoneLabel": "Numer telefonu",
+    "partsLabel": "Jakich części szukasz",
+    "partsPlaceholder": "Nazwa części lub jej numer katalogowy",
+    "filesLabel": "Zdjęcie części (opcjonalnie)",
+    "submit": "Wyślij"
   }
 }

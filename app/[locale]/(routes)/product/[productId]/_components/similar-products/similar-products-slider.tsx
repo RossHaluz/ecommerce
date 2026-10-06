@@ -10,34 +10,22 @@ import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 import ImageNotFound from "/public/images/image-not-found.jpg";
-import Modal from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import Arrow from "/public/images/arrow.svg";
-import { selectOrderItems } from "@/redux/order/selector";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { StockStatus } from "@/entities/product/ui/stock-status";
-import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
+import { AddedToCartSheet, useAddToCart } from "@/features/cart";
 import type { Product } from "@/lib/types";
-import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface SimilarProductsSliderProps {
   similarProducts: Product[];
 }
 
-/**
- * П'ята копія дубльованого прев'ю кошика в цьому проєкті (після header.tsx,
- * product-item.tsx, product-btn.tsx, mobile-sidebar.tsx) — та сама причина
- * звести до `CartPreview`: тут теж рендерився завжди-порожній
- * `selectOptions.map()` (товар без опцій) і `priority={true}` на мініатюрі
- * в закритій модалці.
- */
 const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
   similarProducts,
 }) => {
-  const orderItems = useHydratedSelector(selectOrderItems);
   const addToCart = useAddToCart();
-  const removeFromCart = useRemoveFromCart();
   const { format } = usePriceFormatter();
   const t = useTranslations();
   const swiperRef = useRef<any>(null);
@@ -111,33 +99,33 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                 <div className="flex flex-col gap-2 h-full md:justify-between p-3">
                   <div className="flex flex-col gap-2 md:gap-4">
                     <Link href={`/product/${item?.product_name}`}>
-                      <h2 className="text-sm font-medium text-[#111111] uppercase line-clamp-1 text-left">
+                      <h3 className="text-sm font-medium text-[#111111] uppercase line-clamp-1 text-left">
                         {item?.title}
-                      </h2>
+                      </h3>
                     </Link>
 
                     <div className="flex items-center gap-2 justify-between">
-                      <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px] text-center">
+                      <span className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px] text-center">
                         {item?.catalog_number}
-                      </h3>
+                      </span>
 
-                      <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
+                      <span className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
                         {item?.article}
-                      </h3>
+                      </span>
                     </div>
                   </div>
 
                   <StockStatus quantity={item?.quantity} className="text-sm" />
 
                   <div className="flex mobile_s:flex-col mobile_s:items-start mobile_m:flex-row mobile_m:items-center justify-between space-x-reverse gap-2">
-                    <h3 className="text-sm font-semibold text-[#111111] text-center">
+                    <span className="text-sm font-semibold text-[#111111] text-center">
                       {Number(item?.price) === 0
                         ? t("product.negotiablePrice")
                         : format(item.price)}
-                    </h3>
+                    </span>
 
-                    <Modal
-                      triggetBtn={
+                    <AddedToCartSheet
+                      trigger={
                         <Button
                           variant="ghost"
                           className="hover:bg-none bg-[#c0092a] mobile_s:w-full mobile_m:max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
@@ -146,10 +134,7 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                           {t("product.buy")}
                         </Button>
                       }
-                      title={t("cart.added")}
-                    >
-                      <CartPreview items={orderItems} onRemove={removeFromCart} />
-                    </Modal>
+                    />
                   </div>
                 </div>
               </div>

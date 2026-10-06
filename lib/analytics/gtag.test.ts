@@ -64,10 +64,36 @@ describe("gtag", () => {
     vi.useRealTimers();
   });
 
+  it("відкладена подія не тягне скрипт, а йде після config на першу дію", async () => {
+    const { trackDeferredEvent, loadAnalytics, GA_MEASUREMENT_ID } = await import("./gtag");
+
+    trackDeferredEvent("view_item", { value: 1 });
+    expect(appended).toHaveLength(0);
+    expect((globalThis as any).window.dataLayer).toBeUndefined();
+
+    loadAnalytics();
+    expect(commands()).toEqual([
+      ["js", expect.any(Date)],
+      ["config", GA_MEASUREMENT_ID],
+      ["event", "view_item", { value: 1 }],
+    ]);
+  });
+
+  it("автотест (navigator.webdriver) не вантажить скрипт і не шле подій", async () => {
+    vi.stubGlobal("navigator", { webdriver: true });
+    const { loadAnalytics, trackEvent } = await import("./gtag");
+
+    loadAnalytics();
+    trackEvent("add_to_cart", { item_id: "p1" });
+
+    expect(appended).toHaveLength(0);
+    expect((globalThis as any).window.dataLayer).toBeUndefined();
+  });
+
   it("pushes Arguments objects, as gtag.js requires", async () => {
     const { trackEvent } = await import("./gtag");
 
-    trackEvent("make_new_order", {});
+    trackEvent("purchase", {});
 
     const entries = (globalThis as any).window.dataLayer;
     expect(Object.prototype.toString.call(entries[0])).toBe("[object Arguments]");

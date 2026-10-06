@@ -17,7 +17,7 @@ const CategoriesPage = async () => {
   const t = await getTranslations("nav");
 
   return (
-    <Section title={t("categories")} sectionStyles="mt-[100px]">
+    <Section title={t("categories")} titleAs="h1" sectionStyles="mt-[100px]">
       <Categories categories={categories} />
     </Section>
   );

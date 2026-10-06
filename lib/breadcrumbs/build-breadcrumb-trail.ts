@@ -10,8 +10,6 @@ interface BuildBreadcrumbTrailOptions {
   path: string;
   locale?: string;
   searchValue?: string | null;
-  /** false — останній сегмент теж посилання (шлях "звідки прийшли" на картці товару). */
-  lastIsCurrent?: boolean;
 }
 
 const STRUCTURAL_SEGMENTS = new Set(["categories", "product", "search"]);
@@ -25,7 +23,6 @@ export function buildBreadcrumbTrail({
   path,
   locale,
   searchValue,
-  lastIsCurrent = true,
 }: BuildBreadcrumbTrailOptions): Crumb[] {
   const visible: { segment: string; href: string }[] = [];
   let href = "";
@@ -37,13 +34,11 @@ export function buildBreadcrumbTrail({
   }
 
   if (visible.length === 0) {
-    return lastIsCurrent && searchValue
-      ? [{ label: searchValue, href: null }]
-      : [];
+    return searchValue ? [{ label: searchValue, href: null }] : [];
   }
 
   return visible.map(({ segment, href }, index) => {
-    const isCurrent = lastIsCurrent && index === visible.length - 1;
+    const isCurrent = index === visible.length - 1;
     const label =
       isCurrent && visible.length === 1 && searchValue
         ? searchValue

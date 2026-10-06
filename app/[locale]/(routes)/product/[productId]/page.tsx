@@ -4,15 +4,21 @@ import { getSimilarProducts } from "@/actions/get-data";
 import { fetchProductDetails } from "@/lib/api";
 import { notFoundOn404 } from "@/lib/api/not-found-on-404";
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildAlternates } from "@/lib/seo/alternates";
+import { buildBreadcrumbJsonLd } from "@/lib/seo/breadcrumb-json-ld";
+import { SITE_URL } from "@/lib/seo/site-url";
+import { formatModelName } from "@/lib/seo/format-model-name";
 import SimilarProducts from "./_components/similar-products/similar-products";
-import Breadcrumbs from "@/components/breadcrumb";
+import { TrailBreadcrumbs } from "@/components/seo/trail-breadcrumbs";
 import { Separator } from "@/components/ui/separator";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildProductJsonLd } from "@/entities/product/model/product-json-ld";
 import { buildProductMeta } from "@/entities/product/model/product-meta";
+import { buildProductHeading } from "@/entities/product/model/product-heading";
+import { buildProductBreadcrumbs } from "@/entities/product/model/product-breadcrumbs";
 import { toProductCard } from "@/entities/product/model/product-card";
+import { TrackViewItem } from "./_components/track-view-item";
 
 interface ProductPageProps {
   params: {
@@ -26,45 +32,51 @@ interface ProductPageProps {
 // перехід, і на повільному телефоні товар відкривався ~2 с.
 export const generateStaticParams = () => [];
 
-export async function generateMetadata({
-  params,
-}: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { productId } = params;
-  const data = await fetchProductDetails(productId).catch(notFoundOn404);
+  const { product } = await fetchProductDetails(productId).catch(notFoundOn404);
 
   return {
     alternates: buildAlternates(`/product/${productId}`, params.locale),
-    ...(data?.product && buildProductMeta(data.product)),
+    ...buildProductMeta(product),
   };
 }
 
-const ProductPage = async ({
-  params,
-}: ProductPageProps) => {
-  const { productId } = params;
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const { productId, locale } = params;
   // Без цього getTranslations у дочірніх компонентах читає мову з headers() — сторінка стає динамічною.
-  setRequestLocale(params.locale);
-  const [data, similarProducts] = await Promise.all([
+  setRequestLocale(locale);
+  const [{ product }, similarProducts, t] = await Promise.all([
     // Проданий чи вигаданий товар — справжня 404, а не порожній каркас зі статусом 200.
     fetchProductDetails(productId).catch(notFoundOn404),
     getSimilarProducts(productId),
+    getTranslations("nav"),
   ]);
 
+  const heading = buildProductHeading(product);
+  const trail = buildProductBreadcrumbs({ ...product, title: heading });
+
   return (
-    <>
-      <div className="container my-6 flex flex-col gap-4">
-        <Breadcrumbs productName={data?.product?.title} />
-        <Separator />
-        {data?.product && (
-          <>
-            <JsonLd data={buildProductJsonLd(data.product)} />
-            <ProductInfo initialData={data.product} />
-          </>
-        )}
-        <Separator />
-        <SimilarProducts similarProducts={(similarProducts ?? []).map(toProductCard)} />
-      </div>
-    </>
+    <div className="container my-6 flex flex-col gap-4">
+      <TrailBreadcrumbs trail={trail} homeLabel={t("home")} />
+      <JsonLd data={buildProductJsonLd(product)} />
+      <JsonLd
+        data={buildBreadcrumbJsonLd(trail, {
+          siteUrl: SITE_URL,
+          locale,
+          homeLabel: t("home"),
+          currentPath: `/product/${productId}`,
+        })}
+      />
+      <TrackViewItem item={{ id: product.id, title: product.title, price: product.price }} />
+      <Separator />
+      <ProductInfo initialData={product} heading={heading} />
+      <Separator />
+      <SimilarProducts
+        similarProducts={(similarProducts ?? []).map(toProductCard)}
+        model={product.models?.length === 1 ? formatModelName(product.models[0].model.name) : undefined}
+      />
+    </div>
   );
 };
 

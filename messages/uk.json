@@ -55,10 +55,25 @@
     "description": "Опис",
     "readMore": "Читати далі",
     "collapse": "Згорнути",
-    "negotiablePriceNote": "Ціну до даного товару уточнюйте у менеджера."
+    "negotiablePriceNote": "Ціну до даного товару уточнюйте у менеджера.",
+    "lastUnit": "остання 1 шт.",
+    "copyCatalogNumber": "Скопіювати каталожний номер",
+    "copied": "Скопійовано",
+    "approxUah": "≈ {price} за курсом НБУ · оплата в гривнях",
+    "oneClickCta": "Купити в 1 клік — лише телефон",
+    "fitsTitle": "Підходить до",
+    "fitsHint": "Звірте каталожний номер <b>{oe}</b> зі своєю деталлю або перевірте за VIN — це найнадійніше.",
+    "checkByVin": "Перевірити за VIN-кодом",
+    "specsTitle": "Характеристики",
+    "category": "Категорія",
+    "model": "Модель",
+    "helpTitle": "Не впевнені, що підійде?",
+    "helpText": "Напишіть VIN або фото своєї деталі — менеджер перевірить сумісність до відправки.",
+    "call": "Дзвінок",
+    "similarForModel": "Ще для Audi {model}"
   },
   "cart": {
-    "added": "Товар доданий до Вашого кошика!",
+    "added": "Додано в кошик",
     "empty": "Ваш кошик порожній",
     "checkout": "Оформлення замовлення",
     "total": "До сплати",
@@ -104,7 +119,15 @@
     "scheduleWeekend": "Сб-Нд: вихідний",
     "callMeDialogThanks": "Дякуємо за Ваше звернення!",
     "callMeDialogDescription": "Є питання чи потрібна консультація? Залиште свій номер телефону і ми вам передзвонимо.",
-    "callMeDialogSuccessDescription": "Найближчим часом наш консультант зв'яжеться з вами."
+    "callMeDialogSuccessDescription": "Найближчим часом наш консультант зв'яжеться з вами.",
+    "pageTitle": "Контакти",
+    "metaTitle": "Контакти Audiparts — магазин запчастин для Audi, Хмельницький",
+    "metaDescription": "Телефони, Viber і Telegram менеджерів, графік роботи й адреса магазину Audiparts у Хмельницькому. Підберемо запчастину для Audi за VIN-кодом.",
+    "phones": "Телефони",
+    "email": "Email",
+    "followUs": "Слідкуйте за нами",
+    "instagram": "Audiparts в Instagram",
+    "telegram": "Написати в Telegram"
   },
   "notFound": {
     "code": "404",
@@ -120,19 +143,22 @@
     "siteName": "Audiparts"
   },
   "advantages": {
-    "deliveryUkraine": "Доставка по всій Україні",
+    "deliveryUkraine": "Доставка Новою поштою по всій Україні",
     "exchangeGuarantee": "Гарантія обміну чи повернення протягом 14 днів",
-    "securePayment": "Безпечна online-оплата на сайті через сервіс Monobank"
+    "securePayment": "Оплата при отриманні або на картку"
   },
   "orderOneClick": {
     "phoneRequired": "Номер телефону обов'язковий",
     "phoneInvalid": "Введіть коректний номер у форматі +380 XXX XX XX XX",
-    "phonePlaceholder": "+380 999 99 99 99"
-  },
-  "successModel": {
-    "thanks": "Дякуємо за замовлення!",
-    "orderNumber": "Ваше замовлення №{number}",
-    "willContact": "Найближчим часом ми з Вами зв'яжемось."
+    "phonePlaceholder": "+380 999 99 99 99",
+    "sheetTitle": "Купити в 1 клік",
+    "phoneLabel": "Ваш номер телефону",
+    "benefitCall": "Менеджер зателефонує, підтвердить наявність і узгодить доставку",
+    "benefitNoPay": "Платити зараз нічого не потрібно",
+    "submit": "Замовити",
+    "successTitle": "Замовлення №{number} прийнято",
+    "successText": "Менеджер зателефонує на {phone} у робочий час: {hours}.",
+    "faster": "Хочете швидше? Напишіть нам:"
   },
   "seo": {
     "categoryModelTitle": "{category} Audi {model} — купити, ціна | Audiparts",
@@ -148,5 +174,18 @@
     "categoryH1": "{category} Audi",
     "categoryDescription": "{category} для Audi: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні деталі з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",
     "categoryModelsTitle": "{category} за моделями Audi"
+  },
+  "vin": {
+    "trigger": "Підбір по VIN коду",
+    "title": "Підбір запчастин спеціалістом",
+    "description": "Вкажіть VIN — менеджер підбере деталі й зателефонує з ціною.",
+    "vinLabel": "VIN-код",
+    "vinPlaceholder": "17 символів, напр. WAUZZZ4M0KD000000",
+    "vinRequired": "Вкажіть VIN-код — 17 символів",
+    "phoneLabel": "Номер телефону",
+    "partsLabel": "Які запчастини шукаєте",
+    "partsPlaceholder": "Назва запчастини або її каталожний номер",
+    "filesLabel": "Фото деталі (необов’язково)",
+    "submit": "Відправити"
   }
 }
