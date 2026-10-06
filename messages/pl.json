@@ -171,5 +171,18 @@
     "thanks": "Dziękujemy za zamówienie!",
     "orderNumber": "Twoje zamówienie nr {number}",
     "willContact": "Nasz konsultant skontaktuje się z Tobą wkrótce."
+  },
+  "vin": {
+    "trigger": "Dobór po numerze VIN",
+    "title": "Dobór części przez specjalistę",
+    "description": "Podaj VIN — menedżer dobierze części i zadzwoni z ceną.",
+    "vinLabel": "Numer VIN",
+    "vinPlaceholder": "17 znaków, np. WAUZZZ4M0KD000000",
+    "vinRequired": "Podaj numer VIN — 17 znaków",
+    "phoneLabel": "Numer telefonu",
+    "partsLabel": "Jakich części szukasz",
+    "partsPlaceholder": "Nazwa części lub jej numer katalogowy",
+    "filesLabel": "Zdjęcie części (opcjonalnie)",
+    "submit": "Wyślij"
   }
 }

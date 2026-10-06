@@ -171,5 +171,18 @@
     "categoryH1": "{category} Audi",
     "categoryDescription": "{category} для Audi: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні деталі з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",
     "categoryModelsTitle": "{category} за моделями Audi"
+  },
+  "vin": {
+    "trigger": "Підбір по VIN коду",
+    "title": "Підбір запчастин спеціалістом",
+    "description": "Вкажіть VIN — менеджер підбере деталі й зателефонує з ціною.",
+    "vinLabel": "VIN-код",
+    "vinPlaceholder": "17 символів, напр. WAUZZZ4M0KD000000",
+    "vinRequired": "Вкажіть VIN-код — 17 символів",
+    "phoneLabel": "Номер телефону",
+    "partsLabel": "Які запчастини шукаєте",
+    "partsPlaceholder": "Назва запчастини або її каталожний номер",
+    "filesLabel": "Фото деталі (необов’язково)",
+    "submit": "Відправити"
   }
 }

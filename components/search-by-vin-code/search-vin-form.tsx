@@ -1,13 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { useTranslations } from "next-intl";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInputMask from "@/utils/phone-mask";
@@ -18,31 +12,34 @@ import { Dispatch, FC, SetStateAction, useState } from "react";
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
 import { submitLead } from "@/features/leads/submit-lead";
+import { NumberedStep } from "./numbered-step";
 
 interface SearchVinFormProps {
-  setIsSuccess: Dispatch<SetStateAction<boolean>>
+  setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }
 
-const formSchema = z.object({
-  vinCode: z
-    .string()
-    .min(17, { message: "Вкажіть VIN-код — поле обов’язкове" }),
-  phone: z
-    .string()
-    .regex(
-      /^\+380\s?\d{3}\s?\d{2}\s?\d{2}\s?\d{2}$/,
-      "Введіть коректний номер у форматі +380XXXXXXXXX або +380 XXX XX XX XX"
-    ),
-  desc: z.string().optional(),
-});
+const VIN_LENGTH = 17;
+const fieldClass = (invalid: boolean) =>
+  cn(
+    "py-3 lg:py-2 px-[15px] bg-[#FFFDFD] outline-none text-[#484848] text-base lg:font-semibold border border-solid rounded-[5px]",
+    invalid ? "border-red-500" : "border-[#484848]"
+  );
+
+const buildSchema = (t: (key: string) => string, tPhone: (key: string) => string) =>
+  z.object({
+    vinCode: z.string().length(VIN_LENGTH, { message: t("vinRequired") }),
+    phone: z.string().regex(/^\+380\s?\d{3}\s?\d{2}\s?\d{2}\s?\d{2}$/, tPhone("phoneInvalid")),
+    desc: z.string().optional(),
+  });
 
 const SearchVinForm: FC<SearchVinFormProps> = ({ setIsSuccess }) => {
+  const t = useTranslations("vin");
+  const tPhone = useTranslations("orderOneClick");
+  const tCommon = useTranslations("common");
+  const formSchema = buildSchema(t, tPhone);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      vinCode: "",
-      phone: "",
-    },
+    defaultValues: { vinCode: "", phone: "", desc: "" },
   });
   const [selectFiles, setSelectFiles] = useState<File[]>([]);
 
@@ -50,124 +47,91 @@ const SearchVinForm: FC<SearchVinFormProps> = ({ setIsSuccess }) => {
     try {
       await submitLead({ ...values, files: selectFiles }, "vin");
       setIsSuccess(true);
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong...");
+    } catch {
+      toast.error(tCommon("somethingWentWrong"));
     }
   };
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4"
-      >
-        <div className="flex items-start gap-3">
-          <div className="p-2 w-9 h-9 bg-[#C0092A] text-white flex items-center justify-center rounded-full">
-            1
-          </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <NumberedStep n={1}>
           <FormField
             name="vinCode"
             render={({ field, fieldState }) => (
-              <FormItem className="flex flex-col gap-1">
+              <FormItem className="flex flex-col gap-1 w-full">
                 <FormLabel>
-                  Вкажіть VIN код<span className="text-red-600">*</span>
+                  {t("vinLabel")}
+                  <span className="text-red-600">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="VIN-код"
+                    placeholder={t("vinPlaceholder")}
+                    autoCapitalize="characters"
+                    spellCheck={false}
                     {...field}
-                    className={cn(
-                      "py-3 lg:py-2 px-[15px] bg-[#FFFDFD] outline-none text-[#484848] text-sm lg:text-base lg:font-semibold border border-solid rounded-[5px]",
-                      fieldState.invalid ? "border-red-500" : "border-[#484848]"
-                    )}
-                    onChange={(e) => {
-                       let value = e.target.value.toUpperCase();
-                  if (value.length > 17) {
-                    value = value.slice(0, 17);
-                  }
-                  field.onChange(value);
-                    }}
+                    className={fieldClass(fieldState.invalid)}
+                    onChange={(e) => field.onChange(e.target.value.toUpperCase().slice(0, VIN_LENGTH))}
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
-        </div>
+        </NumberedStep>
 
-        <div className="flex items-start gap-3">
-          <div className="p-2 w-9 h-9 bg-[#C0092A] text-white flex items-center justify-center rounded-full">
-            2
-          </div>
+        <NumberedStep n={2}>
           <FormField
             name="phone"
             render={({ field, fieldState }) => (
-              <FormItem className="flex flex-col gap-1">
+              <FormItem className="flex flex-col gap-1 w-full">
                 <FormLabel>
-                  Номер телефону<span className="text-red-600">*</span>
+                  {t("phoneLabel")}
+                  <span className="text-red-600">*</span>
                 </FormLabel>
                 <FormControl>
                   <CustomInputMask
                     mask="+380 999 99 99 99"
-                    placeholder="Номер телефону"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder={tPhone("phonePlaceholder")}
                     {...field}
-                    className={cn(
-                      "py-3 lg:py-2 px-[15px] bg-[#FFFDFD] outline-none text-[#484848] text-sm lg:text-base lg:font-semibold border border-solid rounded-[5px]",
-                      fieldState.invalid ? "border-red-500" : "border-[#484848]"
-                    )}
-                    onChange={(e) => {
-                      const value = e.target.value.toString();
-                      field.onChange(value);
-                    }}
+                    className={fieldClass(fieldState.invalid)}
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
-        </div>
+        </NumberedStep>
 
-        <div className="flex items-start gap-3">
-          <div className="p-2 w-9 h-9 bg-[#C0092A] text-white flex items-center justify-center rounded-full">
-            3
-          </div>
+        <NumberedStep n={3}>
           <FormField
             name="desc"
-            render={({ field, fieldState }) => (
+            render={({ field }) => (
               <FormItem className="flex flex-col gap-1 w-full">
-                <FormLabel>Вкажіть запчастини</FormLabel>
+                <FormLabel>{t("partsLabel")}</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Назва запчастини або їй каталожний номер"
-                    {...field}
-                    className={cn(
-                      "py-3 lg:py-2 px-[15px] bg-[#FFFDFD] text-[#484848] outline-none text-sm lg:text-base lg:font-semibold lg:border lg:border-solid rounded-[5px]",
-                      fieldState.invalid ? "border-red-500" : "border-[#484848]"
-                    )}
-                  />
+                  <Textarea placeholder={t("partsPlaceholder")} {...field} className={fieldClass(false)} />
                 </FormControl>
               </FormItem>
             )}
           />
-        </div>
+        </NumberedStep>
 
-        <Input
-          type="file"
-          multiple
-          onChange={(e) => {
-            const files = e.target.files ? Array.from(e.target.files) : [];
-            setSelectFiles(files);
-          }}
-          className={cn(
-            "max-w-max cursor-pointer border border-solid border-gray-300 rounded-lg",
-            {
-              "border-[#484848]": selectFiles?.length > 0,
-            }
-          )}
-        />
-        <Button type="submit" className="max-w-max">
-          Відправити
+        <label className="flex flex-col gap-1 text-sm font-medium text-[#484848]">
+          {t("filesLabel")}
+          <Input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => setSelectFiles(e.target.files ? Array.from(e.target.files) : [])}
+            className="max-w-max cursor-pointer border border-solid border-gray-300 rounded-lg"
+          />
+        </label>
+        <Button type="submit" className="max-w-max" disabled={form.formState.isSubmitting}>
+          {t("submit")}
         </Button>
       </form>
     </Form>
