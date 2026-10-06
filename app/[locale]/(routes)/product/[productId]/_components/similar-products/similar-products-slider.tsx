@@ -111,30 +111,30 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                 <div className="flex flex-col gap-2 h-full md:justify-between p-3">
                   <div className="flex flex-col gap-2 md:gap-4">
                     <Link href={`/product/${item?.product_name}`}>
-                      <h2 className="text-sm font-medium text-[#111111] uppercase line-clamp-1 text-left">
+                      <h3 className="text-sm font-medium text-[#111111] uppercase line-clamp-1 text-left">
                         {item?.title}
-                      </h2>
+                      </h3>
                     </Link>
 
                     <div className="flex items-center gap-2 justify-between">
-                      <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px] text-center">
+                      <span className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px] text-center">
                         {item?.catalog_number}
-                      </h3>
+                      </span>
 
-                      <h3 className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
+                      <span className="text-[10px] leading-[12.19px] md:text-[14px] md:leading-[17.07px]">
                         {item?.article}
-                      </h3>
+                      </span>
                     </div>
                   </div>
 
                   <StockStatus quantity={item?.quantity} className="text-sm" />
 
                   <div className="flex mobile_s:flex-col mobile_s:items-start mobile_m:flex-row mobile_m:items-center justify-between space-x-reverse gap-2">
-                    <h3 className="text-sm font-semibold text-[#111111] text-center">
+                    <span className="text-sm font-semibold text-[#111111] text-center">
                       {Number(item?.price) === 0
                         ? t("product.negotiablePrice")
                         : format(item.price)}
-                    </h3>
+                    </span>
 
                     <Modal
                       triggetBtn={

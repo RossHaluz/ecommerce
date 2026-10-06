@@ -8,6 +8,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildAlternates } from "@/lib/seo/alternates";
 import { buildBreadcrumbJsonLd } from "@/lib/seo/breadcrumb-json-ld";
 import { SITE_URL } from "@/lib/seo/site-url";
+import { formatModelName } from "@/lib/seo/format-model-name";
 import SimilarProducts from "./_components/similar-products/similar-products";
 import { TrailBreadcrumbs } from "@/components/seo/trail-breadcrumbs";
 import { Separator } from "@/components/ui/separator";
@@ -71,7 +72,10 @@ const ProductPage = async ({ params }: ProductPageProps) => {
       <Separator />
       <ProductInfo initialData={product} heading={heading} />
       <Separator />
-      <SimilarProducts similarProducts={(similarProducts ?? []).map(toProductCard)} />
+      <SimilarProducts
+        similarProducts={(similarProducts ?? []).map(toProductCard)}
+        model={product.models?.length === 1 ? formatModelName(product.models[0].model.name) : undefined}
+      />
     </div>
   );
 };
