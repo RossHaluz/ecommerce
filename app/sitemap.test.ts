@@ -6,6 +6,7 @@ vi.mock("@/actions/get-data", () => ({
   getAllProducts: vi.fn(),
   getCategories: vi.fn(),
 }));
+vi.mock("@/lib/seo/site-url", () => ({ SITE_URL: "https://audiparts.test" }));
 
 const categories = [
   { id: "c1", category_name: "optyka", children: [{ id: "c2", category_name: "fary" }] },
@@ -23,7 +24,6 @@ const paths = async () => (await sitemap()).map(({ url }) => url.replace(SITE, "
 
 describe("sitemap", () => {
   beforeEach(() => {
-    vi.stubEnv("NEXT_PUBLIC_BASE_URL", SITE);
     vi.mocked(getCategories).mockResolvedValue(categories as never);
     vi.mocked(getAllProducts).mockResolvedValue({ products, meta: {} } as never);
   });

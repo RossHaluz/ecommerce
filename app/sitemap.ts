@@ -1,8 +1,9 @@
 import { getAllProducts, getCategories } from "@/actions/get-data";
 import { MetadataRoute } from "next";
 import { categoryModelPaths, modelPaths } from "@/lib/seo/catalog-paths";
+import { SITE_URL } from "@/lib/seo/site-url";
 
-const toEntry = (path: string) => ({ url: `${process.env.NEXT_PUBLIC_BASE_URL}${path}` });
+const toEntry = (path: string) => ({ url: `${SITE_URL}${path}` });
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [categories, data] = await Promise.all([
@@ -18,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { products } = data;
 
   return [
-    { url: `${process.env.NEXT_PUBLIC_BASE_URL}`, lastModified: new Date() },
+    { url: SITE_URL, lastModified: new Date() },
     ...categories
       .flatMap((category) => [category, ...(category.children ?? [])])
       .map((category) => toEntry(`/categories/${category.category_name}`)),
