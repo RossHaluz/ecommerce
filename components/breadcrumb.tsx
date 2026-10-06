@@ -35,11 +35,11 @@ const BreadcrumbsView: FC<{ searchValue?: string | null }> = ({ searchValue }) =
             <BreadcrumbSeparator className="text-gray-500" />
             <BreadcrumbItem>
               {href ? (
-                <BreadcrumbLink href={href} className="break-words text-gray-600">
+                <BreadcrumbLink href={href} className="text-gray-600">
                   {label}
                 </BreadcrumbLink>
               ) : (
-                <BreadcrumbPage className="break-words">{label}</BreadcrumbPage>
+                <BreadcrumbPage>{label}</BreadcrumbPage>
               )}
             </BreadcrumbItem>
           </React.Fragment>
