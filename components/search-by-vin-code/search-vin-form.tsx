@@ -17,7 +17,7 @@ import { Input } from "../ui/input";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { Button } from "../ui/button";
 import { toast } from "react-toastify";
-import axios from "axios";
+import { submitLead } from "@/features/leads/submit-lead";
 
 interface SearchVinFormProps {
   setIsSuccess: Dispatch<SetStateAction<boolean>>
@@ -47,20 +47,8 @@ const SearchVinForm: FC<SearchVinFormProps> = ({ setIsSuccess }) => {
   const [selectFiles, setSelectFiles] = useState<File[]>([]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { vinCode, phone } = values;
-    const storeId = process.env.STORE_ID;
     try {
-      const formData = new FormData();
-      formData.append("vinCode", vinCode);
-      formData.append("phone", phone);
-
-      if (selectFiles && selectFiles?.length > 0) {
-        selectFiles?.forEach((item) => {
-          formData.append("files", item);
-        });
-      }
-
-      await axios.post(`/call-me/${storeId}`, formData);
+      await submitLead({ ...values, files: selectFiles }, "vin");
       setIsSuccess(true);
     } catch (error) {
       console.log(error);
