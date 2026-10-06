@@ -1,3 +1,4 @@
+import { formatModelName } from "@/lib/seo/format-model-name";
 import { isInStock } from "./is-in-stock";
 
 export interface ProductMetaSource {
@@ -14,11 +15,12 @@ const MAX_TITLE_MODELS = 2;
 const tidy = (text: string) => text.replace(/\s+/g, " ").trim();
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
+// Той самий формат, що в H1 і на сторінках категорій: «Q8 (2018–2023)», а не «Q8 2018- 2023».
 const modelNames = (product: ProductMetaSource) =>
   (product.models ?? [])
     .map((item) => item.model?.name)
     .filter((name): name is string => Boolean(name))
-    .map(tidy);
+    .map(formatModelName);
 
 const forAudi = (models: string[]) => tidy(`Audi (Ауді) ${models.join(", ")}`);
 

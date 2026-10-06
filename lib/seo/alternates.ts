@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { DEFAULT_LOCALE, LOCALES, LOCALE_HTML_LANG, isLocale, type Locale } from "@/i18n/locales";
 
 /** Шлях сторінки в певній мові: українська на корені, решта з префіксом. */
-const localizedPath = (path: string, locale: Locale) => {
+export const localizedPath = (path: string, locale: Locale) => {
   const clean = path === "/" ? "" : path;
   if (locale === DEFAULT_LOCALE) return clean || "/";
   return `/${locale}${clean}`;

@@ -11,7 +11,7 @@ const product = {
 describe("buildProductMeta", () => {
   it("puts the OE number first and tidies the product name", () => {
     expect(buildProductMeta(product).title).toBe(
-      "4M0807511GRU — Бампер задній q7 4m s-line Audi (Ауді) Q7 4M 2015-2019 | Audiparts"
+      "4M0807511GRU — Бампер задній q7 4m s-line Audi (Ауді) Q7 4M (2015–2019) | Audiparts"
     );
   });
 
@@ -21,7 +21,7 @@ describe("buildProductMeta", () => {
     }));
 
     expect(buildProductMeta({ ...product, models }).title).toContain(
-      "Audi (Ауді) Q7 4M 2015-2019, Q7 4M 2020-2024 |"
+      "Audi (Ауді) Q7 4M (2015–2019), Q7 4M (2020–2024) |"
     );
   });
 
@@ -47,7 +47,7 @@ describe("buildProductMeta", () => {
 
   it("names the part, its OE number and the model in the description", () => {
     expect(buildProductMeta(product).description).toMatch(
-      /^Купити бампер задній q7 4m s-line 4M0807511GRU для Audi \(Ауді\) Q7 4M 2015-2019\./
+      /^Купити бампер задній q7 4m s-line 4M0807511GRU для Audi \(Ауді\) Q7 4M \(2015–2019\)\./
     );
   });
 });
