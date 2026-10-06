@@ -1,11 +1,9 @@
 "use client";
-import Modal from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import React, { FC, useState } from "react";
 import { useTranslations } from "next-intl";
-import { selectOrderItems } from "@/redux/order/selector";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -16,7 +14,7 @@ import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { productHref } from "@/entities/product/model/product-href";
 import { StockStatus } from "@/entities/product/ui/stock-status";
 import { Product } from "@/lib/types";
-import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
+import { AddedToCartSheet, useAddToCart } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 // Перший ряд на телефоні. Більше — і фото ділять вузький канал з LCP-фото.
@@ -38,7 +36,6 @@ interface ProductItemProps {
  */
 const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
   const imageUrl = productImageUrl(item?.images?.[0]?.url);
-  const orderItems = useHydratedSelector(selectOrderItems);
   const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
   const href = productHref(item?.product_name);
   // Повне підвантаження (код + дані) лише коли людина вже тягнеться до
@@ -49,7 +46,6 @@ const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
   const isMobile = useIsSmallScreen();
   const { format } = usePriceFormatter();
   const addToCart = useAddToCart();
-  const removeFromCart = useRemoveFromCart();
   const t = useTranslations();
 
   return (
@@ -159,8 +155,8 @@ const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
               : format(item.price)}
           </h3>
 
-          <Modal
-            triggetBtn={
+          <AddedToCartSheet
+            trigger={
               <Button
                 variant="ghost"
                 className="hover:bg-none bg-[#c0092a] mobile_s:w-full mobile_m:max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
@@ -169,10 +165,7 @@ const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
                 {t("product.buy")}
               </Button>
             }
-            title={t("cart.added")}
-          >
-            <CartPreview items={orderItems} onRemove={removeFromCart} />
-          </Modal>
+          />
         </div>
       </div>
 

@@ -10,34 +10,22 @@ import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 import ImageNotFound from "/public/images/image-not-found.jpg";
-import Modal from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import Arrow from "/public/images/arrow.svg";
-import { selectOrderItems } from "@/redux/order/selector";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { StockStatus } from "@/entities/product/ui/stock-status";
-import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
+import { AddedToCartSheet, useAddToCart } from "@/features/cart";
 import type { Product } from "@/lib/types";
-import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 interface SimilarProductsSliderProps {
   similarProducts: Product[];
 }
 
-/**
- * П'ята копія дубльованого прев'ю кошика в цьому проєкті (після header.tsx,
- * product-item.tsx, product-btn.tsx, mobile-sidebar.tsx) — та сама причина
- * звести до `CartPreview`: тут теж рендерився завжди-порожній
- * `selectOptions.map()` (товар без опцій) і `priority={true}` на мініатюрі
- * в закритій модалці.
- */
 const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
   similarProducts,
 }) => {
-  const orderItems = useHydratedSelector(selectOrderItems);
   const addToCart = useAddToCart();
-  const removeFromCart = useRemoveFromCart();
   const { format } = usePriceFormatter();
   const t = useTranslations();
   const swiperRef = useRef<any>(null);
@@ -136,8 +124,8 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                         : format(item.price)}
                     </span>
 
-                    <Modal
-                      triggetBtn={
+                    <AddedToCartSheet
+                      trigger={
                         <Button
                           variant="ghost"
                           className="hover:bg-none bg-[#c0092a] mobile_s:w-full mobile_m:max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
@@ -146,10 +134,7 @@ const SimilarProductsSlider: FC<SimilarProductsSliderProps> = ({
                           {t("product.buy")}
                         </Button>
                       }
-                      title={t("cart.added")}
-                    >
-                      <CartPreview items={orderItems} onRemove={removeFromCart} />
-                    </Modal>
+                    />
                   </div>
                 </div>
               </div>
