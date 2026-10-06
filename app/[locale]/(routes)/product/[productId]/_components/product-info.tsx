@@ -1,6 +1,6 @@
 import { FC } from "react";
-import Slider from "./slider";
 import ProductDetails from "./product-details";
+import { ProductGallery } from "./gallery/product-gallery";
 import { BuyBox } from "./buy-box/buy-box";
 import { CompatibilityCard } from "./compatibility/compatibility-card";
 import { ProductSpecs } from "./specs/product-specs";
@@ -14,22 +14,37 @@ interface ProductInfoProps {
   heading: string;
 }
 
-const TWO_COLUMNS = "grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-6 items-start";
+// Порожній блок (компонент повернув null) не має додавати проміжок.
+const SLOT = "empty:hidden";
 
-/** Серверна розкладка картки: зверху рішення про покупку, нижче — «чи підійде» і допомога. */
+/**
+ * Комп'ютер: дві незалежні колонки — висота однієї більше не лишає дірку в іншій.
+ * Телефон: одна колонка в порядку макета (фото → покупка → сумісність → характеристики → допомога);
+ * колонки там `contents`, а черговість задає `order`.
+ */
 const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading }) => (
-  <div className="flex flex-col gap-4 lg:gap-6">
-    <div className={TWO_COLUMNS}>
-      <Slider images={initialData.images} title={initialData.title} />
-      <BuyBox product={initialData} heading={heading} />
-    </div>
-    <div className={TWO_COLUMNS}>
-      <div className="flex flex-col gap-4 lg:gap-6 min-w-0">
+  <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-start lg:gap-6">
+    <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
+      <div className={`order-1 ${SLOT}`}>
+        <ProductGallery images={initialData.images} title={initialData.title} />
+      </div>
+      <div className={`order-3 ${SLOT}`}>
         <CompatibilityCard models={initialData.models ?? []} catalogNumber={initialData.catalog_number} />
+      </div>
+      <div className={`order-4 ${SLOT}`}>
         <ProductSpecs product={initialData} />
+      </div>
+      <div className={`order-5 ${SLOT}`}>
         <ProductDetails initialData={initialData} />
       </div>
-      <FitHelpCard />
+    </div>
+    <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
+      <div className="order-2">
+        <BuyBox product={initialData} heading={heading} />
+      </div>
+      <div className="order-6">
+        <FitHelpCard />
+      </div>
     </div>
     <StickyBuyBar product={initialData} />
   </div>

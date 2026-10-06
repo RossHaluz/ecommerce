@@ -16,6 +16,8 @@
     "toggleSubcategories": "Pokaż podkategorie",
     "previousPhoto": "Poprzednie zdjęcie",
     "nextPhoto": "Następne zdjęcie",
+    "photo": "Zdjęcie {number}",
+    "zoomPhoto": "Powiększ zdjęcie",
     "previousPage": "Poprzednia strona",
     "nextPage": "Następna strona",
     "page": "Strona {number}"
