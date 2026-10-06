@@ -5,6 +5,7 @@ import { BuyBox } from "./buy-box/buy-box";
 import { CompatibilityCard } from "./compatibility/compatibility-card";
 import { ProductSpecs } from "./specs/product-specs";
 import { FitHelpCard } from "./help/fit-help-card";
+import { StickyBuyBar } from "./buy-box/sticky-buy-bar";
 import type { Product } from "@/lib/types";
 
 interface ProductInfoProps {
@@ -30,6 +31,7 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading }) => (
       </div>
       <FitHelpCard />
     </div>
+    <StickyBuyBar product={initialData} />
   </div>
 );
 

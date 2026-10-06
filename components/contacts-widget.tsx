@@ -72,8 +72,9 @@ const ContactsWidget = () => {
           "fixed right-8 lg:bottom-14 flex flex-col items-end gap-4 z-[100]",
           {
             "bottom-20": pathname === "/" || pathname.startsWith("/categories"),
-            "bottom-16":
-              pathname !== "/" && !pathname.startsWith("/categories"),
+            "bottom-16": pathname !== "/" && !pathname.startsWith("/categories"),
+            // Картка товару на телефоні: бульбашка лягала на «Купити»; Viber/Telegram/дзвінок там є в блоці допомоги.
+            "max-lg:hidden": pathname.includes("/product/"),
           }
         )}
         ref={widgetRef}

@@ -6,12 +6,14 @@ import { selectOrderItems } from "@/redux/order/selector";
 import { CartPreview, useAddToCart, useRemoveFromCart } from "@/features/cart";
 import type { Product } from "@/lib/types";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
+import { cn } from "@/lib/utils";
 
 interface ProductBtnProps {
   item: Product;
+  className?: string;
 }
 
-const ProductBtn = ({ item }: ProductBtnProps) => {
+const ProductBtn = ({ item, className }: ProductBtnProps) => {
   const orderItems = useHydratedSelector(selectOrderItems);
   const addToCart = useAddToCart();
   const removeFromCart = useRemoveFromCart();
@@ -22,7 +24,7 @@ const ProductBtn = ({ item }: ProductBtnProps) => {
       <Modal
         triggetBtn={
           <Button
-            className="w-full h-[52px] lg:h-14 rounded-lg text-[17px] lg:text-lg font-extrabold"
+            className={cn("w-full h-[52px] lg:h-14 rounded-lg text-[17px] lg:text-lg font-extrabold", className)}
             onClick={() => addToCart(item)}
           >
             {t("product.buy")}

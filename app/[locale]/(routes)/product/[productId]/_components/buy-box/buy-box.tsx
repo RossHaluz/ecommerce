@@ -6,6 +6,7 @@ import { CatalogNumberChip } from "./catalog-number-chip";
 import { PriceBlock } from "./price-block";
 import { StockLine } from "./stock-line";
 import { TrustList } from "./trust-list";
+import { MAIN_BUY_CTA_ID } from "./main-buy-cta";
 
 /** Рішення про покупку: що це, чи є, скільки коштує, кнопка й чому не страшно. Саме в такому порядку. */
 export const BuyBox = ({ product, heading }: { product: Product; heading: string }) => {
@@ -24,7 +25,9 @@ export const BuyBox = ({ product, heading }: { product: Product; heading: string
       </div>
       <StockLine quantity={product.quantity} />
       <PriceBlock price={Number(product.price)} />
-      <ProductBtn item={product} />
+      <div id={MAIN_BUY_CTA_ID}>
+        <ProductBtn item={product} />
+      </div>
       <OrderOneClick
         item={{
           productId: product.id,
