@@ -150,7 +150,15 @@
   "orderOneClick": {
     "phoneRequired": "Numer telefonu jest wymagany",
     "phoneInvalid": "Wprowadź poprawny numer w formacie +380 XXX XX XX XX",
-    "phonePlaceholder": "+380 999 99 99 99"
+    "phonePlaceholder": "+380 999 99 99 99",
+    "sheetTitle": "Kup w 1 klik",
+    "phoneLabel": "Twój numer telefonu",
+    "benefitCall": "Menedżer zadzwoni, potwierdzi dostępność i ustali dostawę",
+    "benefitNoPay": "Teraz nic nie płacisz",
+    "submit": "Zamów",
+    "successTitle": "Zamówienie nr {number} przyjęte",
+    "successText": "Menedżer zadzwoni pod {phone} w godzinach pracy: {hours}.",
+    "faster": "Chcesz szybciej? Napisz do nas:"
   },
   "seo": {
     "categoryModelTitle": "{category} Audi {model} — kup, cena | Audiparts",
@@ -166,11 +174,6 @@
     "categoryH1": "{category} Audi",
     "categoryDescription": "{category} do Audi: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
     "categoryModelsTitle": "{category} według modeli Audi"
-  },
-  "successModel": {
-    "thanks": "Dziękujemy za zamówienie!",
-    "orderNumber": "Twoje zamówienie nr {number}",
-    "willContact": "Nasz konsultant skontaktuje się z Tobą wkrótce."
   },
   "vin": {
     "trigger": "Dobór po numerze VIN",

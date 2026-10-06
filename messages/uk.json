@@ -150,12 +150,15 @@
   "orderOneClick": {
     "phoneRequired": "Номер телефону обов'язковий",
     "phoneInvalid": "Введіть коректний номер у форматі +380 XXX XX XX XX",
-    "phonePlaceholder": "+380 999 99 99 99"
-  },
-  "successModel": {
-    "thanks": "Дякуємо за замовлення!",
-    "orderNumber": "Ваше замовлення №{number}",
-    "willContact": "Найближчим часом ми з Вами зв'яжемось."
+    "phonePlaceholder": "+380 999 99 99 99",
+    "sheetTitle": "Купити в 1 клік",
+    "phoneLabel": "Ваш номер телефону",
+    "benefitCall": "Менеджер зателефонує, підтвердить наявність і узгодить доставку",
+    "benefitNoPay": "Платити зараз нічого не потрібно",
+    "submit": "Замовити",
+    "successTitle": "Замовлення №{number} прийнято",
+    "successText": "Менеджер зателефонує на {phone} у робочий час: {hours}.",
+    "faster": "Хочете швидше? Напишіть нам:"
   },
   "seo": {
     "categoryModelTitle": "{category} Audi {model} — купити, ціна | Audiparts",

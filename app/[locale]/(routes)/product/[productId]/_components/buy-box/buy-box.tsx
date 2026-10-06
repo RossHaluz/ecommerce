@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { Product } from "@/lib/types";
 import ProductBtn from "../product-btn";
-import OrderOneClick from "../order-one-click";
+import { OrderOneClick } from "../one-click/order-one-click";
 import { CatalogNumberChip } from "./catalog-number-chip";
 import { PriceBlock } from "./price-block";
 import { StockLine } from "./stock-line";
