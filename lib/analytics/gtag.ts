@@ -1,8 +1,11 @@
+import { isAutomatedBrowser } from "./is-automated-browser";
+
 export const GA_MEASUREMENT_ID = "G-5DKE9X66KP";
 
 type GtagWindow = { dataLayer?: IArguments[] };
 
 let loaded = false;
+const deferred: [string, Record<string, unknown>][] = [];
 
 const SCRIPT_DELAY_MS = 2500;
 const SCRIPT_IDLE_TIMEOUT_MS = 3000;
@@ -18,11 +21,12 @@ function gtag(..._args: unknown[]) {
  * і, підключений одразу, забирав процесор у першого фото на телефоні.
  */
 export function loadAnalytics() {
-  if (loaded || typeof window === "undefined") return;
+  if (loaded || typeof window === "undefined" || isAutomatedBrowser(navigator)) return;
   loaded = true;
 
   gtag("js", new Date());
   gtag("config", GA_MEASUREMENT_ID);
+  deferred.splice(0).forEach(([name, params]) => gtag("event", name, params));
 
   // Черга вже є — події не губляться. Сам скрипт (~172 КБ) — трохи згодом, у простої:
   // перша дія часто і є натисканням на товар, і на повільному інтернеті він ділив канал з переходом.
@@ -39,9 +43,19 @@ export function loadAnalytics() {
   }
 }
 
+/**
+ * Подія без дії людини (перегляд товару): чекає першої взаємодії й іде разом із config.
+ * trackEvent тут не годиться — він одразу тягне ~172 КБ скрипту і з'їдає швидкодію.
+ */
+export function trackDeferredEvent(name: string, params: Record<string, unknown>) {
+  if (typeof window === "undefined" || isAutomatedBrowser(navigator)) return;
+  if (loaded) gtag("event", name, params);
+  else deferred.push([name, params]);
+}
+
 /** Подія GA4. Стає в чергу й відправиться, щойно скрипт завантажиться — не губиться. */
 export function trackEvent(name: string, params: Record<string, unknown>) {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || isAutomatedBrowser(navigator)) return;
   loadAnalytics();
   gtag("event", name, params);
 }

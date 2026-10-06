@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { createOrder } from "@/actions/get-data";
 import SuccessModel from "./success-model";
 import { trackEvent } from "@/lib/analytics/gtag";
+import { purchaseEvent } from "@/lib/analytics/ecommerce-events";
 
 interface OrderOneClickProps {
   item: {
@@ -95,12 +96,10 @@ const OrderOneClick: FC<OrderOneClickProps> = ({ item }) => {
       }
 
       setOrderNumber(order?.orderNumber);
-      trackEvent("make_order_one_click", {
-        item_id: item.productId,
-        item_name: item.title,
-        price: Number(item.price),
-        currency: "USD",
-      });
+      trackEvent(
+        "purchase",
+        purchaseEvent(order.orderNumber, [{ id: item.productId, title: item.title, price: item.price }], "one_click")
+      );
       setIsOpen(true);
       reset();
     } catch (error) {

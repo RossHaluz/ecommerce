@@ -29,6 +29,7 @@ import { removeUserContactDetails } from "@/redux/auth/slice";
 import { createOrder } from "@/actions/get-data";
 import { motion } from "framer-motion";
 import { trackEvent } from "@/lib/analytics/gtag";
+import { purchaseEvent } from "@/lib/analytics/ecommerce-events";
 import InputMask from "react-input-mask";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
@@ -413,23 +414,11 @@ const OrderForm: FC<OrderFormProps> = ({ currentUser }) => {
       }
 
       const order = await createOrder(data);
+      // createOrder повертає null при збої бекенда: без цієї перевірки кошик чистився
+      // і людина бачила «Дякуємо», хоча замовлення не існувало.
+      if (!order) throw new Error("Order was not created");
 
-      trackEvent("make_new_order", {
-        items: orderItems?.map(
-          (item: {
-            title: string;
-            price: number;
-            quantity: number;
-            id: string;
-          }) => ({
-            item_name: item.title,
-            price: item.price,
-            quantity: item.quantity,
-            item_id: item.id,
-          })
-        ),
-        total_value: order?.totalPrice,
-      });
+      trackEvent("purchase", purchaseEvent(order.orderNumber, orderItems ?? [], "checkout"));
 
       dispatch(setOrderDetails({ ...order, orderItems }));
       dispatch(cleareOrderItems());

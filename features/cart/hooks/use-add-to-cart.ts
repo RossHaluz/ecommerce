@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
 import { trackEvent } from "@/lib/analytics/gtag";
+import { cartEvent } from "@/lib/analytics/ecommerce-events";
 import { addItemToCart } from "@/redux/order/slice";
 import type { Product } from "@/lib/types";
 
@@ -37,12 +38,7 @@ export const useAddToCart = () => {
         })
       );
 
-      trackEvent("add_to_cart", {
-        item_id: product.id,
-        item_name: product.title,
-        price: Number(product.price),
-        currency: "USD",
-      });
+      trackEvent("add_to_cart", cartEvent([product]));
     } catch (error) {
       toast.error(t("somethingWentWrong"));
     }

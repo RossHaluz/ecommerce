@@ -13,6 +13,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { buildProductJsonLd } from "@/entities/product/model/product-json-ld";
 import { buildProductMeta } from "@/entities/product/model/product-meta";
 import { toProductCard } from "@/entities/product/model/product-card";
+import { TrackViewItem } from "./_components/track-view-item";
 
 interface ProductPageProps {
   params: {
@@ -58,6 +59,7 @@ const ProductPage = async ({
         {data?.product && (
           <>
             <JsonLd data={buildProductJsonLd(data.product)} />
+            <TrackViewItem item={{ id: data.product.id, title: data.product.title, price: data.product.price }} />
             <ProductInfo initialData={data.product} />
           </>
         )}
