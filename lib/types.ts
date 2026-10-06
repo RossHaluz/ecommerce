@@ -11,7 +11,11 @@ export interface Product {
   models: {
     model: Model;
   }[];
-  categories?: { categoryId: string }[];
+  /** `category` приходить лише в деталях товару (бекенд робить include), у списках — тільки id. */
+  categories?: {
+    categoryId: string;
+    category?: { name: string; category_name: string; parentId?: string | null } | null;
+  }[];
   catalog_number: string;
   images: {
     id: string;

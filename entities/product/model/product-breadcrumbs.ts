@@ -16,13 +16,20 @@ export interface ProductBreadcrumbsSource {
   models?: ModelRef[];
 }
 
+type Category = NonNullable<CategoryRef["category"]>;
+
+/** Категорії товару від загальної до вужчої: батьківська (без parentId) перед підкатегорією. */
+export function orderedCategories(categories: CategoryRef[] = []): Category[] {
+  const cats = categories.map((ref) => ref.category).filter((c): c is Category => Boolean(c));
+  return [...cats.filter((c) => !c.parentId), ...cats.filter((c) => c.parentId)];
+}
+
 /**
  * Шлях з даних самого товару, а не з ?from=: Google приходить без параметра і
  * раніше бачив лише назву. Головну додає той, хто рендерить (іконка / JSON-LD).
  */
 export function buildProductBreadcrumbs({ title, categories = [], models = [] }: ProductBreadcrumbsSource): Crumb[] {
-  const cats = categories.map((ref) => ref.category).filter((c): c is NonNullable<CategoryRef["category"]> => Boolean(c));
-  const ordered = [...cats.filter((c) => !c.parentId), ...cats.filter((c) => c.parentId)];
+  const ordered = orderedCategories(categories);
   const trail: Crumb[] = ordered.map((c) => ({ label: formatCategoryName(c.name), href: `/categories/${c.category_name}` }));
 
   const leaf = ordered.at(-1);

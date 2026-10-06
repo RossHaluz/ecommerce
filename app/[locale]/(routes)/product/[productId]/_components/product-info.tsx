@@ -1,9 +1,10 @@
-import React, { FC } from "react";
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { FC } from "react";
 import Slider from "./slider";
 import ProductDetails from "./product-details";
 import { BuyBox } from "./buy-box/buy-box";
+import { CompatibilityCard } from "./compatibility/compatibility-card";
+import { ProductSpecs } from "./specs/product-specs";
+import { FitHelpCard } from "./help/fit-help-card";
 import type { Product } from "@/lib/types";
 
 interface ProductInfoProps {
@@ -12,37 +13,24 @@ interface ProductInfoProps {
   heading: string;
 }
 
-/** Серверна розкладка картки: галерея зліва, рішення про покупку справа; інтерактив — у листках. */
-const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading }) => {
-  const t = useTranslations("product");
-  const { images, title, models } = initialData;
+const TWO_COLUMNS = "grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-6 items-start";
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-6 items-start">
-        <Slider images={images} title={title} />
-        <BuyBox product={initialData} heading={heading} />
-      </div>
-
-      <ProductDetails initialData={initialData} />
-      {models?.length > 0 && (
-        <div className="flex items-center flex-wrap gap-3">
-          <h2 className="text-base font-bold">{t("modelPlural")}</h2>
-          {models.map((item, index) => (
-            <Link
-              key={item?.model?.id}
-              href={`/${item?.model?.modelName}`}
-              prefetch={false}
-              className="underline text-[#C0092A] max-w-max"
-            >
-              {item?.model?.name}
-              {index < models.length - 1 && ", "}
-            </Link>
-          ))}
-        </div>
-      )}
+/** Серверна розкладка картки: зверху рішення про покупку, нижче — «чи підійде» і допомога. */
+const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading }) => (
+  <div className="flex flex-col gap-4 lg:gap-6">
+    <div className={TWO_COLUMNS}>
+      <Slider images={initialData.images} title={initialData.title} />
+      <BuyBox product={initialData} heading={heading} />
     </div>
-  );
-};
+    <div className={TWO_COLUMNS}>
+      <div className="flex flex-col gap-4 lg:gap-6 min-w-0">
+        <CompatibilityCard models={initialData.models ?? []} catalogNumber={initialData.catalog_number} />
+        <ProductSpecs product={initialData} />
+        <ProductDetails initialData={initialData} />
+      </div>
+      <FitHelpCard />
+    </div>
+  </div>
+);
 
 export default ProductInfo;

@@ -62,7 +62,7 @@
     "approxUah": "≈ {price} wg kursu NBU · płatność w hrywnach",
     "oneClickCta": "Kup w 1 klik — tylko telefon",
     "fitsTitle": "Pasuje do",
-    "fitsHint": "Porównaj numer katalogowy {oe} ze swoją częścią lub sprawdź po VIN — to najpewniejsze.",
+    "fitsHint": "Porównaj numer katalogowy <b>{oe}</b> ze swoją częścią lub sprawdź po VIN — to najpewniejsze.",
     "checkByVin": "Sprawdź po numerze VIN",
     "specsTitle": "Dane techniczne",
     "category": "Kategoria",
