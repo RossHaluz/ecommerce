@@ -25,7 +25,8 @@ export const CatalogNumberChip = ({ value }: { value: string }) => {
     <button
       type="button"
       onClick={copy}
-      aria-label={`${t("copyCatalogNumber")}: ${value}`}
+      // Назва починається з видимого «OE …» — інакше голосове керування не знайде кнопку (WCAG 2.5.3).
+      aria-label={`OE ${value} — ${t("copyCatalogNumber")}`}
       className="inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-md border border-[#DDDDDD] bg-[#FAFAFA] text-sm font-bold text-[#2E2E2E]"
     >
       OE {value}

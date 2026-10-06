@@ -16,6 +16,8 @@
     "toggleSubcategories": "Показати підкатегорії",
     "previousPhoto": "Попереднє фото",
     "nextPhoto": "Наступне фото",
+    "photo": "Фото {number}",
+    "zoomPhoto": "Збільшити фото",
     "previousPage": "Попередня сторінка",
     "nextPage": "Наступна сторінка",
     "page": "Сторінка {number}"
