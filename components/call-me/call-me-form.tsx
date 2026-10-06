@@ -8,8 +8,8 @@ import { Input } from "../ui/input"
 import CustomInputMask from "@/utils/phone-mask"
 import { cn } from "@/lib/utils"
 import { toast } from "react-toastify"
-import axios from "axios"
 import { Dispatch, FC, SetStateAction } from "react"
+import { submitLead } from "@/features/leads/submit-lead"
 
 interface CallMeFormProps {
   setIsSuccess: Dispatch<SetStateAction<boolean>>
@@ -35,9 +35,8 @@ const CallMeForm: FC<CallMeFormProps> = ({ setIsSuccess }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const storeId = process.env.STORE_ID;
     try {
-      await axios.post(`/call-me/${storeId}`, values);
+      await submitLead(values, "call_me");
       setIsSuccess(true)
     } catch (error) {
       console.log(error);
