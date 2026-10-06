@@ -104,7 +104,15 @@
     "scheduleWeekend": "Сб-Нд: вихідний",
     "callMeDialogThanks": "Дякуємо за Ваше звернення!",
     "callMeDialogDescription": "Є питання чи потрібна консультація? Залиште свій номер телефону і ми вам передзвонимо.",
-    "callMeDialogSuccessDescription": "Найближчим часом наш консультант зв'яжеться з вами."
+    "callMeDialogSuccessDescription": "Найближчим часом наш консультант зв'яжеться з вами.",
+    "pageTitle": "Контакти",
+    "metaTitle": "Контакти Audiparts — магазин запчастин для Audi, Хмельницький",
+    "metaDescription": "Телефони, Viber і Telegram менеджерів, графік роботи й адреса магазину Audiparts у Хмельницькому. Підберемо запчастину для Audi за VIN-кодом.",
+    "phones": "Телефони",
+    "email": "Email",
+    "followUs": "Слідкуйте за нами",
+    "instagram": "Audiparts в Instagram",
+    "telegram": "Написати в Telegram"
   },
   "notFound": {
     "code": "404",

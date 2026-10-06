@@ -2,28 +2,33 @@ import Section from "@/components/section";
 import Contacts from "./_components/contacts";
 import Map from "./_components/map";
 import { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildAlternates } from "@/lib/seo/alternates";
 
-export async function generateMetadata({
-  params,
-}: {
+interface ContactsPageProps {
   params: { locale: string };
-}): Promise<Metadata> {
+}
+
+export async function generateMetadata({ params }: ContactsPageProps): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "contact" });
+
   return {
     alternates: buildAlternates("/contacts", params.locale),
-    title: `Контактна інформація інтернет магазину Audiparts`,
-    description: `Контактна інформація інтернет магазину Audiparts по зачастинах під усі моделі Audi`,
+    title: t("metaTitle"),
+    description: t("metaDescription"),
   };
 }
 
-const ContactsPage = () => {
+const ContactsPage = async ({ params }: ContactsPageProps) => {
+  // Без цього переклади читають мову з headers() і сторінка стає динамічною.
+  setRequestLocale(params.locale);
+  const t = await getTranslations("contact");
+
   return (
-    <Section title="Контакти">
-      <div className="flex flex-col gap-[30px]">
-        <div className="flex flex-col gap-[30px] md:flex-row">
-          <Contacts />
-          <Map />
-        </div>
+    <Section title={t("pageTitle")} titleAs="h1">
+      <div className="flex flex-col gap-[30px] md:flex-row">
+        <Contacts />
+        <Map />
       </div>
     </Section>
   );

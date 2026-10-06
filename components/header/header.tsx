@@ -15,6 +15,7 @@ import HeaderAccountMenu from "./header-account-menu";
 import HeaderCartMenu from "./header-cart-menu";
 import LanguageSwitcher from "@/components/language-switcher";
 import CurrencySwitcher from "@/components/currency-switcher";
+import { MAIN_PHONE_HREF } from "@/entities/store/model/contacts";
 
 /**
  * Композиційний корінь — тільки розкладка й компонування фіч, без власної
@@ -60,7 +61,7 @@ const Header = () => {
             <SearchBar />
             <SearchByVinCode />
 
-            <Link href="tel:+380673834283" className="lg:hidden" aria-label={t("callUs")}>
+            <Link href={MAIN_PHONE_HREF} className="lg:hidden" aria-label={t("callUs")}>
               <PhoneCall className="stroke-[#FFFDFD]" />
             </Link>
 

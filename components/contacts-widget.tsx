@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useIsSmallScreen } from "@/hooks/useIsSmallScreen";
 import { createPortal } from "react-dom";
 import { useMounted } from "@/hooks/use-mounted";
+import { MAIN_PHONE_HREF, TELEGRAM_URL, VIBER_URL } from "@/entities/store/model/contacts";
 
 const ContactsWidget = () => {
   const pathname = usePathname();
@@ -89,7 +90,7 @@ const ContactsWidget = () => {
           {/* Viber */}
           <Link
             aria-label="Написати у Viber"
-            href="https://invite.viber.com/?number=380673834283"
+            href={VIBER_URL}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -129,7 +130,7 @@ const ContactsWidget = () => {
           {/* Telegram */}
           <Link
             aria-label="Написати у Telegram"
-            href="https://t.me/LOVESQ7TDI"
+            href={TELEGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -176,7 +177,7 @@ const ContactsWidget = () => {
 
           {/* Телефон */}
           <Link
-            href="tel:+380673834283"
+            href={MAIN_PHONE_HREF}
             className={cn("group relative max-w-max flex items-center", {
               hidden: !isOpen,
             })}

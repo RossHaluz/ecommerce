@@ -104,7 +104,15 @@
     "scheduleWeekend": "Sob.-Niedz.: nieczynne",
     "callMeDialogThanks": "Dziękujemy za zgłoszenie!",
     "callMeDialogDescription": "Masz pytania lub potrzebujesz konsultacji? Zostaw swój numer telefonu, a oddzwonimy.",
-    "callMeDialogSuccessDescription": "Nasz konsultant skontaktuje się z Tobą wkrótce."
+    "callMeDialogSuccessDescription": "Nasz konsultant skontaktuje się z Tobą wkrótce.",
+    "pageTitle": "Kontakt",
+    "metaTitle": "Kontakt Audiparts — sklep z częściami do Audi, Chmielnicki",
+    "metaDescription": "Telefony, Viber i Telegram menedżerów, godziny pracy i adres sklepu Audiparts w Chmielnickim. Dobierzemy część do Audi po numerze VIN.",
+    "phones": "Telefony",
+    "email": "Email",
+    "followUs": "Obserwuj nas",
+    "instagram": "Audiparts na Instagramie",
+    "telegram": "Napisz na Telegramie"
   },
   "notFound": {
     "code": "404",
