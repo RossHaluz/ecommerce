@@ -15,9 +15,11 @@ import type { Product } from "@/lib/types";
 
 interface ProductInfoProps {
   initialData: Product;
+  /** H1 з моделлю — той самий текст, що й остання ланка хлібних крихт. */
+  heading: string;
 }
 
-const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
+const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading }) => {
   const {
     images: imagesProduct,
     title,
@@ -33,18 +35,13 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData }) => {
   );
   const t = useTranslations("product");
 
-  const capitalizeFirstLetter = (str: string) => {
-    if (!str) return "";
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="grid grid-cols-1 gap-[15px] lg:grid-cols-2 lg:gap-4 items-start">
         <Slider images={images} title={title} />
         <div className="flex flex-col gap-[15px] lg:gap-4">
           <h1 className="text-[#484848] text-base font-bold lg:text-[30px] lg:leading-[32px]">
-            {capitalizeFirstLetter(title)}
+            {heading}
           </h1>
           <div className="flex flex-col gap-[15px]">
             <div className="flex items-center justify-between gap-4">

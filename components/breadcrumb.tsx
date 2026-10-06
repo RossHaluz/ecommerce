@@ -14,26 +14,12 @@ import {
 import { cn } from "@/lib/utils";
 import { buildBreadcrumbTrail, type Crumb } from "@/lib/breadcrumbs/build-breadcrumb-trail";
 
-interface BreadcrumbsProps {
-  productName?: string;
-}
-
-interface QueryCrumbs {
-  from?: string | null;
-  searchValue?: string | null;
-}
-
-const BreadcrumbsView: FC<BreadcrumbsProps & QueryCrumbs> = ({ productName, from, searchValue }) => {
+const BreadcrumbsView: FC<{ searchValue?: string | null }> = ({ searchValue }) => {
   const pathname = usePathname();
   const locale = useParams()?.locale as string | undefined;
   const t = useTranslations("nav");
 
-  const trail: Crumb[] = productName
-    ? [
-        ...buildBreadcrumbTrail({ path: from ?? "", locale, lastIsCurrent: false }),
-        { label: productName, href: null },
-      ]
-    : buildBreadcrumbTrail({ path: pathname, locale, searchValue });
+  const trail: Crumb[] = buildBreadcrumbTrail({ path: pathname, locale, searchValue });
 
   return (
     <Breadcrumb className={cn({ hidden: pathname === "/" })}>
@@ -63,18 +49,19 @@ const BreadcrumbsView: FC<BreadcrumbsProps & QueryCrumbs> = ({ productName, from
   );
 };
 
-const BreadcrumbsFromQuery: FC<BreadcrumbsProps> = (props) => {
+const BreadcrumbsFromQuery = () => {
   const query = useSearchParams();
-  return <BreadcrumbsView {...props} from={query.get("from")} searchValue={query.get("searchValue")} />;
+  return <BreadcrumbsView searchValue={query.get("searchValue")} />;
 };
 
 /**
  * Власна Suspense-межа: без неї useSearchParams на кешованій сторінці віддає
- * весь вміст найближчому fallback (у layout це «Loading..»), і HTML порожніє.
+ * весь вміст найближчому fallback, і HTML порожніє. Картка товару має власні
+ * серверні крихти (TrailBreadcrumbs) — ці лише для каталогу й пошуку.
  */
-const Breadcrumbs: FC<BreadcrumbsProps> = (props) => (
-  <Suspense fallback={<BreadcrumbsView {...props} />}>
-    <BreadcrumbsFromQuery {...props} />
+const Breadcrumbs = () => (
+  <Suspense fallback={<BreadcrumbsView />}>
+    <BreadcrumbsFromQuery />
   </Suspense>
 );
 

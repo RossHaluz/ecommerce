@@ -4,7 +4,7 @@ import { buildBreadcrumbTrail } from "./build-breadcrumb-trail";
 
 describe("buildBreadcrumbTrail", () => {
   it("keeps /categories/ in the href even though the segment is hidden", () => {
-    expect(buildBreadcrumbTrail({ path: "/categories/optyka/audi-q7", lastIsCurrent: true })).toEqual([
+    expect(buildBreadcrumbTrail({ path: "/categories/optyka/audi-q7" })).toEqual([
       { label: "Оптика", href: "/categories/optyka" },
       { label: latinToCyrillic("audi-q7"), href: null },
     ]);
@@ -25,14 +25,8 @@ describe("buildBreadcrumbTrail", () => {
     ]);
   });
 
-  it("links every segment of the 'from' path when the product is the current page", () => {
-    expect(
-      buildBreadcrumbTrail({ path: "/pl/categories/optyka", locale: "pl", lastIsCurrent: false })
-    ).toEqual([{ label: "Оптика", href: "/pl/categories/optyka" }]);
-  });
-
   it("returns nothing for the home page", () => {
     expect(buildBreadcrumbTrail({ path: "/" })).toEqual([]);
-    expect(buildBreadcrumbTrail({ path: "/pl", locale: "pl", lastIsCurrent: false })).toEqual([]);
+    expect(buildBreadcrumbTrail({ path: "/pl", locale: "pl" })).toEqual([]);
   });
 });

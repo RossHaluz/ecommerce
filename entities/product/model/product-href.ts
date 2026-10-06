@@ -1,8 +1,5 @@
 /**
- * Адреса картки товару. `from` — сторінка списку, з якої прийшли: з неї
- * будуються хлібні крихти. Пошук не передаємо — його крихти будуються інакше.
+ * Адреса картки товару — одна на товар. Колишній ?from= для хлібних крихт не потрібен
+ * (вони тепер з категорій товару), а різні адреси одного товару ламали кеш переходів.
  */
-export function productHref(productName: string, currentPath: string): string {
-  const cameFromList = currentPath !== "/" && !currentPath.includes("search");
-  return `/product/${productName}${cameFromList ? `?from=${encodeURIComponent(currentPath)}` : ""}`;
-}
+export const productHref = (productName: string) => `/product/${productName}`;

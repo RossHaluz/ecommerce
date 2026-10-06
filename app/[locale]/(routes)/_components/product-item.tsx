@@ -5,8 +5,6 @@ import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import React, { FC, useState } from "react";
 import { useTranslations } from "next-intl";
-// Шлях з префіксом мови: з нього (`from`) хлібні крихти товару будують посилання.
-import { usePathname } from "next/navigation";
 import { selectOrderItems } from "@/redux/order/selector";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
 import { cn } from "@/lib/utils";
@@ -42,8 +40,7 @@ const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
   const imageUrl = productImageUrl(item?.images?.[0]?.url);
   const orderItems = useHydratedSelector(selectOrderItems);
   const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
-  const pathname = usePathname();
-  const href = productHref(item?.product_name, pathname);
+  const href = productHref(item?.product_name);
   // Повне підвантаження (код + дані) лише коли людина вже тягнеться до
   // картки: до кліку лишається 100–300 мс, і перехід стає миттєвим.
   const [prefetchIntent, setPrefetchIntent] = useState(false);
