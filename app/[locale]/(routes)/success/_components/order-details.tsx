@@ -1,5 +1,8 @@
 "use client";
-import { selectOrderDetails } from "@/redux/order/selector";
+import { useSelector } from "react-redux";
+import { selectOrderDetails, selectOrderRehydrated } from "@/redux/order/selector";
+import { useMounted } from "@/hooks/use-mounted";
+import { shouldLeaveSuccess } from "../model/should-leave-success";
 import { format } from "date-fns";
 import OrderProducts from "./order-products";
 import OrderDelivary from "./order-delivary";
@@ -18,12 +21,14 @@ const OrderDetails = () => {
     orderDetails && format(orderDetails?.createdAt, "dd-MM-yyyy");
   const formatTime = orderDetails && format(orderDetails?.createdAt, "HH:mm");
   const router = useRouter();
+  const mounted = useMounted();
+  const rehydrated = useSelector(selectOrderRehydrated);
 
   useEffect(() => {
-    if (!orderDetails) {
-      router.push("/");
+    if (shouldLeaveSuccess({ mounted, rehydrated, hasOrder: Boolean(orderDetails) })) {
+      router.replace("/");
     }
-  }, [orderDetails, router]);
+  }, [mounted, rehydrated, orderDetails, router]);
 
   return (
     <>
