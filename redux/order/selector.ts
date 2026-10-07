@@ -9,3 +9,6 @@ export const selectOrderItems = (state: RootStateWithOrder) =>
 
 export const selectOrderDetails = (state: RootStateWithOrder) =>
   state.order.orderDetails;
+
+export const selectOrderRehydrated = (state: RootStateWithOrder) =>
+  Boolean(state.order._persist?.rehydrated);
