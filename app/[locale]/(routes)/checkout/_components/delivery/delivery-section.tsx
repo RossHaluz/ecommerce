@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useController, useFormContext } from "react-hook-form";
-import { deliveryMethodsFor, type DeliveryMethod } from "../../model/checkout-options";
+import { deliveryMethodsFor, type DeliveryMethod } from "@/entities/order/model/order-options";
 import type { CheckoutValues } from "../../model/checkout-schema";
 import { SectionCard } from "../section-card";
 import { OptionCard } from "../option-card";

@@ -1,18 +1,20 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import OrderDetails from "./_components/order-details";
 
-export const metadata: Metadata = {
-  title: "Дякую за замовлення!",
-  robots: {
-    index: false,
-    follow: true,
-  },
-};
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: "success" });
+  return { title: t("metaTitle"), robots: { index: false, follow: true } };
+}
 
-const SuccessPage = () => {
+const SuccessPage = ({ params: { locale } }: { params: { locale: string } }) => {
+  setRequestLocale(locale);
+
   return (
-    <div className="mt-6 mb-6">
-      <OrderDetails />
+    <div className="bg-[#F2F2F2]">
+      <div className="container py-4 lg:py-8">
+        <OrderDetails />
+      </div>
     </div>
   );
 };

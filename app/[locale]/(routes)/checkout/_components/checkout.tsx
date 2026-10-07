@@ -13,7 +13,8 @@ const Checkout = ({ user }: { user: (CheckoutUser & { _id?: string }) | null }) 
   const items = useHydratedSelector(selectOrderItems);
   const mounted = useMounted();
 
-  if (!mounted) return <div className="min-h-[60vh]" aria-busy />;
+  // На весь екран: футер не видно до підміни, тож поява форми нічого не зсуває (CLS).
+  if (!mounted) return <div className="min-h-[100svh]" aria-busy />;
   if (!items?.length) return <EmptyCheckout />;
 
   return (

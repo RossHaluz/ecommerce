@@ -275,5 +275,31 @@
     "cityPlaceholder": "Zacznij wpisywać nazwę",
     "warehousePlaceholder": "Numer lub ulica",
     "pickCityFirst": "Najpierw wybierz miejscowość"
+  },
+  "success": {
+    "metaTitle": "Dziękujemy za zamówienie",
+    "title": "Dziękujemy! Zamówienie nr {number}",
+    "nextTitle": "Co dalej",
+    "steps": {
+      "call": {
+        "title": "Telefon od menedżera",
+        "text": "Potwierdzimy dostępność i dostawę. Pon.–pt. 10:00–19:00."
+      },
+      "shipping": {
+        "title": "Wysyłka",
+        "text": "Pakujemy i wysyłamy wybraną firmą kurierską."
+      },
+      "pickup": {
+        "title": "Odbiór osobisty",
+        "text": "Czekamy w Chmielnickim, ul. Mołodiżna 15/1 — po telefonie od menedżera."
+      },
+      "tracking": {
+        "title": "SMS z numerem przesyłki",
+        "text": "Nova Poshta wyśle numer — po nim śledzisz paczkę."
+      }
+    },
+    "recipient": "Odbiorca",
+    "questionsTitle": "Masz pytania o zamówienie?",
+    "questionsNote": "Podaj numer zamówienia — szybciej je znajdziemy."
   }
 }

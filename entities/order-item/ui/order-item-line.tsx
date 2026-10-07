@@ -1,10 +1,11 @@
 "use client";
 
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
-import { OrderItemThumb } from "@/entities/order-item/ui/order-item-thumb";
 import type { OrderItem } from "@/redux/order/slice";
+import { OrderItemThumb } from "./order-item-thumb";
 
-export const SummaryItem = ({ item }: { item: OrderItem }) => {
+/** Рядок «фото · назва × кількість · сума» — у підсумку оформлення й на сторінці «Дякуємо». */
+export const OrderItemLine = ({ item }: { item: OrderItem }) => {
   const { format } = usePriceFormatter();
 
   return (

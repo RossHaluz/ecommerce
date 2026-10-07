@@ -1,5 +1,5 @@
 import type { CheckoutValues } from "./checkout-schema";
-import type { DeliveryMethod } from "./checkout-options";
+import { toPostService } from "@/entities/order/model/order-options";
 import { unitPrice, type PricedLine } from "@/entities/order-item/model/unit-price";
 
 export interface CartLine extends PricedLine {
@@ -8,13 +8,6 @@ export interface CartLine extends PricedLine {
   title: string;
   article: string;
 }
-
-const POST_SERVICE: Record<DeliveryMethod, "novaPoshta" | "pickup" | "transporter"> = {
-  warehouse: "novaPoshta",
-  courier: "novaPoshta",
-  pickup: "pickup",
-  transporter: "transporter",
-};
 
 /** Поля адреси, що мають сенс для способу доставки; решту шлемо порожніми — бекенд виводить тип доставки з того, що заповнено. */
 const addressFor = ({ deliveryMethod, city, ref_city, separation, ref_separation, address }: CheckoutValues) => {
@@ -26,7 +19,7 @@ const addressFor = ({ deliveryMethod, city, ref_city, separation, ref_separation
 
 /** Тіло POST /order/:store/create — ті самі поля, що слала стара форма; контракт бекенду не змінюємо. */
 export const buildOrderPayload = (values: CheckoutValues, items: CartLine[], isDrop: boolean) => ({
-  postService: POST_SERVICE[values.deliveryMethod],
+  postService: toPostService(values.deliveryMethod),
   paymentMethod: values.paymentMethod,
   firstName: values.firstName.trim(),
   lastName: values.lastName.trim(),

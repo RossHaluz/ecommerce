@@ -2,10 +2,10 @@
 
 import { useTranslations } from "next-intl";
 import type { OrderItem } from "@/redux/order/slice";
-import type { DeliveryMethod } from "../../model/checkout-options";
+import type { DeliveryMethod } from "@/entities/order/model/order-options";
 import { SubmitButton } from "../submit-button";
 import { EditCartButton } from "./edit-cart-button";
-import { SummaryItem } from "./summary-item";
+import { OrderItemLine } from "@/entities/order-item/ui/order-item-line";
 import { SummaryTotals } from "./summary-totals";
 import { TrustNotes } from "./trust-notes";
 
@@ -27,7 +27,7 @@ export const OrderSummary = ({ items, deliveryMethod, submitting }: OrderSummary
       </div>
       <ul className="m-0 flex list-none flex-col gap-3 border-b border-[#EEEEEE] p-0 pb-4">
         {items.map((item) => (
-          <SummaryItem key={item.orderItemId ?? item.id} item={item} />
+          <OrderItemLine key={item.orderItemId ?? item.id} item={item} />
         ))}
       </ul>
       <SummaryTotals items={items} deliveryMethod={deliveryMethod} />
