@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { UA_PHONE_PATTERN } from "@/lib/format/ua-phone";
-import { DELIVERY_METHODS, PAYMENT_METHODS } from "./checkout-options";
+import { DELIVERY_METHODS, PAYMENT_METHODS } from "@/entities/order/model/order-options";
 
 type Translate = (key: string) => string;
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import type { DeliveryMethod } from "../../model/checkout-options";
+import type { DeliveryMethod } from "@/entities/order/model/order-options";
 import { TextField } from "../fields/text-field";
 import { NpCityInput } from "./np-city-input";
 import { NpWarehouseInput } from "./np-warehouse-input";

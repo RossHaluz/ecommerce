@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { CartTotal, cartTotal } from "@/features/cart";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import type { OrderItem } from "@/redux/order/slice";
-import type { DeliveryMethod } from "../../model/checkout-options";
+import type { DeliveryMethod } from "@/entities/order/model/order-options";
 
 /** Вартість доставки чесно «за тарифами»: сума невідома до відправки, і обіцянка цифри зірвала б довіру. */
 export const SummaryTotals = ({ items, deliveryMethod }: { items: OrderItem[]; deliveryMethod: DeliveryMethod }) => {

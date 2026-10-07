@@ -1,5 +1,5 @@
 import type { CheckoutValues } from "./checkout-schema";
-import type { DeliveryMethod } from "./checkout-options";
+import type { DeliveryMethod } from "@/entities/order/model/order-options";
 import { unitPrice, type PricedLine } from "@/entities/order-item/model/unit-price";
 
 export interface CartLine extends PricedLine {

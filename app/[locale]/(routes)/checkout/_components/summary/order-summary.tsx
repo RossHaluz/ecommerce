@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import type { OrderItem } from "@/redux/order/slice";
-import type { DeliveryMethod } from "../../model/checkout-options";
+import type { DeliveryMethod } from "@/entities/order/model/order-options";
 import { SubmitButton } from "../submit-button";
 import { EditCartButton } from "./edit-cart-button";
 import { SummaryItem } from "./summary-item";
