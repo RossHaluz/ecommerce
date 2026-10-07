@@ -18,6 +18,7 @@
     "nextPhoto": "Następne zdjęcie",
     "photo": "Zdjęcie {number}",
     "zoomPhoto": "Powiększ zdjęcie",
+    "back": "Wstecz",
     "previousPage": "Poprzednia strona",
     "nextPage": "Następna strona",
     "page": "Strona {number}"
@@ -189,5 +190,90 @@
     "partsPlaceholder": "Nazwa części lub jej numer katalogowy",
     "filesLabel": "Zdjęcie części (opcjonalnie)",
     "submit": "Wyślij"
+  },
+  "checkout": {
+    "title": "Składanie zamówienia",
+    "questions": "Pytania?",
+    "loginPrompt": "Kupowałeś już u nas?",
+    "loginCta": "Zaloguj się",
+    "loginNote": "— uzupełnimy dane",
+    "stepContacts": "Twoje dane kontaktowe",
+    "stepDropshipper": "Dane dropshippera",
+    "stepRecipient": "Odbiorca przesyłki",
+    "stepDelivery": "Dostawa",
+    "stepPayment": "Płatność",
+    "phone": "Telefon",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "optional": "(opcjonalnie)",
+    "city": "Miejscowość",
+    "warehouse": "Oddział lub paczkomat",
+    "address": "Adres",
+    "addressPlaceholder": "Ulica, numer domu, mieszkanie",
+    "transporterBranch": "Oddział przewoźnika",
+    "delivery": {
+      "warehouse": {
+        "title": "Nova Poshta — oddział lub paczkomat",
+        "description": "Koszt według taryf Nova Poshta",
+        "cost": "według taryf Nova Poshta"
+      },
+      "courier": {
+        "title": "Nova Poshta — kurierem pod adres",
+        "description": "Koszt według taryf Nova Poshta",
+        "cost": "według taryf Nova Poshta"
+      },
+      "pickup": {
+        "title": "Odbiór osobisty w Chmielnickim",
+        "description": "ul. Mołodiżna 15/1 · pon.–pt. 10:00–19:00 · bezpłatnie",
+        "cost": "bezpłatnie"
+      },
+      "transporter": {
+        "title": "Inny przewoźnik",
+        "description": "Podaj miejscowość i oddział — wyślemy wybraną firmą",
+        "cost": "według taryf przewoźnika"
+      }
+    },
+    "payment": {
+      "cashOnDelivary": {
+        "title": "Przy odbiorze w Nova Poshta",
+        "description": "Za pobraniem; prowizję za przekaz pobiera Nova Poshta"
+      },
+      "payByCard": {
+        "title": "Na kartę po potwierdzeniu",
+        "description": "Menedżer potwierdzi dostępność i prześle dane do przelewu"
+      }
+    },
+    "addComment": "Dodaj komentarz do zamówienia",
+    "comment": "Komentarz",
+    "commentPlaceholder": "Np. VIN auta lub dogodna pora na telefon",
+    "editCart": "Zmień",
+    "yourOrder": "Twoje zamówienie",
+    "itemsCount": "Produkty ({count})",
+    "miniSummary": "<b>{count, plural, one {# produkt} few {# produkty} other {# produktów}}</b> za {total}",
+    "deliveryCost": "Dostawa",
+    "submit": "Potwierdź zamówienie",
+    "submitting": "Składamy zamówienie…",
+    "submitNote": "Menedżer zadzwoni i potwierdzi zamówienie",
+    "trustReturns": "<b>Wymiana lub zwrot</b> w ciągu 14 dni",
+    "trustCallback": "<b>Menedżer zadzwoni</b> i potwierdzi dostępność oraz dostawę",
+    "errors": {
+      "phoneRequired": "Podaj numer telefonu",
+      "phoneInvalid": "Wpisz pełny numer: +380 XXX XX XX XX",
+      "firstNameRequired": "Podaj imię",
+      "lastNameRequired": "Podaj nazwisko — Nova Poshta wymaga go przy wydaniu",
+      "emailInvalid": "Sprawdź email — wygląda na błędny",
+      "cityRequired": "Wybierz miejscowość z listy",
+      "warehouseRequired": "Wybierz oddział lub paczkomat z listy",
+      "addressRequired": "Podaj adres dostawy",
+      "orderFailed": "Nie udało się złożyć zamówienia. Spróbuj ponownie lub zadzwoń do nas."
+    }
+  },
+  "novaPoshta": {
+    "searching": "Szukamy…",
+    "noCity": "Nie znaleziono miejscowości z oddziałami Nova Poshta",
+    "noWarehouse": "Nie znaleziono oddziału — spróbuj numeru lub ulicy",
+    "cityPlaceholder": "Zacznij wpisywać nazwę",
+    "warehousePlaceholder": "Numer lub ulica",
+    "pickCityFirst": "Najpierw wybierz miejscowość"
   }
 }

@@ -1,17 +1,18 @@
+import { unitPrice, type PricedLine } from "@/entities/order-item/model/unit-price";
+
 /** Каталог веде ціни в доларах — так їх і рахує GA4. */
 const CURRENCY = "USD";
 
-export interface AnalyticsItem {
+export interface AnalyticsItem extends PricedLine {
   id: string;
   title: string;
-  price: number | string;
   quantity?: number;
 }
 
 const toGaItem = (item: AnalyticsItem) => ({
   item_id: item.id,
   item_name: item.title,
-  price: Number(item.price),
+  price: unitPrice(item),
   quantity: item.quantity ?? 1,
 });
 

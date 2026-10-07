@@ -13,6 +13,7 @@ import { createOrder } from "@/actions/get-data";
 import { trackEvent } from "@/lib/analytics/gtag";
 import { purchaseEvent } from "@/lib/analytics/ecommerce-events";
 import { cn } from "@/lib/utils";
+import { UA_PHONE_MASK, UA_PHONE_PATTERN } from "@/lib/format/ua-phone";
 import { placeOneClickOrder, type OneClickItem } from "./place-one-click-order";
 
 interface OneClickFormProps {
@@ -24,7 +25,7 @@ interface OneClickFormProps {
 
 const buildSchema = (t: (key: string) => string) =>
   z.object({
-    phone: z.string().min(1, t("phoneRequired")).regex(/^\+380 \d{3} \d{2} \d{2} \d{2}$/, t("phoneInvalid")),
+    phone: z.string().min(1, t("phoneRequired")).regex(UA_PHONE_PATTERN, t("phoneInvalid")),
   });
 
 export const OneClickForm = ({ item, variant, onPlaced }: OneClickFormProps) => {
@@ -65,7 +66,7 @@ export const OneClickForm = ({ item, variant, onPlaced }: OneClickFormProps) => 
                     type="tel"
                     inputMode="tel"
                     autoComplete="tel"
-                    mask="+380 999 99 99 99"
+                    mask={UA_PHONE_MASK}
                     placeholder={t("phonePlaceholder")}
                     {...field}
                     className={cn(

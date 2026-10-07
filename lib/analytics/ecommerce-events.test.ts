@@ -16,6 +16,11 @@ describe("ecommerce-events", () => {
     });
   });
 
+  it("рядок кошика (price — сума рядка) рахується за ціною штуки, а не множиться вдруге", () => {
+    const cartLine = { id: "p2", title: "Накладка дверки", price: 60, priceForOne: 30, quantity: 2 };
+    expect(cartEvent([cartLine])).toMatchObject({ value: 60, items: [{ price: 30, quantity: 2 }] });
+  });
+
   it("покупка несе номер замовлення — без нього GA4 не зведе дохід і задублює повтор", () => {
     expect(purchaseEvent(1042, [bumper], "one_click")).toMatchObject({
       transaction_id: "1042",

@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { hasStickyBottomBar } from "@/lib/routing/has-sticky-bottom-bar";
 import { Button } from "./ui/button";
 import { MessagesSquareIcon, Phone, X } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -73,8 +74,7 @@ const ContactsWidget = () => {
           {
             "bottom-20": pathname === "/" || pathname.startsWith("/categories"),
             "bottom-16": pathname !== "/" && !pathname.startsWith("/categories"),
-            // Картка товару на телефоні: бульбашка лягала на «Купити»; Viber/Telegram/дзвінок там є в блоці допомоги.
-            "max-lg:hidden": pathname.includes("/product/"),
+            "max-lg:hidden": hasStickyBottomBar(pathname),
           }
         )}
         ref={widgetRef}

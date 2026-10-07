@@ -1,26 +1,27 @@
 "use client";
-import OrderForm from "./order-form";
-import { FC } from "react";
+
+import { selectOrderItems } from "@/redux/order/selector";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
+import { useMounted } from "@/hooks/use-mounted";
+import type { CheckoutUser } from "../model/checkout-defaults";
+import { CheckoutForm } from "./checkout-form";
+import { EmptyCheckout } from "./empty-checkout";
 import { TrackBeginCheckout } from "./track-begin-checkout";
 
-interface CheckoutProps {
-  currentUser?: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    type: string;
-    email: string;
-    avatar: string;
-  } | null;
-}
+/** Кошик живе в localStorage: до монтування він невідомий — без заглушки блимало б «кошик порожній». */
+const Checkout = ({ user }: { user: (CheckoutUser & { _id?: string }) | null }) => {
+  const items = useHydratedSelector(selectOrderItems);
+  const mounted = useMounted();
 
-const Checkout: FC<CheckoutProps> = ({ currentUser }) => {
+  if (!mounted) return <div className="min-h-[60vh]" aria-busy />;
+  if (!items?.length) return <EmptyCheckout />;
+
   return (
-    <div className="flex flex-col gap-4 lg:gap-[30px]">
+    <>
       <TrackBeginCheckout />
-      <OrderForm currentUser={currentUser} />
-    </div>
+      {/* Після входу через OTP сторінка оновлюється — новий key підставляє дані профілю. */}
+      <CheckoutForm key={user?._id ?? "guest"} items={items} user={user} />
+    </>
   );
 };
 

@@ -13,6 +13,7 @@ import HeaderCatalogMenu from "./header-catalog-menu";
 import HeaderContact from "./header-contact";
 import HeaderAccountMenu from "./header-account-menu";
 import HeaderCartMenu from "./header-cart-menu";
+import { CheckoutHeader } from "./checkout-header";
 import LanguageSwitcher from "@/components/language-switcher";
 import CurrencySwitcher from "@/components/currency-switcher";
 import { MAIN_PHONE_HREF } from "@/entities/store/model/contacts";
@@ -40,6 +41,8 @@ const Header = () => {
   const homePage = pathname.endsWith("/");
   // На картці товару VIN є в блоці «Підходить до», а плаваюча кнопка на телефоні закривала «Купити».
   const isProductPage = pathname.includes("/product/");
+
+  if (pathname.includes("/checkout")) return <CheckoutHeader />;
 
   return (
     <>
