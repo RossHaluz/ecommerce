@@ -85,7 +85,14 @@
     "placeOrder": "Оформити замовлення",
     "noMoreStock": "Більше немає: у наявності лише {count} шт. — усі вже у вашому кошику",
     "decrease": "Менше",
-    "increase": "Більше"
+    "increase": "Більше",
+    "title": "Кошик · {count, plural, one {# товар} few {# товари} other {# товарів}}",
+    "each": "{price} за шт.",
+    "stockLimit": "Це весь залишок ({count} шт.) — більше додати не можна",
+    "addToCart": "Додати в кошик",
+    "suggestionsTitle": "Можливо, вас зацікавлять",
+    "showMore": "Показати ще",
+    "backToCheckout": "Повернутися до оформлення"
   },
   "filters": {
     "availability": "Наявність",

@@ -60,7 +60,7 @@ const ContactsWidget = () => {
           setIsOpen(false);
         }}
         className={cn(
-          "fixed w-full h-full left-0 top-0 bg-[#00000066] z-[90] opacity-0 pointer-events-none transform transition-opacity duration-300",
+          "fixed w-full h-full left-0 top-0 bg-[#00000066] z-[35] opacity-0 pointer-events-none transform transition-opacity duration-300",
           {
             "opacity-100 pointer-events-auto": isOpen,
           }
@@ -70,7 +70,8 @@ const ContactsWidget = () => {
       {/* Сам віджет */}
       <div
         className={cn(
-          "fixed right-8 lg:bottom-14 flex flex-col items-end gap-4 z-[100]",
+          // Над шапкою (z-30), але під шторками й діалогами (z-50) — інакше кнопка лягала на «Оформити».
+          "fixed right-8 lg:bottom-14 flex flex-col items-end gap-4 z-40",
           {
             "bottom-20": pathname === "/" || pathname.startsWith("/categories"),
             "bottom-16": pathname !== "/" && !pathname.startsWith("/categories"),

@@ -85,7 +85,14 @@
     "placeOrder": "Złóż zamówienie",
     "noMoreStock": "Więcej nie ma: dostępne tylko {count} szt. — wszystkie są już w Twoim koszyku",
     "decrease": "Mniej",
-    "increase": "Więcej"
+    "increase": "Więcej",
+    "title": "Koszyk · {count, plural, one {# produkt} few {# produkty} other {# produktów}}",
+    "each": "{price} za szt.",
+    "stockLimit": "To cały zapas ({count} szt.) — więcej nie można dodać",
+    "addToCart": "Dodaj do koszyka",
+    "suggestionsTitle": "Może Cię zainteresować",
+    "showMore": "Pokaż więcej",
+    "backToCheckout": "Wróć do zamówienia"
   },
   "filters": {
     "availability": "Dostępność",

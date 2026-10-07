@@ -30,7 +30,7 @@ export const MiniSummary = ({ items }: { items: OrderItem[] }) => {
       <span className="flex-1 text-sm text-[#484848]">
         {t.rich("miniSummary", { ...richTags, count: items.length, total: format(cartTotal(items)) })}
       </span>
-      <EditCartButton items={items} />
+      <EditCartButton />
     </div>
   );
 };
