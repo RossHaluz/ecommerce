@@ -9,11 +9,9 @@ import AccountIcon from "/public/images/account-icon.svg";
 import CatalogIcon from "/public/images/catalog-icon.svg";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import Modal from "./ui/modal";
 import { selectOrderItems } from "@/redux/order/selector";
-import ProductCount from "@/app/[locale]/(routes)/product/[productId]/_components/product-count";
 import { useCurrentUser } from "@/features/account";
-import { CartPreview, useRemoveFromCart } from "@/features/cart";
+import { CartSheet } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 import { MobileMenu } from "./mobile-menu/mobile-menu";
 import { MenuTrigger } from "./mobile-menu/menu-trigger";
@@ -24,7 +22,6 @@ const ITEM_CLASS = "flex flex-col items-center gap-1 text-[8px] leading-[9.75px]
 const MobileSidebar = () => {
   const pathname = usePathname();
   const orderItems = useHydratedSelector(selectOrderItems);
-  const removeFromCart = useRemoveFromCart();
   const { data: user } = useCurrentUser();
   const t = useTranslations();
   // null — меню закрите й не змонтоване.
@@ -43,23 +40,15 @@ const MobileSidebar = () => {
 
         <MenuTrigger icon={<CatalogIcon />} label={t("nav.categories")} onClick={() => setMenuPanel("catalog")} />
 
-        <Modal
-          triggetBtn={
+        <CartSheet
+          heading={t("cart.title", { count: orderItems?.length ?? 0 })}
+          trigger={
             <Button variant="ghost" className={cn("p-0 hover:bg-transparent", ITEM_CLASS)}>
               <ShopIcon />
               {t("nav.cart")}
             </Button>
           }
-          title={t("nav.cart")}
-        >
-          <CartPreview
-            items={orderItems}
-            onRemove={removeFromCart}
-            renderExtra={(item) => (
-              <ProductCount count={item.quantity} itemId={item.orderItemId} isFromOrder savePrice={item.priceForOne} />
-            )}
-          />
-        </Modal>
+        />
 
         <MenuTrigger icon={<InfoIcon />} label={t("nav.information")} onClick={() => setMenuPanel("menu")} />
 

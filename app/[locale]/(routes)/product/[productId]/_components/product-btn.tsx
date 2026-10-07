@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { AddedToCartSheet, useAddToCart } from "@/features/cart";
+import { AddedToCartSheet } from "@/features/cart";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -11,20 +11,20 @@ interface ProductBtnProps {
 }
 
 const ProductBtn = ({ item, className }: ProductBtnProps) => {
-  const addToCart = useAddToCart();
   const t = useTranslations("product");
 
   return (
     <div className="w-full">
       <AddedToCartSheet
-        trigger={
+        product={item}
+        renderTrigger={(buy) => (
           <Button
             className={cn("w-full h-[52px] lg:h-14 rounded-lg text-[17px] lg:text-lg font-extrabold", className)}
-            onClick={() => addToCart(item)}
+            onClick={() => buy()}
           >
             {t("buy")}
           </Button>
-        }
+        )}
       />
     </div>
   );

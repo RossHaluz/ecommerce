@@ -3,20 +3,19 @@
 import { useTranslations } from "next-intl";
 import CartIcon from "/public/images/cart.svg";
 import { Button } from "@/components/ui/button";
-import Modal from "@/components/ui/modal";
 import { selectOrderItems } from "@/redux/order/selector";
-import { CartPreview, useRemoveFromCart } from "@/features/cart";
+import { CartSheet } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 const HeaderCartMenu = () => {
   const orderItems = useHydratedSelector(selectOrderItems);
-  const removeFromCart = useRemoveFromCart();
   const t = useTranslations();
   const count = orderItems?.length ?? 0;
 
   return (
-    <Modal
-      triggetBtn={
+    <CartSheet
+      heading={t("cart.title", { count })}
+      trigger={
         <Button
           variant="ghost"
           className="p-0 relative"
@@ -29,10 +28,7 @@ const HeaderCartMenu = () => {
           </div>
         </Button>
       }
-      title={t("nav.cart")}
-    >
-      <CartPreview items={orderItems} onRemove={removeFromCart} />
-    </Modal>
+    />
   );
 };
 

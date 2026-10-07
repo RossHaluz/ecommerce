@@ -14,7 +14,7 @@ import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { productHref } from "@/entities/product/model/product-href";
 import { StockStatus } from "@/entities/product/ui/stock-status";
 import { Product } from "@/lib/types";
-import { AddedToCartSheet, useAddToCart } from "@/features/cart";
+import { AddedToCartSheet } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 // Перший ряд на телефоні. Більше — і фото ділять вузький канал з LCP-фото.
@@ -45,7 +45,6 @@ const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
   const [loading, setLoading] = useState(true);
   const isMobile = useIsSmallScreen();
   const { format } = usePriceFormatter();
-  const addToCart = useAddToCart();
   const t = useTranslations();
 
   return (
@@ -156,15 +155,16 @@ const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
           </h3>
 
           <AddedToCartSheet
-            trigger={
+            product={item}
+            renderTrigger={(buy) => (
               <Button
                 variant="ghost"
                 className="hover:bg-none bg-[#c0092a] mobile_s:w-full mobile_m:max-w-max leading-[14.63px] font-medium p-[12.5px] md:py-[14px] lg:p-4 flex items-center justify-center text-[#FFFDFD]"
-                onClick={() => addToCart(item)}
+                onClick={() => buy()}
               >
                 {t("product.buy")}
               </Button>
-            }
+            )}
           />
         </div>
       </div>

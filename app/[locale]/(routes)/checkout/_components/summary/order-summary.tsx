@@ -23,7 +23,7 @@ export const OrderSummary = ({ items, deliveryMethod, submitting }: OrderSummary
     <aside className="flex flex-col gap-4 rounded-xl bg-white p-6">
       <div className="flex items-center justify-between">
         <h2 className="m-0 text-xl font-extrabold text-[#2E2E2E]">{t("yourOrder")}</h2>
-        <EditCartButton items={items} />
+        <EditCartButton />
       </div>
       <ul className="m-0 flex list-none flex-col gap-3 border-b border-[#EEEEEE] p-0 pb-4">
         {items.map((item) => (

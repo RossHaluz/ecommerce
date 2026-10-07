@@ -21,5 +21,6 @@ export const queryKeys = {
   categories: () => ["categories"] as const,
   currentUser: () => ["current-user"] as const,
   models: () => ["models"] as const,
+  cartSuggestions: (modelName: string) => ["cart-suggestions", modelName] as const,
   exchangeRate: (pair: string) => ["exchange-rate", pair] as const,
 } as const;
