@@ -1,34 +1,27 @@
-import { Metadata } from "next";
-import Checkout from "./_components/checkout";
-import OrderItems from "./_components/order-items";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getCurrentUser } from "@/actions/get-data";
+import Checkout from "./_components/checkout";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: "checkout" });
   return {
-    title: `Оформлення замовлення`,
-    description: `Створюйте замовлення швидко та зручно в інтернет магазині Audiparts`,
-    // Кошик/оформлення не мають сенсу у видачі.
+    title: t("title"),
+    // Оформлення не має сенсу у видачі.
     robots: { index: false, follow: true },
   };
 }
 
-const CheckoutPage = async () => {
-  const currentUser = await getCurrentUser();
+const CheckoutPage = async ({ params: { locale } }: { params: { locale: string } }) => {
+  setRequestLocale(locale);
+  const [t, user] = await Promise.all([getTranslations("checkout"), getCurrentUser()]);
 
   return (
-    <div className="mt-6 mb-6 container">
-      <div className="flex flex-col gap-[15px] lg:gap-[30px]">
-        <h1 className="text-[#484848] text-base font-bold">
-          Оформлення замовлення
-        </h1>
-        <div className="md:grid grid-cols-2 gap-[18px]">
-          <div className="md:pr-[104px]">
-            <Checkout currentUser={currentUser} />
-          </div>
-          <div className="hidden md:block">
-            <OrderItems currentUser={currentUser} />
-          </div>
-        </div>
+    <div className="bg-[#F2F2F2]">
+      <div className="container flex flex-col gap-4 py-4 lg:gap-6 lg:py-8">
+        {/* На телефоні заголовок уже в шапці оформлення. */}
+        <h1 className="m-0 text-[32px] font-extrabold text-[#2E2E2E] max-lg:sr-only">{t("title")}</h1>
+        <Checkout user={user} />
       </div>
     </div>
   );

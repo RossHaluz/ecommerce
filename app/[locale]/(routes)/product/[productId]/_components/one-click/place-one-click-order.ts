@@ -9,8 +9,8 @@ export interface OneClickItem {
 }
 
 /** Замовлення в один клік: лише телефон; доставку й оплату менеджер узгодить у дзвінку. */
-export const placeOneClickOrder = (phone: string, item: OneClickItem, create: CreateOrder) =>
-  submitOrder(
+export async function placeOneClickOrder(phone: string, item: OneClickItem, create: CreateOrder<{ orderNumber: number }>) {
+  const order = await submitOrder(
     {
       phone,
       postService: "novaPoshta",
@@ -19,3 +19,5 @@ export const placeOneClickOrder = (phone: string, item: OneClickItem, create: Cr
     },
     create
   );
+  return order.orderNumber;
+}

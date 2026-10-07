@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import Trash from "/public/images/trash.svg";
 import { Button } from "@/components/ui/button";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
-import { productImageUrl } from "@/entities/product/model/product-image-url";
+import { OrderItemThumb } from "./order-item-thumb";
 import type { OrderItem } from "@/redux/order/slice";
 
 interface OrderItemRowProps {
@@ -25,20 +24,10 @@ const capitalizeFirstLetter = (str: string) => {
 const OrderItemRow = ({ item, onRemove, extra }: OrderItemRowProps) => {
   const { format } = usePriceFormatter();
   const t = useTranslations("cart");
-  const imageUrl = productImageUrl(item.images?.[0]?.url);
 
   return (
     <div className="flex items-start gap-3 w-full rounded-[5px]">
-      <div className="w-[65px] h-[65px] rounded-[5px] overflow-hidden relative">
-        {imageUrl && (
-          <Image
-            src={imageUrl}
-            alt={item.images?.[0]?.id ?? item.title}
-            fill
-            className="object-cover"
-          />
-        )}
-      </div>
+      <OrderItemThumb imageUrl={item.images?.[0]?.url} sizes="65px" className="h-[65px] w-[65px] rounded-[5px]" />
 
       <div className="flex flex-col gap-3 w-full">
         <div className="flex items-center justify-between w-full">
