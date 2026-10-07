@@ -1,9 +1,11 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Check } from "lucide-react";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import type { Product } from "@/lib/types";
+import { useAddToCart } from "../hooks/use-add-to-cart";
 import { Link } from "@/i18n/routing";
 import { selectOrderItems } from "@/redux/order/selector";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
@@ -12,19 +14,28 @@ import CartPreview from "./cart-preview";
 import { CartTotal } from "./cart-total-line";
 import { useRemoveFromCart } from "../hooks/use-remove-from-cart";
 
+interface AddedToCartSheetProps {
+  product: Product;
+  /** Кнопка «Купити»: отримує buy(кількість) і малює себе як потрібно місцю. */
+  renderTrigger: (buy: (quantity?: number) => void) => ReactNode;
+}
+
 /**
  * Після «Купити»: підтвердження, що в кошику, сума й найкоротший шлях до оформлення.
+ * Відкривається лише якщо товар справді додано — понад залишок з'являється пояснення, а не «Додано».
  * Шторка знизу на телефоні (під великим пальцем), справа на комп'ютері (сторінку видно).
  */
-export const AddedToCartSheet = ({ trigger }: { trigger: ReactNode }) => {
+export const AddedToCartSheet = ({ product, renderTrigger }: AddedToCartSheetProps) => {
   const t = useTranslations("cart");
   const items = useHydratedSelector(selectOrderItems);
   const removeFromCart = useRemoveFromCart();
+  const addToCart = useAddToCart();
   const isPhone = useIsSmallScreen(1023);
+  const [open, setOpen] = useState(false);
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>{trigger}</SheetTrigger>
+    <Sheet open={open} onOpenChange={setOpen}>
+      {renderTrigger((quantity) => setOpen(addToCart(product, quantity)))}
       <SheetContent
         side={isPhone ? "bottom" : "right"}
         className="flex flex-col gap-4 bg-white text-[#484848] max-lg:max-h-[90vh] max-lg:rounded-t-2xl sm:max-w-[440px]"

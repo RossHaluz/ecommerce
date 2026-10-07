@@ -1,26 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PersistPartial } from "redux-persist/es/persistReducer";
+import { clampQuantity } from "@/entities/order-item/model/max-orderable";
 
 export interface OrderItem {
   id: string;
+  /** Кількість у кошику. Залишок товару — у stock: `...product` раніше перезаписував його тут. */
   quantity: number;
+  stock?: number;
+  /** Сума рядка (priceForOne × quantity). */
   price: number;
   priceForOne: number;
   orderItemId: string;
-  productPrices: {
-    id: string;
-    drop_price: number;
-    retail_price: number;
-  }[];
   title: string;
   article: string;
-  /** Реально в стані від додавання (`...product` у add-to-cart), тип раніше
-   *  цього не відображав. */
+  catalog_number?: string;
   product_name: string;
   images: {
     id: string;
     url: string;
   }[];
+  models?: { model?: { modelName?: string } }[];
 }
 
 export interface OrderState extends PersistPartial {
@@ -35,6 +34,11 @@ const initialState: any = {
   orderDetails: null,
 };
 
+const setQuantity = (item: OrderItem, quantity: number) => {
+  item.quantity = clampQuantity(quantity, item.stock);
+  item.price = Number(item.priceForOne) * item.quantity;
+};
+
 export const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -42,61 +46,24 @@ export const orderSlice = createSlice({
     setOrderDetails(state, action) {
       state.orderDetails = action.payload;
     },
-    addItemToCart(state, action) {
-      const findOrderItem = state.orderItems.find(
-        (item: any) => item.id === action?.payload?.id
-      );
-
-      if (findOrderItem) {
-        findOrderItem.quantity += action.payload.quantity;
-        findOrderItem.price =
-          Number(findOrderItem.price) + Number(action.payload.price);
+    /** Повторне «Купити» додає до наявного рядка; понад залишок не виходить навіть якщо UI пропустив. */
+    addItemToCart(state, action: PayloadAction<OrderItem>) {
+      const existing = state.orderItems.find((item: OrderItem) => item.id === action.payload.id);
+      if (existing) {
+        existing.stock = action.payload.stock ?? existing.stock;
+        setQuantity(existing, existing.quantity + action.payload.quantity);
       } else {
-        state.orderItems.push(action.payload);
+        const item = { ...action.payload };
+        setQuantity(item, item.quantity);
+        state.orderItems.push(item);
       }
-    },
-    currentPriceOrderItems(state, action) {
-      const userType = action.payload.userType;
-
-      state.orderItems = state.orderItems?.map((item: OrderItem) => {
-        const newPrice =
-          userType === "drop"
-            ? item?.productPrices[0]?.drop_price
-            : item?.productPrices[0]?.retail_price;
-
-        return {
-          ...item,
-          price: newPrice,
-          priceForOne: newPrice,
-        };
-      });
     },
     removeItemFromCart(state, action) {
-      state.orderItems = state.orderItems.filter(
-        (item: any) => item.orderItemId !== action.payload
-      );
+      state.orderItems = state.orderItems.filter((item: OrderItem) => item.orderItemId !== action.payload);
     },
-    /** Степер кількості в мобільному кошику (`mobile-sidebar.tsx` ->
-     *  `product-count.tsx` з `isFromOrder`). Помилково видалено як "мертвий"
-     *  — grep на живих споживачів шукав лише в `app/`, а цей рендериться в
-     *  `components/`. */
-    changeProductCount(
-      state,
-      action: PayloadAction<{ itemId: string; type: "increase" | "decrease" }>
-    ) {
-      const { itemId, type } = action.payload;
-      const findItem = state.orderItems.find(
-        (item: any) => item.orderItemId === itemId
-      );
-      if (findItem) {
-        if (type === "increase") {
-          findItem.quantity += 1;
-          findItem.price = Number(findItem.priceForOne) * findItem.quantity;
-        } else if (type === "decrease" && findItem.quantity > 1) {
-          findItem.quantity -= 1;
-          findItem.price = Number(findItem.priceForOne) * findItem.quantity;
-        }
-      }
+    setItemQuantity(state, action: PayloadAction<{ orderItemId: string; quantity: number }>) {
+      const item = state.orderItems.find((line: OrderItem) => line.orderItemId === action.payload.orderItemId);
+      if (item) setQuantity(item, action.payload.quantity);
     },
     cleareOrderItems(state) {
       state.orderItems = [];
@@ -104,13 +71,6 @@ export const orderSlice = createSlice({
   },
 });
 
-export const {
-  addItemToCart,
-  removeItemFromCart,
-  changeProductCount,
-  setOrderDetails,
-  cleareOrderItems,
-  currentPriceOrderItems,
-} = orderSlice.actions;
+export const { addItemToCart, removeItemFromCart, setItemQuantity, setOrderDetails, cleareOrderItems } = orderSlice.actions;
 
 export const OrderReducer = orderSlice.reducer;

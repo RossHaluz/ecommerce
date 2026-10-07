@@ -11,9 +11,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import Modal from "./ui/modal";
 import { selectOrderItems } from "@/redux/order/selector";
-import ProductCount from "@/app/[locale]/(routes)/product/[productId]/_components/product-count";
 import { useCurrentUser } from "@/features/account";
-import { CartPreview, useRemoveFromCart } from "@/features/cart";
+import { CartLineQuantity, CartPreview, useRemoveFromCart } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 import { MobileMenu } from "./mobile-menu/mobile-menu";
 import { MenuTrigger } from "./mobile-menu/menu-trigger";
@@ -55,9 +54,7 @@ const MobileSidebar = () => {
           <CartPreview
             items={orderItems}
             onRemove={removeFromCart}
-            renderExtra={(item) => (
-              <ProductCount count={item.quantity} itemId={item.orderItemId} isFromOrder savePrice={item.priceForOne} />
-            )}
+            renderExtra={(item) => <CartLineQuantity item={item} />}
           />
         </Modal>
 

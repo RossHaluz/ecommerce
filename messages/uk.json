@@ -82,7 +82,10 @@
     "total": "До сплати",
     "removeItem": "Видалити товар з кошика",
     "continueShopping": "Продовжити покупки",
-    "placeOrder": "Оформити замовлення"
+    "placeOrder": "Оформити замовлення",
+    "noMoreStock": "Більше немає: у наявності лише {count} шт. — усі вже у вашому кошику",
+    "decrease": "Менше",
+    "increase": "Більше"
   },
   "filters": {
     "availability": "Наявність",

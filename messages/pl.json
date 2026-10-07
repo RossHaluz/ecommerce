@@ -82,7 +82,10 @@
     "total": "Do zapłaty",
     "removeItem": "Usuń produkt z koszyka",
     "continueShopping": "Kontynuuj zakupy",
-    "placeOrder": "Złóż zamówienie"
+    "placeOrder": "Złóż zamówienie",
+    "noMoreStock": "Więcej nie ma: dostępne tylko {count} szt. — wszystkie są już w Twoim koszyku",
+    "decrease": "Mniej",
+    "increase": "Więcej"
   },
   "filters": {
     "availability": "Dostępność",
