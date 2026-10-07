@@ -43,6 +43,13 @@ describe("buildOrderPayload", () => {
     });
   });
 
+  it("дві однакові деталі по $30: бекенду йде ціна за штуку, а не $60 суми рядка", () => {
+    const line: CartLine = { id: "p2", quantity: 2, price: 60, priceForOne: 30, title: "Накладка", article: "1573" };
+    expect(buildOrderPayload(values, [line], false).products).toEqual([
+      { productId: "p2", quantity: 2, price: 30, title: "Накладка", article: "1573" },
+    ]);
+  });
+
   it("кур'єр: адреса без відділення — за цим бекенд ставить «Кур'єрська доставка»", () => {
     const payload = buildOrderPayload({ ...values, deliveryMethod: "courier" }, items, false);
     expect(payload).toMatchObject({ postService: "novaPoshta", address: "вул. Хрещатик, 1", separation: "", ref_separation: "" });

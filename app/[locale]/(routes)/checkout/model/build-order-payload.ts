@@ -1,10 +1,10 @@
 import type { CheckoutValues } from "./checkout-schema";
 import type { DeliveryMethod } from "./checkout-options";
+import { unitPrice, type PricedLine } from "@/entities/order-item/model/unit-price";
 
-export interface CartLine {
+export interface CartLine extends PricedLine {
   id: string;
   quantity: number;
-  price: number | string;
   title: string;
   article: string;
 }
@@ -42,7 +42,8 @@ export const buildOrderPayload = (values: CheckoutValues, items: CartLine[], isD
   products: items.map((item) => ({
     productId: item.id,
     quantity: item.quantity,
-    price: Number(item.price),
+    // Бекенд сам множить на quantity: сума рядка тут давала подвійну ціну за 2+ штуки.
+    price: unitPrice(item),
     title: item.title,
     article: item.article,
   })),
