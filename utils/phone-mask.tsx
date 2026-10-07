@@ -6,10 +6,8 @@ const CustomInputMask = forwardRef<
   React.ComponentProps<typeof InputMask>
 >((props, ref) => {
   return (
-    <InputMask
-      {...props}
-      inputRef={ref}
-    />
+    // maskChar={null}: із шаблоном «___» дотик посередині ставив курсор у кінець, і цифри не вводились.
+    <InputMask maskChar={null} {...props} inputRef={ref} />
   );
 });
 CustomInputMask.displayName = "CustomInputMask";
