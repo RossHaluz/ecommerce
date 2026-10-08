@@ -29,13 +29,15 @@ export const BuyBox = ({ product, heading }: { product: Product; heading: string
         <ProductBtn item={product} />
       </div>
       <OrderOneClick
-        item={{
-          productId: product.id,
-          price: product.price,
-          quantity: 1,
-          title: product.title,
-          article: product.article,
-        }}
+        items={[
+          {
+            productId: product.id,
+            price: product.price,
+            quantity: 1,
+            title: product.title,
+            article: product.article,
+          },
+        ]}
       />
       <TrustList />
     </section>

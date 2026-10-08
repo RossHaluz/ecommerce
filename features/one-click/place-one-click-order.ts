@@ -3,19 +3,20 @@ import { submitOrder, type CreateOrder } from "@/entities/order/model/submit-ord
 export interface OneClickItem {
   productId: string;
   title: string;
-  price: string;
+  /** Лише для аналітики: бекенд бере ціну з бази. */
+  price: number | string;
   article: string;
-  quantity: 1;
+  quantity: number;
 }
 
-/** Замовлення в один клік: лише телефон; доставку й оплату менеджер узгодить у дзвінку. */
-export async function placeOneClickOrder(phone: string, item: OneClickItem, create: CreateOrder<{ orderNumber: number }>) {
+/** Замовлення в один клік (товар або весь кошик): лише телефон; доставку й оплату менеджер узгодить у дзвінку. */
+export async function placeOneClickOrder(phone: string, items: OneClickItem[], create: CreateOrder<{ orderNumber: number }>) {
   const order = await submitOrder(
     {
       phone,
       postService: "novaPoshta",
       paymentMethod: "cashOnDelivary",
-      products: [item],
+      products: items,
     },
     create
   );
