@@ -37,7 +37,7 @@ export const StickyBuyBar = ({ product }: { product: Product }) => {
         <StockStatus quantity={product.quantity} className="text-xs font-bold" />
       </div>
       <div className="w-[180px]">
-        <ProductBtn item={product} className="h-12 text-base" />
+        <ProductBtn item={product} compact className="h-12 text-base" />
       </div>
     </div>
   );

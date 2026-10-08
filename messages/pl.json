@@ -43,6 +43,9 @@
     "back": "Wstecz"
   },
   "product": {
+    "inCartGo": "W koszyku · przejdź",
+    "inCartLast": "To ostatnia sztuka i jest już w Twoim koszyku.",
+    "inCartAll": "Wszystkie {count} szt. z magazynu są już w Twoim koszyku.",
     "buy": "Kup",
     "oneClick": "Kup na raz",
     "negotiablePrice": "Cena do negocjacji",
