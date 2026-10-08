@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/account", "/checkout", "/search", "/success"],
+        disallow: ["/account", "/cart", "/checkout", "/search", "/success"],
       },
       { userAgent: AI_TRAINING_BOTS, disallow: "/" },
     ],

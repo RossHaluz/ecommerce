@@ -22,6 +22,6 @@ describe("robots", () => {
   it("решта сайту відкрита для всіх, приватні сторінки закриті", () => {
     const common = rules().find((rule) => rule.userAgent === "*");
     expect(common?.allow).toBe("/");
-    expect(common?.disallow).toEqual(["/account", "/checkout", "/search", "/success"]);
+    expect(common?.disallow).toEqual(["/account", "/cart", "/checkout", "/search", "/success"]);
   });
 });

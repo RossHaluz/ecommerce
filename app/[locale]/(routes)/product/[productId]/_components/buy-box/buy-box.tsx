@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { Product } from "@/lib/types";
 import ProductBtn from "../product-btn";
-import { OrderOneClick } from "../one-click/order-one-click";
+import { OrderOneClick } from "@/features/one-click/order-one-click";
 import { CatalogNumberChip } from "./catalog-number-chip";
 import { PriceBlock } from "./price-block";
 import { StockLine } from "./stock-line";
@@ -29,13 +29,15 @@ export const BuyBox = ({ product, heading }: { product: Product; heading: string
         <ProductBtn item={product} />
       </div>
       <OrderOneClick
-        item={{
-          productId: product.id,
-          price: product.price,
-          quantity: 1,
-          title: product.title,
-          article: product.article,
-        }}
+        items={[
+          {
+            productId: product.id,
+            price: product.price,
+            quantity: 1,
+            title: product.title,
+            article: product.article,
+          },
+        ]}
       />
       <TrustList />
     </section>

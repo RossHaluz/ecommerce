@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cartTotal } from "./cart-total";
+import { cartPieces, cartTotal } from "./cart-total";
 
 describe("cartTotal", () => {
   it("складає суми рядків (price рядка вже з урахуванням кількості), рядки з бекенда бувають текстом", () => {
@@ -9,5 +9,12 @@ describe("cartTotal", () => {
   it("порожній кошик — нуль, а не NaN", () => {
     expect(cartTotal([])).toBe(0);
     expect(cartTotal(undefined)).toBe(0);
+  });
+});
+
+describe("cartPieces", () => {
+  it("рахує штуки, а не рядки", () => {
+    expect(cartPieces([{ quantity: 1 }, { quantity: 2 }])).toBe(3);
+    expect(cartPieces(undefined)).toBe(0);
   });
 });

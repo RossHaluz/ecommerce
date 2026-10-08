@@ -1,21 +1,13 @@
-"use client";
-
 import { useTranslations } from "next-intl";
-import { CartSheet } from "@/features/cart";
+import { Link } from "@/i18n/routing";
 
-/** «Змінити» відкриває той самий кошик, що й у шапці, — без виходу з оформлення. */
+/** «Змінити» веде на сторінку кошика: там кількості, видалення й схожі товари. */
 export const EditCartButton = () => {
-  const t = useTranslations();
+  const t = useTranslations("checkout");
 
   return (
-    <CartSheet
-      heading={t("nav.cart")}
-      withCheckoutLink={false}
-      trigger={
-        <button type="button" className="text-sm font-extrabold text-[#C0092A]">
-          {t("checkout.editCart")}
-        </button>
-      }
-    />
+    <Link href="/cart" className="text-sm font-extrabold text-[#C0092A]">
+      {t("editCart")}
+    </Link>
   );
 };

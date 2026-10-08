@@ -92,7 +92,9 @@
     "addToCart": "Додати в кошик",
     "suggestionsTitle": "Можливо, вас зацікавлять",
     "showMore": "Показати ще",
-    "backToCheckout": "Повернутися до оформлення"
+    "openCart": "Відкрити кошик повністю",
+    "itemsPieces": "Товари ({count} шт.)",
+    "metaTitle": "Кошик"
   },
   "filters": {
     "availability": "Наявність",

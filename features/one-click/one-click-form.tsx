@@ -17,7 +17,7 @@ import { UA_PHONE_MASK, UA_PHONE_PATTERN } from "@/lib/format/ua-phone";
 import { placeOneClickOrder, type OneClickItem } from "./place-one-click-order";
 
 interface OneClickFormProps {
-  item: OneClickItem;
+  items: OneClickItem[];
   /** inline — рядок у блоці покупки (комп'ютер); sheet — вміст шторки (телефон). */
   variant: "inline" | "sheet";
   onPlaced: (orderNumber: number, phone: string) => void;
@@ -28,7 +28,7 @@ const buildSchema = (t: (key: string) => string) =>
     phone: z.string().min(1, t("phoneRequired")).regex(UA_PHONE_PATTERN, t("phoneInvalid")),
   });
 
-export const OneClickForm = ({ item, variant, onPlaced }: OneClickFormProps) => {
+export const OneClickForm = ({ items, variant, onPlaced }: OneClickFormProps) => {
   const t = useTranslations("orderOneClick");
   const tCommon = useTranslations("common");
   const tProduct = useTranslations("product");
@@ -39,8 +39,9 @@ export const OneClickForm = ({ item, variant, onPlaced }: OneClickFormProps) => 
 
   const onSubmit = async ({ phone }: z.infer<typeof schema>) => {
     try {
-      const orderNumber = await placeOneClickOrder(phone, item, createOrder);
-      trackEvent("purchase", purchaseEvent(orderNumber, [{ id: item.productId, title: item.title, price: item.price }], "one_click"));
+      const orderNumber = await placeOneClickOrder(phone, items, createOrder);
+      const analyticsItems = items.map(({ productId, title, price, quantity }) => ({ id: productId, title, price, quantity }));
+      trackEvent("purchase", purchaseEvent(orderNumber, analyticsItems, "one_click"));
       form.reset();
       onPlaced(orderNumber, phone);
     } catch {

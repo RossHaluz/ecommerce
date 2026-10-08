@@ -5,7 +5,7 @@ import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 import { useMounted } from "@/hooks/use-mounted";
 import type { CheckoutUser } from "../model/checkout-defaults";
 import { CheckoutForm } from "./checkout-form";
-import { EmptyCheckout } from "./empty-checkout";
+import { EmptyCart } from "@/features/cart";
 import { TrackBeginCheckout } from "./track-begin-checkout";
 
 /** Кошик живе в localStorage: до монтування він невідомий — без заглушки блимало б «кошик порожній». */
@@ -15,7 +15,7 @@ const Checkout = ({ user }: { user: (CheckoutUser & { _id?: string }) | null }) 
 
   // На весь екран: футер не видно до підміни, тож поява форми нічого не зсуває (CLS).
   if (!mounted) return <div className="min-h-[100svh]" aria-busy />;
-  if (!items?.length) return <EmptyCheckout />;
+  if (!items?.length) return <EmptyCart />;
 
   return (
     <>

@@ -7,7 +7,7 @@ import { SubmitButton } from "../submit-button";
 import { EditCartButton } from "./edit-cart-button";
 import { OrderItemLine } from "@/entities/order-item/ui/order-item-line";
 import { SummaryTotals } from "./summary-totals";
-import { TrustNotes } from "./trust-notes";
+import { TrustNotes } from "@/features/cart";
 
 interface OrderSummaryProps {
   items: OrderItem[];
