@@ -16,15 +16,13 @@ interface CartSheetProps {
   trigger?: ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  /** false — у самому оформленні: кнопка вела б на сторінку, де людина вже є. */
-  withCheckoutLink?: boolean;
 }
 
 /**
  * Одна шторка кошика для шапки, нижнього меню й «Додано в кошик» — різниться лише заголовок.
  * Знизу на телефоні (під пальцем), справа на комп'ютері; сума й «Оформити» завжди внизу.
  */
-export const CartSheet = ({ heading, trigger, open, onOpenChange, withCheckoutLink = true }: CartSheetProps) => {
+export const CartSheet = ({ heading, trigger, open, onOpenChange }: CartSheetProps) => {
   const t = useTranslations("cart");
   const items = useHydratedSelector(selectOrderItems) ?? [];
   const isPhone = useIsSmallScreen(1023);
@@ -53,16 +51,14 @@ export const CartSheet = ({ heading, trigger, open, onOpenChange, withCheckoutLi
             </div>
             <div className="flex flex-col gap-2 border-t border-[#EEEEEE] px-4 pb-4 pt-3 lg:px-6">
               <CartTotal items={items} />
-              {withCheckoutLink ? (
-                <>
-                  <Link href="/checkout" className="flex h-[52px] items-center justify-center rounded-lg bg-[#C0092A] text-[17px] font-extrabold text-white">
-                    {t("placeOrder")}
-                  </Link>
-                  <SheetClose className="h-11 text-sm font-bold text-[#484848] underline">{t("continueShopping")}</SheetClose>
-                </>
-              ) : (
-                <SheetClose className="h-[52px] rounded-lg bg-[#C0092A] text-[17px] font-extrabold text-white">{t("backToCheckout")}</SheetClose>
-              )}
+              <Link href="/checkout" className="flex h-[52px] items-center justify-center rounded-lg bg-[#C0092A] text-[17px] font-extrabold text-white">
+                {t("placeOrder")}
+              </Link>
+              <SheetClose asChild>
+                <Link href="/cart" className="flex h-11 items-center justify-center text-sm font-bold text-[#484848] underline">
+                  {t("openCart")}
+                </Link>
+              </SheetClose>
             </div>
           </>
         ) : (

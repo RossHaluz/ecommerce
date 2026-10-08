@@ -20,19 +20,20 @@ interface OrderOneClickProps {
   items: OneClickItem[];
   /** Кошик: кнопка й шторка на всіх екранах; картка товару: на комп'ютері поле прямо в блоці. */
   sheetOnly?: boolean;
-  /** Після створення замовлення (кошик тут очищається). */
-  onOrdered?: () => void;
+  /** Людина закрила «Дякуємо» після замовлення. Не раніше: очищений кошик прибрав би цей екран з-під неї. */
+  onSuccessClose?: () => void;
 }
 
-export const OrderOneClick = ({ items, sheetOnly = false, onOrdered }: OrderOneClickProps) => {
+export const OrderOneClick = ({ items, sheetOnly = false, onSuccessClose }: OrderOneClickProps) => {
   const t = useTranslations("orderOneClick");
   const tProduct = useTranslations("product");
   const tCart = useTranslations("cart");
   const [placed, setPlaced] = useState<Placed>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const onPlaced = (orderNumber: number, phone: string) => {
-    setPlaced({ orderNumber, phone });
-    onOrdered?.();
+  const onPlaced = (orderNumber: number, phone: string) => setPlaced({ orderNumber, phone });
+  const closeSuccess = () => {
+    if (placed) onSuccessClose?.();
+    setPlaced(null);
   };
 
   return (
@@ -42,7 +43,7 @@ export const OrderOneClick = ({ items, sheetOnly = false, onOrdered }: OrderOneC
           open={sheetOpen}
           onOpenChange={(open) => {
             setSheetOpen(open);
-            if (!open) setPlaced(null);
+            if (!open) closeSuccess();
           }}
         >
           <SheetTrigger className="flex h-12 w-full items-center justify-center rounded-lg border-2 border-[#C0092A] text-base font-bold text-[#C0092A]">
@@ -65,7 +66,7 @@ export const OrderOneClick = ({ items, sheetOnly = false, onOrdered }: OrderOneC
 
       <div className={sheetOnly ? "hidden" : "hidden lg:block"}>
         <OneClickForm items={items} variant="inline" onPlaced={onPlaced} />
-        <Dialog open={placed !== null && !sheetOpen} onOpenChange={(open) => !open && setPlaced(null)}>
+        <Dialog open={placed !== null && !sheetOpen} onOpenChange={(open) => !open && closeSuccess()}>
           <DialogContent className="flex max-w-[480px] flex-col gap-4 rounded-2xl bg-white p-8">
             <DialogTitle className="sr-only">{t("sheetTitle")}</DialogTitle>
             <DialogDescription className="sr-only">{t("benefitCall")}</DialogDescription>
