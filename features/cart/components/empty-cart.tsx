@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "@/i18n/routing";
 
-export const EmptyCheckout = () => {
+export const EmptyCart = () => {
   const t = useTranslations("cart");
 
   return (

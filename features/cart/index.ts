@@ -1,4 +1,5 @@
 export { CartSheet } from "./components/cart-sheet";
+export { EmptyCart } from "./components/empty-cart";
 export { CartLine } from "./components/cart-line";
 export { CartSuggestions } from "./components/cart-suggestions";
 export { AddedToCartSheet } from "./components/added-to-cart-sheet";
