@@ -44,7 +44,9 @@
     "vinCheck": "Sprawdzimy dopasowanie po VIN",
     "goToAccount": "Przejdź do konta",
     "signInTitle": "Logowanie do konta",
-    "back": "Wstecz"
+    "back": "Wstecz",
+    "allCategories": "Wszystkie kategorie →",
+    "allParts": "wszystkie części →"
   },
   "product": {
     "inCartGo": "W koszyku · przejdź",
@@ -132,7 +134,6 @@
     "call": "Zadzwoń",
     "about": "Nowe i oryginalne używane części do Audi. Przed wysyłką sprawdzamy zgodność po VIN.",
     "popularModels": "Popularne modele",
-    "allCategories": "Wszystkie kategorie →",
     "payment": "Płatność przy odbiorze lub kartą"
   },
   "contact": {

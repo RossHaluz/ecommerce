@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import SearchBar from "@/components/search-bar";
 import SearchByVinCode from "@/components/search-by-vin-code/search-by-vin-code";
 import HeaderLogoLink from "./header-logo-link";
-import HeaderCatalogMenu from "./header-catalog-menu";
+import { HeaderCatalogMenu } from "./catalog-menu/header-catalog-menu";
 import HeaderContact from "./header-contact";
 import HeaderAccountMenu from "./header-account-menu";
 import HeaderCartMenu from "./header-cart-menu";
@@ -16,19 +16,6 @@ import { CheckoutHeader } from "./checkout-header";
 import { HeaderTopBar } from "./header-top-bar";
 import { HeaderMenuButton } from "./header-menu-button";
 
-/**
- * Композиційний корінь — тільки розкладка й компонування фіч, без власної
- * бізнес-логіки. П'ять піддерев (лого, каталог, контакти, акаунт, кошик)
- * винесені в сусідні файли; кожен сам відповідає за свій стан.
- *
- * `isShowCatalog` лишається тут (не всередині `HeaderCatalogMenu`), бо
- * потрібен ще й самому кореню — підняти z-index `<header>` і показати
- * затемнення позаду меню.
- *
- * Прибрано при переносі: мертвий стан прокрутки `isShow` (керував лише
- * закоментованим `<div>`, ніде не рендерився) і закоментований банер
- * "сайт ще на стадії розробки".
- */
 const Header = () => {
   const [isShowCatalog, setIsShowCatalog] = useState(false);
   const pathname = usePathname();
@@ -48,6 +35,8 @@ const Header = () => {
         className={cn("bg-[#FFFDFD] z-20", {
           // sticky, не fixed: шапка займає своє місце, і сторінкам не треба вгадувати її висоту відступом.
           "sticky top-0": shouldBeFixed || homePage,
+          // Панель каталогу позиціюється від шапки — їй потрібен positioned-предок і без sticky.
+          relative: !(shouldBeFixed || homePage),
           "z-30": isShowCatalog,
         })}
       >
@@ -82,7 +71,7 @@ const Header = () => {
       </header>
 
       {isShowCatalog && (
-        <div className="bg-[#4848484D] fixed top-0 left-0 w-full h-full z-20" />
+        <div aria-hidden onClick={() => setIsShowCatalog(false)} className="fixed inset-0 z-20 bg-[rgba(20,20,20,0.45)]" />
       )}
     </>
   );
