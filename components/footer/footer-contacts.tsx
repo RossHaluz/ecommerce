@@ -8,7 +8,7 @@ export const FooterContacts = () => {
 
   return (
     <div className="flex flex-col gap-[10px] mb-[15px] items-start">
-      <Logo className="h-[34px] w-[56px]" />
+      <Logo className="text-[26px]" />
       <div className="flex flex-col gap-[15px]">
         <div className="flex items-center gap-2">
           <PhoneIcon className="stroke-[#FFFDFD]" />

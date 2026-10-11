@@ -53,11 +53,11 @@ test.describe("серверний рендер", () => {
     ).toBe(true);
   });
 
-  test("логотип не інлайнить base64 у HTML", async ({ request }) => {
+  test("логотип — текст у серверному HTML, без картинки й base64", async ({ request }) => {
     const html = await (await request.get("/")).text();
 
     expect(html).not.toContain("data:image/png;base64");
-    expect(html).toContain("logo.webp");
+    expect(html).toMatch(/>Audi<\/span><span[^>]*>Parts</);
     // 4.6 МБ HTML був наслідком інлайну PNG у SVG-обгортці.
     expect(html.length).toBeLessThan(1_500_000);
   });
