@@ -35,7 +35,6 @@
     "account": "Konto",
     "cart": "Koszyk",
     "menu": "Menu",
-    "socials": "Media społecznościowe",
     "logoAriaLabel": "Logo Audiparts",
     "signIn": "Zaloguj się",
     "signInShort": "Zaloguj",
@@ -127,9 +126,14 @@
     "pageTitle": "Wyszukiwanie"
   },
   "footer": {
-    "copyright": "2020 Audiparts. Wszelkie prawa zastrzeżone",
     "developedBy": "Wykonanie strony",
-    "writeTelegram": "Napisz na Telegramie"
+    "leadTitle": "Nie znalazłeś potrzebnej części?",
+    "leadText": "Wyślij VIN lub zdjęcie — dobierzemy część i oddzwonimy z ceną.",
+    "call": "Zadzwoń",
+    "about": "Nowe i oryginalne używane części do Audi. Przed wysyłką sprawdzamy zgodność po VIN.",
+    "popularModels": "Popularne modele",
+    "allCategories": "Wszystkie kategorie →",
+    "payment": "Płatność przy odbiorze lub kartą"
   },
   "contact": {
     "callMe": "Oddzwoń do mnie",

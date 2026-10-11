@@ -2,13 +2,12 @@
 
 import { usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import LanguageSwitcher from "@/components/language-switcher";
-import CurrencySwitcher from "@/components/currency-switcher";
-import { FooterContacts } from "./footer-contacts";
+import { FooterLeadBand } from "./footer-lead-band";
+import { FooterAbout } from "./footer-about";
 import { FooterCatalog } from "./footer-catalog";
-import { FooterInfo } from "./footer-info";
-import { FooterSocials } from "./footer-socials";
-import { FooterCopyright } from "./footer-copyright";
+import { FooterModels } from "./footer-models";
+import { FooterBuyers } from "./footer-buyers";
+import { FooterBottom } from "./footer-bottom";
 
 const Footer = () => {
   const pathname = usePathname();
@@ -16,29 +15,17 @@ const Footer = () => {
   const hasMobileBottomBar = pathname === "/" || pathname.startsWith("/categories");
 
   return (
-    <footer className="bg-[#484848] text-[#FFFDFD] overflow-hidden">
-      <div
-        className={cn("container pt-6 lg:py-12 flex flex-col gap-[15px]", {
-          "pb-20": hasMobileBottomBar,
-          "pb-6": !hasMobileBottomBar,
-        })}
-      >
-        <div className="md:flex justify-between md:gap-8 lg:gap-[90px]">
-          <FooterContacts />
-          <FooterCatalog />
-          <div className="flex flex-col md:gap-6">
-            <FooterInfo />
-            <FooterSocials />
-          </div>
+    <footer className={cn("bg-[#2E2E2E] text-[#D0D0D0] md:pb-0", hasMobileBottomBar && "pb-16")}>
+      <FooterLeadBand />
+      <div className="container flex flex-col py-2 md:grid md:grid-cols-2 md:gap-8 md:py-9 lg:grid-cols-[1.3fr_repeat(3,minmax(0,1fr))]">
+        <div className="order-last md:order-none">
+          <FooterAbout />
         </div>
-
-        <div className="flex items-center justify-center gap-6 md:justify-start">
-          <CurrencySwitcher />
-          <LanguageSwitcher />
-        </div>
-
-        <FooterCopyright />
+        <FooterCatalog />
+        <FooterModels />
+        <FooterBuyers />
       </div>
+      <FooterBottom />
     </footer>
   );
 };
