@@ -1,10 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { X } from "lucide-react";
-import Arrow from "/public/images/arrow-down.svg";
+import { ChevronLeft, X } from "lucide-react";
 import Logo from "@/components/ui/logo";
-import { Button } from "@/components/ui/button";
 import type { MobileMenuPanel } from "./mobile-menu-panel";
 
 interface MobileMenuHeaderProps {
@@ -13,36 +11,28 @@ interface MobileMenuHeaderProps {
   onClose: () => void;
 }
 
+const ICON_BUTTON = "flex h-11 w-11 shrink-0 items-center justify-center text-white";
+
+/** Темна смуга як шапка сайту: на головній панелі — логотип, у вкладених — «назад» і назва. */
 export const MobileMenuHeader = ({ panel, onBack, onClose }: MobileMenuHeaderProps) => {
   const t = useTranslations();
+  const title = panel === "catalog" ? t("nav.catalogProducts") : t("nav.signInTitle");
 
   return (
-    <div className="flex flex-col gap-[15px]">
-      <div className="p-4">
-        <Logo tone="light" className="block text-center text-[28px]" />
-      </div>
-
-      <div className="flex items-center justify-between gap-4">
-        {panel === "catalog" ? (
-          <Button
-            variant="ghost"
-            aria-label={t("nav.back")}
-            className="p-0 hover:bg-transparent flex items-center gap-5"
-            onClick={onBack}
-          >
-            <Arrow className="rotate-90 stroke-[#484848]" aria-hidden />
-            <span className="text-[#484848] text-base font-semibold">{t("nav.catalogProducts")}</span>
-          </Button>
-        ) : (
-          <h2 className="text-base font-semibold text-[#484848]">
-            {panel === "account" ? t("nav.signInTitle") : t("nav.menu")}
-          </h2>
-        )}
-
-        <Button variant="ghost" aria-label={t("a11y.close")} onClick={onClose} className="p-0 h-auto">
-          <X className="stroke-[#484848]" aria-hidden />
-        </Button>
-      </div>
+    <div className="flex h-[60px] shrink-0 items-center justify-between gap-2 bg-[#484848] pl-4 pr-1">
+      {panel === "menu" ? (
+        <Logo className="text-xl" />
+      ) : (
+        <div className="-ml-3 flex min-w-0 items-center">
+          <button type="button" onClick={onBack} aria-label={t("nav.back")} className={ICON_BUTTON}>
+            <ChevronLeft size={24} aria-hidden />
+          </button>
+          <span className="truncate text-base font-extrabold text-white">{title}</span>
+        </div>
+      )}
+      <button type="button" onClick={onClose} aria-label={t("a11y.close")} className={ICON_BUTTON}>
+        <X size={22} aria-hidden />
+      </button>
     </div>
   );
 };

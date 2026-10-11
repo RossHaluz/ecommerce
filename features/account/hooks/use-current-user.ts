@@ -7,6 +7,7 @@ import { queryKeys } from "@/lib/query-keys";
 
 export interface CurrentUser {
   role: string;
+  firstName?: string;
 }
 
 /**

@@ -1,12 +1,14 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import Catalog from "/public/images/catalog.svg";
-import Arrow from "/public/images/arrow-down.svg";
-import { Button } from "@/components/ui/button";
+import SearchByVinCode from "@/components/search-by-vin-code/search-by-vin-code";
+import { selectOrderItems } from "@/redux/order/selector";
+import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 import { MenuAccountEntry } from "./menu-account-entry";
+import { MenuRow } from "./menu-row";
 import { MenuInfoLinks } from "./menu-info-links";
 import { MenuContacts } from "./menu-contacts";
+import { MenuSettings } from "./menu-settings";
 import type { MobileMenuPanel } from "./mobile-menu-panel";
 
 interface MenuMainPanelProps {
@@ -16,23 +18,25 @@ interface MenuMainPanelProps {
 
 export const MenuMainPanel = ({ onOpenPanel, onNavigate }: MenuMainPanelProps) => {
   const t = useTranslations("nav");
+  const cartCount = useHydratedSelector(selectOrderItems)?.length ?? 0;
 
   return (
-    <div className="flex flex-col gap-[15px]">
-      <Button
-        className="bg-[#F2F2F2] rounded-[5px] p-4 h-auto flex items-center justify-between hover:bg-[#F2F2F2]"
-        onClick={() => onOpenPanel("catalog")}
-      >
-        <span className="flex items-center gap-2 text-[#484848] text-base font-semibold">
-          <Catalog className="stroke-[#484848]" aria-hidden />
-          {t("catalogProducts")}
-        </span>
-        <Arrow className="-rotate-90 stroke-[#484848]" aria-hidden />
-      </Button>
-
+    <>
       <MenuAccountEntry onSignIn={() => onOpenPanel("account")} onNavigate={onNavigate} />
+      <SearchByVinCode
+        trigger={
+          <button type="button" className="h-12 w-full rounded-lg bg-[#2E2E2E] text-[15px] font-extrabold text-white">
+            {t("vinPick")}
+          </button>
+        }
+      />
+      <nav aria-label={t("menu")} className="flex flex-col">
+        <MenuRow label={t("catalogProducts")} onClick={() => onOpenPanel("catalog")} />
+        <MenuRow label={t("cart")} href="/cart" onClick={onNavigate} extra={cartCount || undefined} />
+      </nav>
       <MenuInfoLinks onNavigate={onNavigate} />
       <MenuContacts />
-    </div>
+      <MenuSettings />
+    </>
   );
 };
