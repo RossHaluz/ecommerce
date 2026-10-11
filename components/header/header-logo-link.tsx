@@ -21,7 +21,7 @@ const LogoAnchor = ({ className, href }: HeaderLogoLinkProps & { href: HomeHref 
   const t = useTranslations("nav");
   return (
     <Link href={href} prefetch={false} aria-label={t("logoAriaLabel")} className={cn("py-3", className)}>
-      <Logo className="h-[34px] w-[56px]" />
+      <Logo className="text-lg lg:text-2xl" />
     </Link>
   );
 };

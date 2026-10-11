@@ -19,7 +19,7 @@ export const MobileMenuHeader = ({ panel, onBack, onClose }: MobileMenuHeaderPro
   return (
     <div className="flex flex-col gap-[15px]">
       <div className="p-4">
-        <Logo className="w-[158px] h-auto mx-auto" unoptimized />
+        <Logo tone="light" className="block text-center text-[28px]" />
       </div>
 
       <div className="flex items-center justify-between gap-4">
