@@ -4,9 +4,6 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 // next-intl: шлях без префікса мови — головна завжди «/», і на /pl теж.
 import { usePathname } from "@/i18n/routing";
-import Link from "next/link";
-import { PhoneCall } from "lucide-react";
-import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import SearchBar from "@/components/search-bar";
 import SearchByVinCode from "@/components/search-by-vin-code/search-by-vin-code";
@@ -18,7 +15,6 @@ import HeaderCartMenu from "./header-cart-menu";
 import { CheckoutHeader } from "./checkout-header";
 import { HeaderTopBar } from "./header-top-bar";
 import { HeaderMenuButton } from "./header-menu-button";
-import { MAIN_PHONE_HREF } from "@/entities/store/model/contacts";
 
 /**
  * Композиційний корінь — тільки розкладка й компонування фіч, без власної
@@ -36,7 +32,6 @@ import { MAIN_PHONE_HREF } from "@/entities/store/model/contacts";
 const Header = () => {
   const [isShowCatalog, setIsShowCatalog] = useState(false);
   const pathname = usePathname();
-  const t = useTranslations("a11y");
   const params = useParams();
   const shouldBeFixed =
     pathname.includes("/categories") || Boolean(params?.modelName);
@@ -66,16 +61,15 @@ const Header = () => {
               onToggle={setIsShowCatalog}
             />
 
-            <HeaderLogoLink className="lg:hidden" />
-
             <SearchBar />
             <div className={isProductPage ? "hidden md:contents" : "contents"}>
               <SearchByVinCode />
             </div>
 
-            <Link href={MAIN_PHONE_HREF} className="lg:hidden" aria-label={t("callUs")}>
-              <PhoneCall className="stroke-[#FFFDFD]" />
-            </Link>
+            {/* Телефон: логотип живе в меню, а тут — кошик (телефон є в меню й у віджеті зв'язку). */}
+            <div className="shrink-0 lg:hidden">
+              <HeaderCartMenu compact />
+            </div>
 
             <HeaderContact />
 
