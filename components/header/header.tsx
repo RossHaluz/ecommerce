@@ -52,7 +52,7 @@ const Header = () => {
         })}
       >
         <div className="bg-[#484848] text-[#FFFDFD]">
-          <div className="flex items-center gap-2 lg:gap-4 justify-between container">
+          <div className="flex items-center gap-2 lg:gap-4 justify-between container py-2.5 lg:py-3">
             <HeaderMenuButton />
             <HeaderLogoLink className="hidden lg:block" />
 
