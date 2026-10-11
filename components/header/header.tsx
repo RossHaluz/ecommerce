@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
+// next-intl: шлях без префікса мови — головна завжди «/», і на /pl теж.
+import { usePathname } from "@/i18n/routing";
 import Link from "next/link";
 import { PhoneCall } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -14,8 +16,8 @@ import HeaderContact from "./header-contact";
 import HeaderAccountMenu from "./header-account-menu";
 import HeaderCartMenu from "./header-cart-menu";
 import { CheckoutHeader } from "./checkout-header";
-import LanguageSwitcher from "@/components/language-switcher";
-import CurrencySwitcher from "@/components/currency-switcher";
+import { HeaderTopBar } from "./header-top-bar";
+import { HeaderMenuButton } from "./header-menu-button";
 import { MAIN_PHONE_HREF } from "@/entities/store/model/contacts";
 
 /**
@@ -38,7 +40,7 @@ const Header = () => {
   const params = useParams();
   const shouldBeFixed =
     pathname.includes("/categories") || Boolean(params?.modelName);
-  const homePage = pathname.endsWith("/");
+  const homePage = pathname === "/";
   // На картці товару VIN є в блоці «Підходить до», а плаваюча кнопка на телефоні закривала «Купити».
   const isProductPage = pathname.includes("/product/");
 
@@ -46,14 +48,17 @@ const Header = () => {
 
   return (
     <>
+      <HeaderTopBar />
       <header
         className={cn("bg-[#FFFDFD] z-20", {
-          "fixed top-0 left-0 w-full": shouldBeFixed || homePage,
+          // sticky, не fixed: шапка займає своє місце, і сторінкам не треба вгадувати її висоту відступом.
+          "sticky top-0": shouldBeFixed || homePage,
           "z-30": isShowCatalog,
         })}
       >
         <div className="bg-[#484848] text-[#FFFDFD]">
-          <div className="flex items-center gap-4 justify-between container">
+          <div className="flex items-center gap-2 lg:gap-4 justify-between container">
+            <HeaderMenuButton />
             <HeaderLogoLink className="hidden lg:block" />
 
             <HeaderCatalogMenu
@@ -74,9 +79,7 @@ const Header = () => {
 
             <HeaderContact />
 
-            <div className="items-center gap-3 hidden lg:flex">
-              <CurrencySwitcher />
-              <LanguageSwitcher />
+            <div className="items-center gap-1 hidden lg:flex">
               <HeaderAccountMenu />
               <HeaderCartMenu />
             </div>

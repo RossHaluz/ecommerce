@@ -5,6 +5,7 @@ import CartIcon from "/public/images/cart.svg";
 import { Button } from "@/components/ui/button";
 import { selectOrderItems } from "@/redux/order/selector";
 import { CartSheet } from "@/features/cart";
+import { HeaderIconLabel } from "./header-icon-label";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 const HeaderCartMenu = () => {
@@ -18,14 +19,11 @@ const HeaderCartMenu = () => {
       trigger={
         <Button
           variant="ghost"
-          className="p-0 relative"
-          // Назва мусить містити видиме число, інакше Lighthouse: label-content-name-mismatch.
+          className="h-auto p-0 hover:bg-transparent"
+          // Назва починається з видимого «Кошик» і містить число (Lighthouse: label-content-name-mismatch).
           aria-label={`${t("nav.cart")}: ${count}`}
         >
-          <CartIcon className="stroke-[#FFFDFD]" />
-          <div className="w-4 h-4 p-[5px] rounded-full bg-[#FFFDFD] absolute top-5 right-0 flex items-center justify-center">
-            <span className="text-[#C0092A] text-xs">{count}</span>
-          </div>
+          <HeaderIconLabel icon={<CartIcon className="stroke-white" aria-hidden />} label={t("nav.cart")} badge={count} />
         </Button>
       }
     />

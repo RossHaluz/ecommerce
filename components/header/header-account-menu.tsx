@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import ModalAuth from "@/components/ui/modal-auth";
 import AuthorizationOtp from "@/components/authirization-otp";
 import { useCurrentUser } from "@/features/account";
+import { HeaderIconLabel } from "./header-icon-label";
 
 /**
  * Іконка кабінету: посилання на `/account`, якщо є токен і реально
@@ -20,8 +21,8 @@ const HeaderAccountMenu = () => {
 
   if (currentUser) {
     return (
-      <Link href="/account" aria-label={t("account")}>
-        <User2Icon className="text-[#FFFDFD]" strokeWidth="0.75px" />
+      <Link href="/account">
+        <HeaderIconLabel icon={<User2Icon size={24} strokeWidth={1.5} aria-hidden />} label={t("account")} />
       </Link>
     );
   }
@@ -30,8 +31,8 @@ const HeaderAccountMenu = () => {
     <ModalAuth
       onOpenChange={() => setIsAuthModalOpen(true)}
       triggetBtn={
-        <Button variant="ghost" className="p-0" aria-label={t("account")}>
-          <User2Icon className="stroke-[#FFFDFD]" strokeWidth="0.75px" />
+        <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
+          <HeaderIconLabel icon={<User2Icon size={24} strokeWidth={1.5} aria-hidden />} label={t("signInShort")} />
         </Button>
       }
     >

@@ -5,8 +5,6 @@ import SearchByModel from "../app/[locale]/(routes)/(main)/_components/search-by
 import { useCategories, useModels } from "@/features/catalog";
 import SortProducts from "@/app/[locale]/(routes)/(main)/_components/sort";
 import CustomizerLayout from "./сustomizer-layout";
-import { useParams, usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 import SearchByStock from "@/app/[locale]/(routes)/(main)/_components/search-by-stock";
 import Breadcrumbs from "./breadcrumb";
 
@@ -27,17 +25,10 @@ const MainSection: FC<MainSectionProps> = ({
   // першому клієнтському рендері true — скелетон ламав гідратацію.
   const { data: categories = [], isPending } = useCategories();
   const { data: models = [] } = useModels();
-  const pathname = usePathname();
-  const queryParams = useParams();
-  const shouldBeMargin =
-    pathname.includes("/categories") || queryParams?.modelName;
-  const isHomePage = pathname.endsWith("/");
 
   return (
     <section
-      className={cn("mt-3 mb-6 ", {
-        "mt-20": shouldBeMargin || isHomePage,
-      })}
+      className="mt-3 mb-6"
     >
       <div className="container flex flex-col gap-3">
         <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
