@@ -1,29 +1,18 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import Phone from "/public/images/phone.svg";
-import Clock from "/public/images/clock.svg";
-import { PhoneNumbersDropdown } from "@/components/phone-numbers-dropdown";
+import { ContactButtons } from "@/components/contacts/contact-buttons";
 
-const BLOCK_CLASS = "bg-[#F2F2F2] rounded-[5px] py-[13px] px-[15px] flex gap-[10px] text-[#484848]";
-
+/** Три дороги до менеджера одним рядом і коли він на місці — щоб не дзвонили в неділю в порожнечу. */
 export const MenuContacts = () => {
   const t = useTranslations("contact");
 
   return (
-    <>
-      <div className={`${BLOCK_CLASS} items-center`}>
-        <Phone className="stroke-[#484848]" aria-hidden />
-        <PhoneNumbersDropdown />
-      </div>
-
-      <div className={`${BLOCK_CLASS} items-start`}>
-        <Clock aria-hidden />
-        <div className="flex flex-col gap-[15px] text-base">
-          <span>{t("scheduleWeekdays")}</span>
-          <span>{t("scheduleWeekend")}</span>
-        </div>
-      </div>
-    </>
+    <div className="flex flex-col gap-2">
+      <ContactButtons />
+      <span className="text-center text-[13px] text-[#6B6B6B]">
+        {t("scheduleWeekdays")} · {t("addressValue")}
+      </span>
+    </div>
   );
 };

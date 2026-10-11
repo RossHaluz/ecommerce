@@ -3,6 +3,7 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useCategories } from "@/features/catalog";
 import { cn } from "@/lib/utils";
 import RenderCategoryItems from "@/components/render-category-items";
@@ -22,6 +23,7 @@ interface MobileMenuProps {
  * змонтовані копії — кожна зі своїм каталогом і формою входу.
  */
 export const MobileMenu = ({ panel, onPanelChange, onClose }: MobileMenuProps) => {
+  const t = useTranslations("a11y");
   const { data: categories = [] } = useCategories();
   const router = useRouter();
   const [isShown, setIsShown] = useState(false);
@@ -44,20 +46,28 @@ export const MobileMenu = ({ panel, onPanelChange, onClose }: MobileMenuProps) =
   };
 
   return createPortal(
-    <div
-      role="dialog"
-      aria-modal="true"
-      className={cn(
-        "fixed inset-0 z-[100] h-screen overflow-y-auto bg-white transform transition-transform duration-150",
-        isShown ? "translate-x-0" : "translate-x-full"
-      )}
-    >
-      <div className="px-5 pb-2 flex flex-col gap-[15px]">
+    <div className="fixed inset-0 z-[100]">
+      {/* Затемнення — теж «закрити»: шторка не на весь екран, і повз неї тиснуть, щоб вийти. */}
+      <button
+        type="button"
+        aria-label={t("close")}
+        onClick={close}
+        className={cn("absolute inset-0 bg-black/55 transition-opacity duration-150", isShown ? "opacity-100" : "opacity-0")}
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        className={cn(
+          "absolute inset-y-0 left-0 flex w-[min(336px,88vw)] flex-col overflow-y-auto bg-white transition-transform duration-150",
+          isShown ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
         <MobileMenuHeader panel={panel} onBack={() => onPanelChange("menu")} onClose={close} />
-
-        {panel === "menu" && <MenuMainPanel onOpenPanel={onPanelChange} onNavigate={onClose} />}
-        {panel === "catalog" && <RenderCategoryItems categories={categories} setIsOpen={setIsOpen} isOpen />}
-        {panel === "account" && <AuthorizationOtp setIsOpen={setIsOpen} />}
+        <div className="flex flex-1 flex-col gap-4 px-4 py-3">
+          {panel === "menu" && <MenuMainPanel onOpenPanel={onPanelChange} onNavigate={onClose} />}
+          {panel === "catalog" && <RenderCategoryItems categories={categories} setIsOpen={setIsOpen} isOpen />}
+          {panel === "account" && <AuthorizationOtp setIsOpen={setIsOpen} />}
+        </div>
       </div>
     </div>,
     document.body
