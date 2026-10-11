@@ -18,7 +18,7 @@ export const FooterCatalog = () => {
           {category.name}
         </FooterLink>
       ))}
-      <FooterLink href="/categories">{t("footer.allCategories")}</FooterLink>
+      <FooterLink href="/categories">{t("nav.allCategories")}</FooterLink>
     </FooterSection>
   );
 };
