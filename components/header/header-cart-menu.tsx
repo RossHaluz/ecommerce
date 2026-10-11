@@ -8,7 +8,8 @@ import { CartSheet } from "@/features/cart";
 import { HeaderIconLabel } from "./header-icon-label";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
-const HeaderCartMenu = () => {
+/** compact — телефон: іконка з лічильником на місці колишнього телефону. */
+const HeaderCartMenu = ({ compact = false }: { compact?: boolean }) => {
   const orderItems = useHydratedSelector(selectOrderItems);
   const t = useTranslations();
   const count = orderItems?.length ?? 0;
@@ -23,7 +24,7 @@ const HeaderCartMenu = () => {
           // Назва починається з видимого «Кошик» і містить число (Lighthouse: label-content-name-mismatch).
           aria-label={`${t("nav.cart")}: ${count}`}
         >
-          <HeaderIconLabel icon={<CartIcon className="stroke-white" aria-hidden />} label={t("nav.cart")} badge={count} />
+          <HeaderIconLabel icon={<CartIcon className="stroke-white" aria-hidden />} label={t("nav.cart")} badge={count} compact={compact} />
         </Button>
       }
     />
