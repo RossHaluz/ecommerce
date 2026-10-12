@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ChevronLeft, X } from "lucide-react";
+import { Link } from "@/i18n/routing";
 import Logo from "@/components/ui/logo";
 import type { MobileMenuPanel } from "./mobile-menu-panel";
 
@@ -21,7 +22,9 @@ export const MobileMenuHeader = ({ panel, onBack, onClose }: MobileMenuHeaderPro
   return (
     <div className="flex h-[60px] shrink-0 items-center justify-between gap-2 bg-[#484848] pl-4 pr-1">
       {panel === "menu" ? (
-        <Logo className="text-xl" />
+        <Link href="/" prefetch={false} onClick={onClose} aria-label={t("nav.logoAriaLabel")} className="py-3">
+          <Logo className="text-xl" />
+        </Link>
       ) : (
         <div className="-ml-3 flex min-w-0 items-center">
           <button type="button" onClick={onBack} aria-label={t("nav.back")} className={ICON_BUTTON}>
