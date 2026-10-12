@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Оформлення — комп'ютер</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none}
+input::placeholder{color:#8A8A8A}
+</style>
+</helmet>
+<div style="min-height: 1600px; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="background: #484848">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px; min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-sizing: border-box">
+      <span style="color: #FFFFFF; font-weight: 800; font-size: 20px; letter-spacing: 0.08em">AUDIPARTS</span>
+      <a href="#" style="color: #FFFFFF; font-weight: 700">Питання? +38 (067) 383 42 83</a>
+    </div>
+  </header>
+
+  <main style="max-width: 1280px; margin: 0 auto; padding: 24px 24px 64px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+    <h1 style="margin: 0; font-size: 32px; font-weight: 800; color: #2E2E2E">Оформлення замовлення</h1>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <form style="flex: 999 1 560px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 16px">
+        <section style="padding: 24px; border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+            <h2 style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; color: #2E2E2E"><span style="width: 30px; height: 30px; border-radius: 50%; background: #2E2E2E; color: #FFFFFF; font-size: 15px; display: flex; align-items: center; justify-content: center">1</span>Ваші контакти</h2>
+            <a href="#" style="font-size: 14px">Вже купували? <span style="color: #C0092A; font-weight: 800">Увійти</span></a>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="d-phone" style="font-size: 14px; font-weight: 700">Телефон <span style="color: #C0092A">*</span></label>
+              <input id="d-phone" type="tel" value="+380 67 123 45 67" style="height: 48px; padding: 0 12px; border: 1px solid #CFCFCF; border-radius: 8px; font: inherit; font-size: 16px; font-weight: 700; box-sizing: border-box; min-width: 0">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="d-first" style="font-size: 14px; font-weight: 700">Ім’я <span style="color: #C0092A">*</span></label>
+              <input id="d-first" value="Олександр" style="height: 48px; padding: 0 12px; border: 1px solid #CFCFCF; border-radius: 8px; font: inherit; font-size: 16px; box-sizing: border-box; min-width: 0">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="d-last" style="font-size: 14px; font-weight: 700">Прізвище <span style="color: #C0092A">*</span></label>
+              <input id="d-last" placeholder="Прізвище" style="height: 48px; padding: 0 12px; border: 1px solid #CFCFCF; border-radius: 8px; font: inherit; font-size: 16px; box-sizing: border-box; min-width: 0">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="d-email" style="font-size: 14px; font-weight: 700">Email <span style="font-weight: 600; color: #6B6B6B">(необов’язково)</span></label>
+              <input id="d-email" type="email" placeholder="you@example.com" style="height: 48px; padding: 0 12px; border: 1px solid #CFCFCF; border-radius: 8px; font: inherit; font-size: 16px; box-sizing: border-box; min-width: 0">
+            </div>
+          </div>
+        </section>
+
+        <section style="padding: 24px; border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; color: #2E2E2E"><span style="width: 30px; height: 30px; border-radius: 50%; background: #2E2E2E; color: #FFFFFF; font-size: 15px; display: flex; align-items: center; justify-content: center">2</span>Доставка</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px">
+            <sc-for list="{{delivery}}" as="d" hint-placeholder-count="3">
+              <label style="{{d.style}}">
+                <input type="radio" name="d-delivery" checked="{{d.on}}" style="width: 20px; height: 20px; margin: 2px 0 0; accent-color: #C0092A; flex: none">
+                <span style="display: flex; flex-direction: column; gap: 2px">
+                  <span style="font-size: 15px; font-weight: 800; color: #2E2E2E">{{d.title}}</span>
+                  <span style="font-size: 13px; line-height: 18px; color: #6B6B6B">{{d.sub}}</span>
+                </span>
+              </label>
+            </sc-for>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="d-city" style="font-size: 14px; font-weight: 700">Місто <span style="color: #C0092A">*</span></label>
+              <input id="d-city" value="Київ" style="height: 48px; padding: 0 12px; border: 1px solid #CFCFCF; border-radius: 8px; font: inherit; font-size: 16px; box-sizing: border-box; min-width: 0">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="d-wh" style="font-size: 14px; font-weight: 700">Відділення або поштомат <span style="color: #C0092A">*</span></label>
+              <input id="d-wh" value="Відділення №1 · вул. Пирогівський шлях, 135" style="height: 48px; padding: 0 12px; border: 1px solid #CFCFCF; border-radius: 8px; font: inherit; font-size: 16px; box-sizing: border-box; min-width: 0">
+            </div>
+          </div>
+        </section>
+
+        <section style="padding: 24px; border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; color: #2E2E2E"><span style="width: 30px; height: 30px; border-radius: 50%; background: #2E2E2E; color: #FFFFFF; font-size: 15px; display: flex; align-items: center; justify-content: center">3</span>Оплата</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px">
+            <sc-for list="{{pay}}" as="p" hint-placeholder-count="2">
+              <label style="{{p.style}}">
+                <input type="radio" name="d-pay" checked="{{p.on}}" style="width: 20px; height: 20px; margin: 2px 0 0; accent-color: #C0092A; flex: none">
+                <span style="display: flex; flex-direction: column; gap: 2px">
+                  <span style="font-size: 15px; font-weight: 800; color: #2E2E2E">{{p.title}}</span>
+                  <span style="font-size: 13px; line-height: 18px; color: #6B6B6B">{{p.sub}}</span>
+                </span>
+              </label>
+            </sc-for>
+          </div>
+          <button type="button" style="align-self: flex-start; height: 40px; padding: 0; border: 0; background: none; color: #484848; font: inherit; font-size: 15px; font-weight: 700; text-decoration: underline">+ Додати коментар до замовлення</button>
+        </section>
+      </form>
+
+      <aside style="flex: 1 1 360px; min-width: 0; padding: 24px; border-radius: 12px; background: #FFFFFF; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <h2 style="margin: 0; font-size: 20px; font-weight: 800; color: #2E2E2E">Ваше замовлення</h2>
+          <a href="#" style="color: #C0092A; font-size: 14px; font-weight: 800">Змінити</a>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center"><img src="/_blob/75c7db32ffd1b6bba246b8fbaea94ecd" alt="" style="width: 72px; height: 54px; object-fit: cover; border-radius: 6px"><span style="flex: 1; font-size: 14px; line-height: 19px; font-weight: 700">Обвіс SQ8 для Audi Q8 (2018–2023)</span><b>$3 500</b></div>
+        <div style="display: flex; gap: 12px; align-items: center"><img src="/_blob/6dec74fe08a5b4b4c7192b6b70410247" alt="" style="width: 72px; height: 54px; object-fit: cover; border-radius: 6px"><span style="flex: 1; font-size: 14px; line-height: 19px; font-weight: 700">Накладка дверки лівий зад</span><b>$30</b></div>
+        <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid #EEEEEE; font-size: 15px">
+          <div style="display: flex; justify-content: space-between"><span>Товари (2)</span><span>$3 530</span></div>
+          <div style="display: flex; justify-content: space-between; color: #6B6B6B"><span>Доставка</span><span>за тарифами Нової пошти</span></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 12px; border-top: 1px solid #EEEEEE">
+          <span style="font-size: 17px; font-weight: 800; color: #2E2E2E">До сплати</span>
+          <span style="display: flex; flex-direction: column; align-items: flex-end"><span style="font-size: 28px; font-weight: 800; color: #C0092A">$3 530</span><span style="font-size: 13px; color: #6B6B6B">≈ [сума] ₴</span></span>
+        </div>
+        <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 56px; border-radius: 8px; background: #C0092A; color: #FFFFFF; font-size: 18px; font-weight: 800">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+          Перейти до оплати
+        </a>
+        <span style="font-size: 13px; color: #6B6B6B; text-align: center">Оплата на захищеній сторінці NovaPay</span>
+        <ul style="list-style: none; margin: 0; padding: 14px; border-radius: 8px; background: #F7F7F7; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+          <li><b>Обмін чи повернення</b> протягом 14 днів</li>
+          <li><b>Менеджер зателефонує</b> і підтвердить замовлення</li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = 'display: flex; gap: 12px; padding: 14px; border-radius: 10px; border: 2px solid #C0092A; background: #FFF7F8';
+    const off = 'display: flex; gap: 12px; padding: 14px; border-radius: 10px; border: 1px solid #DDDDDD';
+    const opt = (title, sub, selected) => ({ title, sub, on: selected, style: selected ? on : off });
+    return {
+      delivery: [
+        opt('Нова пошта — відділення або поштомат', 'За тарифами Нової пошти', true),
+        opt('Нова пошта — кур’єром', 'За тарифами Нової пошти', false),
+        opt('Самовивіз, Хмельницький', 'вул. Молодіжна, 15/1 · безкоштовно', false)
+      ],
+      pay: [
+        opt('Онлайн карткою через NovaPay', 'Visa / Mastercard', true),
+        opt('При отриманні у Новій пошті', 'Комісію за переказ бере Нова пошта', false)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

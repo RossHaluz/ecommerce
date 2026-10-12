@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Усі категорії — телефон</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 1700px; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 56px; background: #484848; display: flex; align-items: center; gap: 4px; padding: 0 8px">
+    <a href="Home-mobile.dc.html" aria-label="Назад" style="width: 44px; height: 44px; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"></path></svg></a>
+    <h1 style="margin: 0; flex: 1; color: #FFFFFF; font-size: 18px; font-weight: 800">Каталог</h1>
+    <a href="Search-suggest.dc.html" aria-label="Пошук" style="width: 44px; height: 44px; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></a>
+  </header>
+
+  <div style="padding: 12px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; background: #FFFFFF">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C0092A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5v4H3zM7 17v2M17 17v2"></path></svg>
+      <span style="flex: 1; font-size: 14px; line-height: 18px"><b>Моя Audi:</b> Q8 (2018–2023)</span>
+      <a href="ModelPicker-mobile.dc.html" style="color: #C0092A; font-size: 14px; font-weight: 800; padding: 8px 4px">Змінити</a>
+    </div>
+
+    <sc-for list="{{cats}}" as="cat" hint-placeholder-count="16">
+      <section style="background: #FFFFFF; border-radius: 10px; overflow: hidden">
+        <a href="{{cat.href}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 14px; color: #2E2E2E">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 8px; background: #F6E6E9; display: flex; align-items: center; justify-content: center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C0092A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{cat.icon}}"></path></svg>
+          </span>
+          <span style="flex: 1; font-size: 15px; font-weight: 800">{{cat.name}}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{cat.chevron}}"></path></svg>
+        </a>
+        <sc-if value="{{cat.open}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 14px 14px">
+            <a href="Category-mobile.dc.html" style="display: flex; align-items: center; min-height: 40px; padding: 0 12px; border-radius: 8px; background: #2E2E2E; color: #FFFFFF; font-size: 14px; font-weight: 700">Усі в категорії</a>
+            <sc-for list="{{cat.children}}" as="ch" hint-placeholder-count="3">
+              <a href="Category-mobile.dc.html" style="display: flex; align-items: center; min-height: 40px; padding: 0 12px; border-radius: 8px; background: #F2F2F2; color: #2E2E2E; font-size: 14px; font-weight: 700">{{ch}}</a>
+            </sc-for>
+          </div>
+        </sc-if>
+      </section>
+    </sc-for>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0">
+    <dc-import name="TabBar" active="catalog" cart-count="{{one}}" hint-size="390px,64px"></dc-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const down = 'm6 9 6 6 6-6', up = 'm6 15 6-6 6 6', right = 'm9 6 6 6-6 6';
+    const c = (name, icon, children, open) => ({
+      name, icon, children: children || [], open: !!open,
+      chevron: children && children.length ? (open ? up : down) : right,
+      href: children && children.length ? '#' : 'Category-mobile.dc.html'
+    });
+    return {
+      one: 1,
+      cats: [
+        c('Кузовні частини', 'M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5v4H3zM7 17v2M17 17v2', ['Бампери', 'Двері', 'Крила', 'Капоти', 'Кришка багажника', 'Дзеркала', 'Решітки радіатора', 'Пороги', '+ ще 13']),
+        c('Оптика', 'M4 8h7a5 4 0 0 1 0 8H4zM15 9h5M15 12h5M15 15h5', ['Фари передні', 'Ліхтарі задні', 'Комплектуючі до фар'], true),
+        c('Інтер’єр салону', 'M7 4h6a2 2 0 0 1 2 2v7H7zM5 13h12v3H5zM7 16v4M15 16v4', ['Салон', 'Обшивки салону', 'Багажник']),
+        c('Електроніка', 'M6 4h12v16H6zM9 8h6M9 12h6M9 16h3', ['Електронні блоки управління', 'Датчики', 'Інша електрика']),
+        c('Система охолодження двигуна', 'M4 6h16v12H4zM8 6v12M12 6v12M16 6v12', ['Радіатори', 'Вентилятори охолодження']),
+        c('Кондиціонування, опалення', 'M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9'),
+        c('Двигун + АКПП', 'M5 9h10v8H5zM15 11h3v4h-3M8 9V6h4v3'),
+        c('Ходова й рульове управління', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'),
+        c('Система безпеки', 'M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z'),
+        c('Акустика', 'M5 9h4l5-4v14l-5-4H5zM18 9a4 4 0 0 1 0 6'),
+        c('Шини і диски', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v10M7 12h10'),
+        c('Паливна система', 'M5 20V5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v15M4 20h11M14 9h3l2 2v6a1.5 1.5 0 0 1-3 0v-3'),
+        c('Гальмівна система', 'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'),
+        c('Вихлопна система', 'M3 14h11l3-3h4M3 18h18'),
+        c('Аксесуари', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z'),
+        c('Інше', 'M5 12h.01M12 12h.01M19 12h.01')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

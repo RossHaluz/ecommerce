@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Дякуємо за замовлення — телефон</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 1300px; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 56px; background: #484848; display: flex; align-items: center; padding: 0 16px">
+    <span style="color: #FFFFFF; font-weight: 800; font-size: 18px; letter-spacing: 0.08em">AUDIPARTS</span>
+  </header>
+
+  <div style="padding: 16px 12px; display: flex; flex-direction: column; gap: 12px">
+    <section style="padding: 24px 16px; border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+      <span style="width: 72px; height: 72px; border-radius: 50%; background: #E6F2EA; display: flex; align-items: center; justify-content: center">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#1E7B3C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4.5 4.5L19 7"></path></svg>
+      </span>
+      <h1 style="margin: 4px 0 0; font-size: 24px; line-height: 30px; font-weight: 800; color: #2E2E2E">Дякуємо! Замовлення №[номер]</h1>
+      <span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: #E6F2EA; color: #1E7B3C; font-size: 14px; font-weight: 800">Оплачено через NovaPay · $3 530</span>
+    </section>
+
+    <section style="padding: 16px; border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 17px; font-weight: 800; color: #2E2E2E">Що буде далі</h2>
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+        <sc-for list="{{steps}}" as="st" hint-placeholder-count="3">
+          <li style="display: flex; gap: 12px">
+            <span style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: #2E2E2E; color: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{st.n}}</span>
+            <span style="display: flex; flex-direction: column; gap: 2px">
+              <b style="font-size: 15px; color: #2E2E2E">{{st.title}}</b>
+              <span style="font-size: 14px; line-height: 20px">{{st.text}}</span>
+            </span>
+          </li>
+        </sc-for>
+      </ol>
+    </section>
+
+    <section style="padding: 16px; border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 10px; font-size: 14px; line-height: 20px">
+      <h2 style="margin: 0; font-size: 17px; font-weight: 800; color: #2E2E2E">Ваше замовлення</h2>
+      <div style="display: flex; gap: 10px; align-items: center"><img src="/_blob/75c7db32ffd1b6bba246b8fbaea94ecd" alt="" style="width: 56px; height: 42px; object-fit: cover; border-radius: 6px"><span style="flex: 1">Обвіс SQ8 для Audi Q8 (2018–2023)</span><b>$3 500</b></div>
+      <div style="display: flex; gap: 10px; align-items: center"><img src="/_blob/6dec74fe08a5b4b4c7192b6b70410247" alt="" style="width: 56px; height: 42px; object-fit: cover; border-radius: 6px"><span style="flex: 1">Накладка дверки лівий зад</span><b>$30</b></div>
+      <div style="padding-top: 10px; border-top: 1px solid #EEEEEE; display: grid; grid-template-columns: 100px minmax(0, 1fr); row-gap: 6px">
+        <span style="color: #6B6B6B">Отримувач</span><span>Олександр [Прізвище], +380 67 ••• •• 67</span>
+        <span style="color: #6B6B6B">Доставка</span><span>Нова пошта, Київ, Відділення №1</span>
+        <span style="color: #6B6B6B">Оплата</span><span>Онлайн, NovaPay</span>
+      </div>
+    </section>
+
+    <section style="padding: 16px; border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 800; color: #2E2E2E">Є питання щодо замовлення?</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 6px; height: 48px; border-radius: 8px; background: #7360F2; color: #FFFFFF; font-weight: 700"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-5 0-8 2.6-8 7.5 0 2.8 1 4.6 2.6 5.7V20l2.9-2.2c.8.2 1.6.2 2.5.2 5 0 8-2.6 8-7.5S17 3 12 3z"></path></svg>Viber</a>
+        <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 6px; height: 48px; border-radius: 8px; background: #1E88C9; color: #FFFFFF; font-weight: 700"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11l6 2.2L11 20l3.4-4.4L19 19z"></path><path d="m9 13.2 7.5-5.7"></path></svg>Telegram</a>
+      </div>
+      <span style="font-size: 13px; color: #6B6B6B">Назвіть номер замовлення — так знайдемо швидше.</span>
+    </section>
+
+    <a href="Home-mobile.dc.html" style="display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 8px; border: 2px solid #C0092A; color: #C0092A; font-size: 16px; font-weight: 800">Продовжити покупки</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      steps: [
+        { n: 1, title: 'Дзвінок менеджера', text: 'Підтвердимо наявність і доставку. Пн–Пт 10:00–19:00.' },
+        { n: 2, title: 'Відправка Новою поштою', text: 'Пакуємо й відправляємо на обране відділення.' },
+        { n: 3, title: 'SMS з номером ТТН', text: 'Нова пошта надішле номер — за ним відстежите посилку.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

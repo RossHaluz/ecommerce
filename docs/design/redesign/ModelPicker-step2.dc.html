@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Вибір моделі — покоління</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <div style="height: 116px; background: #484848"></div>
+  <img src="/_blob/40297259a343bbf265474c29f9816d75" alt="" style="margin: 120px 12px 0; width: 175px; height: 131px; object-fit: cover; border-radius: 8px; display: block">
+  <div style="position: absolute; inset: 0; background: rgba(20,20,20,0.6)"></div>
+  <section role="dialog" aria-label="Оберіть покоління Q8" style="position: absolute; left: 0; right: 0; bottom: 0; top: 64px; background: #FFFFFF; border-radius: 16px 16px 0 0; padding: 8px 16px 24px; display: flex; flex-direction: column; gap: 14px">
+    <div style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: #D0D0D0"></div>
+    <div style="display: flex; align-items: center; gap: 6px">
+      <a href="ModelPicker-mobile.dc.html" aria-label="Назад до серій" style="width: 44px; height: 44px; color: #484848; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"></path></svg>
+      </a>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 13px; font-weight: 700; color: #6B6B6B">Крок 2 з 2</span>
+        <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #2E2E2E">Audi Q8: яке покоління?</h2>
+      </div>
+    </div>
+    <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+      <sc-for list="{{gens}}" as="g" hint-placeholder-count="3">
+        <li>
+          <a href="Home-filtered.dc.html" style="{{g.style}}">
+            <span style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 17px; font-weight: 800">{{g.name}}</span>
+              <span style="font-size: 14px; opacity: 0.8">{{g.years}}</span>
+            </span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+          </a>
+        </li>
+      </sc-for>
+    </ul>
+    <a href="Home-filtered.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 10px; border: 1px solid #CFCFCF; color: #2E2E2E; font-weight: 700">Усі Audi Q8 — будь-яке покоління</a>
+    <p style="margin: auto 0 0; padding: 12px; border-radius: 10px; background: #F2F2F2; font-size: 13px; line-height: 19px">Запам’ятаємо вибір на цьому пристрої: каталог і пошук одразу показуватимуть деталі для вашої машини. Змінити можна будь-коли.</p>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const base = 'display: flex; align-items: center; justify-content: space-between; min-height: 64px; padding: 0 16px; border-radius: 10px; ';
+    const list = [
+      ['Q8', '2018–2023', true],
+      ['Q8', '2024 і новіші', false],
+      ['Q8 e-tron', '2024', false]
+    ];
+    return {
+      gens: list.map(([name, years, on]) => ({
+        name, years,
+        style: base + (on ? 'background: #C0092A; color: #FFFFFF' : 'background: #F2F2F2; color: #2E2E2E')
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
