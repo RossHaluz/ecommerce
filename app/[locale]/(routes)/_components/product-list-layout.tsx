@@ -1,7 +1,7 @@
 "use client";
 import { FC, useState } from "react";
 import { useTranslations } from "next-intl";
-import ProductItem from "./product-item";
+import { ProductCard } from "@/features/catalog/components/product-card/product-card";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 import { useWarmProductRoute } from "@/features/catalog";
@@ -52,14 +52,15 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
     <div className="flex flex-col gap-6 w-full">
       <ul
         aria-busy={isStale}
-        className={cn("grid grid-cols-1 gap-3 transition-opacity", {
+        className={cn("grid grid-cols-1 gap-2.5 transition-opacity md:gap-4", {
           "grid-cols-1": currentCustomizer === "list",
-          "grid-cols-2 lg:grid-cols-4": currentCustomizer === "grid",
+          // Поруч бічне меню категорій: 4 колонки давали картку ~250 px — фото й ціна дрібні.
+          "grid-cols-2 lg:grid-cols-3 min-[1600px]:grid-cols-4": currentCustomizer === "grid",
           "opacity-60": isStale,
         })}
       >
         {items.map((item, index) => (
-          <ProductItem
+          <ProductCard
             key={item.id}
             item={item}
             index={index}

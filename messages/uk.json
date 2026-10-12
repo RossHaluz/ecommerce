@@ -69,6 +69,8 @@
     "collapse": "Згорнути",
     "negotiablePriceNote": "Ціну до даного товару уточнюйте у менеджера.",
     "lastUnit": "остання 1 шт.",
+    "fitsModel": "Підходить до {model}",
+    "approxShort": "≈ {price}",
     "copyCatalogNumber": "Скопіювати каталожний номер",
     "copied": "Скопійовано",
     "approxUah": "≈ {price} за курсом НБУ · оплата в гривнях",

@@ -8,7 +8,7 @@ import { removeItemFromCart } from "@/redux/order/slice";
 
 /**
  * "Прибрати з кошика" — та сама дублікація, що й `useAddToCart`: три копії
- * (`header.tsx`, `product-item.tsx`, `product-btn.tsx`), скрізь той самий
+ * (`header.tsx`, `product-card.tsx`, `product-btn.tsx`), скрізь той самий
  * typo `hansleDeleteItem` і англійський hardcoded `toast.error`.
  */
 export const useRemoveFromCart = () => {

@@ -5,7 +5,7 @@ import { OrderOneClick } from "@/features/one-click/order-one-click";
 import { FavoriteButton } from "@/features/favorites";
 import { CatalogNumberChip } from "./catalog-number-chip";
 import { PriceBlock } from "./price-block";
-import { StockLine } from "./stock-line";
+import { StockLine } from "@/entities/product/ui/stock-line";
 import { TrustList } from "./trust-list";
 import { MAIN_BUY_CTA_ID } from "./main-buy-cta";
 

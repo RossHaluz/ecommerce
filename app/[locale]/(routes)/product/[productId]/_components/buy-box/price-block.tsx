@@ -2,14 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
-import { useExchangeRate } from "@/hooks/use-exchange-rate";
-import { formatPrice } from "@/lib/format/price";
 
 /** Ціна у вибраній валюті; при доларах — гривні дрібно під нею, бо платять у гривнях. */
 export const PriceBlock = ({ price }: { price: number }) => {
   const t = useTranslations("product");
-  const { currency, format } = usePriceFormatter();
-  const { data } = useExchangeRate();
+  const { format, approxUah } = usePriceFormatter();
 
   if (!price) {
     return (
@@ -20,8 +17,7 @@ export const PriceBlock = ({ price }: { price: number }) => {
     );
   }
 
-  const uah =
-    currency === "USD" && data?.usdToUah ? formatPrice(price, { currency: "UAH", usdToUahRate: data.usdToUah }) : null;
+  const uah = approxUah(price);
 
   return (
     <div className="flex flex-col gap-0.5">

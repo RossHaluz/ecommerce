@@ -8,6 +8,7 @@ import ImageNotFound from "/public/images/image-not-found.jpg";
 import { AddedToCartSheet } from "@/features/cart";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productHref } from "@/entities/product/model/product-href";
+import { productTitle } from "@/entities/product/model/product-heading";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { cn } from "@/lib/utils";
 import { canBuy, type FavoriteRowView } from "../model/favorite-status";
@@ -28,7 +29,7 @@ export const FavoriteRow = ({ row }: { row: FavoriteRowView }) => {
 
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <Link href={href} className="line-clamp-2 text-sm font-extrabold text-[#2E2E2E] hover:text-[#C0092A] md:text-[17px]">
-          {row.item.title}
+          {productTitle(row.item.title)}
         </Link>
         <span className="text-xs text-[#6B6B6B] md:text-[13px]">OE {row.item.catalogNumber}</span>
         <FavoriteRowStatus row={row} />
