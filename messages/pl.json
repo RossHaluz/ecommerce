@@ -69,6 +69,8 @@
     "collapse": "Zwiń",
     "negotiablePriceNote": "Cenę tego produktu skonsultuj z menedżerem.",
     "lastUnit": "ostatnia 1 szt.",
+    "fitsModel": "Pasuje do {model}",
+    "approxShort": "≈ {price}",
     "copyCatalogNumber": "Skopiuj numer katalogowy",
     "copied": "Skopiowano",
     "approxUah": "≈ {price} wg kursu NBU · płatność w hrywnach",
