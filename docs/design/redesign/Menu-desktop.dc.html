@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Бічне меню — комп'ютер</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 1440px; height: 1200px; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 72px; background: #484848; display: flex; align-items: center; gap: 16px; padding: 0 80px">
+    <button aria-label="Меню" style="width: 44px; height: 44px; border: 0; background: transparent; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+    </button>
+    <span style="color: #FFFFFF; font-weight: 800; font-size: 20px; letter-spacing: 0.08em">AUDIPARTS</span>
+    <div style="height: 44px; padding: 0 16px; border-radius: 8px; background: #5A5A5A; color: #FFFFFF; font-weight: 700; display: flex; align-items: center">Каталог</div>
+    <div style="flex: 1; height: 44px; border-radius: 8px; background: #FFFFFF"></div>
+  </header>
+  <div style="display: flex; gap: 24px; padding: 40px 80px 0">
+    <img src="/_blob/75c7db32ffd1b6bba246b8fbaea94ecd" alt="" style="width: 720px; height: 540px; object-fit: cover; border-radius: 12px; display: block">
+    <div style="flex: 1; height: 540px; background: #FFFFFF; border-radius: 12px"></div>
+  </div>
+  <div style="position: absolute; inset: 0; background: rgba(20,20,20,0.55)"></div>
+
+  <nav aria-label="Меню" style="position: absolute; top: 0; left: 0; bottom: 0; width: 400px; background: #F2F2F2; display: flex; flex-direction: column; box-shadow: 8px 0 24px rgba(0,0,0,0.18)">
+    <div style="height: 72px; background: #484848; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 24px; flex: none">
+      <span style="color: #FFFFFF; font-weight: 800; font-size: 20px; letter-spacing: 0.08em">AUDIPARTS</span>
+      <button aria-label="Закрити меню" style="width: 44px; height: 44px; border: 0; background: transparent; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+
+    <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <a href="#" style="display: flex; flex-direction: column; justify-content: center; gap: 6px; min-height: 72px; padding: 12px 14px; border-radius: 10px; background: #C0092A; color: #FFFFFF; text-decoration: none; box-sizing: border-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5v4a1 1 0 0 1-1 1h-1.5M3 13v4a1 1 0 0 0 1 1h1.5M3 13h18"></path><circle cx="7.5" cy="17.5" r="1.8"></circle><circle cx="16.5" cy="17.5" r="1.8"></circle></svg>
+          <span style="font-size: 15px; font-weight: 800">Запчастини для моєї Audi</span>
+        </a>
+        <a href="#" style="display: flex; flex-direction: column; justify-content: center; gap: 6px; min-height: 72px; padding: 12px 14px; border-radius: 10px; background: #FFFFFF; color: #2E2E2E; text-decoration: none; box-sizing: border-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C0092A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M7 10h4M7 14h7"></path></svg>
+          <span style="font-size: 15px; font-weight: 800">Підбір за VIN-кодом</span>
+        </a>
+      </div>
+
+      <section style="background: #FFFFFF; border-radius: 10px; padding: 6px 0">
+        <h2 style="margin: 0; padding: 10px 16px 6px; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: #6B6B6B">Каталог</h2>
+        <ul style="list-style: none; margin: 0; padding: 0">
+          <li><a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 600; text-decoration: none">Кузовні частини<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></a></li>
+          <li><a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 600; text-decoration: none">Оптика<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></a></li>
+          <li><a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 600; text-decoration: none">Інтер'єр салону<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></a></li>
+          <li><a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 600; text-decoration: none">Електроніка<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></a></li>
+          <li><a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 600; text-decoration: none">Система охолодження двигуна<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></a></li>
+          <li><a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 600; text-decoration: none">Кондиціонування та опалення<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></a></li>
+          <li><a href="#" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; color: #C0092A; font-size: 15px; font-weight: 800; text-decoration: none">Усі 16 категорій →</a></li>
+        </ul>
+      </section>
+
+      <section style="background: #FFFFFF; border-radius: 10px; padding: 4px 0">
+        <a href="#" style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 700; text-decoration: none">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"></path><circle cx="9" cy="20" r="1.3"></circle><circle cx="17" cy="20" r="1.3"></circle></svg>
+          <span style="flex: 1">Кошик</span>
+          <span style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: #C0092A; color: #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">1</span>
+        </a>
+        <a href="#" style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 700; text-decoration: none">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
+          Вхід у кабінет
+        </a>
+        <a href="#" style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; color: #2E2E2E; font-size: 15px; font-weight: 700; text-decoration: none">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+          Контакти
+        </a>
+      </section>
+
+      <section style="background: #FFFFFF; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+        <a href="#" style="display: flex; align-items: center; gap: 10px; color: #2E2E2E; font-size: 18px; font-weight: 800; text-decoration: none">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C0092A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h3.5l1.7 4.2-2.2 1.4a11 11 0 0 0 6.4 6.4l1.4-2.2L20 15.5V19a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"></path></svg>
+          +38 (067) 383 42 83
+        </a>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 6px; height: 44px; border-radius: 8px; background: #7360F2; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-5 0-8 2.6-8 7.5 0 2.8 1 4.6 2.6 5.7V20l2.9-2.2c.8.2 1.6.2 2.5.2 5 0 8-2.6 8-7.5S17 3 12 3z"></path><path d="M9.3 8.2c.3-.3.8-.3 1 0l.7 1c.2.3.1.7-.1.9l-.4.3c.4.9 1.1 1.6 2 2l.3-.4c.2-.3.6-.3.9-.1l1 .7c.3.2.3.7 0 1-.6.7-1.5.9-2.3.5a6.3 6.3 0 0 1-3.6-3.6c-.4-.8-.2-1.7.5-2.3z"></path></svg>
+            Viber
+          </a>
+          <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 6px; height: 44px; border-radius: 8px; background: #1E88C9; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11l6 2.2L11 20l3.4-4.4L19 19z"></path><path d="m9 13.2 7.5-5.7"></path></svg>
+            Telegram
+          </a>
+        </div>
+        <p style="margin: 0; font-size: 13px; line-height: 19px; color: #6B6B6B">Пн–Пт 10:00–19:00, Сб–Нд вихідні<br>Хмельницький, вул. Молодіжна, 15/1</p>
+      </section>
+
+      <div role="group" aria-label="Мова сайту" style="display: flex; gap: 8px">
+        <button aria-pressed="true" style="flex: 1; height: 44px; border: 0; border-radius: 8px; background: #484848; color: #FFFFFF; font: inherit; font-weight: 800">Українська</button>
+        <button aria-pressed="false" style="flex: 1; height: 44px; border: 1px solid #CFCFCF; border-radius: 8px; background: #FFFFFF; color: #2E2E2E; font: inherit; font-weight: 700">Polski</button>
+      </div>
+    </div>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

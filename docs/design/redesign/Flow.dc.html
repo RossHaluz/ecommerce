@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Шлях покупця</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+</style>
+</helmet>
+<div style="width: 2400px; height: 1500px; box-sizing: border-box; padding: 56px 64px; background: #F7F7F7; font-family: 'Mulish', sans-serif; color: #2E2E2E; display: flex; flex-direction: column; gap: 32px">
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <h1 style="margin: 0; font-size: 44px; font-weight: 800">Шлях покупця Audiparts</h1>
+    <p style="margin: 0; font-size: 20px; color: #6B6B6B">Від входу на сайт до отриманої посилки. Червоне — головний шлях, сіре — запасні виходи, щоб людина не пішла.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; flex: 1">
+    <sc-for list="{{stages}}" as="stage" hint-placeholder-count="5">
+      <section style="display: flex; flex-direction: column; gap: 14px; padding: 0 20px; border-left: 2px dashed #D6D6D6">
+        <div style="display: flex; align-items: center; gap: 12px">
+          <span style="width: 40px; height: 40px; border-radius: 50%; background: #2E2E2E; color: #FFFFFF; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{stage.n}}</span>
+          <h2 style="margin: 0; font-size: 26px; font-weight: 800">{{stage.title}}</h2>
+        </div>
+        <p style="margin: 0 0 6px; font-size: 15px; line-height: 21px; color: #6B6B6B">{{stage.goal}}</p>
+        <sc-for list="{{stage.steps}}" as="step" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <a href="{{step.href}}" style="{{step.boxStyle}}">
+              <span style="font-size: 17px; font-weight: 800">{{step.title}}</span>
+              <span style="font-size: 14px; line-height: 19px; opacity: 0.85">{{step.text}}</span>
+            </a>
+            <span style="align-self: center; font-size: 20px; color: #9A9A9A">{{step.next}}</span>
+          </div>
+        </sc-for>
+      </section>
+    </sc-for>
+  </div>
+
+  <div style="display: flex; gap: 32px; align-items: center; font-size: 15px; color: #484848">
+    <span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 18px; border-radius: 4px; background: #C0092A"></span>Головний шлях до замовлення</span>
+    <span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 18px; border-radius: 4px; background: #FFFFFF; border: 2px solid #484848; box-sizing: border-box"></span>Екран або стан</span>
+    <span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 18px; border-radius: 4px; background: #E9E9E9"></span>Запасний вихід: менеджер, VIN, Viber/Telegram</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2400,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const box = {
+      main: 'display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: 12px; background: #C0092A; color: #FFFFFF',
+      screen: 'display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: 12px; background: #FFFFFF; border: 2px solid #484848; color: #2E2E2E',
+      rescue: 'display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: 12px; background: #E9E9E9; color: #2E2E2E'
+    };
+    const s = (kind, title, text, href, next) => ({ title, text, href: href || '#', next: next || '', boxStyle: box[kind] });
+    return {
+      stages: [
+        { n: 1, title: 'Прийти', goal: 'Людина приходить з Google за запитом «фара Q8 4M» або напряму.', steps: [
+          s('screen', 'Google → категорія + модель', '«Фари передні Audi Q8 (2018–2023)» — відкривається вже відфільтрований список', 'Category-mobile.dc.html', '↓'),
+          s('screen', 'Google → картка товару', 'Запит з OE-номером веде одразу на товар', 'Main.dc.html', '↓'),
+          s('main', 'Головна = весь каталог', 'Одразу всі товари; зверху пошук, модель, чипи категорій і фільтри', 'Home-mobile.dc.html', '↓'),
+          s('screen', '«Моя Audi»: серія → покоління', 'Вибір запам’ятовується: далі весь сайт показує деталі саме для цієї машини', 'ModelPicker-mobile.dc.html', '')
+        ]},
+        { n: 2, title: 'Знайти', goal: 'Три рівноцінні дороги до потрібної деталі.', steps: [
+          s('main', 'Меню / вкладка «Каталог» → «Усі 16 категорій →»', 'Сторінка всіх категорій: 16 плиток, у кожній — підкатегорії', 'AllCats-mobile.dc.html', '↓'),
+          s('screen', 'Категорія → чипи підкатегорій', '«Оптика» → «Фари передні». Модель з «Моя Audi» вже застосована', 'Category-mobile.dc.html', '↓'),
+          s('screen', 'Пошук', 'Підказки під час введення: категорії, товари з фото й ціною, пошук за OE-номером', 'Search-suggest.dc.html', '↓'),
+          s('rescue', 'Нічого не знайшли', 'Не тупик: «Підберемо за VIN» + Viber/Telegram — менеджер знайде деталь', 'Search-empty.dc.html', '')
+        ]},
+        { n: 3, title: 'Вибрати', goal: 'Зняти сумнів «а чи підійде до моєї машини».', steps: [
+          s('screen', 'Список товарів', 'На картці одразу видно модель, OE-номер, наявність і ціну', 'Category-mobile.dc.html', '↓'),
+          s('screen', 'Фільтри', 'Модель, наявність, сортування — у шторці знизу', 'Filters-sheet.dc.html', '↓'),
+          s('main', 'Картка товару', 'Ціна + «Купити» нагорі, «Підходить до», характеристики, довіра', 'Main.dc.html', '↓'),
+          s('rescue', '«Не впевнені, що підійде?»', 'Перевірка за VIN або повідомлення менеджеру з фото деталі', 'Main.dc.html', '')
+        ]},
+        { n: 4, title: 'Купити', goal: 'Найкоротший шлях від рішення до замовлення.', steps: [
+          s('main', '«Купити» → «Додано в кошик»', 'Шторка: товар, сума, «Оформити замовлення», «Ще для Audi Q8»', 'Cart-sheet.dc.html', '↓'),
+          s('screen', 'Кошик (вкладка «Кошик»)', 'Усі товари, видалення, сума в $ і ≈ ₴', 'Cart-mobile.dc.html', '↓'),
+          s('main', 'Оформлення', 'Телефон і ім’я → Нова пошта / самовивіз → NovaPay онлайн або при отриманні', 'Checkout-mobile.dc.html', '↓'),
+          s('rescue', '«Купити в 1 клік»', 'Лише телефон — менеджер передзвонить і оформить сам', 'Oneclick-sheet.dc.html', '')
+        ]},
+        { n: 5, title: 'Отримати', goal: 'Після «Підтвердити» людина точно знає, що буде далі.', steps: [
+          s('screen', 'NovaPay', 'Якщо обрано онлайн-оплату — сторінка оплати NovaPay і повернення на сайт', '#', '↓'),
+          s('main', '«Дякуємо! Замовлення №…»', 'Що буде далі: дзвінок менеджера → відправка → ТТН у SMS', 'Success-mobile.dc.html', '↓'),
+          s('screen', 'Дзвінок менеджера', 'Підтвердження наявності й доставки в робочий час Пн–Пт 10–19', '#', '↓'),
+          s('rescue', 'Viber / Telegram', 'Для тих, хто хоче швидше — кнопки на екрані «Дякуємо»', 'Success-mobile.dc.html', '')
+        ]}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

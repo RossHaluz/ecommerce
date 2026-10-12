@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Вхід — код з SMS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <div style="position: absolute; inset: 0; background: rgba(20,20,20,0.55)"></div>
+  <section role="dialog" aria-label="Код з SMS" style="position: absolute; left: 0; right: 0; bottom: 0; height: 560px; background: #FFFFFF; border-radius: 16px 16px 0 0; display: flex; flex-direction: column; padding: 8px 16px 20px; box-sizing: border-box; gap: 16px">
+    <div style="display: flex; justify-content: center"><span style="width: 40px; height: 4px; border-radius: 2px; background: #D0D0D0"></span></div>
+    <div style="display: flex; align-items: center; gap: 4px; margin-left: -12px">
+      <a href="Main.dc.html" aria-label="Назад" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #2E2E2E">
+        <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #2E2E2E">Введіть код з SMS</h2>
+    </div>
+    <p style="margin: 0; font-size: 15px">Надіслали на <b style="color: #2E2E2E">+380 67 ••• •• 67</b> · <a href="Main.dc.html" style="font-weight: 800">Змінити</a></p>
+
+    <fieldset style="border: 0; margin: 0; padding: 0; display: flex; gap: 10px; justify-content: center">
+      <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden">Код з 4 цифр</legend>
+      <sc-for list="{{digits}}" as="d" hint-placeholder-count="4">
+        <input aria-label="Цифра {{d.n}}" inputmode="numeric" autocomplete="one-time-code" maxlength="1" value="{{d.v}}" style="width: 64px; height: 72px; border-radius: 12px; text-align: center; font: inherit; font-size: 30px; font-weight: 800; color: #2E2E2E; box-sizing: border-box; {{d.style}}">
+      </sc-for>
+    </fieldset>
+    <span style="text-align: center; font-size: 13px; color: #6B6B6B">Код підставиться з SMS сам — вводити не обов’язково</span>
+
+    <button disabled style="height: 52px; border: 0; border-radius: 10px; background: #F2F2F2; color: #6B6B6B; font: inherit; font-size: 15px; font-weight: 800">Надіслати ще раз через 0:42</button>
+    <p style="margin: auto 0 0; text-align: center; font-size: 14px">Код не приходить? <a href="#" style="font-weight: 800">Зателефонуйте нам</a></p>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const filled = 'border: 2px solid #484848', active = 'border: 2px solid #C0092A; background: #FFF7F8', empty = 'border: 1px solid #CFCFCF';
+    return {
+      digits: [
+        { n: 1, v: '4', style: filled }, { n: 2, v: '8', style: filled },
+        { n: 3, v: '', style: active }, { n: 4, v: '', style: empty }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

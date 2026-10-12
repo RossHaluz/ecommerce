@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Головна — комп'ютер</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none}
+</style>
+</helmet>
+<div style="min-height: 2000px; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="background: #484848">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 0 24px; min-height: 72px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; box-sizing: border-box">
+      <a href="#" aria-label="Меню" style="width: 44px; height: 44px; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></a>
+      <span style="color: #FFFFFF; font-weight: 800; font-size: 20px; letter-spacing: 0.08em">AUDIPARTS</span>
+      <label style="flex: 1 1 320px; display: flex; align-items: center; height: 44px; padding: 0 14px; border-radius: 8px; background: #FFFFFF; gap: 10px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+        <input aria-label="Пошук" placeholder="Назва деталі або OE-номер" style="border: 0; outline: none; flex: 1; min-width: 0; font: inherit; font-size: 15px; background: transparent">
+      </label>
+      <a href="#" style="height: 44px; padding: 0 14px; border-radius: 8px; background: #C0092A; color: #FFFFFF; font-weight: 800; display: flex; align-items: center">Підбір за VIN</a>
+      <a href="#" style="color: #FFFFFF; font-weight: 700">+38 (067) 383 42 83</a>
+      <a href="#" aria-label="Кошик" style="width: 44px; height: 44px; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"></path><circle cx="9" cy="20" r="1.3"></circle><circle cx="17" cy="20" r="1.3"></circle></svg></a>
+    </div>
+  </header>
+
+  <main style="max-width: 1360px; margin: 0 auto; padding: 20px 24px 64px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+    <aside style="flex: 0 1 290px; min-width: 250px; display: flex; flex-direction: column; gap: 16px">
+      <nav aria-label="Категорії" style="background: #FFFFFF; border-radius: 12px; padding: 8px">
+        <sc-for list="{{cats}}" as="c" hint-placeholder-count="16">
+          <a href="Category-desktop.dc.html" style="{{c.style}}">
+            <span style="flex: 1">{{c.name}}</span>
+            <sc-if value="{{c.sub}}" hint-placeholder-val="{{false}}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </sc-if>
+          </a>
+        </sc-for>
+      </nav>
+      <a href="#" style="display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 12px; background: #2E2E2E; color: #FFFFFF">
+        <b style="font-size: 16px">Не знаєте, що підійде?</b>
+        <span style="font-size: 14px; line-height: 20px; color: #DADADA">Надішліть VIN — менеджер підбере деталь</span>
+        <span style="margin-top: 4px; color: #FFFFFF; font-weight: 800">Підбір за VIN →</span>
+      </a>
+    </aside>
+
+    <section style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+        <a href="#" style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px; border-radius: 10px; background: #2E2E2E; color: #FFFFFF; font-weight: 800">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5v4H3z"></path></svg>
+          Оберіть модель Audi
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+        </a>
+        <div role="group" aria-label="Наявність" style="display: flex; height: 44px; border-radius: 10px; background: #FFFFFF; padding: 4px; box-sizing: border-box; gap: 4px">
+          <button style="padding: 0 14px; border: 0; border-radius: 7px; background: #F2F2F2; color: #2E2E2E; font: inherit; font-weight: 800">Усі</button>
+          <button style="padding: 0 14px; border: 0; border-radius: 7px; background: transparent; color: #484848; font: inherit; font-weight: 600">В наявності</button>
+          <button style="padding: 0 14px; border: 0; border-radius: 7px; background: transparent; color: #484848; font: inherit; font-weight: 600">Під замовлення</button>
+        </div>
+        <label style="margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 14px">Сортування
+          <select style="height: 44px; padding: 0 10px; border: 1px solid #CFCFCF; border-radius: 10px; font: inherit; background: #FFFFFF"><option>Спершу дорожчі</option><option>Спершу дешевші</option></select>
+        </label>
+      </div>
+      <h1 style="margin: 0; font-size: 24px; font-weight: 800; color: #2E2E2E">Запчастини Audi <span style="font-size: 16px; font-weight: 600; color: #6B6B6B">· [кількість] товарів</span></h1>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px">
+        <sc-for list="{{cards}}" as="it" hint-placeholder-count="8">
+          <dc-import name="Card" item="{{it}}" hint-size="100%,360px"></dc-import>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ok = { stock: 'В наявності', stockColor: '#1E7B3C' };
+    const row = 'display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 10px; border-radius: 8px; font-size: 15px; ';
+    const list = [
+      ['Усі запчастини', false], ['Кузовні частини', true], ['Оптика', true], ['Інтер’єр салону', true], ['Електроніка', true],
+      ['Система охолодження двигуна', true], ['Кондиціонування, опалення', false], ['Двигун + АКПП', false], ['Ходова й рульове', false],
+      ['Система безпеки', false], ['Акустика', false], ['Шини і диски', false], ['Паливна система', false], ['Гальмівна система', false],
+      ['Вихлопна система', false], ['Аксесуари', false], ['Інше', false]
+    ];
+    return {
+      cats: list.map(([name, sub], i) => ({ name, sub, style: row + (i === 0 ? 'background: #2E2E2E; color: #FFFFFF; font-weight: 800' : 'color: #2E2E2E; font-weight: 600') })),
+      cards: [
+        { ...ok, img: '/_blob/40297259a343bbf265474c29f9816d75', title: 'Комплект фар Matrix Q8', model: 'Audi Q8 (2018–2023)', oe: '4M8941035', price: '$3 600' },
+        { ...ok, img: '/_blob/f83dbeab6ac3a60c6257dbcefceffa63', title: 'Обвіс SQ8', model: 'Audi Q8 (2018–2023)', oe: '4M8807065C GRU', price: '$3 500' },
+        { ...ok, img: '/_blob/46601fbc7f4f6bbf8952a7364da3e182', title: 'Комплект фар А7 демонтаж', model: 'Audi A7 4K8 (2019+)', oe: '4K8941035F', price: '$3 500' },
+        { ...ok, img: '/_blob/42847a56d3b6a3b366369abfa906b4da', title: 'Ліхтар правий', model: 'Audi Q8 (2024+)', oe: '4M8945092', price: '$3 000' },
+        { ...ok, img: '/_blob/77e4a077d44e91ae5f5a1398a8bc688d', title: 'Комплект фар A8 D5 Matrix рест', model: 'Audi A8 D5 (2023+)', oe: '4N0941036C', price: '$3 000' },
+        { ...ok, img: '/_blob/7c22de5146e0e1f4f72463611f512573', title: 'Установочна панель в зборі Q7 4M 4,0', model: 'Audi Q7 4M (2020–2024)', oe: '4M0805594D', price: '$2 800' },
+        { ...ok, img: '/_blob/39c89a3829c0c318faacb2f10d42f147', title: 'Блок двигуна', model: 'Audi Q7 4M (2020–2024)', oe: '059011GS', price: '$2 500' },
+        { ...ok, img: '/_blob/5d8b1a5db749d36d584ef3b70ee5070a', title: 'Салон 7 місць Q7 4M, шкіра/алькантара', model: '', oe: '4M0', price: '$2 300' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

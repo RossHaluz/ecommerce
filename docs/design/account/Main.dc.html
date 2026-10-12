@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Вхід — телефон</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <div style="position: absolute; inset: 0; background: rgba(20,20,20,0.55)"></div>
+  <section role="dialog" aria-label="Вхід або реєстрація" style="position: absolute; left: 0; right: 0; bottom: 0; height: 720px; background: #FFFFFF; border-radius: 16px 16px 0 0; display: flex; flex-direction: column; padding: 8px 16px 20px; box-sizing: border-box">
+    <div style="display: flex; justify-content: center"><span style="width: 40px; height: 4px; border-radius: 2px; background: #D0D0D0"></span></div>
+    <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 8px">
+      <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #2E2E2E">Вхід або реєстрація</h2>
+      <button aria-label="Закрити" style="width: 44px; height: 44px; margin-right: -8px; border: 0; background: transparent; color: #484848; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <ul style="margin: 8px 0 20px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 14px">
+      <sc-for list="{{perks}}" as="p" hint-placeholder-count="3">
+        <li style="display: flex; gap: 8px; align-items: center">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#008038" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>{{p}}
+        </li>
+      </sc-for>
+    </ul>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <button style="height: 52px; border: 0; border-radius: 10px; background: #000000; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px">
+        <span aria-hidden="true" style="width: 18px; height: 20px; border-radius: 9px 9px 7px 7px; background: #FFFFFF"></span>
+        Продовжити з Apple
+      </button>
+      <button style="height: 52px; border: 1px solid #CFCFCF; border-radius: 10px; background: #FFFFFF; color: #2E2E2E; font: inherit; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px">
+        <span aria-hidden="true" style="width: 20px; height: 20px; border-radius: 10px; border: 4px solid #4285F4; box-sizing: border-box; border-right-color: #34A853; border-bottom-color: #FBBC05; border-left-color: #EA4335"></span>
+        Продовжити з Google
+      </button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px; margin: 20px 0 16px; font-size: 13px; color: #6B6B6B">
+      <span style="flex: 1; height: 1px; background: #E4E4E4"></span>або за номером телефону<span style="flex: 1; height: 1px; background: #E4E4E4"></span>
+    </div>
+
+    <form style="display: flex; flex-direction: column; gap: 10px">
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700; color: #484848">Телефон
+        <input type="tel" autocomplete="tel" value="+380 671 23 45 67" style="height: 52px; border: 2px solid #484848; border-radius: 10px; padding: 0 14px; font: inherit; font-size: 17px; font-weight: 800; color: #2E2E2E">
+      </label>
+      <a href="Login-code-mobile.dc.html" style="height: 52px; border-radius: 10px; background: #C0092A; color: #FFFFFF; font-size: 17px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Отримати код в SMS</a>
+    </form>
+
+    <p style="margin: auto 0 0; font-size: 12px; line-height: 17px; color: #6B6B6B; text-align: center">Продовжуючи, ви погоджуєтесь з <a href="#">умовами продажу</a> і <a href="#">політикою конфіденційності</a>.<br>Купувати можна й без входу.</p>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { perks: ['Обране — на телефоні й комп’ютері', 'Статус замовлень і номер ТТН', 'Контакти й адреса підставляються самі'] };
+  }
+}
+</script>
+</body>
+</html>

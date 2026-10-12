@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Оберіть Audi — серія</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <div style="position: absolute; inset: 0; background: rgba(20,20,20,0.55)"></div>
+  <section role="dialog" aria-label="Оберіть свою Audi" style="position: absolute; left: 0; right: 0; bottom: 0; height: 780px; background: #FFFFFF; border-radius: 16px 16px 0 0; display: flex; flex-direction: column">
+    <div style="display: flex; justify-content: center; padding-top: 8px"><span style="width: 40px; height: 4px; border-radius: 2px; background: #D0D0D0"></span></div>
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 8px 0 16px">
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 12px; font-weight: 700; color: #6B6B6B">Крок 1 з 2</span>
+        <h2 style="margin: 0; font-size: 20px; font-weight: 800; color: #2E2E2E">Оберіть свою Audi</h2>
+      </div>
+      <button aria-label="Закрити" style="width: 44px; height: 44px; border: 0; background: transparent; color: #484848; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div style="flex: 1; overflow: hidden; padding: 12px 16px 0; display: flex; flex-direction: column; gap: 14px">
+      <label style="height: 44px; border: 1px solid #CFCFCF; border-radius: 8px; display: flex; align-items: center; gap: 8px; padding: 0 12px">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input aria-label="Знайти модель" placeholder="Знайти: Q7, A6 C8, Touareg…" style="border: 0; outline: none; font: inherit; font-size: 16px; width: 100%">
+      </label>
+
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{audi}}" as="m" hint-placeholder-count="14">
+          <a href="Model-gen-mobile.dc.html" style="height: 56px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; {{m.style}}">
+            <span style="font-size: 17px; font-weight: 800">{{m.name}}</span>
+            <span style="font-size: 11px; opacity: 0.8">{{m.gens}}</span>
+          </a>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 800; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em">Інші марки</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{others}}" as="o" hint-placeholder-count="6">
+            <a href="#" style="height: 40px; padding: 0 14px; border-radius: 20px; border: 1px solid #DDDDDD; display: flex; align-items: center; font-size: 14px; font-weight: 700; color: #2E2E2E; text-decoration: none">{{o}}</a>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 12px 16px 20px; border-top: 1px solid #EEEEEE; display: flex; flex-direction: column; gap: 6px">
+      <a href="#" style="height: 48px; border-radius: 8px; background: #2E2E2E; color: #FFFFFF; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Не знаєте модель? Підбір за VIN</a>
+      <a href="Main.dc.html" style="height: 40px; color: #484848; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center">Показати для всіх моделей</a>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = 'background: #C0092A; color: #FFFFFF', off = 'background: #F2F2F2; color: #2E2E2E';
+    const s = (name, gens, selected) => ({ name, gens, style: selected ? on : off });
+    return {
+      audi: [
+        s('A1', '1 покоління'), s('A3', '2 покоління'), s('A4', '2 покоління'), s('A5', '2 покоління'),
+        s('A6', '3 покоління'), s('A7', '3 покоління'), s('A8', '3 покоління'), s('Q2', '1 покоління'),
+        s('Q3', '2 покоління'), s('Q5', '4 покоління'), s('Q7', '5 поколінь', true), s('Q8', '2 покоління'),
+        s('e-tron', '2 покоління'), s('Q4 e-tron', '1 покоління'), s('Q8 e-tron', '1 покоління')
+      ],
+      others: ['VW Touareg', 'VW Transporter', 'Porsche Cayenne', 'BMW X5', 'Land Rover', 'Nissan']
+    };
+  }
+}
+</script>
+</body>
+</html>

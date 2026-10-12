@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Пошук — підказки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; overflow: hidden; background: #FFFFFF; font-family: 'Mulish', sans-serif; color: #484848; display: flex; flex-direction: column">
+  <header style="background: #484848; padding: 8px 8px 10px 4px; display: flex; align-items: center; gap: 4px">
+    <a href="Main.dc.html" aria-label="Закрити пошук" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; flex: none">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <label style="flex: 1; min-width: 0; height: 44px; background: #FFFFFF; border-radius: 8px; border: 2px solid #C0092A; box-sizing: border-box; display: flex; align-items: center; gap: 8px; padding: 0 6px 0 12px">
+      <input aria-label="Пошук" value="фара q8" style="border: 0; outline: none; font: inherit; font-size: 16px; font-weight: 700; width: 100%; min-width: 0; color: #2E2E2E">
+      <button aria-label="Очистити" style="width: 36px; height: 36px; border: 0; background: transparent; color: #6B6B6B; display: flex; align-items: center; justify-content: center; flex: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </label>
+  </header>
+
+  <div style="flex: 1; overflow: hidden; padding: 12px 16px; display: flex; flex-direction: column; gap: 16px">
+    <label style="height: 48px; border-radius: 10px; background: #FFF7F8; padding: 0 12px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #2E2E2E">
+      <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #C0092A; margin: 0">
+      <span>Лише для вашої <b>Q8 (2018–2023)</b></span>
+    </label>
+
+    <section style="display: flex; flex-direction: column; gap: 2px">
+      <h2 style="margin: 0 0 4px; font-size: 13px; font-weight: 800; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em">У категоріях</h2>
+      <sc-for list="{{cats}}" as="c" hint-placeholder-count="2">
+        <a href="Search-results-mobile.dc.html" style="height: 44px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; color: #2E2E2E; text-decoration: none; border-bottom: 1px solid #F0F0F0">
+          <span>{{c.path}}</span><span style="font-size: 13px; color: #6B6B6B">{{c.count}}</span>
+        </a>
+      </sc-for>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em">Товари</h2>
+      <sc-for list="{{items}}" as="p" hint-placeholder-count="4">
+        <a href="#" style="display: flex; gap: 12px; align-items: center; text-decoration: none">
+          <span style="width: 64px; height: 48px; border-radius: 6px; background: #E4E4E4; flex: none"></span>
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px">
+            <span style="font-size: 14px; color: #2E2E2E; line-height: 18px"><b>{{p.match}}</b>{{p.rest}}</span>
+            <span style="font-size: 12px; color: #6B6B6B">{{p.oe}} · <span style="color: {{p.stockColor}}; font-weight: 700">{{p.stock}}</span></span>
+          </span>
+          <span style="font-size: 15px; font-weight: 800; color: #C0092A; white-space: nowrap">{{p.price}}</span>
+        </a>
+      </sc-for>
+    </section>
+
+    <a href="Search-results-mobile.dc.html" style="height: 48px; border-radius: 8px; background: #C0092A; color: #FFFFFF; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Показати всі 23 результати</a>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em">Ви нещодавно шукали</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{recent}}" as="r" hint-placeholder-count="3">
+          <a href="#" style="height: 36px; padding: 0 12px; border-radius: 18px; background: #F2F2F2; display: flex; align-items: center; gap: 6px; font-size: 14px; color: #2E2E2E; text-decoration: none">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{{r}}
+          </a>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ok = '#008038', order = '#966400';
+    const item = (match, rest, oe, inStock, price) => ({ match, rest, oe: 'OE ' + oe, price, stock: inStock ? 'в наявності' : 'під замовлення', stockColor: inStock ? ok : order });
+    return {
+      cats: [{ path: 'Оптика › Фари', count: '14' }, { path: 'Оптика › Протитуманні фари', count: '3' }],
+      items: [
+        item('Фара', ' права Matrix Q8 USA', '4M8941036B', true, '$1 800'),
+        item('Фара', ' ліва Matrix Q8', '4M8941035', true, '$1 950'),
+        item('Комплект фар', ' Matrix Q8', '4M8941035', true, '$3 600'),
+        item('Фара', ' протитуманна права Q8', '4M0941700', false, '$140')
+      ],
+      recent: ['обвіс sq8', '4M8807065C', 'ліхтар q7']
+    };
+  }
+}
+</script>
+</body>
+</html>

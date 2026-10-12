@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Кабінет — комп'ютер</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1000px; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 72px; background: #484848; display: flex; align-items: center; justify-content: space-between; padding: 0 120px">
+    <span style="font-size: 24px; font-weight: 800; letter-spacing: -0.01em"><span style="color: #FFFFFF">Audi</span><span style="color: #F2364D">Parts</span></span>
+    <span style="color: #FFFFFF; font-size: 15px; font-weight: 700">Олександр · Обране 4 · Кошик 1</span>
+  </header>
+
+  <div style="width: 1200px; margin: 0 auto; padding: 28px 0; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 24px; align-items: start">
+    <aside style="background: #FFFFFF; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid #EEEEEE">
+        <span style="width: 48px; height: 48px; border-radius: 24px; background: #2E2E2E; color: #FFFFFF; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center">О</span>
+        <span style="display: flex; flex-direction: column">
+          <span style="font-size: 16px; font-weight: 800; color: #2E2E2E">Олександр Коваль</span>
+          <span style="font-size: 13px; color: #6B6B6B">+380 67 ••• •• 67</span>
+        </span>
+      </div>
+      <nav aria-label="Кабінет" style="display: flex; flex-direction: column; gap: 2px">
+        <sc-for list="{{nav}}" as="n" hint-placeholder-count="6">
+          <a href="#" style="height: 42px; padding: 0 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; text-decoration: none; {{n.style}}">{{n.label}} <span style="font-size: 13px; opacity: 0.75">{{n.count}}</span></a>
+        </sc-for>
+      </nav>
+      <button style="height: 42px; border: 0; background: transparent; text-align: left; padding: 0 12px; font: inherit; font-size: 15px; font-weight: 700; color: #A30722">Вийти</button>
+    </aside>
+
+    <main style="display: flex; flex-direction: column; gap: 16px">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 800; color: #2E2E2E">Вітаємо, Олександре</h1>
+
+      <section style="background: #FFFFFF; border-radius: 12px; padding: 20px 24px; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: center">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; align-items: baseline; gap: 12px">
+            <span style="font-size: 18px; font-weight: 800; color: #2E2E2E">Замовлення №1042</span>
+            <span style="font-size: 14px; color: #6B6B6B">6 жовтня · 2 товари · $3 560</span>
+          </div>
+          <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+            <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+              <li style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; color: {{s.text}}"><span style="height: 6px; border-radius: 3px; background: {{s.bar}}"></span>{{s.label}}</li>
+            </sc-for>
+          </ol>
+        </div>
+        <div style="background: #F7F7F7; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 13px; color: #6B6B6B">ТТН Нової пошти · Хмельницький, Відділення №1</span>
+          <span style="font-size: 17px; font-weight: 800; color: #2E2E2E">20450 1234 5678</span>
+          <a href="#" style="height: 40px; border-radius: 8px; background: #C0092A; color: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Відстежити посилку</a>
+        </div>
+      </section>
+
+      <section style="background: #FFFFFF; border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800; color: #2E2E2E">Обране</h2>
+          <a href="#" style="font-size: 14px; font-weight: 800">Усі 4 →</a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px">
+          <sc-for list="{{favs}}" as="f" hint-placeholder-count="4">
+            <article style="display: flex; flex-direction: column; gap: 6px">
+              <span style="aspect-ratio: 4 / 3; border-radius: 8px; background: #E4E4E4"></span>
+              <a href="#" style="font-size: 14px; font-weight: 700; color: #2E2E2E; text-decoration: none; height: 36px; overflow: hidden; line-height: 18px">{{f.title}}</a>
+              <div style="display: flex; align-items: center; justify-content: space-between">
+                <span style="font-size: 16px; font-weight: 800; color: #C0092A">{{f.price}}</span>
+                <button style="height: 36px; padding: 0 12px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; font: inherit; font-size: 13px; font-weight: 800">Купити</button>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </section>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+        <section style="background: #FFFFFF; border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800; color: #2E2E2E">Мої машини</h2>
+          <div style="border-radius: 10px; background: #FFF7F8; border: 2px solid #C0092A; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center">
+            <span style="display: flex; flex-direction: column"><span style="font-size: 16px; font-weight: 800; color: #2E2E2E">Audi Q8 (2018–2023)</span><span style="font-size: 13px; color: #6B6B6B">Фільтр каталогу за замовчуванням</span></span>
+            <a href="#" style="font-size: 14px; font-weight: 800">Змінити</a>
+          </div>
+          <button style="height: 44px; border: 1px dashed #CFCFCF; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 14px; font-weight: 800; color: #2E2E2E">+ Додати машину</button>
+        </section>
+        <section style="background: #FFFFFF; border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800; color: #2E2E2E">Адреса доставки</h2>
+          <span style="font-size: 15px; line-height: 21px; color: #2E2E2E">Нова пошта · Хмельницький<br>Відділення №1: вул. Трудова, 5/4</span>
+          <span style="font-size: 13px; color: #6B6B6B">Підставляється при оформленні замовлення</span>
+          <a href="#" style="font-size: 14px; font-weight: 800">Змінити адресу</a>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = 'background: #2E2E2E; color: #FFFFFF; font-weight: 800', off = 'color: #2E2E2E';
+    const done = { bar: '#008038', text: '#006B2F' }, todo = { bar: '#E4E4E4', text: '#6B6B6B' };
+    return {
+      nav: [
+        { label: 'Огляд', count: '', style: on }, { label: 'Мої замовлення', count: '5', style: off }, { label: 'Обране', count: '4', style: off },
+        { label: 'Мої машини', count: '1', style: off }, { label: 'Адреса доставки', count: '', style: off }, { label: 'Особисті дані', count: '', style: off }
+      ],
+      steps: [{ label: 'Прийнято', ...done }, { label: 'Підтверджено', ...done }, { label: 'Відправлено', ...done }, { label: 'Отримано', ...todo }],
+      favs: [
+        { title: 'Обвіс SQ8', price: '$3 500' }, { title: 'Капот Q8', price: '$1 300' },
+        { title: 'Решітка бампера права під радар', price: '$360' }, { title: 'Дзеркало ліве Q8, 15 pin + камера', price: 'Договірна' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

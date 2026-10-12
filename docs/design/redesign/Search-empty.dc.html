@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Пошук — нічого не знайдено</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="background: #484848; padding: 8px 8px 10px; display: flex; align-items: center; gap: 4px">
+    <a href="Home-mobile.dc.html" aria-label="Назад" style="width: 44px; height: 44px; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"></path></svg></a>
+    <a href="Search-suggest.dc.html" style="flex: 1; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; border-radius: 10px; background: #FFFFFF; color: #2E2E2E; font-size: 16px; font-weight: 700">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      4M0121251
+    </a>
+  </header>
+
+  <div style="padding: 24px 16px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-direction: column; gap: 6px; text-align: center; align-items: center">
+      <span style="width: 64px; height: 64px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5M8.5 8.5l5 5M13.5 8.5l-5 5"></path></svg>
+      </span>
+      <h1 style="margin: 6px 0 0; font-size: 20px; line-height: 26px; font-weight: 800; color: #2E2E2E">На сайті немає «4M0121251»</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 22px">Але це не означає, що ми її не знайдемо. Багато деталей ще не викладені на сайт.</p>
+    </div>
+
+    <form style="margin: 0; padding: 16px; border-radius: 12px; background: #FFFFFF; display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 800; color: #2E2E2E">Залиште номер — перевіримо наявність</h2>
+      <label for="ask-phone" style="font-size: 14px; font-weight: 700">Телефон</label>
+      <input id="ask-phone" type="tel" placeholder="+380 __ ___ __ __" style="height: 48px; padding: 0 14px; border: 1px solid #CFCFCF; border-radius: 8px; font: inherit; font-size: 16px; box-sizing: border-box">
+      <button type="button" style="height: 48px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 800">Знайдіть мені цю деталь</button>
+      <span style="font-size: 12px; line-height: 17px; color: #6B6B6B">Номер деталі «4M0121251» додамо до заявки автоматично.</span>
+    </form>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <a href="#" style="display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 8px; background: #7360F2; color: #FFFFFF; font-weight: 700">Viber</a>
+      <a href="#" style="display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 8px; background: #1E88C9; color: #FFFFFF; font-weight: 700">Telegram</a>
+    </div>
+    <a href="AllCats-mobile.dc.html" style="display: flex; align-items: center; justify-content: center; height: 44px; color: #2E2E2E; font-weight: 700; text-decoration: underline">Переглянути каталог</a>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0">
+    <dc-import name="TabBar" active="home" cart-count="{{one}}" hint-size="390px,64px"></dc-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { one: 1 };
+  }
+}
+</script>
+</body>
+</html>

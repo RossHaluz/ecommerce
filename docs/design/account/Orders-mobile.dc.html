@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Мої замовлення — телефон</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 1100px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 60px; background: #484848; display: flex; align-items: center; gap: 4px; padding: 0 4px">
+    <a href="Account-mobile.dc.html" aria-label="Назад до кабінету" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <h1 style="margin: 0; color: #FFFFFF; font-size: 20px; font-weight: 800">Мої замовлення</h1>
+  </header>
+
+  <main style="padding: 12px 16px 90px; display: flex; flex-direction: column; gap: 12px">
+    <nav aria-label="Фільтр замовлень" style="display: flex; gap: 8px">
+      <sc-for list="{{filters}}" as="f" hint-placeholder-count="3">
+        <a href="#" style="height: 40px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center; font-size: 14px; font-weight: 700; text-decoration: none; {{f.style}}">{{f.label}}</a>
+      </sc-for>
+    </nav>
+
+    <sc-for list="{{orders}}" as="o" hint-placeholder-count="3">
+      <article style="background: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="display: flex; flex-direction: column">
+            <span style="font-size: 16px; font-weight: 800; color: #2E2E2E">№{{o.number}}</span>
+            <span style="font-size: 13px; color: #6B6B6B">{{o.date}}</span>
+          </span>
+          <span style="height: 28px; padding: 0 10px; border-radius: 14px; font-size: 13px; font-weight: 800; display: flex; align-items: center; {{o.chip}}">{{o.status}}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px">
+          <sc-for list="{{o.thumbs}}" as="t" hint-placeholder-count="2">
+            <span style="width: 56px; height: 42px; border-radius: 6px; background: #E4E4E4"></span>
+          </sc-for>
+          <span style="margin-left: auto; font-size: 17px; font-weight: 800; color: #2E2E2E">{{o.total}}</span>
+        </div>
+        <span style="font-size: 13px; color: #484848">{{o.note}}</span>
+        <div style="display: flex; gap: 8px">
+          <a href="#" style="flex: 1; height: 44px; border-radius: 8px; border: 1px solid #CFCFCF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #2E2E2E; text-decoration: none">Деталі</a>
+          <a href="#" style="flex: 1; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; {{o.actionStyle}}">{{o.action}}</a>
+        </div>
+      </article>
+    </sc-for>
+
+    <p style="margin: 0; text-align: center; font-size: 14px">Питання щодо замовлення? <a href="#" style="font-weight: 800">Viber</a> · <a href="#" style="font-weight: 800">Telegram</a></p>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = 'background: #2E2E2E; color: #FFFFFF', off = 'background: #FFFFFF; color: #2E2E2E; border: 1px solid #DDDDDD';
+    const primary = 'background: #C0092A; color: #FFFFFF', outline = 'border: 2px solid #C0092A; color: #C0092A';
+    return {
+      filters: [{ label: 'Усі · 5', style: on }, { label: 'Активні · 1', style: off }, { label: 'Завершені · 4', style: off }],
+      orders: [
+        { number: '1042', date: '6 жовтня 2026', status: 'Відправлено', chip: 'background: #E6F4EA; color: #1E7E34', thumbs: [1, 2], total: '$3 560', note: 'Нова пошта · Хмельницький, Відділення №1 · ТТН 20450 1234 5678', action: 'Відстежити', actionStyle: primary },
+        { number: '1031', date: '12 вересня 2026', status: 'Отримано', chip: 'background: #F2F2F2; color: #484848', thumbs: [1], total: '$1 300', note: 'Капот Q8', action: 'Купити ще раз', actionStyle: outline },
+        { number: '1019', date: '28 серпня 2026', status: 'Скасовано', chip: 'background: #FFF1F2; color: #A30722', thumbs: [1], total: '$140', note: 'Фара протитуманна права Q8', action: 'Схожі товари', actionStyle: outline }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

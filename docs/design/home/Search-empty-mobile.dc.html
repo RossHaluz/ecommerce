@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Пошук — нічого не знайшли</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 1100px; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="background: #484848; padding: 8px 8px 10px 4px; display: flex; align-items: center; gap: 4px">
+    <a href="Main.dc.html" aria-label="Назад" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; flex: none">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <a href="Search-suggest-mobile.dc.html" style="flex: 1; min-width: 0; height: 44px; background: #FFFFFF; border-radius: 8px; display: flex; align-items: center; gap: 8px; padding: 0 12px; text-decoration: none">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <span style="font-size: 16px; font-weight: 700; color: #2E2E2E">решітка радіатора rs7 2021</span>
+    </a>
+  </header>
+
+  <main style="padding: 16px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #2E2E2E; line-height: 26px">Зараз цього немає на складі</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 21px">Але ми привозимо деталі під замовлення. Залиште телефон — менеджер знайде «решітку радіатора RS7 2021» і зателефонує з ціною та строком.</p>
+    </div>
+
+    <form style="background: #FFFFFF; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700; color: #484848">Що шукаєте
+        <input value="решітка радіатора rs7 2021" style="height: 48px; border: 1px solid #CFCFCF; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 16px; font-weight: 400; color: #2E2E2E">
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700; color: #484848">Телефон <span style="display: none">*</span>
+        <input type="tel" placeholder="+380 000 00 00 00" style="height: 48px; border: 2px solid #484848; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 16px; font-weight: 700; color: #2E2E2E">
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700; color: #484848">VIN <span style="font-weight: 400; color: #6B6B6B">(необов’язково — підберемо точніше)</span>
+        <input placeholder="17 символів, напр. WAUZZZ4K…" style="height: 48px; border: 1px solid #CFCFCF; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 16px; font-weight: 400; color: #2E2E2E">
+      </label>
+      <button style="height: 52px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; font: inherit; font-size: 17px; font-weight: 800">Знайти для мене</button>
+      <span style="font-size: 13px; color: #6B6B6B; text-align: center">Пн–Пт 10:00–19:00 — зазвичай відповідаємо протягом години</span>
+    </form>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 800; color: #2E2E2E">Можливо, ви шукали</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{maybe}}" as="m" hint-placeholder-count="3">
+          <a href="Search-results-mobile.dc.html" style="height: 40px; padding: 0 14px; border-radius: 20px; background: #FFFFFF; border: 1px solid #DDDDDD; display: flex; align-items: center; font-size: 14px; font-weight: 700; color: #2E2E2E; text-decoration: none">{{m}}</a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="background: #FFFFFF; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 19px">
+      <span style="font-weight: 800; color: #2E2E2E">Як знайти точніше</span>
+      <span>• Введіть OE-номер з деталі — напр. 4K8853651</span>
+      <span>• Коротший запит: «решітка RS7» замість повної фрази</span>
+      <span>• Оберіть свою Audi — покажемо лише сумісне</span>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { maybe: ['Решітка радіатора A7 4K8', 'Решітка бампера RS7', 'Решітки для A7 (2019–)'] };
+  }
+}
+</script>
+</body>
+</html>

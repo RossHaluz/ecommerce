@@ -1,0 +1,35 @@
+{
+  "v": 3,
+  "attachments": {},
+  "createdOnFiles": { "at": "2026-10-11T08:28:57.365Z", "v": 1 },
+  "title": "Audiparts — головна, пошук, шапка й футер",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 390, "h": 2060, "title": "Головна · телефон" },
+    "Model-series-mobile.dc.html": { "x": 470, "y": 0, "w": 390, "h": 844, "title": "Оберіть Audi · крок 1 серія" },
+    "Model-gen-mobile.dc.html": { "x": 940, "y": 0, "w": 390, "h": 844, "title": "Оберіть Audi · крок 2 покоління" },
+    "Sort-filter-mobile.dc.html": { "x": 1410, "y": 0, "w": 390, "h": 844, "title": "Сортування й фільтри · телефон" },
+    "Home-desktop.dc.html": { "x": 0, "y": 2400, "w": 1440, "h": 1560, "title": "Головна · комп'ютер" },
+    "Home-desktop-model.dc.html": { "x": 1520, "y": 2400, "w": 1440, "h": 900, "title": "Оберіть Audi · комп'ютер" },
+    "Search-suggest-mobile.dc.html": { "x": 0, "y": 4300, "w": 390, "h": 844, "title": "Пошук · підказки під час набору" },
+    "Search-results-mobile.dc.html": { "x": 470, "y": 4300, "w": 390, "h": 1500, "title": "Пошук · результати" },
+    "Search-oe-mobile.dc.html": { "x": 940, "y": 4300, "w": 390, "h": 1100, "title": "Пошук · точний збіг за OE" },
+    "Search-empty-mobile.dc.html": { "x": 1410, "y": 4300, "w": 390, "h": 1100, "title": "Пошук · нічого не знайшли" },
+    "Search-suggest-desktop.dc.html": { "x": 0, "y": 6200, "w": 1440, "h": 820, "title": "Пошук · підказки · комп'ютер" },
+    "Search-results-desktop.dc.html": { "x": 1520, "y": 6200, "w": 1440, "h": 1100, "title": "Пошук · результати · комп'ютер" },
+    "Header-desktop.dc.html": { "x": 0, "y": 7700, "w": 1440, "h": 720, "title": "Шапка + меню каталогу · комп'ютер" },
+    "Menu-mobile.dc.html": { "x": 1520, "y": 7700, "w": 390, "h": 844, "title": "Меню · телефон" },
+    "Footer-desktop.dc.html": { "x": 0, "y": 8540, "w": 1440, "h": 560, "title": "Футер · комп'ютер" },
+    "Footer-mobile.dc.html": { "x": 1990, "y": 7700, "w": 390, "h": 1000, "title": "Футер · телефон" }
+  },
+  "order": ["Main.dc.html", "Model-series-mobile.dc.html", "Model-gen-mobile.dc.html", "Sort-filter-mobile.dc.html", "Home-desktop.dc.html", "Home-desktop-model.dc.html", "Search-suggest-mobile.dc.html", "Search-results-mobile.dc.html", "Search-oe-mobile.dc.html", "Search-empty-mobile.dc.html", "Search-suggest-desktop.dc.html", "Search-results-desktop.dc.html", "Header-desktop.dc.html", "Menu-mobile.dc.html", "Footer-desktop.dc.html", "Footer-mobile.dc.html"],
+  "notes": {
+    "rowMobile": { "x": 0, "y": -300, "text": "Головна — телефон", "kind": "title1", "maxW": 1800 },
+    "rowDesktop": { "x": 0, "y": 2100, "text": "Головна — комп'ютер", "kind": "title1", "maxW": 2960 },
+    "rowSearchMobile": { "x": 0, "y": 4000, "text": "Пошук — телефон", "kind": "title1", "maxW": 1800 },
+    "rowSearchDesktop": { "x": 0, "y": 5900, "text": "Пошук — комп'ютер", "kind": "title1", "maxW": 2960 },
+    "rowChrome": { "x": 0, "y": 7400, "text": "Шапка, меню й футер", "kind": "title1", "maxW": 2380 }
+  },
+  "designSystems": []
+}
