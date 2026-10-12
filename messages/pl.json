@@ -28,7 +28,6 @@
     "catalog": "Katalog",
     "catalogProducts": "Katalog produktów",
     "categories": "Kategorie",
-    "information": "Informacje",
     "contacts": "Kontakt",
     "about": "O nas",
     "deliveryPayment": "Dostawa i płatność",
@@ -46,7 +45,8 @@
     "signInTitle": "Logowanie do konta",
     "back": "Wstecz",
     "allCategories": "Wszystkie kategorie →",
-    "allParts": "wszystkie części →"
+    "allParts": "wszystkie części →",
+    "favorites": "Ulubione"
   },
   "product": {
     "inCartGo": "W koszyku · przejdź",
@@ -126,6 +126,29 @@
     "resultsTitle": "Wyniki wyszukiwania: {query}",
     "noResults": "Nie znaleziono produktów pasujących do zapytania…",
     "pageTitle": "Wyszukiwanie"
+  },
+  "favorites": {
+    "title": "Ulubione",
+    "add": "Dodaj do ulubionych",
+    "remove": "Usuń z ulubionych",
+    "clear": "Wyczyść",
+    "localNote": "Lista jest zapisana w tej przeglądarce.",
+    "inStockSum": "{count, plural, one {# część} few {# części} many {# części} other {# części}} dostępne na kwotę",
+    "addAll": "Dodaj wszystko do koszyka",
+    "addedAll": "Dodano do koszyka: {count}",
+    "shareTitle": "Omów z menedżerem",
+    "shareViber": "Wyślij przez Viber",
+    "shareTelegram": "Przez Telegram",
+    "shareHint": "Menedżer otrzyma listę z numerami OE i policzy dostawę",
+    "shareHeading": "Moja lista z Audiparts:",
+    "copied": "Lista skopiowana — wklej ją do czatu",
+    "priceDropped": "Cena spadła",
+    "unavailable": "Nie ma już w sklepie",
+    "findAnalogs": "Szukaj zamienników",
+    "emptyTitle": "Na razie pusto",
+    "emptyText": "Kliknij ♡ przy części, aby jej nie zgubić i wrócić do niej później.",
+    "toCatalog": "Przejdź do katalogu",
+    "metaTitle": "Ulubione — Audiparts"
   },
   "footer": {
     "developedBy": "Wykonanie strony",

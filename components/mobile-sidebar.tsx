@@ -4,12 +4,13 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import HomeIcon from "/public/images/home-icon.svg";
 import ShopIcon from "/public/images/shop-icon.svg";
-import InfoIcon from "/public/images/info-icon.svg";
+import { Heart } from "lucide-react";
 import AccountIcon from "/public/images/account-icon.svg";
 import CatalogIcon from "/public/images/catalog-icon.svg";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { selectOrderItems } from "@/redux/order/selector";
+import { selectFavorites } from "@/redux/favorites/selectors";
 import { useCurrentUser } from "@/features/account";
 import { CartSheet } from "@/features/cart";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
@@ -22,6 +23,7 @@ const ITEM_CLASS = "flex flex-col items-center gap-1 text-[8px] leading-[9.75px]
 const MobileSidebar = () => {
   const pathname = usePathname();
   const orderItems = useHydratedSelector(selectOrderItems);
+  const favoritesCount = useHydratedSelector(selectFavorites).length;
   const { data: user } = useCurrentUser();
   const t = useTranslations();
   // null — меню закрите й не змонтоване.
@@ -50,7 +52,19 @@ const MobileSidebar = () => {
           }
         />
 
-        <MenuTrigger icon={<InfoIcon />} label={t("nav.information")} onClick={() => setMenuPanel("menu")} />
+        <Link
+          href="/favorites"
+          prefetch={false}
+          className={cn(ITEM_CLASS, "relative", { "text-[#C0092A]": pathname === "/favorites" })}
+        >
+          <Heart size={22} strokeWidth={1.6} aria-hidden />
+          {t("nav.favorites")}
+          {favoritesCount > 0 && (
+            <span className="absolute -top-1.5 left-1/2 ml-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#C0092A] px-1 text-[10px] font-bold text-white">
+              {favoritesCount}
+            </span>
+          )}
+        </Link>
 
         {user ? (
           <Link href="/account" prefetch={false} className={ITEM_CLASS}>

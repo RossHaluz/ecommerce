@@ -12,6 +12,7 @@ import { HeaderCatalogMenu } from "./catalog-menu/header-catalog-menu";
 import HeaderContact from "./header-contact";
 import HeaderAccountMenu from "./header-account-menu";
 import HeaderCartMenu from "./header-cart-menu";
+import { HeaderFavoritesLink } from "./header-favorites-link";
 import { CheckoutHeader } from "./checkout-header";
 import { HeaderTopBar } from "./header-top-bar";
 import { HeaderMenuButton } from "./header-menu-button";
@@ -64,6 +65,7 @@ const Header = () => {
 
             <div className="items-center gap-1 hidden lg:flex">
               <HeaderAccountMenu />
+              <HeaderFavoritesLink />
               <HeaderCartMenu />
             </div>
           </div>

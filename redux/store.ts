@@ -17,6 +17,7 @@ import { searchReducer } from "./search/slice";
 import { authReducer } from "./auth/slice";
 import { customizerReducer } from "./customizer/slice";
 import { scrollUpReducer } from "./scroll-up/slice";
+import { favoritesReducer } from "./favorites/slice";
 
 const persistCustomizer = {
   key: "currentCustomizer",
@@ -42,7 +43,14 @@ const persistOrder = {
   storage,
 };
 
+const persistFavorites = {
+  key: "favorites",
+  whitelist: ["items"],
+  storage,
+};
+
 const persistedAuthReducer = persistReducer(persistAuth, authReducer);
+const persistedFavoritesReducer = persistReducer(persistFavorites, favoritesReducer);
 const persistedOrderReducer = persistReducer(persistOrder, OrderReducer);
 const persisterSearchReducer = persistReducer(persistSearch, searchReducer);
 const persistCustomizerReducer = persistReducer(
@@ -56,7 +64,8 @@ export const store = configureStore({
     order: persistedOrderReducer,
     search: persisterSearchReducer,
     customizer: persistCustomizerReducer,
-    scrollUp: scrollUpReducer
+    scrollUp: scrollUpReducer,
+    favorites: persistedFavoritesReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

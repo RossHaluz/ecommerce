@@ -28,7 +28,6 @@
     "catalog": "Каталог",
     "catalogProducts": "Каталог товарів",
     "categories": "Категорії",
-    "information": "Інформація",
     "contacts": "Контакти",
     "about": "Про нас",
     "deliveryPayment": "Доставка та оплата",
@@ -46,7 +45,8 @@
     "signInTitle": "Вхід до особистого кабінету",
     "back": "Назад",
     "allCategories": "Усі категорії →",
-    "allParts": "усі деталі →"
+    "allParts": "усі деталі →",
+    "favorites": "Обране"
   },
   "product": {
     "inCartGo": "У кошику · перейти",
@@ -126,6 +126,29 @@
     "resultsTitle": "Результати пошуку: {query}",
     "noResults": "Товарів які відносяться до вашого запиту не знайдено…",
     "pageTitle": "Пошук"
+  },
+  "favorites": {
+    "title": "Обране",
+    "add": "Додати в обране",
+    "remove": "Прибрати з обраного",
+    "clear": "Очистити",
+    "localNote": "Список зберігається в цьому браузері.",
+    "inStockSum": "{count, plural, one {# деталь} few {# деталі} many {# деталей} other {# деталі}} в наявності на суму",
+    "addAll": "Додати все в кошик",
+    "addedAll": "Додано в кошик: {count}",
+    "shareTitle": "Обговорити з менеджером",
+    "shareViber": "Надіслати у Viber",
+    "shareTelegram": "У Telegram",
+    "shareHint": "Менеджер отримає список з OE-номерами й порахує доставку",
+    "shareHeading": "Мій список з Audiparts:",
+    "copied": "Список скопійовано — вставте його в чат",
+    "priceDropped": "Ціна знизилась",
+    "unavailable": "Вже немає на сайті",
+    "findAnalogs": "Шукати аналоги",
+    "emptyTitle": "Тут поки порожньо",
+    "emptyText": "Тисніть ♡ на деталі, щоб не загубити її й повернутися до неї пізніше.",
+    "toCatalog": "Перейти в каталог",
+    "metaTitle": "Обране — Audiparts"
   },
   "footer": {
     "developedBy": "Розробка сайту",

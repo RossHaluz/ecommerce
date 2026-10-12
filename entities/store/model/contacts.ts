@@ -13,3 +13,6 @@ export const MAIN_PHONE_HREF = `tel:${MAIN_PHONE.tel}`;
 export const TELEGRAM_URL = `https://t.me/+${MAIN_DIGITS}`;
 export const VIBER_URL = `https://invite.viber.com/?number=${MAIN_DIGITS}`;
 export const STORE_EMAIL = "audipartshm@gmail.com";
+
+/** Чат із менеджером у застосунку Viber з уже набраним текстом; invite-посилання тексту не приймає. */
+export const viberDraftUrl = (text: string) => `viber://chat?number=%2B${MAIN_DIGITS}&draft=${encodeURIComponent(text)}`;
