@@ -21,6 +21,7 @@ import ReactQueryProvider from "@/components/react-query-provider";
 import ScrollToTop from "@/components/scroll-to-top";
 import ScrollUp from "@/components/scroll-up";
 import ContactsWidget from "@/components/contacts-widget";
+import { FavoritesSync } from "@/features/favorites/components/favorites-sync";
 import { NavigationProgress } from "@/components/navigation-progress";
 import { prefetchCatalog } from "@/features/catalog/prefetch-catalog";
 import { SITE_URL } from "@/lib/seo/site-url";
@@ -98,6 +99,7 @@ const LocaleLayout = async ({
                 <ScrollToTop />
                 <ScrollUp />
                 <ContactsWidget />
+                <FavoritesSync />
 
                 <Header />
                 <main>{children}</main>

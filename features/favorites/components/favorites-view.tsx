@@ -11,7 +11,7 @@ export const FavoritesView = () => {
 
   return (
     <section className="flex flex-col gap-4">
-      <FavoritesHeading count={rows.length} />
+      <FavoritesHeading ids={rows.map((row) => row.item.id)} />
       {rows.length === 0 ? (
         <FavoritesEmpty />
       ) : (

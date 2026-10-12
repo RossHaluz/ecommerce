@@ -22,3 +22,4 @@ export {
 export { fetchModels, getModels, fetchModelDetails, getModelDetails } from "./models";
 export { getCurrentUser, updateUser } from "./account";
 export { createOrder } from "./orders";
+export { putAccountFavorite, deleteAccountFavorite, mergeAccountFavorites } from "./favorites";

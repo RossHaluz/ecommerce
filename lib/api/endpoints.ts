@@ -24,6 +24,8 @@ export const ENDPOINTS = {
   searchSuggestions: () => `/search/suggestions`,
 
   currentUser: () => `/auth/current`,
+  favorite: (storeId: string, productId: string) => `/favorites/${storeId}/${productId}`,
+  mergeFavorites: (storeId: string) => `/favorites/${storeId}/merge`,
   updateUser: () => `/auth/update`,
 } as const;
 

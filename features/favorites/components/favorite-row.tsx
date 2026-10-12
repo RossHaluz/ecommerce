@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useDispatch } from "react-redux";
 import { useTranslations } from "next-intl";
 import { Heart, ShoppingCart } from "lucide-react";
 import { Link } from "@/i18n/routing";
@@ -10,14 +9,14 @@ import { AddedToCartSheet } from "@/features/cart";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productHref } from "@/entities/product/model/product-href";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
-import { removeFavorite } from "@/redux/favorites/slice";
 import { cn } from "@/lib/utils";
 import { canBuy, type FavoriteRowView } from "../model/favorite-status";
 import { FavoriteRowStatus } from "./favorite-row-status";
+import { useFavoritesActions } from "../hooks/use-favorites-actions";
 
 export const FavoriteRow = ({ row }: { row: FavoriteRowView }) => {
   const t = useTranslations();
-  const dispatch = useDispatch();
+  const { remove } = useFavoritesActions();
   const { format } = usePriceFormatter();
   const href = productHref(row.item.productName);
 
@@ -48,7 +47,7 @@ export const FavoriteRow = ({ row }: { row: FavoriteRowView }) => {
         <button
           type="button"
           aria-label={t("favorites.remove")}
-          onClick={() => dispatch(removeFavorite(row.item.id))}
+          onClick={() => remove(row.item.id)}
           className="flex h-11 w-11 items-center justify-center rounded-lg text-[#C0092A] md:border md:border-[#E4E4E4]"
         >
           <Heart size={20} fill="currentColor" aria-hidden />
