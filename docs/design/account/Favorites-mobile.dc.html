@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Обране — телефон</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 1200px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 60px; background: #484848; display: flex; align-items: center; padding: 0 16px">
+    <h1 style="margin: 0; color: #FFFFFF; font-size: 20px; font-weight: 800">Обране · 4</h1>
+  </header>
+
+  <main style="padding: 12px 16px 90px; display: flex; flex-direction: column; gap: 12px">
+    <section style="background: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; line-height: 20px; color: #2E2E2E"><b>Збережено лише на цьому телефоні.</b> Увійдіть — і обране буде і на комп’ютері, і не загубиться.</span>
+      <a href="Main.dc.html" style="height: 44px; border-radius: 8px; border: 2px solid #C0092A; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; text-decoration: none">Увійти — 10 секунд</a>
+    </section>
+
+    <button style="height: 52px; border: 0; border-radius: 10px; background: #C0092A; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 800">Додати все в кошик · 3 товари · $5 160</button>
+
+    <sc-for list="{{items}}" as="p" hint-placeholder-count="4">
+      <article style="background: #FFFFFF; border-radius: 12px; padding: 12px; display: flex; gap: 12px; {{p.dim}}">
+        <span style="width: 96px; height: 72px; border-radius: 8px; background: #E4E4E4; flex: none"></span>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+          <div style="display: flex; justify-content: space-between; gap: 6px">
+            <a href="#" style="font-size: 15px; font-weight: 700; color: #2E2E2E; line-height: 20px; text-decoration: none">{{p.title}}</a>
+            <button aria-label="Прибрати з обраного" style="width: 40px; height: 40px; margin: -8px -8px 0 0; border: 0; background: transparent; color: #C0092A; display: flex; align-items: center; justify-content: center; flex: none">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="#C0092A" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+            </button>
+          </div>
+          <span style="font-size: 12px; color: #6B6B6B">{{p.oe}}</span>
+          <span style="font-size: 13px; font-weight: 700; color: {{p.stockColor}}">{{p.stock}}</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 4px">
+            <span style="font-size: 17px; font-weight: 800; color: #C0092A">{{p.price}}</span>
+            <sc-if value="{{p.sold}}" hint-placeholder-val="{{false}}">
+              <a href="#" style="height: 40px; padding: 0 12px; border-radius: 8px; border: 1px solid #CFCFCF; display: flex; align-items: center; font-size: 13px; font-weight: 800; color: #2E2E2E; text-decoration: none">Схожі для Q8</a>
+            </sc-if>
+            <sc-if value="{{p.canBuy}}" hint-placeholder-val="{{true}}">
+              <button style="height: 40px; padding: 0 16px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; font: inherit; font-size: 14px; font-weight: 800">Купити</button>
+            </sc-if>
+          </div>
+        </div>
+      </article>
+    </sc-for>
+  </main>
+
+  <nav aria-label="Головне меню" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #FFFFFF; border-top: 1px solid #E4E4E4; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="#" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; font-weight: 700; text-decoration: none; color: {{tab.color}}">
+        <span style="width: 22px; height: 22px; border-radius: 6px; border: 2px solid currentColor; box-sizing: border-box"></span>{{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = (title, oe, stock, stockColor, price, sold) => ({ title, oe: 'OE ' + oe, stock, stockColor, price, sold: !!sold, canBuy: !sold, dim: sold ? 'opacity: 0.7' : '' });
+    const tab = (label, active) => ({ label, color: active ? '#C0092A' : '#484848' });
+    return {
+      items: [
+        p('Обвіс SQ8', '4M8807065C GRU', 'В наявності · остання 1 шт.', '#008038', '$3 500'),
+        p('Капот Q8', '4M8823029A', 'Під замовлення', '#966400', '$1 300'),
+        p('Решітка бампера права під радар', '4M0807682G', 'В наявності', '#008038', '$360'),
+        p('Фара права Matrix Q8 USA', '4M8941036B', 'Продано — більше немає', '#6B6B6B', '$1 800', true)
+      ],
+      tabs: [tab('Головна'), tab('Каталог'), tab('Обране', true), tab('Кошик'), tab('Кабінет')]
+    };
+  }
+}
+</script>
+</body>
+</html>

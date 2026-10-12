@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Шапка й меню каталогу — комп'ютер</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 1440px; height: 720px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <div style="height: 36px; background: #2E2E2E; color: #E4E4E4; font-size: 13px; display: flex; align-items: center; justify-content: space-between; padding: 0 120px">
+    <span style="display: flex; gap: 20px">
+      <span>Відправка Новою поштою в день замовлення</span>
+      <span>Обмін чи повернення — 14 днів</span>
+      <span>Перевіримо сумісність за VIN</span>
+    </span>
+    <span style="display: flex; gap: 16px; align-items: center">
+      <a href="#" style="color: #E4E4E4; text-decoration: none">Доставка й оплата</a>
+      <a href="#" style="color: #E4E4E4; text-decoration: none">Контакти</a>
+      <span style="width: 1px; height: 16px; background: #5A5A5A"></span>
+      <span><b style="color: #FFFFFF">UK</b> · PL</span>
+      <span><b style="color: #FFFFFF">$</b> · ₴</span>
+    </span>
+  </div>
+
+  <header style="height: 72px; background: #484848; display: flex; align-items: center; gap: 16px; padding: 0 120px">
+    <a href="#" aria-label="AudiParts — на головну" style="font-size: 24px; font-weight: 800; letter-spacing: -0.01em; text-decoration: none; flex: none"><span style="color: #FFFFFF">Audi</span><span style="color: #F2364D">Parts</span></a>
+    <button aria-expanded="true" style="height: 44px; padding: 0 16px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; font: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      Каталог
+    </button>
+    <label style="flex: 1; height: 44px; background: #FFFFFF; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 0 14px">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input aria-label="Пошук" placeholder="Назва деталі, OE-номер або VIN" style="border: 0; outline: none; font: inherit; font-size: 15px; width: 100%">
+    </label>
+    <a href="#" style="height: 44px; padding: 0 14px; border-radius: 8px; border: 2px solid #FFFFFF; box-sizing: border-box; color: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; text-decoration: none; white-space: nowrap">Підбір за VIN</a>
+    <a href="#" style="display: flex; flex-direction: column; color: #FFFFFF; text-decoration: none; white-space: nowrap">
+      <span style="font-size: 15px; font-weight: 800">+38 (067) 383 42 83</span>
+      <span style="font-size: 12px; color: #D0D0D0">Пн–Пт 10:00–19:00</span>
+    </a>
+    <div style="display: flex; gap: 2px">
+      <sc-for list="{{icons}}" as="i" hint-placeholder-count="3">
+        <a href="#" style="position: relative; width: 56px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none">
+          <span style="width: 22px; height: 22px; border-radius: 6px; border: 2px solid currentColor; box-sizing: border-box"></span>{{i.label}}
+          <sc-if value="{{i.badge}}" hint-placeholder-val="{{false}}">
+            <span style="position: absolute; top: 2px; right: 8px; min-width: 18px; height: 18px; border-radius: 9px; background: #C0092A; font-size: 11px; display: flex; align-items: center; justify-content: center">{{i.badge}}</span>
+          </sc-if>
+        </a>
+      </sc-for>
+    </div>
+  </header>
+
+  <div style="position: absolute; inset: 108px 0 0 0; background: rgba(20,20,20,0.45)"></div>
+
+  <nav aria-label="Каталог" style="position: absolute; left: 120px; top: 116px; width: 1200px; height: 540px; background: #FFFFFF; border-radius: 12px; box-shadow: 0 16px 48px rgba(0,0,0,0.2); display: grid; grid-template-columns: 300px minmax(0, 1fr) 280px; overflow: hidden">
+    <ul style="margin: 0; padding: 8px; list-style: none; border-right: 1px solid #EEEEEE; display: flex; flex-direction: column">
+      <sc-for list="{{cats}}" as="c" hint-placeholder-count="12">
+        <li><a href="#" style="height: 38px; padding: 0 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; text-decoration: none; {{c.style}}">{{c.label}} <span aria-hidden="true" style="opacity: 0.5">›</span></a></li>
+      </sc-for>
+      <li><a href="#" style="height: 38px; padding: 0 12px; display: flex; align-items: center; font-size: 14px; font-weight: 800; color: #C0092A">Усі 16 категорій</a></li>
+    </ul>
+
+    <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 14px">
+      <a href="#" style="font-size: 20px; font-weight: 800; color: #2E2E2E; text-decoration: none">Оптика <span style="font-size: 14px; font-weight: 400; color: #6B6B6B">· усі 128 деталей →</span></a>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 24px">
+        <sc-for list="{{subs}}" as="s" hint-placeholder-count="8">
+          <a href="#" style="height: 38px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; color: #2E2E2E; text-decoration: none; border-bottom: 1px solid #F2F2F2">{{s.label}} <span style="font-size: 13px; color: #6B6B6B">{{s.count}}</span></a>
+        </sc-for>
+      </div>
+    </div>
+
+    <aside style="background: #F7F7F7; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+      <span style="font-size: 15px; font-weight: 800; color: #2E2E2E">Оптика для вашої Q8</span>
+      <a href="#" style="height: 44px; border-radius: 8px; background: #FFFFFF; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 700; color: #2E2E2E; text-decoration: none">Q8 (2018–2023) <span style="color: #6B6B6B; font-weight: 400">23 →</span></a>
+      <span style="font-size: 13px; font-weight: 800; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em; padding-top: 8px">Часто шукають</span>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <sc-for list="{{popular}}" as="m" hint-placeholder-count="6">
+          <a href="#" style="height: 34px; padding: 0 12px; border-radius: 17px; background: #FFFFFF; border: 1px solid #DDDDDD; display: flex; align-items: center; font-size: 13px; font-weight: 700; color: #2E2E2E; text-decoration: none">{{m}}</a>
+        </sc-for>
+      </div>
+    </aside>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = 'background: #FFF1F2; color: #C0092A; font-weight: 800', off = 'color: #2E2E2E';
+    const c = (label, active) => ({ label, style: active ? on : off });
+    return {
+      icons: [{ label: 'Обране', badge: '2' }, { label: 'Увійти', badge: '' }, { label: 'Кошик', badge: '1' }],
+      cats: [c('Кузовні частини'), c('Оптика', true), c('Ходова частина'), c('Двигун + АКПП'), c('Система охолодження'), c('Електроніка'), c('Інтер’єр салону'), c('Шини і диски'), c('Гальмівна система'), c('Система безпеки'), c('Акустика')],
+      subs: [
+        { label: 'Фари', count: '[N]' }, { label: 'Задні ліхтарі', count: '[N]' }, { label: 'Протитуманні фари', count: '[N]' }, { label: 'Скло фар', count: '[N]' },
+        { label: 'Блоки керування фар', count: '[N]' }, { label: 'Повторювачі поворотів', count: '[N]' }, { label: 'Ліхтарі номера', count: '[N]' }, { label: 'Кріплення фар', count: '[N]' }
+      ],
+      popular: ['Фара Q7 4M', 'Matrix Q8', 'Ліхтар A6 C8', 'Фара A7 4K8', 'Фара Q5 80A', 'Ліхтар Q7 4L']
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Оберіть Audi — комп'ютер</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 72px; background: #484848; display: flex; align-items: center; padding: 0 120px">
+    <span style="font-size: 24px; font-weight: 800; letter-spacing: -0.01em"><span style="color: #FFFFFF">Audi</span><span style="color: #F2364D">Parts</span></span>
+  </header>
+  <div style="position: absolute; inset: 72px 0 0 0; background: rgba(20,20,20,0.45)"></div>
+
+  <section role="dialog" aria-label="Оберіть свою Audi" style="position: absolute; left: 120px; top: 96px; width: 900px; height: 640px; background: #FFFFFF; border-radius: 16px; box-shadow: 0 16px 48px rgba(0,0,0,0.2); display: flex; flex-direction: column">
+    <div style="display: flex; align-items: center; gap: 16px; padding: 20px 16px 16px 24px; border-bottom: 1px solid #EEEEEE">
+      <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #2E2E2E; flex: none">Оберіть свою Audi</h2>
+      <label style="flex: 1; height: 44px; border: 1px solid #CFCFCF; border-radius: 8px; display: flex; align-items: center; gap: 8px; padding: 0 12px">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input aria-label="Знайти модель" placeholder="Знайти: Q7, A6 C8, Touareg…" style="border: 0; outline: none; font: inherit; font-size: 15px; width: 100%">
+      </label>
+      <button aria-label="Закрити" style="width: 44px; height: 44px; border: 0; background: transparent; color: #484848; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div style="flex: 1; display: grid; grid-template-columns: 340px minmax(0, 1fr); min-height: 0">
+      <div style="border-right: 1px solid #EEEEEE; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{audi}}" as="m" hint-placeholder-count="15">
+            <button style="height: 48px; border: 0; border-radius: 10px; font: inherit; font-size: 16px; font-weight: 800; {{m.style}}">{{m.name}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 12px; font-weight: 800; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em">Інші марки</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px">
+            <sc-for list="{{others}}" as="o" hint-placeholder-count="6">
+              <button style="height: 34px; padding: 0 12px; border-radius: 17px; border: 1px solid #DDDDDD; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 700; color: #2E2E2E">{{o}}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 16px 24px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 15px; font-weight: 800; color: #2E2E2E">Audi Q7 — рік випуску</span>
+        <sc-for list="{{gens}}" as="g" hint-placeholder-count="5">
+          <a href="Home-desktop.dc.html" style="min-height: 56px; border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; gap: 12px; text-decoration: none; {{g.style}}">
+            <span style="flex: 1; display: flex; flex-direction: column">
+              <span style="font-size: 16px; font-weight: 800; color: #2E2E2E">{{g.name}}</span>
+              <span style="font-size: 13px; color: #6B6B6B">{{g.hint}}</span>
+            </span>
+            <span style="font-size: 13px; font-weight: 700; color: #484848">{{g.count}}</span>
+          </a>
+        </sc-for>
+        <a href="Home-desktop.dc.html" style="margin-top: 4px; font-size: 14px; font-weight: 800; color: #C0092A">Усі Q7 — без вибору року</a>
+      </div>
+    </div>
+
+    <div style="padding: 14px 24px; border-top: 1px solid #EEEEEE; display: flex; align-items: center; justify-content: space-between">
+      <span style="font-size: 14px; color: #484848">Не знаєте точну модель? <a href="#" style="font-weight: 800">Підберемо за VIN</a></span>
+      <a href="Home-desktop.dc.html" style="font-size: 14px; font-weight: 700; color: #484848">Показати для всіх моделей</a>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = 'background: #C0092A; color: #FFFFFF', off = 'background: #F2F2F2; color: #2E2E2E';
+    const s = (name, selected) => ({ name, style: selected ? on : off });
+    const gOff = 'background: #F7F7F7', gOn = 'background: #FFF7F8; border: 2px solid #C0092A';
+    const g = (name, hint, count, selected) => ({ name, hint, count, style: selected ? gOn : gOff });
+    return {
+      audi: [s('A1'), s('A3'), s('A4'), s('A5'), s('A6'), s('A7'), s('A8'), s('Q2'), s('Q3'), s('Q5'), s('Q7', true), s('Q8'), s('e-tron'), s('Q4 e-tron'), s('Q8 e-tron')],
+      others: ['VW Touareg', 'VW Transporter', 'Porsche Cayenne', 'BMW X5', 'Land Rover', 'Nissan'],
+      gens: [
+        g('Q7 4M (2024–)', 'Другий рестайлінг', '[N] деталей'),
+        g('Q7 4M (2020–2024)', 'Рестайлінг', '[N] деталей', true),
+        g('Q7 4M (2015–2019)', 'Друге покоління', '[N] деталей'),
+        g('Q7 4L (2010–2015)', 'Рестайлінг першого', '[N] деталей'),
+        g('Q7 4L (2005–2010)', 'Перше покоління', '[N] деталей')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

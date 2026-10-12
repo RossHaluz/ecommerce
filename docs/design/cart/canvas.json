@@ -1,0 +1,21 @@
+{
+  "v": 3,
+  "attachments": {},
+  "createdOnFiles": { "at": "2026-10-07T18:47:35.558Z", "v": 1 },
+  "title": "Audiparts — кошик",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 390, "h": 1560, "title": "Сторінка кошика · телефон" },
+    "Cart-sheet-mobile.dc.html": { "x": 470, "y": 0, "w": 390, "h": 844, "title": "Модалка кошика · телефон" },
+    "Product-qty-mobile.dc.html": { "x": 940, "y": 0, "w": 390, "h": 760, "title": "Кількість на картці товару · телефон" },
+    "Cart-desktop.dc.html": { "x": 0, "y": 1900, "w": 1440, "h": 1040, "title": "Сторінка кошика · комп'ютер" },
+    "Cart-drawer-desktop.dc.html": { "x": 1520, "y": 1900, "w": 1440, "h": 900, "title": "Модалка кошика · комп'ютер" }
+  },
+  "order": ["Main.dc.html", "Cart-sheet-mobile.dc.html", "Product-qty-mobile.dc.html", "Cart-desktop.dc.html", "Cart-drawer-desktop.dc.html"],
+  "notes": {
+    "rowMobile": { "x": 0, "y": -300, "text": "Кошик — телефон", "kind": "title1", "maxW": 1330 },
+    "rowDesktop": { "x": 0, "y": 1600, "text": "Кошик — комп'ютер", "kind": "title1", "maxW": 2960 }
+  },
+  "designSystems": []
+}

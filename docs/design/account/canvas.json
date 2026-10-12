@@ -1,0 +1,23 @@
+{
+  "v": 3,
+  "attachments": {},
+  "createdOnFiles": { "at": "2026-10-11T08:49:22.625Z", "v": 1 },
+  "title": "Audiparts — вхід і кабінет",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 390, "h": 844, "title": "Вхід · телефон (iPhone)" },
+    "Login-code-mobile.dc.html": { "x": 470, "y": 0, "w": 390, "h": 844, "title": "Вхід · код з SMS" },
+    "Account-mobile.dc.html": { "x": 940, "y": 0, "w": 390, "h": 1100, "title": "Кабінет · телефон" },
+    "Favorites-mobile.dc.html": { "x": 1410, "y": 0, "w": 390, "h": 1200, "title": "Обране · телефон" },
+    "Orders-mobile.dc.html": { "x": 1880, "y": 0, "w": 390, "h": 1100, "title": "Мої замовлення · телефон" },
+    "Login-desktop.dc.html": { "x": 0, "y": 1640, "w": 1440, "h": 900, "title": "Вхід · комп'ютер" },
+    "Account-desktop.dc.html": { "x": 1520, "y": 1640, "w": 1440, "h": 1000, "title": "Кабінет · комп'ютер" }
+  },
+  "order": ["Main.dc.html", "Login-code-mobile.dc.html", "Account-mobile.dc.html", "Favorites-mobile.dc.html", "Orders-mobile.dc.html", "Login-desktop.dc.html", "Account-desktop.dc.html"],
+  "notes": {
+    "rowMobile": { "x": 0, "y": -300, "text": "Вхід і кабінет — телефон", "kind": "title1", "maxW": 2270 },
+    "rowDesktop": { "x": 0, "y": 1340, "text": "Вхід і кабінет — комп'ютер", "kind": "title1", "maxW": 2960 }
+  },
+  "designSystems": []
+}

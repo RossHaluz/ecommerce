@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Кошик — комп'ютер</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1040px; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 72px; background: #484848; display: flex; align-items: center; justify-content: space-between; padding: 0 120px">
+    <span style="color: #FFFFFF; font-size: 22px; font-weight: 800; letter-spacing: 0.04em">[ЛОГОТИП]</span>
+    <span style="color: #FFFFFF; font-size: 15px; font-weight: 700">Каталог · Пошук · +38 (067) 383 42 83 · Кошик (3)</span>
+  </header>
+
+  <div style="width: 1200px; margin: 0 auto; padding: 32px 0; display: flex; flex-direction: column; gap: 24px">
+    <h1 style="margin: 0; font-size: 32px; font-weight: 800; color: #2E2E2E">Кошик · 3 товари</h1>
+
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <section style="background: #FFFFFF; border-radius: 12px; padding: 8px 24px">
+          <sc-for list="{{items}}" as="item" hint-placeholder-count="3">
+            <div style="display: grid; grid-template-columns: 112px minmax(0, 1fr) 140px 120px 44px; gap: 20px; align-items: center; padding: 16px 0; border-bottom: 1px solid #EEEEEE">
+              <div style="width: 112px; height: 84px; border-radius: 8px; background: #E4E4E4"></div>
+              <div style="display: flex; flex-direction: column; gap: 4px">
+                <a href="#" style="font-size: 16px; font-weight: 700; color: #2E2E2E; text-decoration: none">{{item.title}}</a>
+                <span style="font-size: 13px; color: #6B6B6B">{{item.oe}}</span>
+                <span style="font-size: 13px; font-weight: 700; color: #008038">{{item.stock}}</span>
+                <sc-if value="{{item.error}}" hint-placeholder-val="{{false}}">
+                  <span role="alert" style="font-size: 13px; font-weight: 700; color: #A30722">Більше немає: у наявності лише 1 шт.</span>
+                </sc-if>
+              </div>
+              <div style="display: flex; align-items: center; border: 1px solid #CFCFCF; border-radius: 8px; height: 44px; width: 132px">
+                <button aria-label="Менше" style="width: 44px; height: 42px; border: 0; background: transparent; font-size: 22px; color: {{item.minusColor}}">−</button>
+                <span style="flex: 1; text-align: center; font-size: 16px; font-weight: 800; color: #2E2E2E">{{item.qty}}</span>
+                <button aria-label="Більше" style="width: 44px; height: 42px; border: 0; background: transparent; font-size: 22px; color: {{item.plusColor}}">+</button>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: flex-end">
+                <span style="font-size: 18px; font-weight: 800; color: #2E2E2E">{{item.sum}}</span>
+                <span style="font-size: 12px; color: #6B6B6B">{{item.each}}</span>
+              </div>
+              <button aria-label="Видалити з кошика" style="width: 44px; height: 44px; border: 0; background: transparent; color: #6B6B6B; display: flex; align-items: center; justify-content: center">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+              </button>
+            </div>
+          </sc-for>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #2E2E2E">Можливо, вас зацікавлять</h2>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+            <sc-for list="{{similar}}" as="s" hint-placeholder-count="3">
+              <article style="background: #FFFFFF; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+                <div style="aspect-ratio: 4 / 3; border-radius: 8px; background: #E4E4E4"></div>
+                <a href="#" style="font-size: 15px; font-weight: 700; color: #2E2E2E; text-decoration: none">{{s.title}}</a>
+                <div style="display: flex; align-items: center; justify-content: space-between">
+                  <span style="font-size: 20px; font-weight: 800; color: #C0092A">{{s.price}}</span>
+                  <button style="height: 44px; padding: 0 16px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; font-size: 15px; font-weight: 800; font-family: inherit">Купити</button>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+          <a href="#" style="align-self: center; height: 48px; padding: 0 32px; border-radius: 8px; border: 1px solid #CFCFCF; background: #FFFFFF; box-sizing: border-box; color: #2E2E2E; font-size: 15px; font-weight: 700; display: flex; align-items: center; text-decoration: none">Показати ще</a>
+        </section>
+      </div>
+
+      <aside style="background: #FFFFFF; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; font-size: 15px"><span>Товари (4 шт.)</span><span>$3 590</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 15px"><span>Доставка</span><span style="color: #6B6B6B">за тарифами Нової пошти</span></div>
+        <div style="border-top: 1px solid #EEEEEE; padding-top: 12px; display: flex; justify-content: space-between; align-items: baseline">
+          <span style="font-weight: 800; color: #2E2E2E">Разом</span>
+          <span style="display: flex; flex-direction: column; align-items: flex-end">
+            <span style="font-size: 26px; font-weight: 800; color: #C0092A">$3 590</span>
+            <span style="font-size: 12px; color: #6B6B6B">≈ [сума] ₴ за курсом НБУ</span>
+          </span>
+        </div>
+        <a href="#" style="height: 52px; border-radius: 8px; background: #C0092A; color: #FFFFFF; font-size: 17px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Оформити замовлення</a>
+        <a href="#" style="height: 52px; border-radius: 8px; border: 2px solid #C0092A; box-sizing: border-box; color: #C0092A; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Замовити в 1 клік — лише телефон</a>
+        <div style="background: #F7F7F7; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 13px">
+          <span><b>Обмін чи повернення</b> протягом 14 днів</span>
+          <span><b>Оплата при отриманні</b> або на картку</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const gray = '#2E2E2E', off = '#C4C4C4';
+    return {
+      items: [
+        { title: 'Обвіс SQ8 для Audi Q8 (2018–2023)', oe: 'OE 4M8807065C GRU', stock: 'В наявності · остання 1 шт.', qty: 1, sum: '$3 500', each: '', minusColor: off, plusColor: off, error: false },
+        { title: 'Накладка дверки лівий зад', oe: 'OE 4M0854819E GRU', stock: 'В наявності · 3 шт.', qty: 2, sum: '$60', each: '$30 за шт.', minusColor: gray, plusColor: gray, error: false },
+        { title: 'Решітка бампера права під радар', oe: 'OE 4M0807682G', stock: 'В наявності · остання 1 шт.', qty: 1, sum: '$30', each: '', minusColor: off, plusColor: off, error: true }
+      ],
+      similar: [
+        { title: 'Заглушка дверки', price: '$2' },
+        { title: 'Капот Q8', price: '$1 300' },
+        { title: 'Дзеркало ліве Q8, 15 pin + камера', price: 'Ціна договірна' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Кабінет — телефон</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 1100px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="height: 60px; background: #484848; display: flex; align-items: center; padding: 0 16px">
+    <h1 style="margin: 0; color: #FFFFFF; font-size: 20px; font-weight: 800">Кабінет</h1>
+  </header>
+
+  <main style="padding: 12px 16px 90px; display: flex; flex-direction: column; gap: 12px">
+    <section style="background: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; align-items: center; gap: 12px">
+      <span style="width: 48px; height: 48px; border-radius: 24px; background: #2E2E2E; color: #FFFFFF; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center">О</span>
+      <span style="flex: 1; display: flex; flex-direction: column">
+        <span style="font-size: 17px; font-weight: 800; color: #2E2E2E">Олександр Коваль</span>
+        <span style="font-size: 13px; color: #6B6B6B">+380 67 ••• •• 67</span>
+      </span>
+      <a href="#" style="font-size: 14px; font-weight: 800">Змінити</a>
+    </section>
+
+    <section style="background: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span style="font-size: 16px; font-weight: 800; color: #2E2E2E">Замовлення №1042</span>
+        <span style="font-size: 13px; color: #6B6B6B">$3 560 · 2 товари</span>
+      </div>
+      <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px">
+        <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+          <li style="display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 700; color: {{s.text}}">
+            <span style="height: 6px; border-radius: 3px; background: {{s.bar}}"></span>{{s.label}}
+          </li>
+        </sc-for>
+      </ol>
+      <div style="background: #F7F7F7; border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+        <span style="display: flex; flex-direction: column">
+          <span style="font-size: 12px; color: #6B6B6B">ТТН Нової пошти</span>
+          <span style="font-size: 15px; font-weight: 800; color: #2E2E2E">20450 1234 5678</span>
+        </span>
+        <a href="#" style="height: 40px; padding: 0 12px; border-radius: 8px; border: 2px solid #C0092A; box-sizing: border-box; display: flex; align-items: center; font-size: 14px; font-weight: 800; text-decoration: none">Відстежити</a>
+      </div>
+    </section>
+
+    <nav aria-label="Розділи кабінету" style="background: #FFFFFF; border-radius: 12px; padding: 4px 14px">
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+        <a href="{{r.href}}" style="min-height: 56px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #F0F0F0; text-decoration: none">
+          <span style="flex: 1; display: flex; flex-direction: column">
+            <span style="font-size: 16px; font-weight: 700; color: #2E2E2E">{{r.label}}</span>
+            <span style="font-size: 13px; color: #6B6B6B">{{r.sub}}</span>
+          </span>
+          <span style="font-size: 14px; font-weight: 800; color: #484848">{{r.count}}</span>
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      </sc-for>
+    </nav>
+
+    <button style="height: 48px; border: 0; border-radius: 12px; background: #FFFFFF; font: inherit; font-size: 15px; font-weight: 800; color: #A30722">Вийти з кабінету</button>
+  </main>
+
+  <nav aria-label="Головне меню" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #FFFFFF; border-top: 1px solid #E4E4E4; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="#" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; font-weight: 700; text-decoration: none; color: {{tab.color}}">
+        <span style="width: 22px; height: 22px; border-radius: 6px; border: 2px solid currentColor; box-sizing: border-box"></span>{{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const done = { bar: '#008038', text: '#006B2F' }, todo = { bar: '#E4E4E4', text: '#6B6B6B' };
+    const tab = (label, active) => ({ label, color: active ? '#C0092A' : '#484848' });
+    return {
+      steps: [
+        { label: 'Прийнято', ...done }, { label: 'Підтверджено', ...done },
+        { label: 'Відправлено', ...done }, { label: 'Отримано', ...todo }
+      ],
+      rows: [
+        { label: 'Мої замовлення', sub: 'Статуси, ТТН, повторити замовлення', count: '5', href: 'Orders-mobile.dc.html' },
+        { label: 'Обране', sub: 'Збережені деталі', count: '2', href: 'Favorites-mobile.dc.html' },
+        { label: 'Мої машини', sub: 'Q8 (2018–2023) — фільтр за замовчуванням', count: '1', href: '#' },
+        { label: 'Адреса доставки', sub: 'Хмельницький, Відділення №1', count: '', href: '#' },
+        { label: 'Особисті дані', sub: 'Ім’я, телефон, email', count: '', href: '#' }
+      ],
+      tabs: [tab('Головна'), tab('Каталог'), tab('Обране'), tab('Кошик'), tab('Кабінет', true)]
+    };
+  }
+}
+</script>
+</body>
+</html>

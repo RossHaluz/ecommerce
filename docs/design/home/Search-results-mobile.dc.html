@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Пошук — результати</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 1500px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <header style="background: #484848; padding: 8px 8px 10px 4px; display: flex; align-items: center; gap: 4px">
+    <a href="Main.dc.html" aria-label="Назад" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #FFFFFF; flex: none">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <a href="Search-suggest-mobile.dc.html" style="flex: 1; min-width: 0; height: 44px; background: #FFFFFF; border-radius: 8px; display: flex; align-items: center; gap: 8px; padding: 0 12px; text-decoration: none">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <span style="font-size: 16px; font-weight: 700; color: #2E2E2E">фара q8</span>
+    </a>
+  </header>
+
+  <main style="padding: 12px 16px 120px; display: flex; flex-direction: column; gap: 12px">
+    <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #2E2E2E">23 результати за «фара q8»</h1>
+
+    <nav aria-label="Уточнити категорію" style="display: flex; gap: 8px; overflow: hidden; margin: 0 -16px; padding: 0 16px">
+      <sc-for list="{{cats}}" as="c" hint-placeholder-count="3">
+        <a href="#" style="flex: none; height: 40px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center; font-size: 14px; font-weight: 700; text-decoration: none; {{c.style}}">{{c.label}}</a>
+      </sc-for>
+    </nav>
+
+    <div style="display: flex; gap: 8px">
+      <button style="flex: 1; height: 40px; padding: 0 12px; border-radius: 8px; background: #FFF7F8; border: 2px solid #C0092A; font: inherit; font-size: 14px; font-weight: 800; color: #2E2E2E; display: flex; align-items: center; gap: 6px">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0092A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+        Лише Q8 (2018–2023)
+      </button>
+      <a href="Sort-filter-mobile.dc.html" style="height: 40px; padding: 0 12px; border-radius: 8px; background: #FFFFFF; border: 1px solid #DDDDDD; box-sizing: border-box; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: #2E2E2E; text-decoration: none">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        Фільтри
+      </a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <sc-for list="{{first}}" as="p" hint-placeholder-count="4">
+        <article style="background: #FFFFFF; border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 4px">
+          <div style="position: relative; aspect-ratio: 4 / 3; border-radius: 8px; background: #E4E4E4">
+            <button aria-label="Додати в обране" style="position: absolute; top: 4px; right: 4px; width: 36px; height: 36px; border: 0; border-radius: 18px; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; color: #6B6B6B">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+            </button>
+          </div>
+          <a href="#" style="font-size: 14px; color: #2E2E2E; line-height: 18px; text-decoration: none; height: 36px; overflow: hidden"><b>{{p.match}}</b>{{p.rest}}</a>
+          <span style="font-size: 12px; color: #6B6B6B">{{p.oe}}</span>
+          <span style="font-size: 12px; font-weight: 700; color: {{p.stockColor}}">{{p.stock}}</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; padding-top: 2px">
+            <span style="font-size: 16px; font-weight: 800; color: #C0092A">{{p.price}}</span>
+            <button aria-label="В кошик" style="width: 44px; height: 44px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex: none">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M3 4h2l2.5 11h11L21 7H7"/></svg>
+            </button>
+          </div>
+        </article>
+      </sc-for>
+
+      <section style="grid-column: span 2; background: #FFFFFF; border: 2px dashed #CFCFCF; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 16px; font-weight: 800; color: #2E2E2E">Не те, що шукали?</span>
+        <span style="font-size: 14px; line-height: 19px">Надішліть фото деталі або VIN — менеджер знайде точну позицію й напише вам у Viber чи Telegram.</span>
+        <div style="display: flex; gap: 8px">
+          <a href="#" style="flex: 1; height: 44px; border-radius: 8px; background: #5B47D6; color: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Viber</a>
+          <a href="#" style="flex: 1; height: 44px; border-radius: 8px; background: #1E6FA8; color: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Telegram</a>
+          <a href="#" style="flex: 1; height: 44px; border-radius: 8px; background: #2E2E2E; color: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">VIN</a>
+        </div>
+      </section>
+
+      <sc-for list="{{second}}" as="p" hint-placeholder-count="2">
+        <article style="background: #FFFFFF; border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 4px">
+          <div style="position: relative; aspect-ratio: 4 / 3; border-radius: 8px; background: #E4E4E4">
+            <button aria-label="Додати в обране" style="position: absolute; top: 4px; right: 4px; width: 36px; height: 36px; border: 0; border-radius: 18px; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; color: #6B6B6B">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+            </button>
+          </div>
+          <a href="#" style="font-size: 14px; color: #2E2E2E; line-height: 18px; text-decoration: none; height: 36px; overflow: hidden"><b>{{p.match}}</b>{{p.rest}}</a>
+          <span style="font-size: 12px; color: #6B6B6B">{{p.oe}}</span>
+          <span style="font-size: 12px; font-weight: 700; color: {{p.stockColor}}">{{p.stock}}</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px; padding-top: 2px">
+            <span style="font-size: 16px; font-weight: 800; color: #C0092A">{{p.price}}</span>
+            <button aria-label="В кошик" style="width: 44px; height: 44px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex: none">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M3 4h2l2.5 11h11L21 7H7"/></svg>
+            </button>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </main>
+
+  <nav aria-label="Головне меню" style="position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #FFFFFF; border-top: 1px solid #E4E4E4; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="#" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px; font-weight: 700; text-decoration: none; color: #484848">
+        <span style="width: 22px; height: 22px; border-radius: 6px; border: 2px solid currentColor; box-sizing: border-box"></span>{{tab}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ok = '#008038', order = '#966400';
+    const item = (match, rest, oe, inStock, price) => ({ match, rest, oe: 'OE ' + oe, price, stock: inStock ? 'В наявності' : 'Під замовлення', stockColor: inStock ? ok : order });
+    const on = 'background: #2E2E2E; color: #FFFFFF', off = 'background: #FFFFFF; color: #2E2E2E; border: 1px solid #DDDDDD';
+    return {
+      cats: [{ label: 'Усі · 23', style: on }, { label: 'Фари · 14', style: off }, { label: 'Протитуманні · 3', style: off }, { label: 'Ліхтарі · 6', style: off }],
+      first: [
+        item('Фара', ' права Matrix Q8 USA', '4M8941036B', true, '$1 800'),
+        item('Фара', ' ліва Matrix Q8', '4M8941035', true, '$1 950'),
+        item('Комплект фар', ' Matrix Q8', '4M8941035', true, '$3 600'),
+        item('Фара', ' протитуманна права Q8', '4M0941700', false, '$140')
+      ],
+      second: [
+        item('Фара', ' права LED Q8', '4M8941034', true, '$1 400'),
+        item('Фара', ' ліва LED Q8, під ремонт', '4M8941033', true, '$600')
+      ],
+      tabs: ['Головна', 'Каталог', 'Обране', 'Кошик', 'Кабінет']
+    };
+  }
+}
+</script>
+</body>
+</html>

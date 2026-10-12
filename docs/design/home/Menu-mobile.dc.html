@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Меню — телефон</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848">
+  <div style="position: absolute; inset: 0; background: rgba(20,20,20,0.55)"></div>
+  <aside role="dialog" aria-label="Меню" style="position: absolute; top: 0; bottom: 0; left: 0; width: 336px; background: #FFFFFF; display: flex; flex-direction: column">
+    <div style="height: 60px; background: #484848; display: flex; align-items: center; justify-content: space-between; padding: 0 4px 0 16px">
+      <span style="font-size: 20px; font-weight: 800; letter-spacing: -0.01em"><span style="color: #FFFFFF">Audi</span><span style="color: #F2364D">Parts</span></span>
+      <button aria-label="Закрити меню" style="width: 44px; height: 44px; border: 0; background: transparent; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div style="flex: 1; overflow: hidden; padding: 12px 16px; display: flex; flex-direction: column; gap: 14px">
+      <a href="#" style="border-radius: 12px; background: #F7F7F7; padding: 12px 14px; display: flex; align-items: center; gap: 12px; text-decoration: none">
+        <span style="width: 40px; height: 40px; border-radius: 20px; background: #E4E4E4; flex: none"></span>
+        <span style="flex: 1; display: flex; flex-direction: column">
+          <span style="font-size: 16px; font-weight: 800; color: #2E2E2E">Увійти</span>
+          <span style="font-size: 13px; color: #6B6B6B">телефон, Google або Apple</span>
+        </span>
+        <span aria-hidden="true" style="color: #6B6B6B">›</span>
+      </a>
+
+      <a href="#" style="height: 48px; border-radius: 8px; background: #2E2E2E; color: #FFFFFF; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Підбір деталей за VIN</a>
+
+      <nav style="display: flex; flex-direction: column">
+        <sc-for list="{{main}}" as="l" hint-placeholder-count="4">
+          <a href="#" style="height: 48px; display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 700; color: #2E2E2E; text-decoration: none; border-bottom: 1px solid #F0F0F0">{{l.label}} <span style="font-size: 13px; color: #6B6B6B">{{l.extra}}</span></a>
+        </sc-for>
+      </nav>
+
+      <nav aria-label="Покупцям" style="display: flex; flex-direction: column">
+        <span style="font-size: 12px; font-weight: 800; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em; padding-bottom: 2px">Покупцям</span>
+        <sc-for list="{{info}}" as="l" hint-placeholder-count="3">
+          <a href="#" style="height: 44px; display: flex; align-items: center; font-size: 15px; color: #2E2E2E; text-decoration: none">{{l}}</a>
+        </sc-for>
+      </nav>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <a href="#" style="height: 48px; border-radius: 8px; border: 2px solid #484848; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 800; color: #2E2E2E; text-decoration: none">Подзвонити · +38 (067) 383 42 83</a>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <a href="#" style="height: 44px; border-radius: 8px; background: #5B47D6; color: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Viber</a>
+          <a href="#" style="height: 44px; border-radius: 8px; background: #1E6FA8; color: #FFFFFF; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none">Telegram</a>
+        </div>
+        <span style="font-size: 13px; color: #6B6B6B; text-align: center">Пн–Пт 10:00–19:00 · Хмельницький, вул. Молодіжна, 15/1</span>
+      </div>
+    </div>
+
+    <div style="height: 56px; border-top: 1px solid #EEEEEE; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 14px">
+      <span>Мова: <b style="color: #2E2E2E">UK</b> · PL</span>
+      <span>Валюта: <b style="color: #2E2E2E">$</b> · ₴</span>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      main: [
+        { label: 'Каталог запчастин', extra: '16 категорій ›' },
+        { label: 'Обране', extra: '2' },
+        { label: 'Мої замовлення', extra: '›' },
+        { label: 'Кошик', extra: '1' }
+      ],
+      info: ['Доставка й оплата', 'Обмін і повернення', 'Контакти']
+    };
+  }
+}
+</script>
+</body>
+</html>

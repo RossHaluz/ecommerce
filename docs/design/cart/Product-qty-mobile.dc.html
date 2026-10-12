@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Кількість на картці товару — телефон</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#C0092A}a:hover{color:#A30722}
+</style>
+</helmet>
+<div style="width: 390px; height: 760px; background: #F2F2F2; font-family: 'Mulish', sans-serif; color: #484848; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+  <span style="font-size: 12px; font-weight: 700; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em">У наявності 3 шт.</span>
+  <section style="background: #FFFFFF; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+    <h2 style="margin: 0; font-size: 20px; font-weight: 800; color: #2E2E2E; line-height: 26px">Накладка дверки лівий зад для Audi Q8 (2018–2023)</h2>
+    <span style="font-size: 14px; font-weight: 700; color: #008038">В наявності · 3 шт.</span>
+    <span style="font-size: 28px; font-weight: 800; color: #C0092A">$30</span>
+    <div style="display: flex; gap: 8px">
+      <div style="display: flex; align-items: center; border: 1px solid #CFCFCF; border-radius: 8px; height: 52px; flex: none">
+        <button aria-label="Менше" style="width: 44px; height: 50px; border: 0; background: transparent; font-size: 22px; color: #2E2E2E">−</button>
+        <span style="min-width: 28px; text-align: center; font-size: 17px; font-weight: 800; color: #2E2E2E">2</span>
+        <button aria-label="Більше" style="width: 44px; height: 50px; border: 0; background: transparent; font-size: 22px; color: #2E2E2E">+</button>
+      </div>
+      <button style="flex: 1; height: 52px; border: 0; border-radius: 8px; background: #C0092A; color: #FFFFFF; font-size: 17px; font-weight: 800; font-family: inherit">Купити · $60</button>
+    </div>
+  </section>
+
+  <span style="font-size: 12px; font-weight: 700; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em; padding-top: 12px">Остання 1 шт., уже в кошику</span>
+  <section style="background: #FFFFFF; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+    <h2 style="margin: 0; font-size: 20px; font-weight: 800; color: #2E2E2E; line-height: 26px">Обвіс SQ8 для Audi Q8 (2018–2023)</h2>
+    <span style="font-size: 14px; font-weight: 700; color: #008038">В наявності · остання 1 шт.</span>
+    <span style="font-size: 28px; font-weight: 800; color: #C0092A">$3 500</span>
+    <a href="Main.dc.html" style="height: 52px; border-radius: 8px; background: #FFFFFF; border: 2px solid #008038; box-sizing: border-box; color: #006B2F; font-size: 17px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+      У кошику · перейти
+    </a>
+    <p role="status" style="margin: 0; padding: 8px 10px; border-radius: 8px; background: #F2F2F2; color: #484848; font-size: 13px">Це остання штука, і вона вже у вашому кошику.</p>
+  </section>
+
+  <span style="font-size: 12px; font-weight: 700; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.04em; padding-top: 12px">Спроба додати більше, ніж є</span>
+  <div role="alert" style="background: #2E2E2E; color: #FFFFFF; border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 19px">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB4BE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+    <span><b>Більше немає.</b> У наявності лише 3 шт. — усі вже у вашому кошику.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
