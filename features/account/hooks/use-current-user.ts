@@ -6,6 +6,7 @@ import { getCurrentUser } from "@/actions/get-data";
 import { queryKeys } from "@/lib/query-keys";
 
 export interface CurrentUser {
+  id: string;
   role: string;
   firstName?: string;
 }

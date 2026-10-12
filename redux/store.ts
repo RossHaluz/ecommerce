@@ -45,7 +45,7 @@ const persistOrder = {
 
 const persistFavorites = {
   key: "favorites",
-  whitelist: ["items"],
+  whitelist: ["items", "accountId"],
   storage,
 };
 

@@ -31,7 +31,7 @@ export interface RequestOptions {
   /** Секунди життя кешу. `false` — не кешувати. */
   revalidate?: number | false;
   tags?: string[];
-  method?: "GET" | "POST" | "PATCH" | "DELETE";
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: unknown;
 }
 

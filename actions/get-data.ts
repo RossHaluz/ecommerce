@@ -3,7 +3,7 @@
 import * as api from "@/lib/api";
 import type { Product } from "@/lib/types";
 import { toProductCard } from "@/entities/product/model/product-card";
-import { safeFavoriteSlugs } from "@/features/favorites/model/favorite-slugs";
+import { safePathSegments } from "@/features/favorites/model/path-segments";
 
 export const getCategories = (limit?: string) => api.getCategories(limit);
 
@@ -53,7 +53,7 @@ const favoriteCard = async (slug: string): Promise<[string, Product | null] | nu
 
 /** Свіжі ціна й залишок для «Обраного». `null` — товару вже немає; збій бекенду — slug просто відсутній. */
 export const getFavoriteProducts = async (slugs: unknown): Promise<Record<string, Product | null>> => {
-  const safe = safeFavoriteSlugs(slugs);
+  const safe = safePathSegments(slugs);
   const found: [string, Product | null][] = [];
   for (let start = 0; start < safe.length; start += FAVORITES_BATCH) {
     const batch = await Promise.all(safe.slice(start, start + FAVORITES_BATCH).map(favoriteCard));
