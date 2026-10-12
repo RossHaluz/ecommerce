@@ -6,6 +6,7 @@ import { StockStatus } from "@/entities/product/ui/stock-status";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import ProductBtn from "../product-btn";
+import { FavoriteButton } from "@/features/favorites";
 import { MAIN_BUY_CTA_ID } from "./main-buy-cta";
 
 /** Телефон: ціна й «Купити» завжди під пальцем, поки гортають фото й характеристики. */
@@ -36,7 +37,8 @@ export const StickyBuyBar = ({ product }: { product: Product }) => {
         <span className="text-xl font-extrabold text-[#C0092A]">{format(product.price)}</span>
         <StockStatus quantity={product.quantity} className="text-xs font-bold" />
       </div>
-      <div className="w-[180px]">
+      <FavoriteButton product={product} variant="outline" className="h-12 w-12" />
+      <div className="w-[160px]">
         <ProductBtn item={product} compact className="h-12 text-base" />
       </div>
     </div>

@@ -23,4 +23,5 @@ export const queryKeys = {
   models: () => ["models"] as const,
   cartSuggestions: (modelName: string) => ["cart-suggestions", modelName] as const,
   exchangeRate: (pair: string) => ["exchange-rate", pair] as const,
+  favoriteProducts: (slugs: string[]) => ["favorite-products", ...slugs] as const,
 } as const;

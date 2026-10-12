@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import type { Product } from "@/lib/types";
 import ProductBtn from "../product-btn";
 import { OrderOneClick } from "@/features/one-click/order-one-click";
+import { FavoriteButton } from "@/features/favorites";
 import { CatalogNumberChip } from "./catalog-number-chip";
 import { PriceBlock } from "./price-block";
 import { StockLine } from "./stock-line";
@@ -25,8 +26,11 @@ export const BuyBox = ({ product, heading }: { product: Product; heading: string
       </div>
       <StockLine quantity={product.quantity} />
       <PriceBlock price={Number(product.price)} />
-      <div id={MAIN_BUY_CTA_ID}>
-        <ProductBtn item={product} />
+      <div id={MAIN_BUY_CTA_ID} className="flex items-stretch gap-2">
+        <div className="min-w-0 flex-1">
+          <ProductBtn item={product} />
+        </div>
+        <FavoriteButton product={product} variant="outline" />
       </div>
       <OrderOneClick
         items={[

@@ -15,6 +15,7 @@ import { productHref } from "@/entities/product/model/product-href";
 import { StockStatus } from "@/entities/product/ui/stock-status";
 import { Product } from "@/lib/types";
 import { AddedToCartSheet } from "@/features/cart";
+import { FavoriteButton } from "@/features/favorites";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 
 // Перший ряд на телефоні. Більше — і фото ділять вузький канал з LCP-фото.
@@ -103,6 +104,7 @@ const ProductItem: FC<ProductItemProps> = ({ item, index, className }) => {
           />
         </div>
       </Link>
+      <FavoriteButton product={item} className="absolute right-2 top-2 z-[1]" />
 
       <div
         className={cn("flex flex-col gap-2 h-full md:justify-between", {
