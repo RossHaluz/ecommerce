@@ -93,8 +93,8 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
           />
         </div>
       )}
-      {/* Поле в базі так і називається — з опечаткою; перейменування — окрема міграція. */}
-      <SeoText title={t("seo.aboutTitle", { subject: seo.h1 })} text={category.category.desctiption ?? ""} />
+      {/* Текст у базі лише українською — на /pl він був би чужою мовою на сторінці. Поле з опечаткою — так у схемі. */}
+      {params.locale === "uk" && <SeoText title={t("seo.aboutTitle", { subject: seo.h1 })} text={category.category.desctiption ?? ""} />}
       <FaqSection title={t("seo.faqTitle")} items={faq} />
     </MainSection>
   );
