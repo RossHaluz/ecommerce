@@ -10,6 +10,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { fetchCategoryProducts } from "@/lib/api";
 import { notFoundOn404 } from "@/lib/api/not-found-on-404";
 import { RelatedModelLinks } from "@/components/seo/related-model-links";
+import { SeoText } from "@/components/seo/seo-text";
+import { FaqSection } from "@/components/seo/faq-section";
+import { getCatalogFaq } from "@/lib/seo/catalog-faq";
 import { getCategorySeo } from "./category-seo";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
@@ -64,11 +67,9 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
   ]);
 
   const first = toProductPage(category);
-  const seo = await getCategorySeo({
-    locale: params.locale,
-    categoryName: category.category.name,
-    productCount: category.meta?.totalItem ?? first.products.length,
-  });
+  const productCount = category.meta?.totalItem ?? first.products.length;
+  const seo = await getCategorySeo({ locale: params.locale, categoryName: category.category.name, productCount });
+  const faq = await getCatalogFaq({ locale: params.locale, subject: seo.h1, count: productCount });
 
   return (
     <MainSection title={seo.h1}>
@@ -92,6 +93,9 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
           />
         </div>
       )}
+      {/* Текст у базі лише українською — на /pl він був би чужою мовою на сторінці. Поле з опечаткою — так у схемі. */}
+      {params.locale === "uk" && <SeoText title={t("seo.aboutTitle", { subject: seo.h1 })} text={category.category.desctiption ?? ""} />}
+      <FaqSection title={t("seo.faqTitle")} items={faq} />
     </MainSection>
   );
 };

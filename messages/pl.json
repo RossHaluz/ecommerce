@@ -254,7 +254,27 @@
     "categoryTitle": "{category} Audi — kup, cena | Audiparts",
     "categoryH1": "{category} Audi",
     "categoryDescription": "{category} do Audi: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
-    "categoryModelsTitle": "{category} według modeli Audi"
+    "categoryModelsTitle": "{category} według modeli Audi",
+    "readMore": "Czytaj dalej",
+    "collapse": "Zwiń",
+    "aboutTitle": "O dziale „{subject}”",
+    "faqTitle": "Częste pytania",
+    "faq": {
+      "countQ": "Ile części jest w dziale „{subject}”?",
+      "countA": "Obecnie w katalogu {count, plural, one {# część} few {# części} many {# części} other {# części}}. W karcie każdej widać cenę oraz czy jest dostępna, czy na zamówienie.",
+      "fitQ": "Jak sprawdzić, czy część pasuje do mojego Audi?",
+      "fitA": "Porównaj numer OE na swojej części z numerem w karcie produktu albo wyślij nam VIN przez Viber lub Telegram — menedżer bezpłatnie sprawdzi dopasowanie przed wysyłką.",
+      "conditionQ": "Części są nowe czy używane?",
+      "conditionA": "W katalogu są nowe i oryginalne używane części Audi. Zdjęcia i numer OE części — w karcie produktu, a o stanie konkretnej części opowie menedżer przez Viber, Telegram lub telefonicznie.",
+      "deliveryQ": "Jak szybko dostarczycie?",
+      "deliveryA": "Wysyłamy Nową Pocztą na całą Ukrainę, dostawa zwykle trwa 2–3 dni.",
+      "paymentQ": "Jak mogę zapłacić?",
+      "paymentA": "Przy odbiorze na poczcie albo przelewem na kartę: menedżer potwierdzi dostępność i prześle dane do przelewu.",
+      "returnsQ": "Czy można zwrócić część?",
+      "returnsA": "Tak, wymiana lub zwrot są możliwe w ciągu 14 dni.",
+      "missingQ": "Potrzebnej części nie ma w katalogu — co zrobić?",
+      "missingA": "Napisz do nas przez Viber lub Telegram albo zadzwoń — dobierzemy część i sprowadzimy ją na zamówienie."
+    }
   },
   "vin": {
     "trigger": "Dobór po numerze VIN",
