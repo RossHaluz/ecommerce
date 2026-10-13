@@ -11,6 +11,8 @@ import { fetchModelDetails } from "@/lib/api";
 import { notFoundOn404 } from "@/lib/api/not-found-on-404";
 import { RelatedCategoryLinks } from "@/components/seo/related-category-links";
 import { getModelSeo } from "./model-seo";
+import { FaqSection } from "@/components/seo/faq-section";
+import { getCatalogFaq } from "@/lib/seo/catalog-faq";
 
 const Products = dynamic(() => import("../../_components/products"), {
   ssr: true,
@@ -65,11 +67,9 @@ const Home: FC<HomeProps> = async ({ params }) => {
   ]);
 
   const first = toProductPage(products);
-  const seo = await getModelSeo({
-    locale: params.locale,
-    modelName: model.name,
-    productCount: products?.meta?.totalProducts ?? first.products.length,
-  });
+  const productCount = products?.meta?.totalProducts ?? first.products.length;
+  const seo = await getModelSeo({ locale: params.locale, modelName: model.name, productCount });
+  const faq = first.products.length ? await getCatalogFaq({ locale: params.locale, subject: seo.h1, count: productCount }) : null;
 
   return (
     <MainSection title={seo.h1}>
@@ -92,6 +92,7 @@ const Home: FC<HomeProps> = async ({ params }) => {
           />
         </div>
       )}
+      {faq && <FaqSection title={t("seo.faqTitle")} items={faq} />}
     </MainSection>
   );
 };

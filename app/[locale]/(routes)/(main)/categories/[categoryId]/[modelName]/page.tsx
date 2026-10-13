@@ -9,6 +9,8 @@ import dynamic from "next/dynamic";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { RelatedLinks } from "@/components/seo/related-links";
 import { getCategoryModelSeo } from "./category-model-seo";
+import { FaqSection } from "@/components/seo/faq-section";
+import { getCatalogFaq } from "@/lib/seo/catalog-faq";
 
 const Products = dynamic(() => import("@/app/[locale]/(routes)/_components/products"), {
   ssr: true,
@@ -64,15 +66,18 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
   ]);
 
   const first = toProductPage(category);
+  const productCount = category?.meta?.totalItem ?? first.products.length;
   const seo =
     category?.category?.name && model?.name
       ? await getCategoryModelSeo({
           locale: params.locale,
           categoryName: category.category.name,
           modelName: model.name,
-          productCount: category.meta?.totalItem ?? first.products.length,
+          productCount,
         })
       : null;
+  // Порожня пара не індексується — FAQ там нікому не потрібен.
+  const faq = seo && first.products.length ? await getCatalogFaq({ locale: params.locale, subject: seo.h1, count: productCount }) : null;
 
   return (
     <MainSection title={seo?.h1 ?? t("common.allPartsTitle")}>
@@ -96,6 +101,7 @@ const CategoryPage: FC<CategoryPageProps> = async ({ params }) => {
           modelsTitle={t("seo.relatedModelsTitle", { category: seo.category })}
         />
       )}
+      {faq && <FaqSection title={t("seo.faqTitle")} items={faq} />}
     </MainSection>
   );
 };
