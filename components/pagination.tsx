@@ -35,10 +35,11 @@ const Pagination: FC<PaginationProps> = ({ currentPage, totalPages }) => {
   };
 
   return (
-    <div className="flex items-center gap-4 mx-auto">
+    // На 320–360 px сім кнопок з відступами 16 px вилазили за край і давали горизонтальну прокрутку сторінки.
+    <div className="mx-auto flex flex-wrap items-center justify-center gap-1 md:gap-4">
       <button
         aria-label={t("previousPage")}
-        className="flex items-center gap-2 disabled:text-gray-500 hover:bg-accent px-4 py-2 rounded-md"
+        className="flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent disabled:text-gray-500 md:w-auto md:px-4"
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -52,7 +53,7 @@ const Pagination: FC<PaginationProps> = ({ currentPage, totalPages }) => {
             key={page}
             aria-label={t("page", { number: page })}
             aria-current={isCurrentPage ? "page" : undefined}
-            className={cn("text-[#484848] flex items-center justify-center w-[30px] h-[30px]", {
+            className={cn("text-[#484848] flex items-center justify-center h-9 w-9", {
               "bg-[#c0092a] text-white rounded-full": isCurrentPage,
               "hover:bg-accent": !isCurrentPage,
             })}
@@ -65,7 +66,7 @@ const Pagination: FC<PaginationProps> = ({ currentPage, totalPages }) => {
 
       <button
         aria-label={t("nextPage")}
-        className="flex items-center gap-2 disabled:text-gray-500 hover:bg-accent px-4 py-2 rounded-md"
+        className="flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent disabled:text-gray-500 md:w-auto md:px-4"
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
