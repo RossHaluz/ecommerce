@@ -1,60 +1,33 @@
-"use client";
-import Categories from "@/app/[locale]/(routes)/(main)/_components/categories";
-import React, { FC } from "react";
-import { useCategories } from "@/features/catalog";
+import type { FC, ReactNode } from "react";
+import { cn } from "@/lib/utils";
+import { CategorySidebar } from "@/features/catalog/components/category-sidebar/category-sidebar";
+import { ListHeading } from "@/features/catalog/components/list-heading";
 import { ListToolbar } from "@/features/catalog/components/list-toolbar/list-toolbar";
-import Breadcrumbs from "./breadcrumb";
 
 interface MainSectionProps {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
   shouldBeCategories?: boolean;
   shouldBeModels?: boolean;
 }
 
-const MainSection: FC<MainSectionProps> = ({
-  children,
-  title,
-  shouldBeCategories = true,
-  shouldBeModels = true,
-}) => {
-  // isPending, не isLoading: у TanStack v5 isLoading на сервері false, а на
-  // першому клієнтському рендері true — скелетон ламав гідратацію.
-  const { data: categories = [], isPending } = useCategories();
-
-  return (
-    <section
-      className="mt-3 mb-6"
-    >
-      <div className="container flex flex-col gap-3">
-        <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-3">
-              {title && (
-                <h1 className="text-[#484848] font-bold text-base">{title}</h1>
-              )}
-              <Breadcrumbs />
-            </div>
-            {shouldBeCategories && (
-              <div className="hidden lg:block h-full">
-                {isPending ? (
-                  <div className="w-[302px] h-[500px] rounded-md bg-[#FFFDFD]" />
-                ) : (
-                  <div className="flex flex-col gap-4 h-full">
-                    <Categories categories={categories} />
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-          <div className="flex flex-col gap-3 w-full h-full">
-            <ListToolbar withModel={shouldBeModels} />
-            {children}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+/**
+ * Каркас сторінки списку, як у великих каталогах: панель моделі й фільтрів — на всю ширину й прилипає
+ * під шапкою; категорії збоку прилипають під нею й гортаються своїм скролом, не відпускаючи товари.
+ */
+const MainSection: FC<MainSectionProps> = ({ children, title, shouldBeCategories = true, shouldBeModels = true }) => (
+  <section className="container mb-6 mt-3 flex flex-col gap-3">
+    <ListHeading title={title} />
+    <ListToolbar withModel={shouldBeModels} />
+    <div className={cn("grid items-start gap-6", shouldBeCategories && "lg:grid-cols-[272px_minmax(0,1fr)]")}>
+      {shouldBeCategories && (
+        <aside className="sticky top-[148px] hidden max-h-[calc(100vh-164px)] overflow-y-auto rounded-xl lg:block">
+          <CategorySidebar />
+        </aside>
+      )}
+      <div className="flex min-w-0 flex-col gap-3">{children}</div>
+    </div>
+  </section>
+);
 
 export default MainSection;

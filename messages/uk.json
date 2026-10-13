@@ -47,7 +47,9 @@
     "allCategories": "Усі категорії →",
     "allParts": "усі деталі →",
     "favorites": "Обране",
-    "all": "Усі"
+    "all": "Усі",
+    "everyPart": "Усі деталі",
+    "allIn": "Уся категорія:"
   },
   "product": {
     "inCartGo": "У кошику · перейти",

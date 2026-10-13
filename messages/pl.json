@@ -47,7 +47,9 @@
     "allCategories": "Wszystkie kategorie →",
     "allParts": "wszystkie części →",
     "favorites": "Ulubione",
-    "all": "Wszystkie"
+    "all": "Wszystkie",
+    "everyPart": "Wszystkie części",
+    "allIn": "Cała kategoria:"
   },
   "product": {
     "inCartGo": "W koszyku · przejdź",
