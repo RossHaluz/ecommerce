@@ -70,6 +70,7 @@
     "negotiablePriceNote": "Ціну до даного товару уточнюйте у менеджера.",
     "lastUnit": "остання 1 шт.",
     "fitsModel": "Підходить до {model}",
+    "fits": "Підходить",
     "approxShort": "≈ {price}",
     "copyCatalogNumber": "Скопіювати каталожний номер",
     "copied": "Скопійовано",
@@ -128,6 +129,23 @@
     "resultsTitle": "Результати пошуку: {query}",
     "noResults": "Товарів які відносяться до вашого запиту не знайдено…",
     "pageTitle": "Пошук"
+  },
+  "myAudi": {
+    "tab": "Моя Audi",
+    "choose": "Оберіть свою Audi",
+    "chooseHint": "покажемо лише сумісні деталі",
+    "yourAudi": "Ваша Audi",
+    "showFor": "Показати деталі для {model}",
+    "forAll": "Показати для всіх моделей",
+    "change": "Змінити модель",
+    "step": "Крок {step} з 2",
+    "seriesStep": "Крок 2 з 2 · Audi {series}",
+    "generationTitle": "Покоління й роки",
+    "generations": "{count, plural, one {# покоління} few {# покоління} many {# поколінь} other {# покоління}}",
+    "others": "Інші марки",
+    "back": "Назад до серій",
+    "yearHint": "Рік випуску є в техпаспорті (п. B), а точну відповідність перевіримо за VIN.",
+    "vinHelp": "Не знаєте модель? Підбір за VIN"
   },
   "favorites": {
     "title": "Обране",

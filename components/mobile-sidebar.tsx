@@ -1,79 +1,65 @@
 "use client";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Heart } from "lucide-react";
 import { Link, usePathname } from "@/i18n/routing";
 import HomeIcon from "/public/images/home-icon.svg";
 import ShopIcon from "/public/images/shop-icon.svg";
-import { Heart } from "lucide-react";
-import AccountIcon from "/public/images/account-icon.svg";
 import CatalogIcon from "/public/images/catalog-icon.svg";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { selectOrderItems } from "@/redux/order/selector";
 import { selectFavorites } from "@/redux/favorites/selectors";
-import { useCurrentUser } from "@/features/account";
 import { CartSheet } from "@/features/cart";
+import { MyAudiTab } from "@/features/car-model/components/my-audi-tab";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 import { MobileMenu } from "./mobile-menu/mobile-menu";
 import { MenuTrigger } from "./mobile-menu/menu-trigger";
+import { TabBadge } from "./tab-badge";
 import type { MobileMenuPanel } from "./mobile-menu/mobile-menu-panel";
 
-const ITEM_CLASS = "flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium";
+const ITEM_CLASS = "relative flex flex-col items-center gap-1 text-[11px] leading-none font-bold text-[#484848]";
 
+/** Головна · Каталог · Моя Audi · Обране · Кошик. Кабінет і решта — у меню ☰ шапки. */
 const MobileSidebar = () => {
   const pathname = usePathname();
-  const orderItems = useHydratedSelector(selectOrderItems);
+  const cartCount = useHydratedSelector(selectOrderItems)?.length ?? 0;
   const favoritesCount = useHydratedSelector(selectFavorites).length;
-  const { data: user } = useCurrentUser();
   const t = useTranslations();
   // null — меню закрите й не змонтоване.
   const [menuPanel, setMenuPanel] = useState<MobileMenuPanel | null>(null);
-  const isCatalogPage = pathname === "/" || pathname.includes("/categories");
+  const isHome = pathname === "/";
 
   return (
     <>
-      <div className="fixed w-full bottom-0 right-0 py-3 z-[12] shadow-custom-shadow container bg-[#FFFDFD] flex items-center justify-between gap-4 lg:hidden">
+      <div className="fixed w-full bottom-0 right-0 py-2.5 z-[12] shadow-custom-shadow container bg-[#FFFDFD] flex items-center justify-between gap-2 lg:hidden">
         {/* prefetch={false}: панель видно на кожній мобільній сторінці, і Next щоразу
             тягнув 56 КБ головної, відбираючи канал у головного фото. */}
-        <Link href="/" prefetch={false} className={cn(ITEM_CLASS, { "text-[#C0092A]": isCatalogPage })}>
-          <HomeIcon className={cn("fill-[#111111]", { "fill-[#C0092A]": isCatalogPage })} />
+        <Link href="/" prefetch={false} className={cn(ITEM_CLASS, { "text-[#C0092A]": isHome })}>
+          <HomeIcon className={cn("fill-[#111111]", { "fill-[#C0092A]": isHome })} />
           {t("nav.home")}
         </Link>
 
-        <MenuTrigger icon={<CatalogIcon />} label={t("nav.categories")} onClick={() => setMenuPanel("catalog")} />
+        <MenuTrigger icon={<CatalogIcon />} label={t("nav.catalog")} onClick={() => setMenuPanel("catalog")} />
+
+        <MyAudiTab className={ITEM_CLASS} />
+
+        <Link href="/favorites" prefetch={false} className={cn(ITEM_CLASS, { "text-[#C0092A]": pathname === "/favorites" })}>
+          <Heart size={22} strokeWidth={1.6} aria-hidden />
+          {t("nav.favorites")}
+          <TabBadge count={favoritesCount} />
+        </Link>
 
         <CartSheet
-          heading={t("cart.title", { count: orderItems?.length ?? 0 })}
+          heading={t("cart.title", { count: cartCount })}
           trigger={
-            <Button variant="ghost" className={cn("p-0 hover:bg-transparent", ITEM_CLASS)}>
+            <Button variant="ghost" className={cn("h-auto p-0 hover:bg-transparent", ITEM_CLASS)}>
               <ShopIcon />
               {t("nav.cart")}
+              <TabBadge count={cartCount} />
             </Button>
           }
         />
-
-        <Link
-          href="/favorites"
-          prefetch={false}
-          className={cn(ITEM_CLASS, "relative", { "text-[#C0092A]": pathname === "/favorites" })}
-        >
-          <Heart size={22} strokeWidth={1.6} aria-hidden />
-          {t("nav.favorites")}
-          {favoritesCount > 0 && (
-            <span className="absolute -top-1.5 left-1/2 ml-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#C0092A] px-1 text-[10px] font-bold text-white">
-              {favoritesCount}
-            </span>
-          )}
-        </Link>
-
-        {user ? (
-          <Link href="/account" prefetch={false} className={ITEM_CLASS}>
-            <AccountIcon />
-            {t("nav.account")}
-          </Link>
-        ) : (
-          <MenuTrigger icon={<AccountIcon />} label={t("nav.account")} onClick={() => setMenuPanel("account")} />
-        )}
       </div>
 
       {menuPanel && (

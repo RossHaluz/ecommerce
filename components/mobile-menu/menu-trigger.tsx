@@ -6,7 +6,7 @@ export const MenuTrigger = ({ icon, label, onClick }: { icon: ReactNode; label: 
   <Button
     variant="ghost"
     onClick={onClick}
-    className="p-0 h-auto hover:bg-transparent flex flex-col items-center gap-1 text-[8px] leading-[9.75px] font-medium"
+    className="p-0 h-auto hover:bg-transparent flex flex-col items-center gap-1 text-[11px] leading-none font-bold text-[#484848]"
   >
     {icon}
     {label}

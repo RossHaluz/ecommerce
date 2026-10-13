@@ -1,9 +1,12 @@
 import { formatModelName } from "@/lib/seo/format-model-name";
-import type { Product } from "@/lib/types";
+import type { Model } from "@/lib/types";
 
-/** На сторінці моделі — її назва, якщо товар до неї підходить; інакше нічого не обіцяємо. */
-export const fittingModel = (models: Product["models"] | undefined, modelSlug: string | undefined): string | undefined => {
+/**
+ * Модель у адресі списку означає, що бекенд уже відфільтрував товари під неї — кожна картка сумісна.
+ * Назву беремо з довідника моделей: у відповіді категорії товари приходять без свого списку моделей.
+ */
+export const fittingModel = (catalogModels: readonly Model[], modelSlug: string | undefined): string | undefined => {
   if (!modelSlug) return undefined;
-  const name = models?.find((item) => item.model?.modelName === modelSlug)?.model?.name;
+  const name = catalogModels.find((model) => model.modelName === modelSlug)?.name;
   return name ? formatModelName(name) : undefined;
 };

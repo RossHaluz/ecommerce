@@ -70,6 +70,7 @@
     "negotiablePriceNote": "Cenę tego produktu skonsultuj z menedżerem.",
     "lastUnit": "ostatnia 1 szt.",
     "fitsModel": "Pasuje do {model}",
+    "fits": "Pasuje",
     "approxShort": "≈ {price}",
     "copyCatalogNumber": "Skopiuj numer katalogowy",
     "copied": "Skopiowano",
@@ -128,6 +129,23 @@
     "resultsTitle": "Wyniki wyszukiwania: {query}",
     "noResults": "Nie znaleziono produktów pasujących do zapytania…",
     "pageTitle": "Wyszukiwanie"
+  },
+  "myAudi": {
+    "tab": "Moje Audi",
+    "choose": "Wybierz swoje Audi",
+    "chooseHint": "pokażemy tylko pasujące części",
+    "yourAudi": "Twoje Audi",
+    "showFor": "Pokaż części do {model}",
+    "forAll": "Pokaż dla wszystkich modeli",
+    "change": "Zmień model",
+    "step": "Krok {step} z 2",
+    "seriesStep": "Krok 2 z 2 · Audi {series}",
+    "generationTitle": "Generacja i lata",
+    "generations": "{count, plural, one {# generacja} few {# generacje} many {# generacji} other {# generacji}}",
+    "others": "Inne marki",
+    "back": "Wróć do serii",
+    "yearHint": "Rok produkcji jest w dowodzie rejestracyjnym (pole B), a dokładne dopasowanie sprawdzimy po VIN.",
+    "vinHelp": "Nie znasz modelu? Dobór po VIN"
   },
   "favorites": {
     "title": "Ulubione",

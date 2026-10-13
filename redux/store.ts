@@ -18,6 +18,7 @@ import { authReducer } from "./auth/slice";
 import { customizerReducer } from "./customizer/slice";
 import { scrollUpReducer } from "./scroll-up/slice";
 import { favoritesReducer } from "./favorites/slice";
+import { myCarReducer } from "./my-car/slice";
 
 const persistCustomizer = {
   key: "currentCustomizer",
@@ -49,8 +50,15 @@ const persistFavorites = {
   storage,
 };
 
+const persistMyCar = {
+  key: "myCar",
+  whitelist: ["car"],
+  storage,
+};
+
 const persistedAuthReducer = persistReducer(persistAuth, authReducer);
 const persistedFavoritesReducer = persistReducer(persistFavorites, favoritesReducer);
+const persistedMyCarReducer = persistReducer(persistMyCar, myCarReducer);
 const persistedOrderReducer = persistReducer(persistOrder, OrderReducer);
 const persisterSearchReducer = persistReducer(persistSearch, searchReducer);
 const persistCustomizerReducer = persistReducer(
@@ -66,6 +74,7 @@ export const store = configureStore({
     customizer: persistCustomizerReducer,
     scrollUp: scrollUpReducer,
     favorites: persistedFavoritesReducer,
+    myCar: persistedMyCarReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
