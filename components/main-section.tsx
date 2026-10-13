@@ -1,11 +1,8 @@
 "use client";
 import Categories from "@/app/[locale]/(routes)/(main)/_components/categories";
 import React, { FC } from "react";
-import { MyModelBar } from "@/features/car-model/components/my-model-bar";
 import { useCategories } from "@/features/catalog";
-import SortProducts from "@/app/[locale]/(routes)/(main)/_components/sort";
-import CustomizerLayout from "./сustomizer-layout";
-import SearchByStock from "@/app/[locale]/(routes)/(main)/_components/search-by-stock";
+import { ListToolbar } from "@/features/catalog/components/list-toolbar/list-toolbar";
 import Breadcrumbs from "./breadcrumb";
 
 interface MainSectionProps {
@@ -38,17 +35,6 @@ const MainSection: FC<MainSectionProps> = ({
               )}
               <Breadcrumbs />
             </div>
-            <div className="flex items-center md:hidden gap-3 justify-between">
-              <div className="md:hidden flex-1 min-w-0">
-                <SearchByStock />
-              </div>
-
-              <div className="flex md:hidden items-center gap-4">
-                <SortProducts />
-                <CustomizerLayout />
-              </div>
-            </div>
-
             {shouldBeCategories && (
               <div className="hidden lg:block h-full">
                 {isPending ? (
@@ -62,20 +48,7 @@ const MainSection: FC<MainSectionProps> = ({
             )}
           </div>
           <div className="flex flex-col gap-3 w-full h-full">
-            <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
-              <div className="flex items-center gap-4">
-                {shouldBeModels && <MyModelBar />}
-                <div className="hidden md:block">
-                  <SearchByStock />
-                </div>
-              </div>
-
-              <div className="hidden md:flex items-center gap-6 ml-auto">
-                <SortProducts />
-                <CustomizerLayout />
-              </div>
-            </div>
-
+            <ListToolbar withModel={shouldBeModels} />
             {children}
           </div>
         </div>

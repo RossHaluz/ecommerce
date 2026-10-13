@@ -21,8 +21,9 @@ const Header = () => {
   const [isShowCatalog, setIsShowCatalog] = useState(false);
   const pathname = usePathname();
   const params = useParams();
+  // Сторінки списків: під шапкою прилипає панель моделі й фільтрів, тож шапка мусить триматися теж.
   const shouldBeFixed =
-    pathname.includes("/categories") || Boolean(params?.modelName);
+    pathname.includes("/categories") || pathname.startsWith("/search") || Boolean(params?.modelName);
   const homePage = pathname === "/";
   // На картці товару VIN є в блоці «Підходить до», а плаваюча кнопка на телефоні закривала «Купити».
   const isProductPage = pathname.includes("/product/");
