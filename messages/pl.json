@@ -46,7 +46,8 @@
     "back": "Wstecz",
     "allCategories": "Wszystkie kategorie →",
     "allParts": "wszystkie części →",
-    "favorites": "Ulubione"
+    "favorites": "Ulubione",
+    "all": "Wszystkie"
   },
   "product": {
     "inCartGo": "W koszyku · przejdź",
@@ -113,13 +114,17 @@
     "allProducts": "Wszystkie produkty",
     "inStock": "Dostępne",
     "onOrder": "Na zamówienie",
-    "sorting": "Sortowanie",
-    "priceAsc": "Od najtańszych",
-    "priceDesc": "Od najdroższych",
-    "chooseModel": "Wybierz model",
     "notFoundInCategory": "Nie znaleziono produktów w tej kategorii…",
     "goToCatalog": "Przejdź do katalogu",
-    "sortAriaLabel": "Sortowanie produktów"
+    "title": "Sortowanie i filtry",
+    "filters": "Filtry",
+    "sortFirst": "Najpierw pokazuj",
+    "sortDesc": "Droższe",
+    "sortAsc": "Tańsze",
+    "reset": "Wyczyść",
+    "resetAll": "Wyczyść wszystko",
+    "apply": "Pokaż",
+    "remove": "Usuń „{name}”"
   },
   "search": {
     "placeholder": "Nazwa lub numer katalogowy",
