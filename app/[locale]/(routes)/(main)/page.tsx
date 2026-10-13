@@ -8,6 +8,7 @@ import { buildAlternates } from "@/lib/seo/alternates";
 import { toProductPage } from "@/features/catalog/fetch-product-page";
 import { FaqSection } from "@/components/seo/faq-section";
 import { getCatalogFaq } from "@/lib/seo/catalog-faq";
+import { SeoText } from "@/components/seo/seo-text";
 
 const Products = dynamic(() => import("../_components/products"), {
   ssr: true,
@@ -35,6 +36,7 @@ const Home = async ({ params }: { params: { locale: string } }) => {
   return (
     <MainSection title={title}>
       <Products products={first.products} page={first.page} totalPages={first.totalPages} />
+      <SeoText title={t("seo.home.title")} text={t("seo.home.text")} />
       <FaqSection title={t("seo.faqTitle")} items={faq} />
     </MainSection>
   );
