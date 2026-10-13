@@ -7,7 +7,9 @@ import { activeFilterCount } from "../../lib/list-filters";
 import { useListFilters } from "../../hooks/use-list-filters";
 import { FiltersSheet } from "./filters-sheet";
 
-const BUTTON = "flex h-11 shrink-0 items-center gap-1.5 rounded-[10px] border border-[#CFCFCF] bg-white px-3.5 text-[15px] font-extrabold text-[#2E2E2E]";
+const BUTTON = "flex h-11 shrink-0 items-center gap-1.5 rounded-[10px] border border-[#CFCFCF] bg-white px-3 text-[15px] font-extrabold text-[#2E2E2E] min-[400px]:px-3.5";
+// На вузьких телефонах (≤ 399 px) підпис лише для скрінрідера — інакше обрізається назва моделі поруч.
+const LABEL = "max-[399px]:sr-only";
 
 /** Заглушка для Suspense: та сама кнопка, щоб у кешованому HTML нічого не стрибало. */
 export const FiltersButtonPlaceholder = () => {
@@ -15,7 +17,7 @@ export const FiltersButtonPlaceholder = () => {
   return (
     <span className={BUTTON} aria-hidden>
       <SlidersHorizontal size={18} />
-      {t("filters")}
+      <span className={LABEL}>{t("filters")}</span>
     </span>
   );
 };
@@ -30,7 +32,7 @@ export const FiltersButton = () => {
     <>
       <button type="button" onClick={() => setOpen(true)} className={BUTTON}>
         <SlidersHorizontal size={18} aria-hidden />
-        {t("filters")}
+        <span className={LABEL}>{t("filters")}</span>
         {count > 0 && <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2E2E2E] px-1 text-xs text-white">{count}</span>}
       </button>
       <FiltersSheet open={open} onOpenChange={setOpen} filters={filters} onApply={apply} />
