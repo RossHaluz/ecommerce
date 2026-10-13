@@ -4,6 +4,7 @@ import { selectCurrency } from "@/redux/customizer/selectors";
 import { useExchangeRate } from "@/hooks/use-exchange-rate";
 import { formatPrice } from "@/lib/format/price";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
+import { useMounted } from "@/hooks/use-mounted";
 
 /**
  * Зшиває докупи: обрану валюту (Redux, персиститься), курс НБУ (TanStack,
@@ -14,8 +15,10 @@ import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
 export const usePriceFormatter = () => {
   const currency = useHydratedSelector(selectCurrency);
   const { data } = useExchangeRate();
+  const mounted = useMounted();
 
-  const rate = data?.usdToUah ?? null;
+  // Сервер курсу не знає; якщо інший компонент уже завантажив його до гідратації, без цього розмітка розходиться.
+  const rate = mounted ? data?.usdToUah ?? null : null;
 
   return {
     currency,

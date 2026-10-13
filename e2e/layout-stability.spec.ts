@@ -37,3 +37,18 @@ test("слайдер схожих товарів не змінює розкла�
   expect(ssrWidth).not.toBeNull();
   expect(Math.abs(ssrWidth! - hydratedWidth!)).toBeLessThanOrEqual(2);
 });
+
+// Гривні під ціною: курс міг потрапити в кеш раніше, ніж гідратувався список, і картка розходилась із SSR.
+const HYDRATION_ERROR = /did not match|Hydration failed|Minified React error #(418|423|425)/;
+
+test("головна гідратується без розбіжностей із SSR", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error" && HYDRATION_ERROR.test(message.text())) errors.push(message.text().slice(0, 200));
+  });
+
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  expect(errors).toEqual([]);
+});
