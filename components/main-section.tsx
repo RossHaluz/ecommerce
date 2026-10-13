@@ -1,8 +1,8 @@
 "use client";
 import Categories from "@/app/[locale]/(routes)/(main)/_components/categories";
 import React, { FC } from "react";
-import SearchByModel from "../app/[locale]/(routes)/(main)/_components/search-by-model";
-import { useCategories, useModels } from "@/features/catalog";
+import { MyModelBar } from "@/features/car-model/components/my-model-bar";
+import { useCategories } from "@/features/catalog";
 import SortProducts from "@/app/[locale]/(routes)/(main)/_components/sort";
 import CustomizerLayout from "./сustomizer-layout";
 import SearchByStock from "@/app/[locale]/(routes)/(main)/_components/search-by-stock";
@@ -24,7 +24,6 @@ const MainSection: FC<MainSectionProps> = ({
   // isPending, не isLoading: у TanStack v5 isLoading на сервері false, а на
   // першому клієнтському рендері true — скелетон ламав гідратацію.
   const { data: categories = [], isPending } = useCategories();
-  const { data: models = [] } = useModels();
 
   return (
     <section
@@ -65,7 +64,7 @@ const MainSection: FC<MainSectionProps> = ({
           <div className="flex flex-col gap-3 w-full h-full">
             <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
               <div className="flex items-center gap-4">
-                {shouldBeModels && <SearchByModel models={models} />}
+                {shouldBeModels && <MyModelBar />}
                 <div className="hidden md:block">
                   <SearchByStock />
                 </div>
