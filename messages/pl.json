@@ -259,6 +259,10 @@
     "collapse": "Zwiń",
     "aboutTitle": "O dziale „{subject}”",
     "faqTitle": "Częste pytania",
+    "home": {
+      "title": "Części do Audi — sklep internetowy Audiparts",
+      "text": "Audiparts to sklep internetowy z częściami do Audi (Audi parts): oryginalne używane i nowe części samochodowe Audi z numerami OE. Części Audi kupisz online: w każdej karcie produktu są zdjęcia, cena, dostępność i modele, do których część pasuje. Większość produktów jest dostępna w naszym magazynie w Chmielnickim (Ukraina).\n\nNajwięcej części mamy do Audi Q7 4M 2015–2019, liftingu 2020–2024 i 2024+, Audi Q5 80A i Q5 8R, Audi Q8 i Q8 2024+, Audi e-tron, Audi A6 C7 i A6 C8, Audi A7, Audi A8 D4 i A8 D5, Audi Q7 4L, Audi A4 B8 i A4 B9 oraz Audi Q3.\n\nW katalogu: części karoserii (zderzaki, maski, błotniki, drzwi, grille), oświetlenie (reflektory Matrix i LED, lampy tylne), chłodnice i układ chłodzenia, zawieszenie, układ hamulcowy, silnik i skrzynia biegów, elektronika i sterowniki, wnętrze, felgi i opony.\n\nJak znaleźć właściwą część: wybierz swój model w „Moje Audi” — katalog pokaże tylko pasujące części — albo wpisz w wyszukiwarkę oryginalny numer OE. Nie masz pewności, czy część pasuje? Wyślij VIN przez Viber lub Telegram, a menedżer bezpłatnie dobierze części do Twojego Audi.\n\nWysyłamy Nową Pocztą z Chmielnickiego, po Ukrainie dostawa trwa 2–3 dni. Płatność przy odbiorze lub przelewem na kartę, wymiana lub zwrot — 14 dni."
+    },
     "faq": {
       "countQ": "Ile części jest w dziale „{subject}”?",
       "countA": "Obecnie w katalogu {count, plural, one {# część} few {# części} many {# części} other {# części}}. W karcie każdej widać cenę oraz czy jest dostępna, czy na zamówienie.",
