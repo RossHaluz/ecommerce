@@ -20,8 +20,7 @@ export const ENDPOINTS = {
   createOrder: (storeId: string) => `/order/${storeId}/create`,
 
   search: () => `/search`,
-  searchPopular: () => `/search/popular`,
-  searchSuggestions: () => `/search/suggestions`,
+  searchSuggest: (storeId: string) => `/search/suggest/${storeId}`,
 
   currentUser: () => `/auth/current`,
   favorite: (storeId: string, productId: string) => `/favorites/${storeId}/${productId}`,

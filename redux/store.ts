@@ -13,7 +13,6 @@ import {
 import storage from "redux-persist/lib/storage";
 import { useDispatch } from "react-redux";
 import { OrderReducer } from "./order/slice";
-import { searchReducer } from "./search/slice";
 import { authReducer } from "./auth/slice";
 import { customizerReducer } from "./customizer/slice";
 import { scrollUpReducer } from "./scroll-up/slice";
@@ -23,12 +22,6 @@ import { myCarReducer } from "./my-car/slice";
 const persistCustomizer = {
   key: "currentCustomizer",
   whitelist: ["currentCustomizer", "currency"],
-  storage,
-};
-
-const persistSearch = {
-  key: "searchDetails",
-  whitelist: ["searchQuery", "searchItems"],
   storage,
 };
 
@@ -60,7 +53,6 @@ const persistedAuthReducer = persistReducer(persistAuth, authReducer);
 const persistedFavoritesReducer = persistReducer(persistFavorites, favoritesReducer);
 const persistedMyCarReducer = persistReducer(persistMyCar, myCarReducer);
 const persistedOrderReducer = persistReducer(persistOrder, OrderReducer);
-const persisterSearchReducer = persistReducer(persistSearch, searchReducer);
 const persistCustomizerReducer = persistReducer(
   persistCustomizer,
   customizerReducer
@@ -70,7 +62,6 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     order: persistedOrderReducer,
-    search: persisterSearchReducer,
     customizer: persistCustomizerReducer,
     scrollUp: scrollUpReducer,
     favorites: persistedFavoritesReducer,

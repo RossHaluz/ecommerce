@@ -2,7 +2,7 @@
 
 import * as api from "@/lib/api";
 import type { FavoriteItem } from "@/features/favorites/model/favorite-item";
-import { isSafePathSegment, safePathSegments } from "@/features/favorites/model/path-segments";
+import { isSafePathSegment, safePathSegments } from "@/lib/validation/path-segments";
 
 // Бекенд приймає до 100 id при злитті гостьового списку.
 const MAX_MERGE = 100;

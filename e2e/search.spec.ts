@@ -38,13 +38,27 @@ test.describe("пошук", () => {
     await expect(page.locator('a[href^="/product/"]').first()).toBeVisible();
   });
 
-  test("поле пошуку в шапці приймає ввід", async ({ page, catalog }) => {
+  test("під час набору підказує товари з посиланнями на них", async ({ page, catalog }) => {
     await page.goto("/");
 
     const input = searchInput(page);
     await input.click();
     await input.fill(catalog.productTitle.trim().split(/\s+/)[0]);
 
-    await expect(input).toHaveValue(/.+/);
+    await expect(page.getByRole("option").first()).toBeVisible();
+    await expect(page.getByRole("option").first().locator('a[href*="/product/"]')).toBeVisible();
+  });
+
+  test("Enter веде на сторінку результатів із запитом", async ({ page, catalog }) => {
+    await page.goto("/");
+    const word = catalog.productTitle.trim().split(/\s+/)[0];
+
+    const input = searchInput(page);
+    await input.click();
+    await input.fill(word);
+    await input.press("Enter");
+
+    await expect(page).toHaveURL(/\/search\?searchValue=/);
+    await expect(page.locator('a[href*="/product/"]').first()).toBeVisible();
   });
 });

@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 // next-intl: шлях без префікса мови — головна завжди «/», і на /pl теж.
 import { usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-import SearchBar from "@/components/search-bar";
+import { SearchBox } from "@/features/search";
 import SearchByVinCode from "@/components/search-by-vin-code/search-by-vin-code";
 import HeaderLogoLink from "./header-logo-link";
 import { HeaderCatalogMenu } from "./catalog-menu/header-catalog-menu";
@@ -34,7 +34,7 @@ const Header = () => {
     <>
       <HeaderTopBar />
       <header
-        className={cn("bg-[#FFFDFD] z-20", {
+        className={cn("bg-[#FFFDFD] z-20 has-[[data-search-open]]:z-[60]", {
           // sticky, не fixed: шапка займає своє місце, і сторінкам не треба вгадувати її висоту відступом.
           "sticky top-0": shouldBeFixed || homePage,
           // Панель каталогу позиціюється від шапки — їй потрібен positioned-предок і без sticky.
@@ -52,7 +52,7 @@ const Header = () => {
               onToggle={setIsShowCatalog}
             />
 
-            <SearchBar />
+            <SearchBox />
             <div className={isProductPage ? "hidden md:contents" : "contents"}>
               <SearchByVinCode />
             </div>
