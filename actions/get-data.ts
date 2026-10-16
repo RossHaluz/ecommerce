@@ -3,7 +3,7 @@
 import * as api from "@/lib/api";
 import type { Product } from "@/lib/types";
 import { toProductCard } from "@/entities/product/model/product-card";
-import { safePathSegments } from "@/features/favorites/model/path-segments";
+import { safePathSegments } from "@/lib/validation/path-segments";
 
 export const getCategories = (limit?: string) => api.getCategories(limit);
 
