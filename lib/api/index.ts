@@ -23,3 +23,4 @@ export { fetchModels, getModels, fetchModelDetails, getModelDetails } from "./mo
 export { getCurrentUser, updateUser } from "./account";
 export { createOrder } from "./orders";
 export { putAccountFavorite, deleteAccountFavorite, mergeAccountFavorites } from "./favorites";
+export { fetchSearchSuggestions, recordSearchQuery } from "./search";
