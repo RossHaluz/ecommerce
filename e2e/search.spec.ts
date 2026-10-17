@@ -49,6 +49,28 @@ test.describe("пошук", () => {
     await expect(page.getByRole("option").first().locator('a[href*="/product/"]')).toBeVisible();
   });
 
+  test("OE-номер, набраний з пробілами, показує точний збіг першим", async ({ page, request }) => {
+    const api = process.env.E2E_API_URL ?? "http://localhost:3005";
+    const storeId = process.env.STORE_ID ?? "25a4ead9-5f7d-4d12-9a93-15ff69478aaa";
+    const products = await (await request.get(`${api}/api/product/${storeId}?pageSize=200`)).json();
+    const withNumber = products?.data?.products?.find((p: any) => /^[A-Z0-9]{9,}$/i.test(p?.catalog_number?.trim() ?? ""));
+    test.skip(!withNumber, "у вибірці немає товару з простим OE-номером");
+
+    const number: string = withNumber.catalog_number.trim();
+    const spaced = `${number.slice(0, 3)} ${number.slice(3, 6)} ${number.slice(6)}`;
+    await page.goto(`/search?searchValue=${encodeURIComponent(spaced)}`);
+
+    await expect(page.getByRole("heading", { name: "Точний збіг за OE-номером" })).toBeVisible();
+  });
+
+  test("нічого не знайшли — показує заявку «Знайти для мене» із запитом у полі", async ({ page }) => {
+    const query = "zzqx немає такої деталі";
+    await page.goto(`/search?searchValue=${encodeURIComponent(query)}`);
+
+    await expect(page.getByRole("button", { name: "Знайти для мене" })).toBeVisible();
+    await expect(page.getByLabel("Що шукаєте")).toHaveValue(query);
+  });
+
   test("Enter веде на сторінку результатів із запитом", async ({ page, catalog }) => {
     await page.goto("/");
     const word = catalog.productTitle.trim().split(/\s+/)[0];

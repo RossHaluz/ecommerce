@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Products from "../../_components/products";
-import NotFoundItems from "@/components/not-found-items";
+import { SearchResultsBody } from "@/features/search";
 import { getProductsByModel } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import { Metadata } from "next";
@@ -37,17 +37,19 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams, params }) => {
       shouldBeCategories={false}
       shouldBeModels={false}
     >
-      {first.products.length ? (
-        <Products
-          products={first.products}
-          page={first.page}
-          totalPages={first.totalPages}
-          modelId={modelName}
-          renderedFor={listParams}
-        />
-      ) : (
-        <NotFoundItems text={t("noResults")} />
-      )}
+      <SearchResultsBody
+        query={listParams.searchValue ?? ""}
+        products={first.products}
+        list={
+          <Products
+            products={first.products}
+            page={first.page}
+            totalPages={first.totalPages}
+            modelId={modelName}
+            renderedFor={listParams}
+          />
+        }
+      />
     </MainSection>
   );
 };

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import NotFoundItems from "@/components/not-found-items";
+import { SearchResultsBody } from "@/features/search";
 import { getSearchProducts } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import { Metadata } from "next";
@@ -41,17 +41,19 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
       shouldBeCategories={false}
       shouldBeModels={false}
     >
-      {first.products.length ? (
-        <Products
-          key={listParams.searchValue}
-          products={first.products}
-          page={first.page}
-          totalPages={first.totalPages}
-          renderedFor={listParams}
-        />
-      ) : (
-        <NotFoundItems text={t("noResults")} />
-      )}
+      <SearchResultsBody
+        query={listParams.searchValue ?? ""}
+        products={first.products}
+        list={
+          <Products
+            key={listParams.searchValue}
+            products={first.products}
+            page={first.page}
+            totalPages={first.totalPages}
+            renderedFor={listParams}
+          />
+        }
+      />
     </MainSection>
   );
 };
