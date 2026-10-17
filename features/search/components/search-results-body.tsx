@@ -9,11 +9,12 @@ interface SearchResultsBodyProps {
   products: Product[];
   /** Список товарів сторінки — його рендерить сама сторінка (пагінація, фільтри). */
   list: ReactNode;
+  withinModel?: boolean;
 }
 
 /** Спільне для загального пошуку й пошуку в межах моделі: точний збіг за OE зверху, а якщо пусто — заявка. */
-export const SearchResultsBody = ({ query, products, list }: SearchResultsBodyProps) => {
-  if (!products.length) return <SearchEmptyState query={query} />;
+export const SearchResultsBody = ({ query, products, list, withinModel }: SearchResultsBodyProps) => {
+  if (!products.length) return <SearchEmptyState query={query} withinModel={withinModel} />;
 
   return (
     <>

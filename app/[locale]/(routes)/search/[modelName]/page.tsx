@@ -40,6 +40,7 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams, params }) => {
       <SearchResultsBody
         query={listParams.searchValue ?? ""}
         products={first.products}
+        withinModel
         list={
           <Products
             products={first.products}

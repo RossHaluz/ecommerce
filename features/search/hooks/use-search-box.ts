@@ -5,6 +5,8 @@ import { useRouter } from "@/i18n/routing";
 import { recordSearch } from "@/actions/search";
 import { useMyModel } from "@/features/car-model/hooks/use-my-model";
 import { searchQueryOf } from "../model/search-query";
+import { searchModelFilter } from "../model/search-model-filter";
+import { looksLikeOe } from "../model/exact-oe";
 import { productHref, searchResultsHref } from "../model/results-href";
 import { useSearchSuggest } from "./use-search-suggest";
 import { useRecentQueries } from "./use-recent-queries";
@@ -20,7 +22,7 @@ export const useSearchBox = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const recentQueries = useRecentQueries();
 
-  const modelSlug = onlyMyModel && myModel ? myModel.modelName : null;
+  const modelSlug = searchModelFilter(value, onlyMyModel, myModel?.modelName ?? null);
   const suggest = useSearchSuggest(value, modelSlug);
   const products = suggest.data?.products ?? [];
 
@@ -84,6 +86,8 @@ export const useSearchBox = () => {
     isLoading: suggest.isFetching,
     hasQuery: Boolean(searchQueryOf(value)),
     myModel,
+    /** Для OE-номера перемикач моделі нічого не змінює, тож його не показуємо. */
+    canNarrowByModel: Boolean(myModel) && !looksLikeOe(value),
     onlyMyModel,
     setOnlyMyModel,
     modelSlug,
