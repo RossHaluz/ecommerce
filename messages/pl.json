@@ -147,6 +147,7 @@
     "removeRecent": "Usuń „{query}” z historii",
     "typeMore": "Wpisz nazwę części, model (Q7 4M, A6 C7) lub numer OE",
     "exactTitle": "Dokładne dopasowanie numeru OE",
+    "searchAllModels": "Szukaj we wszystkich modelach",
     "fits": "Pasuje do",
     "details": "Szczegóły",
     "alsoWithNumber": "Więcej z tym numerem",

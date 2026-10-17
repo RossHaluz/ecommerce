@@ -28,7 +28,7 @@ export const SuggestPanel = ({ box }: { box: SearchBoxState }) => {
       className="absolute inset-x-0 top-full z-40 max-h-[calc(100dvh-64px)] overflow-y-auto border-t border-[#EEEEEE] bg-white p-3 text-[#2E2E2E] shadow-lg lg:right-auto lg:top-[calc(100%+8px)] lg:max-h-[min(640px,calc(100vh-140px))] lg:w-[min(880px,calc(100vw-340px))] lg:rounded-xl lg:border-0 lg:p-4"
     >
       <div className="flex flex-col gap-3">
-        {box.myModel && (
+        {box.myModel && box.canNarrowByModel && (
           <ModelOnlyToggle modelName={formatModelName(box.myModel.name)} checked={box.onlyMyModel} onChange={box.setOnlyMyModel} />
         )}
 
@@ -44,6 +44,15 @@ export const SuggestPanel = ({ box }: { box: SearchBoxState }) => {
               {products.length > 0 && <SuggestProducts products={products} query={box.value} activeIndex={box.activeIndex} onPick={box.leave} />}
               {!products.length && box.isLoading && <p className="px-2 py-2 text-sm text-[#6B6B6B]">{t("searching")}</p>}
               {nothingFound && <p className="px-2 py-2 text-sm text-[#6B6B6B]">{t("nothingFound")}</p>}
+              {nothingFound && box.modelSlug && (
+                <button
+                  type="button"
+                  onClick={() => box.setOnlyMyModel(false)}
+                  className="mx-2 min-h-[44px] self-start rounded-lg border-2 border-[#C0092A] px-4 text-sm font-extrabold text-[#C0092A] hover:bg-[#FFF2F4]"
+                >
+                  {t("searchAllModels")}
+                </button>
+              )}
             </div>
           </div>
         )}

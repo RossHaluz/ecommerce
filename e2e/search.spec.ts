@@ -63,6 +63,32 @@ test.describe("пошук", () => {
     await expect(page.getByRole("heading", { name: "Точний збіг за OE-номером" })).toBeVisible();
   });
 
+  test("OE-номер знаходиться, навіть коли в «Моя Audi» обрана інша модель", async ({ page, request }) => {
+    const api = process.env.E2E_API_URL ?? "http://localhost:3005";
+    const storeId = process.env.STORE_ID ?? "25a4ead9-5f7d-4d12-9a93-15ff69478aaa";
+    const products = await (await request.get(`${api}/api/product/${storeId}?pageSize=200`)).json();
+    const part = products?.data?.products?.find((p: any) => /^[A-Z0-9]{9,}$/i.test(p?.catalog_number?.trim() ?? "") && p.models?.length);
+    const models = await (await request.get(`${api}/api/model/${storeId}`)).json();
+    const fitting = new Set(part?.models?.map((m: any) => m.model?.modelName));
+    const other = (models?.data ?? models)?.find((m: any) => !fitting.has(m.modelName));
+    test.skip(!part || !other, "немає товару з OE і моделлю, якій він не підходить");
+
+    // Саме так redux-persist зберігає «Моя Audi»: до цього фіксу фільтр моделі ховав деталь, що їй не підходить.
+    await page.addInitScript((car) => {
+      window.localStorage.setItem("persist:myCar", JSON.stringify({ car: JSON.stringify(car), _persist: JSON.stringify({ version: -1, rehydrated: true }) }));
+    }, { modelName: other.modelName, name: other.name });
+
+    await page.goto("/");
+    const input = searchInput(page);
+    await input.click();
+    await input.fill(part.catalog_number.trim());
+
+    await expect(page.getByRole("option").first()).toBeVisible();
+    await input.press("Enter");
+    await expect(page).toHaveURL(/\/search\?searchValue=/);
+    await expect(page.getByRole("heading", { name: "Точний збіг за OE-номером" })).toBeVisible();
+  });
+
   test("нічого не знайшли — показує заявку «Знайти для мене» із запитом у полі", async ({ page }) => {
     const query = "zzqx немає такої деталі";
     await page.goto(`/search?searchValue=${encodeURIComponent(query)}`);
