@@ -13,7 +13,7 @@ export interface LeadInput {
   files?: File[];
 }
 
-export type LeadType = "call_me" | "vin";
+export type LeadType = "call_me" | "vin" | "search";
 
 /**
  * Одна дорога для заявок «Передзвоніть мені» і «Підбір за VIN». Через browserClient
