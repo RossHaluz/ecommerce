@@ -1,5 +1,5 @@
 "use client";
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import NotFoundItems from "@/components/not-found-items";
 import { useListParams, useProductList, type CatalogScope } from "@/features/catalog";
@@ -11,10 +11,11 @@ interface LiveProductsProps {
   scope: CatalogScope;
   firstPage: ProductPage;
   renderedFor?: ListParams;
+  inline?: ReactNode;
 }
 
 /** Список, що слідує за адресою: сторінка, сортування, наявність. */
-export const LiveProducts: FC<LiveProductsProps> = ({ scope, firstPage, renderedFor }) => {
+export const LiveProducts: FC<LiveProductsProps> = ({ scope, firstPage, renderedFor, inline }) => {
   const t = useTranslations("filters");
   const { page: urlPage } = useListParams();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPlaceholderData } =
@@ -46,6 +47,7 @@ export const LiveProducts: FC<LiveProductsProps> = ({ scope, firstPage, rendered
       isFetchingMore={isFetchingNextPage}
       isStale={isPlaceholderData}
       onShowMore={() => fetchNextPage()}
+      inline={inline}
     />
   );
 };

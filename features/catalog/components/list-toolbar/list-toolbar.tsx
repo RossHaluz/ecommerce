@@ -8,7 +8,8 @@ import { ActiveFilterChips } from "./active-filter-chips";
 import { CategoryChips } from "./category-chips";
 
 /** Модель і фільтри прилипають під шапкою: що звужує список, видно й змінюється з будь-якого місця. */
-export const ListToolbar = ({ withModel = true }: { withModel?: boolean }) => (
+// withCategories: у пошуку чипи розділів каталогу не про запит — там свої «Уточніть».
+export const ListToolbar = ({ withModel = true, withCategories = true }: { withModel?: boolean; withCategories?: boolean }) => (
   <>
     <div className="sticky top-16 z-10 -mx-4 bg-[#F2F2F2]/95 px-4 py-2 backdrop-blur lg:top-20 lg:mx-0 lg:px-0">
       <div className="flex items-center gap-2 md:gap-3">
@@ -24,6 +25,6 @@ export const ListToolbar = ({ withModel = true }: { withModel?: boolean }) => (
         </div>
       </div>
     </div>
-    <CategoryChips />
+    {withCategories && <CategoryChips />}
   </>
 );

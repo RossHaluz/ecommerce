@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { SearchResultsBody } from "@/features/search";
+import { SearchResultsBody, VinCheckBanner } from "@/features/search";
 import { getSearchProducts } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import { Metadata } from "next";
@@ -44,6 +44,8 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
       <SearchResultsBody
         query={listParams.searchValue ?? ""}
         products={first.products}
+        total={Number(data?.meta?.totalProducts ?? first.products.length)}
+        facets={data?.facets ?? []}
         list={
           <Products
             key={listParams.searchValue}
@@ -51,6 +53,7 @@ const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
             page={first.page}
             totalPages={first.totalPages}
             renderedFor={listParams}
+            inline={<VinCheckBanner />}
           />
         }
       />

@@ -97,6 +97,21 @@ test.describe("пошук", () => {
     await expect(page.getByLabel("Що шукаєте")).toHaveValue(query);
   });
 
+  test("чип «Уточніть» дописує ознаку до запиту й звужує список", async ({ page }) => {
+    await page.goto(`/search?searchValue=${encodeURIComponent("фара q8")}`);
+    const refine = page.getByRole("navigation", { name: "Уточніть:" });
+    const chip = refine.getByRole("link").first();
+    test.skip(!(await chip.count()), "для цього запиту немає уточнень у локальній базі");
+
+    const count = Number((await chip.locator("span").textContent())?.trim());
+    await chip.click();
+
+    await expect(page).toHaveURL(/searchValue=%D1%84%D0%B0%D1%80%D0%B0\+q8\+/);
+    await expect(page.getByRole("navigation", { name: "Уточніть:" })).toContainText(String(count));
+    await expect(page.getByText("Не впевнені, яка саме підійде на вашу Audi?")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Немає саме того, що потрібно?" })).toBeVisible();
+  });
+
   test("Enter веде на сторінку результатів із запитом", async ({ page, catalog }) => {
     await page.goto("/");
     const word = catalog.productTitle.trim().split(/\s+/)[0];

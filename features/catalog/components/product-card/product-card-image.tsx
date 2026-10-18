@@ -7,6 +7,7 @@ import { Link } from "@/i18n/routing";
 import ImageNotFound from "/public/images/image-not-found.jpg";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { FavoriteButton } from "@/features/favorites";
+import { TitleBadges } from "@/entities/product/ui/title-badges";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +43,7 @@ export const ProductCardImage = ({ item, href, index, prefetch, isList }: Produc
           loading={index >= ABOVE_THE_FOLD_ITEMS && index < FIRST_SCREEN_ITEMS ? "eager" : undefined}
           onLoad={() => setLoading(false)}
         />
+        <TitleBadges title={item.title} />
       </Link>
       <FavoriteButton product={item} className="absolute right-1.5 top-1.5" />
     </div>

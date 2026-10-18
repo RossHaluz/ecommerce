@@ -23,3 +23,10 @@ export interface SearchSuggestions {
 }
 
 export const NO_SUGGESTIONS: SearchSuggestions = { total: 0, products: [], categories: [] };
+
+/** Чип «Уточніть»: `word` дописуємо до запиту, `count` — скільки знайдених товарів його мають. */
+export interface SearchFacet {
+  key: string;
+  word: string;
+  count: number;
+}

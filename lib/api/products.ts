@@ -2,12 +2,15 @@ import { CACHE_TAGS, ENDPOINTS } from "./endpoints";
 import { request, orNull, STORE_ID } from "./http";
 import type { Meta, Product } from "@/lib/types";
 import type { RelatedCategory } from "@/components/seo/related-category-links";
+import type { SearchFacet } from "@/features/search/model/types";
 
 export interface ProductsResponse {
   products: Product[];
   meta: Meta;
   /** Лише у відповіді по моделі: категорії з її товарами. */
   related?: { categories: RelatedCategory[] };
+  /** Лише в пошуку: ознаки для чипів «Уточніть», пораховані по всіх знайдених. */
+  facets?: SearchFacet[];
 }
 
 export interface ProductListParams {
