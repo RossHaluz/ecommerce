@@ -9,7 +9,7 @@ import { productTitle } from "@/entities/product/model/product-heading";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { cn } from "@/lib/utils";
 import type { SuggestProduct } from "../model/types";
-import { productHref } from "../model/results-href";
+import { productHref } from "@/entities/product/model/product-href";
 import { HighlightedText } from "./highlighted-text";
 
 interface SuggestProductRowProps {

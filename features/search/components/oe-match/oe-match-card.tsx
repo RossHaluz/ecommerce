@@ -6,7 +6,7 @@ import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { productTitle } from "@/entities/product/model/product-heading";
 import { StockLine } from "@/entities/product/ui/stock-line";
 import type { Product } from "@/lib/types";
-import { productHref } from "../../model/results-href";
+import { productHref } from "@/entities/product/model/product-href";
 import { OeMatchFits } from "./oe-match-fits";
 import { OeMatchBuy } from "./oe-match-buy";
 import { OeAlsoList } from "./oe-also-list";
