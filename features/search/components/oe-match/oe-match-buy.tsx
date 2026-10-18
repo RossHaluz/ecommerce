@@ -5,7 +5,7 @@ import { Link } from "@/i18n/routing";
 import { AddedToCartSheet } from "@/features/cart";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import type { Product } from "@/lib/types";
-import { productHref } from "../../model/results-href";
+import { productHref } from "@/entities/product/model/product-href";
 
 export const OeMatchBuy = ({ product }: { product: Product }) => {
   const t = useTranslations();

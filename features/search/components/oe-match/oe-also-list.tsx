@@ -6,7 +6,7 @@ import { productTitle } from "@/entities/product/model/product-heading";
 import { StockStatus } from "@/entities/product/ui/stock-status";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import type { Product } from "@/lib/types";
-import { productHref } from "../../model/results-href";
+import { productHref } from "@/entities/product/model/product-href";
 
 /** Інші товари з тим самим номером: ліва й права, інший колір, друга штука. */
 export const OeAlsoList = ({ products }: { products: Product[] }) => {

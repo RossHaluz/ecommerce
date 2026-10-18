@@ -7,7 +7,8 @@ import { useMyModel } from "@/features/car-model/hooks/use-my-model";
 import { searchQueryOf } from "../model/search-query";
 import { searchModelFilter } from "../model/search-model-filter";
 import { looksLikeOe } from "../model/exact-oe";
-import { productHref, searchResultsHref } from "../model/results-href";
+import { searchResultsHref } from "../model/results-href";
+import { productHref } from "@/entities/product/model/product-href";
 import { useSearchSuggest } from "./use-search-suggest";
 import { useRecentQueries } from "./use-recent-queries";
 

@@ -4,7 +4,5 @@ export const searchResultsHref = (query: string, modelSlug: string | null) => ({
   query: { searchValue: query },
 });
 
-export const productHref = (slug: string) => `/product/${slug}`;
-
 export const categoryHref = (slug: string, modelSlug: string | null) =>
   modelSlug ? `/categories/${slug}/${modelSlug}` : `/categories/${slug}`;
