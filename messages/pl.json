@@ -132,6 +132,17 @@
     "apply": "Pokaż",
     "remove": "Usuń „{name}”"
   },
+  "askPrice": {
+    "button": "Zapytaj o cenę",
+    "title": "Zapytaj o cenę",
+    "lead": "Cenę tej części podaje menedżer. Zostaw telefon — napiszemy lub zadzwonimy z ceną.",
+    "phoneLabel": "Twój telefon",
+    "submit": "Zapytaj o cenę",
+    "sending": "Wysyłamy…",
+    "sentTitle": "Zapytanie wysłane",
+    "sentText": "Menedżer skontaktuje się z Tobą pod numerem {phone} i poda cenę.",
+    "orWrite": "Albo napisz od razu — wiadomość jest już gotowa:"
+  },
   "search": {
     "placeholder": "Nazwa części, model lub numer OE",
     "label": "Wyszukiwanie części",

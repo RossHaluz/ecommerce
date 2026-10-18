@@ -3,11 +3,13 @@
 import { useTranslations } from "next-intl";
 import { ShoppingCart } from "lucide-react";
 import { AddedToCartSheet } from "@/features/cart";
+import { AskPriceButton } from "@/features/ask-price";
 import type { Product } from "@/lib/types";
 
 /** На вузькій картці телефона — лише іконка (44 px для пальця), з md — повне «Купити». */
 export const ProductCardBuy = ({ item }: { item: Product }) => {
   const t = useTranslations("product");
+  if (!Number(item.price)) return <AskPriceButton product={item} variant="card" />;
 
   return (
     <AddedToCartSheet

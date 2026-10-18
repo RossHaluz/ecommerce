@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { AddedToCartSheet } from "@/features/cart";
+import { AskPriceButton } from "@/features/ask-price";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { productHref } from "@/entities/product/model/product-href";
@@ -39,20 +40,24 @@ export const SimilarCard = ({ product }: { product: Product }) => {
       <StockStatus quantity={product.quantity} className="text-[13px] font-bold" />
       <div className="mt-auto flex items-center justify-between gap-2 pt-1">
         <span className="text-[17px] font-extrabold text-[#C0092A] lg:text-xl">{price ? format(price) : t("negotiablePrice")}</span>
-        <AddedToCartSheet
-          product={product}
-          renderTrigger={(buy) => (
-            <button
-              type="button"
-              onClick={() => buy()}
-              aria-label={`${t("buy")}: ${product.title}`}
-              className="flex h-11 min-w-[44px] items-center justify-center rounded-lg bg-[#C0092A] px-0 font-extrabold text-white lg:px-4"
-            >
-              <ShoppingCart size={20} className="lg:hidden" aria-hidden />
-              <span className="hidden lg:inline">{t("buy")}</span>
-            </button>
-          )}
-        />
+        {price ? (
+          <AddedToCartSheet
+            product={product}
+            renderTrigger={(buy) => (
+              <button
+                type="button"
+                onClick={() => buy()}
+                aria-label={`${t("buy")}: ${product.title}`}
+                className="flex h-11 min-w-[44px] items-center justify-center rounded-lg bg-[#C0092A] px-0 font-extrabold text-white lg:px-4"
+              >
+                <ShoppingCart size={20} className="lg:hidden" aria-hidden />
+                <span className="hidden lg:inline">{t("buy")}</span>
+              </button>
+            )}
+          />
+        ) : (
+          <AskPriceButton product={product} variant="card" />
+        )}
       </div>
     </article>
   );

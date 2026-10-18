@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { AddedToCartSheet } from "@/features/cart";
+import { AskPriceButton } from "@/features/ask-price";
 import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import type { Product } from "@/lib/types";
 import { productHref } from "@/entities/product/model/product-href";
@@ -26,14 +27,18 @@ export const OeMatchBuy = ({ product }: { product: Product }) => {
         >
           {t("search.details")}
         </Link>
-        <AddedToCartSheet
-          product={product}
-          renderTrigger={(buy) => (
-            <button type="button" onClick={() => buy()} className="h-12 flex-1 rounded-lg bg-[#C0092A] px-4 font-extrabold text-white hover:bg-[#A30722]">
-              {t("product.buy")}
-            </button>
-          )}
-        />
+        {price ? (
+          <AddedToCartSheet
+            product={product}
+            renderTrigger={(buy) => (
+              <button type="button" onClick={() => buy()} className="h-12 flex-1 rounded-lg bg-[#C0092A] px-4 font-extrabold text-white hover:bg-[#A30722]">
+                {t("product.buy")}
+              </button>
+            )}
+          />
+        ) : (
+          <AskPriceButton product={product} variant="bar" className="h-12 flex-1" />
+        )}
       </div>
     </div>
   );
