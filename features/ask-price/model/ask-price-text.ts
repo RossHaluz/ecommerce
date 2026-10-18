@@ -15,7 +15,7 @@ export interface AskPriceSubject {
  */
 export const askPriceText = (product: AskPriceSubject) =>
   [
-    `Ціна: ${productTitle(product.title)}`,
+    `Хочу дізнатися ціну до: ${productTitle(product.title)}`,
     product.catalog_number && `OE ${product.catalog_number}`,
     product.article && `арт. ${product.article}`,
     `${SITE_URL}${productHref(product.product_name)}`,
