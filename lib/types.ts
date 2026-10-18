@@ -21,6 +21,8 @@ export interface Product {
     id: string;
     url: string;
   }[];
+  /** Архів = продано (оператор, 2026-10-18). Приходить у деталях товару; списки віддають лише непродані. */
+  isArchived?: boolean;
 }
 
 export interface Model {

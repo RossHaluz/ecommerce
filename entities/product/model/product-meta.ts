@@ -6,6 +6,7 @@ export interface ProductMetaSource {
   catalog_number?: string | null;
   quantity: number;
   models?: { model?: { name?: string } | null }[];
+  isArchived?: boolean;
 }
 
 /** Більше двох моделей роздуває заголовок, а Google однаково його обріже. */
@@ -32,9 +33,11 @@ export function buildProductMeta(product: ProductMetaSource) {
   const name = tidy(product.title);
   const oe = tidy(product.catalog_number ?? "");
   const models = modelNames(product);
-  const stock = isInStock(product.quantity) ? "В наявності" : "Під замовлення";
+  const stock = product.isArchived ? "Продано" : isInStock(product.quantity) ? "В наявності" : "Під замовлення";
 
   return {
+    // Продану сторінку лишаємо для старих посилань, але з пошуковика її прибираємо.
+    ...(product.isArchived && { robots: { index: false, follow: true } }),
     title: `${oe ? `${oe} — ` : ""}${capitalize(name)} ${forAudi(models.slice(0, MAX_TITLE_MODELS))} | Audiparts`,
     description: `Купити ${name}${oe ? ` ${oe}` : ""} для ${forAudi(models)}. ${stock}. Оригінальна запчастина, доставка Новою поштою по всій Україні за 2–3 дні.`,
   };

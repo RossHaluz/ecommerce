@@ -45,6 +45,13 @@ describe("buildProductMeta", () => {
     );
   });
 
+  it("keeps a sold part out of the index and says it is sold", () => {
+    const meta = buildProductMeta({ ...product, isArchived: true });
+    expect(meta.robots).toEqual({ index: false, follow: true });
+    expect(meta.description).toContain("Продано");
+    expect(buildProductMeta(product)).not.toHaveProperty("robots");
+  });
+
   it("names the part, its OE number and the model in the description", () => {
     expect(buildProductMeta(product).description).toMatch(
       /^Купити бампер задній q7 4m s-line 4M0807511GRU для Audi \(Ауді\) Q7 4M \(2015–2019\)\./
