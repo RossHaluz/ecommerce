@@ -37,6 +37,10 @@ describe("buildProductJsonLd", () => {
     );
   });
 
+  it("marks a sold (archived) part as sold out, whatever its quantity", () => {
+    expect(buildProductJsonLd({ ...product, isArchived: true }).offers?.availability).toBe("https://schema.org/SoldOut");
+  });
+
   it("omits the offer for a negotiable (zero) price", () => {
     expect(buildProductJsonLd({ ...product, price: 0 })).not.toHaveProperty("offers");
   });

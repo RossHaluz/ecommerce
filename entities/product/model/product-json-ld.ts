@@ -10,7 +10,15 @@ export interface ProductJsonLdSource {
   price: number | string;
   quantity: number;
   images?: { url: string }[];
+  isArchived?: boolean;
 }
+
+const availabilityOf = (product: ProductJsonLdSource) =>
+  product.isArchived
+    ? "https://schema.org/SoldOut"
+    : isInStock(product.quantity)
+      ? "https://schema.org/InStock"
+      : "https://schema.org/BackOrder";
 
 /**
  * schema.org Product для пошуковиків. Ціна в базі зберігається в USD.
@@ -37,9 +45,7 @@ export function buildProductJsonLd(product: ProductJsonLdSource) {
         "@type": "Offer",
         price,
         priceCurrency: "USD",
-        availability: isInStock(product.quantity)
-          ? "https://schema.org/InStock"
-            : "https://schema.org/BackOrder",
+        availability: availabilityOf(product),
       },
     }),
   };

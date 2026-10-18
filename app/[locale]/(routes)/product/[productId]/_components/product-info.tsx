@@ -2,6 +2,7 @@ import { FC } from "react";
 import ProductDetails from "./product-details";
 import { ProductGallery } from "./gallery/product-gallery";
 import { BuyBox } from "./buy-box/buy-box";
+import { SoldBox } from "./buy-box/sold-box";
 import { CompatibilityCard } from "./compatibility/compatibility-card";
 import { ProductSpecs } from "./specs/product-specs";
 import { FitHelpCard } from "./help/fit-help-card";
@@ -40,13 +41,13 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading }) => (
     </div>
     <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
       <div className="order-2">
-        <BuyBox product={initialData} heading={heading} />
+        {initialData.isArchived ? <SoldBox product={initialData} heading={heading} /> : <BuyBox product={initialData} heading={heading} />}
       </div>
       <div className="order-6">
         <FitHelpCard />
       </div>
     </div>
-    <StickyBuyBar product={initialData} />
+    {!initialData.isArchived && <StickyBuyBar product={initialData} />}
   </div>
 );
 
