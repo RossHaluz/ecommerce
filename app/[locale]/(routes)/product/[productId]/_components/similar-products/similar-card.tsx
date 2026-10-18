@@ -10,6 +10,7 @@ import { usePriceFormatter } from "@/hooks/use-price-formatter";
 import { productImageUrl } from "@/entities/product/model/product-image-url";
 import { productHref } from "@/entities/product/model/product-href";
 import { StockStatus } from "@/entities/product/ui/stock-status";
+import { TitleBadges } from "@/entities/product/ui/title-badges";
 import type { Product } from "@/lib/types";
 import ImageNotFound from "/public/images/image-not-found.jpg";
 
@@ -30,6 +31,7 @@ export const SimilarCard = ({ product }: { product: Product }) => {
           sizes="(max-width: 1023px) 160px, 25vw"
           className="object-cover"
         />
+        <TitleBadges title={product.title} />
       </Link>
       <h3 className="m-0 line-clamp-2 text-sm font-bold leading-[18px] text-[#2E2E2E] first-letter:uppercase lg:text-[15px] lg:leading-5">
         <Link href={href} prefetch={false}>

@@ -132,6 +132,16 @@
     "apply": "Pokaż",
     "remove": "Usuń „{name}”"
   },
+  "productBadge": {
+    "left": "Lewa",
+    "right": "Prawa",
+    "set": "Komplet",
+    "matrix": "Matrix",
+    "laser": "Laser",
+    "fullLed": "Full LED",
+    "facelift": "Lifting",
+    "usa": "USA"
+  },
   "askPrice": {
     "button": "Zapytaj o cenę",
     "title": "Zapytaj o cenę",
@@ -163,6 +173,12 @@
     "typeMore": "Wpisz nazwę części, model (Q7 4M, A6 C7) lub numer OE",
     "exactTitle": "Dokładne dopasowanie numeru OE",
     "searchAllModels": "Szukaj we wszystkich modelach",
+    "resultsCount": "{count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}}",
+    "refine": "Doprecyzuj:",
+    "vinBannerTitle": "Nie wiesz, która część pasuje do Twojego Audi?",
+    "vinBannerText": "Wyślij VIN — menedżer bezpłatnie sprawdzi zgodność i poda cenę.",
+    "notExactTitle": "Nie ma dokładnie tego, czego szukasz?",
+    "notExactText": "Zostaw telefon — znajdziemy na zamówienie i podamy cenę oraz termin.",
     "fits": "Pasuje do",
     "details": "Szczegóły",
     "alsoWithNumber": "Więcej z tym numerem",

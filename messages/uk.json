@@ -132,6 +132,16 @@
     "apply": "Показати",
     "remove": "Прибрати «{name}»"
   },
+  "productBadge": {
+    "left": "Ліва",
+    "right": "Права",
+    "set": "Комплект",
+    "matrix": "Matrix",
+    "laser": "Laser",
+    "fullLed": "Full LED",
+    "facelift": "Рестайлінг",
+    "usa": "USA"
+  },
   "askPrice": {
     "button": "Дізнатися ціну",
     "title": "Дізнатися ціну",
@@ -163,6 +173,12 @@
     "typeMore": "Введіть назву деталі, модель (Q7 4M, A6 C7) або OE-номер",
     "exactTitle": "Точний збіг за OE-номером",
     "searchAllModels": "Шукати в усіх моделях",
+    "resultsCount": "{count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}}",
+    "refine": "Уточніть:",
+    "vinBannerTitle": "Не впевнені, яка саме підійде на вашу Audi?",
+    "vinBannerText": "Надішліть VIN — менеджер безкоштовно перевірить сумісність і скаже ціну.",
+    "notExactTitle": "Немає саме того, що потрібно?",
+    "notExactText": "Залиште телефон — знайдемо під замовлення й зв'яжемося з ціною та строком.",
     "fits": "Підходить до",
     "details": "Детальніше",
     "alsoWithNumber": "Ще з цим номером",

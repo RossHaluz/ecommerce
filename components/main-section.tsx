@@ -18,7 +18,7 @@ interface MainSectionProps {
 const MainSection: FC<MainSectionProps> = ({ children, title, shouldBeCategories = true, shouldBeModels = true }) => (
   <section className="container mb-6 mt-3 flex flex-col gap-3">
     <ListHeading title={title} />
-    <ListToolbar withModel={shouldBeModels} />
+    <ListToolbar withModel={shouldBeModels} withCategories={shouldBeCategories} />
     <div className={cn("grid items-start gap-6", shouldBeCategories && "lg:grid-cols-[272px_minmax(0,1fr)]")}>
       {shouldBeCategories && (
         <aside className="sticky top-[148px] hidden max-h-[calc(100vh-164px)] overflow-y-auto rounded-xl lg:block">

@@ -1,5 +1,5 @@
 "use client";
-import { FC, useState } from "react";
+import { FC, Fragment, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { ProductCard } from "@/features/catalog/components/product-card/product-card";
 import { selectCurrentCustomizer } from "@/redux/customizer/selectors";
@@ -27,7 +27,12 @@ interface ProductListLayoutProps {
   isFetchingMore?: boolean;
   isStale?: boolean;
   onShowMore?: () => void;
+  /** Блок на всю ширину після перших карток (напр. перевірка за VIN у пошуку). */
+  inline?: ReactNode;
 }
+
+// 6 ділиться на 2 і 3 колонки; на 4 решту ряду добирає grid-flow-dense.
+const INLINE_AFTER = 6;
 
 /** Лише вигляд списку: і кешований HTML, і живий список рендерять саме його. */
 export const ProductListLayout: FC<ProductListLayoutProps> = ({
@@ -38,6 +43,7 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
   isFetchingMore = false,
   isStale = false,
   onShowMore,
+  inline,
 }) => {
   const t = useTranslations("common");
   const currentCustomizer = useHydratedSelector(selectCurrentCustomizer);
@@ -57,15 +63,18 @@ export const ProductListLayout: FC<ProductListLayoutProps> = ({
           // Поруч бічне меню категорій: 4 колонки давали картку ~250 px — фото й ціна дрібні.
           "grid-cols-2 lg:grid-cols-3 min-[1600px]:grid-cols-4": currentCustomizer === "grid",
           "opacity-60": isStale,
+          "grid-flow-row-dense": Boolean(inline),
         })}
       >
         {items.map((item, index) => (
-          <ProductCard
-            key={item.id}
-            item={item}
-            index={index}
-            className={!showAll && index >= FIRST_PAINT_ITEMS ? "max-lg:hidden" : undefined}
-          />
+          <Fragment key={item.id}>
+            <ProductCard
+              item={item}
+              index={index}
+              className={!showAll && index >= FIRST_PAINT_ITEMS ? "max-lg:hidden" : undefined}
+            />
+            {inline && index === Math.min(INLINE_AFTER, items.length) - 1 && <li className="col-span-full">{inline}</li>}
+          </Fragment>
         ))}
       </ul>
       {!showAll && <div ref={sentinelRef} aria-hidden />}
