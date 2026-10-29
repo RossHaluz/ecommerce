@@ -38,3 +38,9 @@ async function post<T>(path: string, body: unknown): Promise<T> {
 export const sendOtp = (phoneNumber: string) => post<OtpSent>("send-otp", { phoneNumber });
 
 export const verifyOtp = (phoneNumber: string, code: string) => post<OtpVerified>("verify-otp", { phoneNumber, code });
+
+export const exchangeGoogleHandoff = (handoff: string) => post<OtpVerified>("google/exchange", { handoff });
+
+/** The API's own page that sends the person to Google; `next` is where to come back on this site. */
+export const googleStartUrl = (next: string) =>
+  `${process.env.BACKEND_URL}/auth/google?next=${encodeURIComponent(next)}`;

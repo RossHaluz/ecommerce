@@ -1,19 +1,10 @@
-import { test, expect, type Page, type Route } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
+import { reply } from "./fake-api";
 
 /**
  * The API is answered inside the browser, so no request reaches the backend and no SMS is ever sent.
  * The backend's own rules (limits, attempts, hashing) are covered by its tests.
  */
-const CORS = {
-  "Access-Control-Allow-Origin": "http://localhost:3000",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Allow-Methods": "POST",
-};
-
-const reply = (route: Route, status: number, body: unknown) =>
-  route.request().method() === "OPTIONS"
-    ? route.fulfill({ status: 204, headers: CORS })
-    : route.fulfill({ status, headers: CORS, contentType: "application/json", body: JSON.stringify(body) });
 
 /** Answers the two auth endpoints from queues; returns the codes the page submitted. */
 async function fakeAuthApi(page: Page, sendReplies: [number, unknown][], verifyReplies: [number, unknown][]) {

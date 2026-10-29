@@ -492,6 +492,21 @@
     "saveName": "Gotowe",
     "later": "Później",
     "signedIn": "Zalogowano",
+    "or": "lub",
+    "google": "Kontynuuj z Google",
+    "googleSigningIn": "Logujemy przez Google…",
+    "googleFailedTitle": "Nie udało się zalogować przez Google",
+    "retryGoogle": "Spróbuj ponownie",
+    "usePhone": "Zaloguj się numerem telefonu",
+    "home": "Na stronę główną",
+    "googleErrors": {
+      "cancelled": "Logowanie przez Google anulowano.",
+      "state": "Nie udało się potwierdzić logowania — być może strona została otwarta w innej przeglądarce. Spróbuj ponownie.",
+      "google": "Google nie odpowiada. Spróbuj ponownie lub zaloguj się numerem telefonu.",
+      "email_taken": "Ten e-mail jest już zarejestrowany. Zaloguj się numerem telefonu.",
+      "expired": "Logowanie wygasło. Spróbuj ponownie.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie lub zaloguj się numerem telefonu."
+    },
     "errors": {
       "invalidPhone": "Wpisz pełny numer: +380 XX XXX XX XX",
       "wrong": "Nieprawidłowy kod. Pozostało prób: {left}",
