@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useCategories } from "@/features/catalog";
 import { cn } from "@/lib/utils";
 import RenderCategoryItems from "@/components/render-category-items";
-import AuthorizationOtp from "@/components/authirization-otp";
+import { LoginPanel } from "@/features/auth";
 import { MobileMenuHeader } from "./mobile-menu-header";
 import { MenuMainPanel } from "./menu-main-panel";
 import type { MobileMenuPanel } from "./mobile-menu-panel";
@@ -66,7 +66,7 @@ export const MobileMenu = ({ panel, onPanelChange, onClose }: MobileMenuProps) =
         <div className="flex flex-1 flex-col gap-4 px-4 py-3">
           {panel === "menu" && <MenuMainPanel onOpenPanel={onPanelChange} onNavigate={onClose} />}
           {panel === "catalog" && <RenderCategoryItems categories={categories} setIsOpen={setIsOpen} isOpen />}
-          {panel === "account" && <AuthorizationOtp setIsOpen={setIsOpen} />}
+          {panel === "account" && <LoginPanel onClose={onClose} />}
         </div>
       </div>
     </div>,
