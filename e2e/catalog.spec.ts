@@ -30,6 +30,12 @@ test.describe("каталог", () => {
     expect(await page.locator(productLinks).count()).toBeGreaterThan(10);
   });
 
+  test("картка в списку показує артикул, за яким питають менеджера", async ({ page, catalog }) => {
+    await page.goto(`/categories/${catalog.categorySlug}`);
+
+    await expect(page.locator("li").filter({ hasText: /Артикул\s+\d+/ }).first()).toBeVisible();
+  });
+
   test("сортування за ціною не ламає список", async ({ page, catalog }) => {
     await page.goto(`/categories/${catalog.categorySlug}?sortByPrice=asc`);
     await expect(page.locator(productLinks).first()).toBeVisible();
@@ -68,6 +74,9 @@ test.describe("сторінка товару", () => {
   test("показує сумісні моделі й схожі товари", async ({ page, catalog }) => {
     await page.goto(`/product/${catalog.productSlug}`);
 
-    await expect(page.getByText("Також вас можуть зацікавити:")).toBeVisible();
+    // Товар під одну модель отримує конкретніший заголовок «Ще для Audi …».
+    await expect(
+      page.getByRole("heading", { level: 2, name: /Також вас можуть зацікавити:|Ще для Audi/ }).first()
+    ).toBeVisible();
   });
 });
