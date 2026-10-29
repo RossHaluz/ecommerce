@@ -17,6 +17,11 @@ describe("toAuthFailure", () => {
     expect(toAuthFailure(502, null)).toEqual({ reason: "sms_failed" });
   });
 
+  it("recognises a phone that belongs to another account", () => {
+    expect(toAuthFailure(409, { reason: "phone_taken" })).toEqual({ reason: "phone_taken" });
+    expect(failureMessage({ reason: "phone_taken" })).toEqual({ key: "phoneTaken" });
+  });
+
   it("does not invent a reason it does not know", () => {
     expect(toAuthFailure(500, { reason: "boom" })).toEqual({ reason: "unknown" });
   });

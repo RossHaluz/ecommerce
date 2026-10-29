@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { toAuthFailure, type AuthFailure } from "../model/auth-failure";
 
 export class AuthRequestError extends Error {
@@ -17,14 +18,20 @@ export interface OtpVerified {
   isNew: boolean;
 }
 
+export interface GoogleSignedIn extends OtpVerified {
+  needsPhone: boolean;
+  name: string;
+}
+
 // Straight from the browser, not through a server action: the API limits SMS per client address,
 // and via the site's server every visitor would share that server's one address.
-async function post<T>(path: string, body: unknown): Promise<T> {
+async function post<T>(path: string, body: unknown, { signedIn = false } = {}): Promise<T> {
+  const token = signedIn ? Cookies.get("token") : undefined;
   let response: Response;
   try {
     response = await fetch(`${process.env.BACKEND_URL}/api/auth/${path}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: JSON.stringify(body),
     });
   } catch {
@@ -39,7 +46,11 @@ export const sendOtp = (phoneNumber: string) => post<OtpSent>("send-otp", { phon
 
 export const verifyOtp = (phoneNumber: string, code: string) => post<OtpVerified>("verify-otp", { phoneNumber, code });
 
-export const exchangeGoogleHandoff = (handoff: string) => post<OtpVerified>("google/exchange", { handoff });
+export const exchangeGoogleHandoff = (handoff: string) => post<GoogleSignedIn>("google/exchange", { handoff });
+
+/** Confirms a phone for the signed-in account; the token may belong to another account after a merge. */
+export const attachPhone = (phoneNumber: string, code: string) =>
+  post<OtpVerified>("phone/attach", { phoneNumber, code }, { signedIn: true });
 
 /** The API's own page that sends the person to Google; `next` is where to come back on this site. */
 export const googleStartUrl = (next: string) =>

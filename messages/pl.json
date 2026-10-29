@@ -511,6 +511,12 @@
     "or": "lub",
     "google": "Kontynuuj z Google",
     "googleSigningIn": "Logujemy przez Google…",
+    "addPhoneBadge": "Logowanie przez Google · {name}",
+    "addPhoneBadgeNoName": "Logowanie przez Google",
+    "addPhoneTitle": "Ostatni krok — Twój telefon",
+    "addPhoneLead": "Przychodzą na niego powiadomienia o zamówieniu i przesyłce, a menedżer dzwoni, by doprecyzować część. Sprawdzimy kodem SMS.",
+    "mergeNoteTitle": "Ten numer ma już konto?",
+    "mergeNote": "Po kodzie połączymy: stare zamówienia pojawią się tutaj, a logować się będzie można i przez Google, i numerem.",
     "googleFailedTitle": "Nie udało się zalogować przez Google",
     "retryGoogle": "Spróbuj ponownie",
     "usePhone": "Zaloguj się numerem telefonu",
@@ -532,6 +538,7 @@
       "tooSoon": "Nowy kod można otrzymać za {seconds} s",
       "tooMany": "Zbyt wiele próśb o kod. Spróbuj za {minutes} min",
       "smsFailed": "Nie udało się wysłać SMS. Spróbuj ponownie",
+      "phoneTaken": "Ten numer jest już przypisany do innego konta. Wyloguj się i zaloguj numerem telefonu.",
       "network": "Brak połączenia. Sprawdź internet i spróbuj ponownie",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
