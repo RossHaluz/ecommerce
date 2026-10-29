@@ -20,7 +20,7 @@ test.describe("вхід через Google", () => {
 
   test("повернення з Google: сесія на 30 днів, код зник з адреси, людина там, звідки прийшла", async ({ page, context }) => {
     await page.route("**/api/auth/google/exchange", (route) =>
-      reply(route, 200, { data: { token: "e2e-google-token", isNew: false, needsPhone: true } })
+      reply(route, 200, { data: { token: "e2e-google-token", isNew: false, needsPhone: false, name: "Іван" } })
     );
     await page.goto("/auth/callback?next=%2Fcheckout#h=handoff-from-api");
 
@@ -37,6 +37,50 @@ test.describe("вхід через Google", () => {
     await expect(page.getByRole("link", { name: "Спробувати ще раз" })).toHaveCount(0);
     await page.getByRole("button", { name: "Увійти за номером телефону" }).click();
     await expect(page.getByRole("heading", { name: "Вхід або реєстрація" })).toBeVisible();
+  });
+
+  test("без телефону — «Останній крок», код, і людина там, звідки прийшла, вже в об'єднаному кабінеті", async ({ page, context }) => {
+    await page.route("**/api/auth/google/exchange", (route) =>
+      reply(route, 200, { data: { token: "google-only", isNew: false, needsPhone: true, name: "Олег Ковальчук" } })
+    );
+    await page.route("**/api/auth/send-otp", (route) => reply(route, 200, { data: { resendAfterSec: 60, expiresInSec: 300 } }));
+    let attachedWith = "";
+    await page.route("**/api/auth/phone/attach", (route) => {
+      if (route.request().method() === "POST") attachedWith = route.request().headers()["authorization"] ?? "";
+      return reply(route, 200, { data: { token: "merged-account", isNew: false, merged: true } });
+    });
+    await page.goto("/auth/callback?next=%2Fcheckout#h=handoff");
+
+    await expect(page.getByText("✓ Вхід через Google · Олег Ковальчук")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Останній крок — ваш телефон" })).toBeVisible();
+    await expect(page.getByText("Цей номер уже має кабінет?")).toBeVisible();
+    const phone = page.getByLabel("Номер телефону");
+    await phone.click();
+    await phone.pressSequentially("501234511");
+    await page.getByRole("button", { name: "Отримати код у SMS" }).click();
+    await page.getByLabel("Код підтвердження").pressSequentially("042917");
+
+    await expect(page).toHaveURL(/\/checkout$/);
+    expect(attachedWith).toBe("Bearer google-only");
+    expect((await context.cookies()).find((c) => c.name === "token")?.value).toBe("merged-account");
+  });
+
+  test("номер уже з іншим Google — пояснення, а не тиша", async ({ page }) => {
+    await page.route("**/api/auth/google/exchange", (route) =>
+      reply(route, 200, { data: { token: "google-only", isNew: false, needsPhone: true, name: "" } })
+    );
+    await page.route("**/api/auth/send-otp", (route) => reply(route, 200, { data: { resendAfterSec: 60, expiresInSec: 300 } }));
+    await page.route("**/api/auth/phone/attach", (route) => reply(route, 409, { reason: "phone_taken" }));
+    await page.goto("/auth/callback?next=%2Fcheckout#h=handoff");
+
+    await expect(page.getByText("✓ Вхід через Google", { exact: true })).toBeVisible();
+    const phone = page.getByLabel("Номер телефону");
+    await phone.click();
+    await phone.pressSequentially("501234511");
+    await page.getByRole("button", { name: "Отримати код у SMS" }).click();
+    await page.getByLabel("Код підтвердження").pressSequentially("042917");
+
+    await expect(page.getByText("Цей номер уже прив'язаний до іншого кабінету.")).toBeVisible();
   });
 
   test("застарілий код обміну — «Вхід застарів» і можна спробувати ще раз", async ({ page }) => {

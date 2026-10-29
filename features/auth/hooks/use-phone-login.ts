@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { updateUser } from "@/actions/get-data";
 import { useSession } from "@/features/account";
-import { AuthRequestError, sendOtp, verifyOtp } from "../api/auth-api";
+import { AuthRequestError, sendOtp, verifyOtp, type OtpVerified } from "../api/auth-api";
 import type { AuthFailure } from "../model/auth-failure";
 import { useCountdown } from "./use-countdown";
 
@@ -15,8 +15,13 @@ const SESSION_DAYS = 30;
 const asFailure = (error: unknown): AuthFailure =>
   error instanceof AuthRequestError ? error.failure : { reason: "unknown" };
 
-/** Phone → SMS code → (new customer) name. `onDone` fires once the person is signed in and finished. */
-export function usePhoneLogin(onDone: () => void) {
+type ConfirmCode = (phone: string, code: string) => Promise<OtpVerified>;
+
+/**
+ * Phone → SMS code → (new customer) name. `onDone` fires once the person is signed in and finished.
+ * `confirm` is what the code is checked against: logging in, or adding the phone to a Google account.
+ */
+export function usePhoneLogin(onDone: () => void, confirm: ConfirmCode = verifyOtp) {
   const { signIn } = useSession();
   const countdown = useCountdown();
   const [step, setStep] = useState<LoginStep>("phone");
@@ -42,7 +47,7 @@ export function usePhoneLogin(onDone: () => void) {
   });
 
   const verify = useMutation({
-    mutationFn: (code: string) => verifyOtp(phone, code),
+    mutationFn: (code: string) => confirm(phone, code),
     onMutate: () => setFailure(null),
     onSuccess: ({ token, isNew }) => {
       signIn(token, { days: SESSION_DAYS });

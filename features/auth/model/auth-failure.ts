@@ -1,7 +1,7 @@
 export type AuthFailure =
   | { reason: "wrong"; attemptsLeft: number }
   | { reason: "too_soon" | "too_many"; retryAfterSec: number }
-  | { reason: "expired" | "locked" | "missing" | "invalid_input" | "sms_failed" | "network" | "unknown" };
+  | { reason: "expired" | "locked" | "missing" | "phone_taken" | "invalid_input" | "sms_failed" | "network" | "unknown" };
 
 interface FailureBody {
   reason?: string;
@@ -9,7 +9,7 @@ interface FailureBody {
   attemptsLeft?: number;
 }
 
-const PLAIN = new Set(["expired", "locked", "missing"]);
+const PLAIN = new Set(["expired", "locked", "missing", "phone_taken"]);
 
 /** API reply → why it failed. `status: null` means the request never got an answer. */
 export function toAuthFailure(status: number | null, body: FailureBody | null): AuthFailure {
@@ -17,7 +17,7 @@ export function toAuthFailure(status: number | null, body: FailureBody | null): 
   const reason = body?.reason;
   if (reason === "wrong") return { reason, attemptsLeft: body?.attemptsLeft ?? 0 };
   if (reason === "too_soon" || reason === "too_many") return { reason, retryAfterSec: body?.retryAfterSec ?? 60 };
-  if (reason && PLAIN.has(reason)) return { reason: reason as "expired" | "locked" | "missing" };
+  if (reason && PLAIN.has(reason)) return { reason: reason as "expired" | "locked" | "missing" | "phone_taken" };
   if (status === 400) return { reason: "invalid_input" };
   if (status === 502) return { reason: "sms_failed" };
   return { reason: "unknown" };
@@ -36,6 +36,8 @@ export function failureMessage(failure: AuthFailure): { key: string; values?: Re
       return { key: "invalidPhone" };
     case "sms_failed":
       return { key: "smsFailed" };
+    case "phone_taken":
+      return { key: "phoneTaken" };
     default:
       return { key: failure.reason };
   }
