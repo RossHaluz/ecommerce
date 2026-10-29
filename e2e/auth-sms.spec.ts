@@ -26,13 +26,15 @@ async function openFromHeader(page: Page) {
   await expect(page.getByRole("heading", { name: "Вхід або реєстрація" })).toBeVisible();
 }
 
-// As a person does it: tap the field, see «+380», then type — keys sent before the mask is up get lost.
+// «+380» is fixed text beside the field; the person types the 9 digits after tapping into it.
 async function typePhone(page: Page, digits: string) {
   const field = page.getByLabel("Номер телефону");
   await field.click();
-  await expect(field).toHaveValue(/^\+380/);
+  await expect(field).toBeFocused();
   await field.pressSequentially(digits);
 }
+
+const codeField = (page: Page) => page.getByLabel("Код підтвердження");
 
 test.describe("вхід через SMS", () => {
   test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop", "шапка з «Увійти» — на комп'ютері; телефон — окремий тест"));
@@ -51,25 +53,26 @@ test.describe("вхід через SMS", () => {
     expect(requests).toBe(0);
   });
 
-  test("невірний код, потім правильний, ім'я «Пізніше» — людина в системі", async ({ page, context }) => {
+  test("невірний код, потім правильний, ім'я «Пропустити» — людина в системі", async ({ page, context }) => {
     const submitted = await fakeAuthApi(page, [SENT], [[400, { reason: "wrong", attemptsLeft: 4 }], SIGNED_IN_NEW]);
     await openFromHeader(page);
     await typePhone(page, "673834283");
     await page.getByRole("button", { name: "Отримати код" }).click();
 
-    await expect(page.getByText("Надіслали SMS на +380 67 ••• •• 83")).toBeVisible();
-    await expect(page.getByText(/Надіслати ще раз можна через \d+ с/)).toBeVisible();
+    await expect(page.getByText("Надіслали 6 цифр на +380 67 383 42 83")).toBeVisible();
+    await expect(page.getByText(/Надіслати знову через 0:\d\d/)).toBeVisible();
 
-    const code = page.getByLabel("Код із SMS");
+    const code = codeField(page);
     await code.pressSequentially("111111");
-    await expect(page.getByText("Невірний код. Залишилось спроб: 4")).toBeVisible();
+    await expect(page.getByText("Код не підходить. Залишилось 4 спроби — потім надішлемо новий.")).toBeVisible();
     await expect(code).toHaveValue("");
 
     await code.pressSequentially("042917");
     await expect(page.getByRole("heading", { name: "Як до вас звертатися?" })).toBeVisible();
     expect(submitted).toEqual(["111111", "042917"]);
 
-    await page.getByRole("button", { name: "Пізніше" }).click();
+    await expect(page.getByText("Номер підтверджено")).toBeVisible();
+    await page.getByRole("button", { name: "Пропустити" }).click();
     await expect(page.getByText("Ви увійшли")).toBeVisible();
     const token = (await context.cookies()).find((c) => c.name === "token");
     expect(token?.value).toBe("e2e-token");
@@ -83,8 +86,8 @@ test.describe("вхід через SMS", () => {
     await typePhone(page, "673834283");
     await page.getByRole("button", { name: "Отримати код" }).click();
 
-    await expect(page.getByRole("heading", { name: "Введіть код" })).toBeVisible();
-    await expect(page.getByText(/Надіслати ще раз можна через (4[0-2]|3\d) с/)).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Введіть код із SMS" })).toBeVisible();
+    await expect(page.getByText(/Надіслати знову через 0:(4[0-2]|3\d)/)).toBeVisible();
   });
 
   test("після п'яти спроб головною стає кнопка нового коду", async ({ page }) => {
@@ -92,11 +95,11 @@ test.describe("вхід через SMS", () => {
     await openFromHeader(page);
     await typePhone(page, "673834283");
     await page.getByRole("button", { name: "Отримати код" }).click();
-    await page.getByLabel("Код із SMS").pressSequentially("111111");
+    await codeField(page).pressSequentially("111111");
 
     await expect(page.getByText("Забагато спроб — надішліть новий код")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Надіслати код ще раз" })).toBeVisible();
-    await expect(page.getByLabel("Код із SMS")).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Надіслати знову" })).toBeVisible();
+    await expect(codeField(page)).toBeDisabled();
   });
 
   test("немає зв'язку — зрозумілий текст замість «Something went wrong»", async ({ page }) => {
@@ -117,7 +120,7 @@ test("вхід з меню на телефоні", async ({ page }, info) => {
   await page.getByRole("button", { name: /Увійти/ }).click();
   await typePhone(page, "673834283");
   await page.getByRole("button", { name: "Отримати код" }).click();
-  await page.getByLabel("Код із SMS").pressSequentially("042917");
+  await codeField(page).pressSequentially("042917");
 
   await expect(page.getByText("Ви увійшли")).toBeVisible();
 });

@@ -5,6 +5,7 @@ import { LoginPhoneStep } from "./login-phone-step";
 import { LoginCodeStep } from "./login-code-step";
 import { LoginNameStep } from "./login-name-step";
 import { LoginAlternatives } from "./login-alternatives";
+import { LoginBenefitsList } from "./login-benefits-list";
 
 /** The current step only; the frame around it (sheet, menu panel) belongs to whoever opened the login. */
 export const LoginSteps = ({ login }: { login: PhoneLogin }) => {
@@ -14,6 +15,7 @@ export const LoginSteps = ({ login }: { login: PhoneLogin }) => {
     <>
       <LoginPhoneStep {...login} />
       <LoginAlternatives />
+      <LoginBenefitsList />
     </>
   );
 };
