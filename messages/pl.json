@@ -542,5 +542,109 @@
       "network": "Brak połączenia. Sprawdź internet i spróbuj ponownie",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie"
     }
+  },
+  "account": {
+    "metaTitle": "Konto",
+    "greeting": "Witaj, {name}!",
+    "greetingNoName": "Witaj!",
+    "cabinet": "Konto",
+    "nav": {
+      "label": "Konto",
+      "overview": "Przegląd",
+      "orders": "Moje zamówienia",
+      "favorites": "Ulubione",
+      "profile": "Dane osobowe",
+      "logout": "Wyloguj się"
+    },
+    "stage": {
+      "accepted": "Przyjęto",
+      "finished": "Zakończono",
+      "received": "Odebrano",
+      "cancelled": "Anulowano"
+    },
+    "steps": {
+      "label": "Etapy zamówienia",
+      "accepted": "Przyjęto",
+      "confirmed": "Potwierdzono",
+      "road": "W drodze",
+      "received": "Odebrano"
+    },
+    "orders": {
+      "title": "Moje zamówienia",
+      "seeAll": "Wszystkie · {count}",
+      "searchLabel": "Szukaj w zamówieniach",
+      "searchPlaceholder": "Nr zamówienia lub część",
+      "search": "Szukaj",
+      "older": "Starsze zamówienia ›",
+      "more": "{first} + jeszcze {more}",
+      "linked": "Składałeś zamówienia bez konta z tego numeru? One też tu są — przypisujemy je po numerze telefonu.",
+      "empty": "Na razie nic tu nie ma. Gdy złożysz zamówienie, pojawi się tutaj wraz ze statusem.",
+      "nothingFound": "Brak zamówień dla tego zapytania.",
+      "toCatalog": "Do katalogu ›",
+      "details": "Szczegóły →",
+      "open": "Otwórz zamówienie",
+      "tabs": {
+        "label": "Status",
+        "all": "Wszystkie",
+        "active": "Aktywne",
+        "done": "Odebrane",
+        "cancel": "Anulowane"
+      }
+    },
+    "order": {
+      "title": "Zamówienie nr {number}",
+      "shortTitle": "Nr {number}",
+      "from": "z {date}, {time}",
+      "back": "Do konta",
+      "stages": "Status zamówienia",
+      "items": "Części w zamówieniu",
+      "itemMeta": "OE {oe} · numer artykułu {article} · {quantity} szt.",
+      "summary": "Podsumowanie",
+      "itemsCount": "Części ({count})",
+      "shipping": "Dostawa",
+      "shippingNote": "według taryf przewoźnika",
+      "total": "Razem",
+      "negotiable": "do uzgodnienia",
+      "aboutUah": "≈ {amount} po kursie NBU",
+      "recipient": "Odbiorca",
+      "deliveryTitle": "Dostawa",
+      "dropClient": "Dane klienta",
+      "where": "Dokąd",
+      "payment": "Płatność",
+      "paid": "opłacono",
+      "notPaid": "jeszcze nieopłacone",
+      "comment": "Komentarz",
+      "print": "Drukuj",
+      "help": "Pytanie o zamówienie?",
+      "helpNote": "Podaj numer {number} — menedżer od razu zobaczy zamówienie.",
+      "viber": "Viber",
+      "telegram": "Telegram",
+      "notFound": "Takiego zamówienia nie ma na Twoim koncie.",
+      "article": "Numer artykułu",
+      "catalogNumber": "Numer katalogowy",
+      "part": "Nazwa produktu",
+      "quantity": "Ilość",
+      "price": "Cena za sztukę",
+      "sum": "Cena łączna"
+    },
+    "delivery": {
+      "novaPoshta": "Nowa Poczta",
+      "pickup": "Odbiór osobisty",
+      "transporter": "Przewoźnik"
+    },
+    "paymentMethod": {
+      "cashOnDelivary": "Przy odbiorze na poczcie",
+      "monobank": "Online przez Monobank",
+      "payByCard": "Na kartę"
+    },
+    "links": {
+      "favorites": "Ulubione",
+      "favoritesNote": "Części na wszystkich Twoich urządzeniach",
+      "profile": "Dane osobowe",
+      "profileNote": "Imię, telefon, e-mail"
+    },
+    "confirmPhone": {
+      "name": "kliencie"
+    }
   }
 }

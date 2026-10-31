@@ -26,6 +26,9 @@ export const ENDPOINTS = {
   favorite: (storeId: string, productId: string) => `/favorites/${storeId}/${productId}`,
   mergeFavorites: (storeId: string) => `/favorites/${storeId}/merge`,
   updateUser: () => `/auth/update`,
+  accountOverview: (storeId: string) => `/me/${storeId}/overview`,
+  accountOrders: (storeId: string) => `/me/${storeId}/orders`,
+  accountOrder: (storeId: string, number: string) => `/me/${storeId}/orders/${number}`,
 } as const;
 
 export const CACHE_TAGS = {

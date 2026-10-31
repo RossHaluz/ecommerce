@@ -98,6 +98,13 @@ export const getModelDetails = (model: string) => api.getModelDetails(model);
 
 export const getCurrentUser = () => api.getCurrentUser();
 
+export const getAccountOverview = (locale: string) => api.getAccountOverview(locale);
+
+export const getAccountOrders = (locale: string, filter: Parameters<typeof api.getAccountOrders>[1]) =>
+  api.getAccountOrders(locale, filter);
+
+export const getAccountOrder = (locale: string, number: string) => api.getAccountOrder(locale, number);
+
 export const updateUser = (values: unknown) => api.updateUser(values);
 
 export const createOrder = (values: unknown) => api.createOrder(values);

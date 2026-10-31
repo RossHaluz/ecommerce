@@ -20,7 +20,7 @@ export {
 } from "./products";
 
 export { fetchModels, getModels, fetchModelDetails, getModelDetails } from "./models";
-export { getCurrentUser, updateUser } from "./account";
+export { getCurrentUser, updateUser, getAccountOverview, getAccountOrders, getAccountOrder } from "./account";
 export { createOrder } from "./orders";
 export { putAccountFavorite, deleteAccountFavorite, mergeAccountFavorites } from "./favorites";
 export { fetchSearchSuggestions, recordSearchQuery } from "./search";
