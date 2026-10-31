@@ -542,5 +542,109 @@
       "network": "Немає зв'язку. Перевірте інтернет і спробуйте ще раз",
       "unknown": "Щось пішло не так. Спробуйте ще раз"
     }
+  },
+  "account": {
+    "metaTitle": "Кабінет",
+    "greeting": "Вітаємо, {name}!",
+    "greetingNoName": "Вітаємо!",
+    "cabinet": "Кабінет",
+    "nav": {
+      "label": "Кабінет",
+      "overview": "Огляд",
+      "orders": "Мої замовлення",
+      "favorites": "Обране",
+      "profile": "Особисті дані",
+      "logout": "Вийти"
+    },
+    "stage": {
+      "accepted": "Прийнято",
+      "finished": "Завершено",
+      "received": "Отримано",
+      "cancelled": "Скасовано"
+    },
+    "steps": {
+      "label": "Етапи замовлення",
+      "accepted": "Прийнято",
+      "confirmed": "Підтверджено",
+      "road": "У дорозі",
+      "received": "Отримано"
+    },
+    "orders": {
+      "title": "Мої замовлення",
+      "seeAll": "Усі · {count}",
+      "searchLabel": "Пошук у замовленнях",
+      "searchPlaceholder": "№ замовлення або деталь",
+      "search": "Знайти",
+      "older": "Давніші замовлення ›",
+      "more": "{first} + ще {more}",
+      "linked": "Оформлювали замовлення без кабінету з цього номера? Вони тут теж — ми прив'язуємо їх за телефоном.",
+      "empty": "Тут поки нічого. Коли оформите замовлення, воно з'явиться тут разом зі станом.",
+      "nothingFound": "За цим запитом замовлень немає.",
+      "toCatalog": "До каталогу ›",
+      "details": "Деталі →",
+      "open": "Відкрити замовлення",
+      "tabs": {
+        "label": "Стан",
+        "all": "Усі",
+        "active": "Активні",
+        "done": "Отримані",
+        "cancel": "Скасовані"
+      }
+    },
+    "order": {
+      "title": "Замовлення №{number}",
+      "shortTitle": "№{number}",
+      "from": "від {date}, {time}",
+      "back": "До кабінету",
+      "stages": "Стан замовлення",
+      "items": "Деталі в замовленні",
+      "itemMeta": "OE {oe} · артикул {article} · {quantity} шт.",
+      "summary": "Підсумок",
+      "itemsCount": "Деталі ({count})",
+      "shipping": "Доставка",
+      "shippingNote": "за тарифами перевізника",
+      "total": "Разом",
+      "negotiable": "договірна",
+      "aboutUah": "≈ {amount} за курсом НБУ",
+      "recipient": "Отримувач",
+      "deliveryTitle": "Доставка",
+      "dropClient": "Дані клієнта",
+      "where": "Куди",
+      "payment": "Оплата",
+      "paid": "сплачено",
+      "notPaid": "ще не сплачено",
+      "comment": "Коментар",
+      "print": "Друкувати",
+      "help": "Питання щодо замовлення?",
+      "helpNote": "Назвіть номер №{number} — менеджер одразу побачить замовлення.",
+      "viber": "Viber",
+      "telegram": "Telegram",
+      "notFound": "Такого замовлення немає у вашому кабінеті.",
+      "article": "Артикул",
+      "catalogNumber": "Каталожний номер",
+      "part": "Назва товару",
+      "quantity": "Кількість",
+      "price": "Ціна за одиницю",
+      "sum": "Загальна ціна"
+    },
+    "delivery": {
+      "novaPoshta": "Нова пошта",
+      "pickup": "Самовивіз",
+      "transporter": "Перевізник"
+    },
+    "paymentMethod": {
+      "cashOnDelivary": "При отриманні на пошті",
+      "monobank": "Онлайн через Monobank",
+      "payByCard": "На картку"
+    },
+    "links": {
+      "favorites": "Обране",
+      "favoritesNote": "Деталі на всіх ваших пристроях",
+      "profile": "Особисті дані",
+      "profileNote": "Ім'я, телефон, e-mail"
+    },
+    "confirmPhone": {
+      "name": "клієнте"
+    }
   }
 }
