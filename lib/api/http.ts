@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { encodeBody } from "./encode-body";
 
 const API_BASE = `${process.env.BACKEND_URL}/api`;
 
@@ -57,13 +58,14 @@ export async function request<T>(
 ): Promise<T> {
   const { params, auth, revalidate, tags, method = "GET", body } = options;
 
+  const encoded = encodeBody(body);
   const response = await fetch(buildUrl(path, params), {
     method,
     headers: {
-      ...(body ? { "Content-Type": "application/json" } : {}),
+      ...encoded.headers,
       ...(auth ? authHeader() : {}),
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: encoded.body,
     ...(revalidate === false
       ? { cache: "no-store" as const }
       : { next: { revalidate, tags } }),

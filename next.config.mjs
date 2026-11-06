@@ -28,6 +28,8 @@ const nextConfig = {
 
   experimental: {
     scrollRestoration: true,
+    // The profile photo goes through a server action; the default 1 MB refuses an ordinary phone photo.
+    serverActions: { bodySizeLimit: "6mb" },
   },
 
   webpack: (config) => {

@@ -645,6 +645,25 @@
     },
     "confirmPhone": {
       "name": "kliencie"
+    },
+    "profile": {
+      "title": "Dane osobowe",
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "phone": "Numer telefonu to Twój login — zmienia się tylko kodem SMS",
+      "email": "E-mail",
+      "avatar": "Twoje zdjęcie",
+      "changePhoto": "Zmień zdjęcie",
+      "photoHint": "JPG, PNG lub WebP do 5 MB",
+      "save": "Zapisz zmiany",
+      "saving": "Zapisujemy…",
+      "saved": "Zmiany zapisane",
+      "saveFailed": "Nie udało się zapisać. Sprawdź dane i zdjęcie, a potem spróbuj ponownie",
+      "invalid": {
+        "firstName": "Podaj imię",
+        "lastName": "Za długie nazwisko",
+        "email": "Sprawdź e-mail"
+      }
     }
   }
 }
