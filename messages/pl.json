@@ -260,7 +260,11 @@
     "orderCall": "Zamów rozmowę",
     "address": "Adres",
     "workingHours": "Godziny pracy",
-    "managers": { "ihor": "Ihor", "ivan": "Iwan", "bohdan": "Bohdan" },
+    "managers": {
+      "ihor": "Ihor",
+      "ivan": "Iwan",
+      "bohdan": "Bohdan"
+    },
     "addressValue": "Chmielnicki, ul. Mołodiżna 15/1",
     "scheduleWeekdays": "Pon.-Pt.: 10:00 - 19:00",
     "scheduleWeekend": "Sob.-Niedz.: nieczynne",
@@ -560,7 +564,9 @@
       "accepted": "Przyjęto",
       "finished": "Zakończono",
       "received": "Odebrano",
-      "cancelled": "Anulowano"
+      "cancelled": "Anulowano",
+      "confirmed": "Przygotowujemy do wysyłki",
+      "road": "W drodze"
     },
     "steps": {
       "label": "Etapy zamówienia",
@@ -625,7 +631,12 @@
       "part": "Nazwa produktu",
       "quantity": "Ilość",
       "price": "Cena za sztukę",
-      "sum": "Cena łączna"
+      "sum": "Cena łączna",
+      "ttn": "Numer przesyłki Nowej Poczty",
+      "copy": "Kopiuj",
+      "copied": "Skopiowano",
+      "copyTtn": "Kopiuj numer przesyłki",
+      "trackOnNp": "Śledź na stronie Nowej Poczty"
     },
     "delivery": {
       "novaPoshta": "Nowa Poczta",

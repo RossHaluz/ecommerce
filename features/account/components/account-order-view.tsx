@@ -11,6 +11,7 @@ import { OrderRecipientCard } from "./order-recipient-card";
 import { OrderStatusChip } from "./order-status-chip";
 import { OrderSteps } from "./order-steps";
 import { OrderSummaryCard } from "./order-summary-card";
+import { OrderWaybill } from "./order-waybill";
 
 export const AccountOrderView = ({ order }: { order: OrderDetails }) => {
   const t = useTranslations("account");
@@ -43,6 +44,11 @@ export const AccountOrderView = ({ order }: { order: OrderDetails }) => {
                 {t("order.stages")}
               </h2>
               <OrderSteps stage={order.stage} />
+              {order.ttn && (
+                <div className="mt-4">
+                  <OrderWaybill ttn={order.ttn} />
+                </div>
+              )}
             </section>
           )}
           <OrderLines items={order.items} />

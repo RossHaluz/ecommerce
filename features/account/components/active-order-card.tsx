@@ -6,6 +6,7 @@ import type { OrderSummary } from "../model/order-types";
 import { OrderCaption } from "./order-caption";
 import { OrderPrice } from "./order-price";
 import { OrderSteps } from "./order-steps";
+import { OrderWaybill } from "./order-waybill";
 
 export const ActiveOrderCard = ({ order }: { order: OrderSummary }) => {
   const t = useTranslations("account");
@@ -27,6 +28,7 @@ export const ActiveOrderCard = ({ order }: { order: OrderSummary }) => {
         </div>
       </div>
       <OrderSteps stage={order.stage} />
+      {order.ttn && <OrderWaybill ttn={order.ttn} />}
       <Link
         href={`/account/orders/${order.number}`}
         className="flex min-h-[46px] items-center justify-center rounded-[10px] bg-[#C0092A] px-4 font-extrabold text-white lg:self-start"
