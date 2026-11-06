@@ -1,4 +1,4 @@
-export type OrderStage = "accepted" | "finished" | "received" | "cancelled";
+export type OrderStage = "accepted" | "confirmed" | "road" | "finished" | "received" | "cancelled";
 export type OrdersTab = "all" | "active" | "done" | "cancel";
 export type TabCounts = Record<OrdersTab, number>;
 
@@ -16,6 +16,7 @@ export interface OrderSummary {
   number: number;
   createdAt: string;
   stage: OrderStage;
+  ttn: string | null;
   totalPrice: number;
   items: OrderLine[];
 }

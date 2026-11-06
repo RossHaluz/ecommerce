@@ -6,6 +6,11 @@ describe("stepStates", () => {
     expect(stepStates("accepted")).toEqual(["now", "todo", "todo", "todo"]);
   });
 
+  it("moves along with the manager's stages", () => {
+    expect(stepStates("confirmed")).toEqual(["done", "now", "todo", "todo"]);
+    expect(stepStates("road")).toEqual(["done", "done", "now", "todo"]);
+  });
+
   it("completes every step for a received order", () => {
     expect(stepStates("received")).toEqual(["done", "done", "done", "done"]);
   });
