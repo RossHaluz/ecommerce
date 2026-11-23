@@ -2,6 +2,7 @@ import React from "react";
 import ProductInfo from "./_components/product-info";
 import { getSimilarProducts } from "@/actions/get-data";
 import { fetchProductDetails } from "@/lib/api";
+import { fetchShopRate } from "@/lib/api/exchange-rate";
 import { notFoundOn404 } from "@/lib/api/not-found-on-404";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -46,11 +47,12 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   const { productId, locale } = params;
   // Без цього getTranslations у дочірніх компонентах читає мову з headers() — сторінка стає динамічною.
   setRequestLocale(locale);
-  const [{ product }, similarProducts, t] = await Promise.all([
+  const [{ product }, similarProducts, t, shopRate] = await Promise.all([
     // Проданий чи вигаданий товар — справжня 404, а не порожній каркас зі статусом 200.
     fetchProductDetails(productId).catch(notFoundOn404),
     getSimilarProducts(productId),
     getTranslations("nav"),
+    fetchShopRate(),
   ]);
 
   const heading = buildProductHeading(product);
@@ -59,7 +61,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   return (
     <div className="container my-6 flex flex-col gap-4">
       <TrailBreadcrumbs trail={trail} homeLabel={t("home")} />
-      <JsonLd data={buildProductJsonLd(product)} />
+      <JsonLd data={buildProductJsonLd(product, shopRate?.usdToUah ?? null)} />
       <JsonLd
         data={buildBreadcrumbJsonLd(trail, {
           siteUrl: SITE_URL,

@@ -22,7 +22,6 @@ export const queryKeys = {
   currentUser: () => ["current-user"] as const,
   models: () => ["models"] as const,
   cartSuggestions: (modelName: string) => ["cart-suggestions", modelName] as const,
-  exchangeRate: (pair: string) => ["exchange-rate", pair] as const,
   favoriteProducts: (slugs: string[]) => ["favorite-products", ...slugs] as const,
   searchSuggest: (query: string, modelSlug: string | null) => ["search-suggest", query, modelSlug] as const,
 } as const;

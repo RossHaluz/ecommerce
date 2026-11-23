@@ -24,6 +24,8 @@ import ContactsWidget from "@/components/contacts-widget";
 import { FavoritesSync } from "@/features/favorites/components/favorites-sync";
 import { NavigationProgress } from "@/components/navigation-progress";
 import { prefetchCatalog } from "@/features/catalog/prefetch-catalog";
+import { fetchShopRate } from "@/lib/api/exchange-rate";
+import { ExchangeRateProvider } from "@/components/providers/exchange-rate-provider";
 import { SITE_URL } from "@/lib/seo/site-url";
 import {
   DEFAULT_LOCALE,
@@ -83,9 +85,10 @@ const LocaleLayout = async ({
 
   const locale = params.locale as Locale;
   setRequestLocale(locale);
-  const [messages, catalogState] = await Promise.all([
+  const [messages, catalogState, shopRate] = await Promise.all([
     getMessages(),
     prefetchCatalog(),
+    fetchShopRate(),
   ]);
 
   return (
@@ -94,6 +97,7 @@ const LocaleLayout = async ({
         <NextIntlClientProvider messages={messages}>
           <ProviderWrapper>
             <ReactQueryProvider>
+              <ExchangeRateProvider rate={shopRate}>
               <HydrationBoundary state={catalogState}>
                 <NavigationProgress />
                 <ScrollToTop />
@@ -106,6 +110,7 @@ const LocaleLayout = async ({
                 <Footer />
                 <ToastContainer />
               </HydrationBoundary>
+              </ExchangeRateProvider>
             </ReactQueryProvider>
           </ProviderWrapper>
         </NextIntlClientProvider>

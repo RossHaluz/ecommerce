@@ -31,6 +31,11 @@ describe("buildProductJsonLd", () => {
     expect(jsonLd.image?.[0]).toMatch(/\/products\/3362-1\.jpg$/);
   });
 
+  it("prices the offer in whole hryvnias at the shop rate, the same price the page shows", () => {
+    expect(buildProductJsonLd(product, 41.55).offers).toMatchObject({ price: 145425, priceCurrency: "UAH" });
+    expect(buildProductJsonLd({ ...product, price: 12.5 }, 41.55).offers).toMatchObject({ price: 519, priceCurrency: "UAH" });
+  });
+
   it("marks a zero-quantity part as back order, not out of stock", () => {
     expect(buildProductJsonLd({ ...product, quantity: 0 }).offers?.availability).toBe(
       "https://schema.org/BackOrder"

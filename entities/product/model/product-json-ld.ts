@@ -1,3 +1,4 @@
+import { usdToUah } from "@/lib/format/price";
 import { isInStock } from "./is-in-stock";
 import { productImageUrl } from "./product-image-url";
 
@@ -26,11 +27,15 @@ const availabilityOf = (product: ProductJsonLdSource) =>
       ? "https://schema.org/InStock"
       : "https://schema.org/BackOrder";
 
+// Google звіряє ціну розмітки з ціною на сторінці, а сторінка показує ₴ за курсом магазину; без курсу — обидві в $.
+const offerPrice = (priceUsd: number, usdToUahRate: number | null) =>
+  usdToUahRate ? { price: usdToUah(priceUsd, usdToUahRate), priceCurrency: "UAH" } : { price: priceUsd, priceCurrency: "USD" };
+
 /**
  * schema.org Product для пошуковиків. Ціна в базі зберігається в USD.
  * Коли ціна 0 («договірна»), offers не додаємо: Google відкидає пропозицію з нульовою ціною.
  */
-export function buildProductJsonLd(product: ProductJsonLdSource) {
+export function buildProductJsonLd(product: ProductJsonLdSource, usdToUahRate: number | null = null) {
   const price = Number(product.price);
   const images = (product.images ?? [])
     .map((image) => productImageUrl(image.url))
@@ -49,8 +54,7 @@ export function buildProductJsonLd(product: ProductJsonLdSource) {
     ...(price > 0 && {
       offers: {
         "@type": "Offer",
-        price,
-        priceCurrency: "USD",
+        ...offerPrice(price, usdToUahRate),
         availability: availabilityOf(product),
         // Only what a manager set in the admin; claiming «new» for a used part would mislead buyers and Google.
         ...(product.condition && { itemCondition: CONDITION_URL[product.condition] }),

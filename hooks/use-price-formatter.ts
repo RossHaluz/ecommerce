@@ -4,21 +4,12 @@ import { selectCurrency } from "@/redux/customizer/selectors";
 import { useExchangeRate } from "@/hooks/use-exchange-rate";
 import { formatPrice } from "@/lib/format/price";
 import { useHydratedSelector } from "@/hooks/use-hydrated-selector";
-import { useMounted } from "@/hooks/use-mounted";
 
-/**
- * Зшиває докупи: обрану валюту (Redux, персиститься), курс НБУ (TanStack,
- * кеш 6 годин) і чисте форматування (`lib/format/price`). Без цього хука
- * кожен компонент з ціною повторював би ті самі три рядки — так і виникло
- * 12 копій `Intl.NumberFormat` до цього рефакторингу.
- */
+/** Обрана валюта (Redux) + курс магазину (з layout) + чисте форматування (`lib/format/price`) — в одному місці. */
 export const usePriceFormatter = () => {
   const currency = useHydratedSelector(selectCurrency);
   const { data } = useExchangeRate();
-  const mounted = useMounted();
-
-  // Сервер курсу не знає; якщо інший компонент уже завантажив його до гідратації, без цього розмітка розходиться.
-  const rate = mounted ? data?.usdToUah ?? null : null;
+  const rate = data?.usdToUah ?? null;
 
   return {
     currency,
