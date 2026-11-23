@@ -2,15 +2,11 @@
  * Один дім для форматування ціни. Каталог веде ціни в доларах; гривнева ціна — USD × курс магазину
  * (`lib/api/exchange-rate.ts`), а не окремо введена, тому курс приходить параметром.
  */
-const FORMATTERS: Record<"USD" | "UAH", Intl.NumberFormat> = {
-  USD: new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }),
-  // Цілі гривні: так само округлює бекенд для наложки ТТН.
-  UAH: new Intl.NumberFormat("uk-UA", {
-    style: "currency",
-    currency: "UAH",
-    maximumFractionDigits: 0,
-  }),
-};
+const USD_FORMATTER = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+
+// Не Intl «uk-UA»: Node на сервері пише «₴», Chrome — «грн», і ціна з SSR розходиться при гідратації (React #418).
+const formatUah = (wholeHryvnias: number) =>
+  `${String(wholeHryvnias).replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₴`;
 
 export interface FormatPriceOptions {
   /** У чому показати. UAH без курсу — тиха відмова назад до USD, не крах. */
@@ -27,8 +23,8 @@ export function formatPrice(
   { currency, usdToUahRate }: FormatPriceOptions
 ): string {
   if (currency === "UAH" && usdToUahRate) {
-    return FORMATTERS.UAH.format(usdToUah(amountUsd, usdToUahRate));
+    return formatUah(usdToUah(amountUsd, usdToUahRate));
   }
 
-  return FORMATTERS.USD.format(Number(amountUsd));
+  return USD_FORMATTER.format(Number(amountUsd));
 }
