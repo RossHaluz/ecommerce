@@ -10,9 +10,9 @@ interface InitialState {
 
 const initialState: InitialState = {
   currentCustomizer: "grid",
-  // Каталог веде ціни в доларах (перевірено: GA currency: "USD" + масштаб
-  // цін) — дефолт показу теж USD; UAH лише коли покупець сам перемкне.
-  currency: "USD",
+  // Каталог веде ціни в доларах, але покупець платить гривнями, і Google Покупки в Україні хочуть ціну в гривнях
+  // таку ж, як на сторінці — тому показуємо ₴ за курсом магазину; $ лише коли покупець сам перемкне.
+  currency: "UAH",
 };
 
 export const customizerSlice = createSlice({

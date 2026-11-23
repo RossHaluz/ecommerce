@@ -31,6 +31,11 @@ describe("buildProductJsonLd", () => {
     expect(jsonLd.image?.[0]).toMatch(/\/products\/3362-1\.jpg$/);
   });
 
+  it("prices the offer in whole hryvnias at the shop rate, the same price the page shows", () => {
+    expect(buildProductJsonLd(product, 41.55).offers).toMatchObject({ price: 145425, priceCurrency: "UAH" });
+    expect(buildProductJsonLd({ ...product, price: 12.5 }, 41.55).offers).toMatchObject({ price: 519, priceCurrency: "UAH" });
+  });
+
   it("marks a zero-quantity part as back order, not out of stock", () => {
     expect(buildProductJsonLd({ ...product, quantity: 0 }).offers?.availability).toBe(
       "https://schema.org/BackOrder"
@@ -39,6 +44,15 @@ describe("buildProductJsonLd", () => {
 
   it("marks a sold (archived) part as sold out, whatever its quantity", () => {
     expect(buildProductJsonLd({ ...product, isArchived: true }).offers?.availability).toBe("https://schema.org/SoldOut");
+  });
+
+  it("says whether the part is used or new, as the managers marked it", () => {
+    expect(buildProductJsonLd({ ...product, condition: "used" }).offers?.itemCondition).toBe("https://schema.org/UsedCondition");
+    expect(buildProductJsonLd({ ...product, condition: "new" }).offers?.itemCondition).toBe("https://schema.org/NewCondition");
+  });
+
+  it("claims no condition when the backend did not send one", () => {
+    expect(buildProductJsonLd(product).offers).not.toHaveProperty("itemCondition");
   });
 
   it("omits the offer for a negotiable (zero) price", () => {
