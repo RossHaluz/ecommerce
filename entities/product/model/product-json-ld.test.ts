@@ -41,6 +41,15 @@ describe("buildProductJsonLd", () => {
     expect(buildProductJsonLd({ ...product, isArchived: true }).offers?.availability).toBe("https://schema.org/SoldOut");
   });
 
+  it("says whether the part is used or new, as the managers marked it", () => {
+    expect(buildProductJsonLd({ ...product, condition: "used" }).offers?.itemCondition).toBe("https://schema.org/UsedCondition");
+    expect(buildProductJsonLd({ ...product, condition: "new" }).offers?.itemCondition).toBe("https://schema.org/NewCondition");
+  });
+
+  it("claims no condition when the backend did not send one", () => {
+    expect(buildProductJsonLd(product).offers).not.toHaveProperty("itemCondition");
+  });
+
   it("omits the offer for a negotiable (zero) price", () => {
     expect(buildProductJsonLd({ ...product, price: 0 })).not.toHaveProperty("offers");
   });

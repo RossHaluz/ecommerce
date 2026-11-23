@@ -11,7 +11,13 @@ export interface ProductJsonLdSource {
   quantity: number;
   images?: { url: string }[];
   isArchived?: boolean;
+  condition?: "used" | "new";
 }
+
+const CONDITION_URL = {
+  used: "https://schema.org/UsedCondition",
+  new: "https://schema.org/NewCondition",
+} as const;
 
 const availabilityOf = (product: ProductJsonLdSource) =>
   product.isArchived
@@ -46,6 +52,8 @@ export function buildProductJsonLd(product: ProductJsonLdSource) {
         price,
         priceCurrency: "USD",
         availability: availabilityOf(product),
+        // Only what a manager set in the admin; claiming «new» for a used part would mislead buyers and Google.
+        ...(product.condition && { itemCondition: CONDITION_URL[product.condition] }),
       },
     }),
   };
