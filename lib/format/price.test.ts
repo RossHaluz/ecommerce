@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { formatPrice, usdToUah } from "./price";
 
-const normalizeSpaces = (text: string) => text.replace(/\s/g, " ");
-
 describe("usdToUah", () => {
   it("rounds to whole hryvnias, as the backend does for the waybill's cash on delivery", () => {
     expect(usdToUah(12.5, 41.55)).toBe(519);
@@ -12,7 +10,13 @@ describe("usdToUah", () => {
 
 describe("formatPrice", () => {
   it("shows hryvnias at the shop rate when the buyer wants UAH", () => {
-    expect(normalizeSpaces(formatPrice(12.5, { currency: "UAH", usdToUahRate: 41.55 }))).toBe("519 ₴");
+    expect(formatPrice(12.5, { currency: "UAH", usdToUahRate: 41.55 })).toBe("519 ₴");
+  });
+
+  // Node and Chrome disagree on Intl «uk-UA» («₴» vs «грн»); the exact string keeps SSR and hydration identical.
+  it("writes the same hryvnia string in every runtime, grouped with non-breaking spaces", () => {
+    expect(formatPrice(3600, { currency: "UAH", usdToUahRate: 45.45 })).toBe("163 620 ₴");
+    expect(formatPrice(30000, { currency: "UAH", usdToUahRate: 45.45 })).toBe("1 363 500 ₴");
   });
 
   it("falls back to dollars when there is no rate, instead of showing nothing", () => {
