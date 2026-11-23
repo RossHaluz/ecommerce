@@ -23,6 +23,7 @@ export interface Product {
   }[];
   /** Архів = продано (оператор, 2026-10-18). Приходить у деталях товару; списки віддають лише непродані. */
   isArchived?: boolean;
+  condition?: "used" | "new";
 }
 
 export interface Model {
