@@ -38,7 +38,7 @@ export const AskPriceSheet = ({ product, renderTrigger }: AskPriceSheetProps) =>
             <strong className="block text-[15px]">{productTitle(product.title)}</strong>
             {product.catalog_number && <span className="text-[#6B6B6B]">OE {product.catalog_number}</span>}
           </p>
-          <AskPriceForm text={text} />
+          <AskPriceForm text={text} productId={product.id} />
           <AskPriceMessengers text={text} />
         </SheetContent>
       </Sheet>

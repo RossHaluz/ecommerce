@@ -3,6 +3,7 @@ import { productTitle } from "@/entities/product/model/product-heading";
 import { SITE_URL } from "@/lib/seo/site-url";
 
 export interface AskPriceSubject {
+  id: string;
   title: string;
   catalog_number?: string;
   article?: string;
