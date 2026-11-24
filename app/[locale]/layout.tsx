@@ -8,6 +8,7 @@ import {
   setRequestLocale,
 } from "next-intl/server";
 import { AnalyticsOnFirstInteraction } from "@/components/analytics/analytics-on-first-interaction";
+import { TrackPhoneClicks } from "@/components/analytics/track-phone-clicks";
 import { ToastContainer } from "react-toastify";
 import { HydrationBoundary } from "@tanstack/react-query";
 
@@ -116,6 +117,7 @@ const LocaleLayout = async ({
         </NextIntlClientProvider>
       </body>
       <AnalyticsOnFirstInteraction />
+      <TrackPhoneClicks />
     </html>
   );
 };
