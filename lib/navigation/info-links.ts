@@ -5,4 +5,5 @@
  */
 export const INFO_LINKS = [
   { href: "/contacts", labelKey: "contacts" },
+  { href: "/returns", labelKey: "returns" },
 ] as const;

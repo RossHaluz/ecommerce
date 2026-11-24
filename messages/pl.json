@@ -1,4 +1,51 @@
 {
+  "returns": {
+    "metaTitle": "Zwroty i wymiana części Audi — 14 dni | Audiparts",
+    "metaDescription": "Zwrot lub wymiana części samochodowych Audi w ciągu 14 dni. Oględziny części w oddziale Nowej Poczty przed zapłatą, zwrot pieniędzy na kartę w ciągu 7 dni.",
+    "pageTitle": "Zwroty i wymiana",
+    "sections": {
+      "period": {
+        "title": "14 dni na zwrot",
+        "text": "Możesz zwrócić lub wymienić część w ciągu 14 dni od dnia odebrania przesyłki."
+      },
+      "inspect": {
+        "title": "Obejrzyj część przed zapłatą",
+        "text": "Płać przy odbiorze: w oddziale Nowej Poczty otwórz przesyłkę i sprawdź część. Jeśli nie odpowiada opisowi lub zdjęciom, odmów przyjęcia przesyłki, a dostawę w obie strony opłacimy my."
+      },
+      "conditions": {
+        "title": "Warunki zwrotu",
+        "items": [
+          "część nie była montowana w samochodzie;",
+          "brak nowych uszkodzeń, których nie było na zdjęciach w ogłoszeniu;",
+          "zachowane nasze oznaczenia i naklejki z numerem artykułu;",
+          "kompletność taka sama jak przy odbiorze."
+        ]
+      },
+      "shipping": {
+        "title": "Kto płaci za odesłanie",
+        "items": [
+          "My — jeśli część ma ukrytą wadę, nie odpowiada opisowi lub zdjęciom albo pomyliliśmy część.",
+          "Kupujący — jeśli część nie pasuje lub zmieniłeś zdanie."
+        ]
+      },
+      "refund": {
+        "title": "Zwrot pieniędzy",
+        "text": "W ciągu 7 dni od otrzymania przez nas części, na Twoją kartę."
+      },
+      "excluded": {
+        "title": "Nie podlegają zwrotowi",
+        "text": "Sterowniki i inna elektronika (ECU, moduły, radia) po montażu lub zaprogramowaniu."
+      },
+      "used": {
+        "title": "Części używane",
+        "text": "Stan każdej części jest opisany i pokazany na zdjęciach. Ślady eksploatacji widoczne na zdjęciach nie są wadą. Jeśli nie masz pewności, czy część pasuje, wyślij menedżerowi numer VIN, a sprawdzimy zgodność przed wysyłką."
+      },
+      "howTo": {
+        "title": "Jak zgłosić zwrot",
+        "text": "Napisz do nas na Viber lub Telegram albo zadzwoń. Podaj numer zamówienia i dodaj zdjęcia części, a menedżer powie, dokąd ją wysłać."
+      }
+    }
+  },
   "common": {
     "currency": "Waluta",
     "language": "Język",
@@ -29,6 +76,7 @@
     "catalogProducts": "Katalog produktów",
     "categories": "Kategorie",
     "contacts": "Kontakt",
+    "returns": "Zwroty i wymiana",
     "about": "O nas",
     "deliveryPayment": "Dostawa i płatność",
     "account": "Konto",
@@ -81,7 +129,7 @@
     "approxShort": "≈ {price}",
     "copyCatalogNumber": "Skopiuj numer katalogowy",
     "copied": "Skopiowano",
-    "approxUah": "≈ {price} wg kursu NBU · płatność w hrywnach",
+    "approxUah": "≈ {price} · płatność w hrywnach",
     "oneClickCta": "Kup w 1 klik — tylko telefon",
     "fitsTitle": "Pasuje do",
     "fitsHint": "Porównaj numer katalogowy <b>{oe}</b> ze swoją częścią lub sprawdź po VIN — to najpewniejsze.",
