@@ -47,4 +47,9 @@ describe("buildMerchantFeedXml", () => {
   it("leaves out mpn when the part has no OE number", () => {
     expect(build([{ ...item, mpn: undefined }])).not.toContain("<g:mpn>");
   });
+
+  it("writes the site category as product_type, escaped, and skips it when unknown", () => {
+    expect(build([{ ...item, productType: "Кузов > Фари" }])).toContain("<g:product_type>Кузов &gt; Фари</g:product_type>");
+    expect(build([item])).not.toContain("<g:product_type>");
+  });
 });

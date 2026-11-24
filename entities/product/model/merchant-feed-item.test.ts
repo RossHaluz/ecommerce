@@ -54,6 +54,17 @@ describe("toMerchantFeedItem", () => {
     expect(toMerchantFeedItem({ ...product, ...change }, context)).toBeNull();
   });
 
+  it("carries the site category as product_type when the catalog is known", () => {
+    const categoryPaths = new Map([["lights", ["Кузов", "Фари"]]]);
+    const item = toMerchantFeedItem({ ...product, categories: [{ categoryId: "lights" }] }, { ...context, categoryPaths });
+
+    expect(item?.productType).toBe("Кузов > Фари");
+  });
+
+  it("leaves product_type out when the catalog did not load", () => {
+    expect(toMerchantFeedItem({ ...product, categories: [{ categoryId: "lights" }] }, context)?.productType).toBeUndefined();
+  });
+
   it("falls back to the slug when the product has no article", () => {
     expect(toMerchantFeedItem({ ...product, article: "" }, context)?.id).toBe(product.product_name);
   });

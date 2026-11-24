@@ -32,6 +32,7 @@ function itemXml(item: MerchantFeedItem) {
     tag("brand", item.brand),
     ...(item.mpn ? [tag("mpn", item.mpn)] : []),
     tag("google_product_category", PRODUCT_CATEGORY),
+    ...(item.productType ? [tag("product_type", item.productType)] : []),
     "</item>",
   ].join("");
 }
