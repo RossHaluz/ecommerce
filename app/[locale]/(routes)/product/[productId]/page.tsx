@@ -70,7 +70,9 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           currentPath: `/product/${productId}`,
         })}
       />
-      <TrackViewItem item={{ id: product.id, title: product.title, price: product.price }} />
+      <TrackViewItem
+        item={{ id: product.id, title: product.title, price: product.price, categories: product.categories }}
+      />
       <Separator />
       <ProductInfo initialData={product} heading={heading} />
       <Separator />

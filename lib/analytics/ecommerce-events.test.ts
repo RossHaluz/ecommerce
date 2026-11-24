@@ -21,6 +21,22 @@ describe("ecommerce-events", () => {
     expect(cartEvent([cartLine])).toMatchObject({ value: 60, items: [{ price: 30, quantity: 2 }] });
   });
 
+  it("несе основну категорію й підкатегорію товару, щоб у GA було видно, що продається", () => {
+    const withCategories = {
+      ...bumper,
+      categories: [
+        { categoryId: "c2", category: { name: "Бампери", category_name: "bampery", parentId: "c1" } },
+        { categoryId: "c1", category: { name: "Кузовні частини", category_name: "kuzovni", parentId: null } },
+      ],
+    };
+    expect(cartEvent([withCategories]).items[0]).toMatchObject({ item_category: "Кузовні частини", item_category2: "Бампери" });
+  });
+
+  it("товар зі списку (категорії лише з id) іде без категорії, а не з порожньою", () => {
+    const fromList = { ...bumper, categories: [{ categoryId: "c1" }] };
+    expect(cartEvent([fromList]).items[0]).not.toHaveProperty("item_category");
+  });
+
   it("покупка несе номер замовлення — без нього GA4 не зведе дохід і задублює повтор", () => {
     expect(purchaseEvent(1042, [bumper], "one_click")).toMatchObject({
       transaction_id: "1042",
