@@ -3,6 +3,7 @@ import { buildProductHeading, type ProductHeadingSource } from "./product-headin
 import { productHref } from "./product-href";
 import { productImageUrl } from "./product-image-url";
 import { isInStock } from "./is-in-stock";
+import { merchantProductType, type CategoryPaths } from "./merchant-product-type";
 
 export interface MerchantFeedSource extends ProductHeadingSource {
   product_name: string;
@@ -13,6 +14,7 @@ export interface MerchantFeedSource extends ProductHeadingSource {
   catalog_number?: string | null;
   images?: { url: string }[];
   condition?: "used" | "new";
+  categories?: { categoryId: string }[];
 }
 
 export interface MerchantFeedItem {
@@ -27,6 +29,7 @@ export interface MerchantFeedItem {
   condition: "used" | "new";
   brand: "Audi";
   mpn?: string;
+  productType?: string;
 }
 
 // Google takes at most 10 extra photos per offer.
@@ -39,13 +42,15 @@ const MAX_EXTRA_IMAGES = 10;
  */
 export function toMerchantFeedItem(
   product: MerchantFeedSource,
-  { siteUrl, usdToUahRate }: { siteUrl: string; usdToUahRate: number }
+  { siteUrl, usdToUahRate, categoryPaths }: { siteUrl: string; usdToUahRate: number; categoryPaths?: CategoryPaths }
 ): MerchantFeedItem | null {
   const priceUsd = Number(product.price);
   const images = (product.images ?? []).map((image) => productImageUrl(image.url)).filter((url): url is string => url !== null);
   if (!(priceUsd > 0) || images.length === 0 || !isInStock(product.quantity) || !product.condition) return null;
 
   const title = buildProductHeading(product);
+  const productType =
+    categoryPaths && merchantProductType((product.categories ?? []).map((ref) => ref.categoryId), categoryPaths);
   return {
     id: product.article || product.product_name,
     title,
@@ -58,5 +63,6 @@ export function toMerchantFeedItem(
     condition: product.condition,
     brand: "Audi",
     ...(product.catalog_number && { mpn: product.catalog_number }),
+    ...(productType && { productType }),
   };
 }

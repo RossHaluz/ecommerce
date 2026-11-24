@@ -13,7 +13,9 @@ const escapeXml = (text: string) =>
 
 const tag = (name: string, value: string) => `<g:${name}>${escapeXml(value)}</g:${name}>`;
 
-const PRODUCT_CATEGORY = "Vehicles & Parts > Vehicle Parts & Accessories";
+// 899 = «Vehicles & Parts > Vehicle Parts & Accessories > Motor Vehicle Parts». The id is language-independent,
+// and the broad parent category made Google guess the product type itself and mis-flag parts.
+const PRODUCT_CATEGORY = "899";
 
 function itemXml(item: MerchantFeedItem) {
   return [
@@ -30,6 +32,7 @@ function itemXml(item: MerchantFeedItem) {
     tag("brand", item.brand),
     ...(item.mpn ? [tag("mpn", item.mpn)] : []),
     tag("google_product_category", PRODUCT_CATEGORY),
+    ...(item.productType ? [tag("product_type", item.productType)] : []),
     "</item>",
   ].join("");
 }

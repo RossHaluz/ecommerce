@@ -36,10 +36,20 @@ describe("buildMerchantFeedXml", () => {
 
     expect(xml).toContain("<g:title>Фара L&amp;R &lt;USA&gt; &quot;нова&quot;</g:title>");
     expect(xml).toContain("<g:description>опис з 1С</g:description>");
-    expect(xml).toContain("<g:google_product_category>Vehicles &amp; Parts &gt; Vehicle Parts &amp; Accessories</g:google_product_category>");
+  });
+
+  it("files every offer under Motor Vehicle Parts by taxonomy id, not the broad parent category", () => {
+    const xml = build([item, { ...item, id: "8531" }]);
+
+    expect(xml.match(/<g:google_product_category>899<\/g:google_product_category>/g)).toHaveLength(2);
   });
 
   it("leaves out mpn when the part has no OE number", () => {
     expect(build([{ ...item, mpn: undefined }])).not.toContain("<g:mpn>");
+  });
+
+  it("writes the site category as product_type, escaped, and skips it when unknown", () => {
+    expect(build([{ ...item, productType: "Кузов > Фари" }])).toContain("<g:product_type>Кузов &gt; Фари</g:product_type>");
+    expect(build([item])).not.toContain("<g:product_type>");
   });
 });
