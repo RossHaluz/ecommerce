@@ -14,7 +14,7 @@ import { maskPhone } from "@/lib/format/mask-phone";
 import { cn } from "@/lib/utils";
 
 /** Телефон — і менеджер напише ціну; у заявці вже є, що саме за деталь (`text`). */
-export const AskPriceForm = ({ text }: { text: string }) => {
+export const AskPriceForm = ({ text, productId }: { text: string; productId: string }) => {
   const t = useTranslations("askPrice");
   const tPhone = useTranslations("orderOneClick");
   const tCommon = useTranslations("common");
@@ -24,7 +24,7 @@ export const AskPriceForm = ({ text }: { text: string }) => {
 
   const onSubmit = async ({ phone }: z.infer<typeof schema>) => {
     try {
-      await submitLead({ phone, desc: text }, "price");
+      await submitLead({ phone, desc: text, productId }, "price");
       setSentTo(phone);
     } catch {
       toast.error(tCommon("somethingWentWrong"));

@@ -193,7 +193,7 @@
   "askPrice": {
     "button": "Zapytaj o cenę",
     "title": "Zapytaj o cenę",
-    "lead": "Cenę tej części podaje menedżer. Zostaw telefon — napiszemy lub zadzwonimy z ceną.",
+    "lead": "Cenę tej części podaje menedżer. Zostaw telefon — napiszemy lub zadzwonimy z ceną. W godzinach pracy (pn–pt 9–18, sob 10–15 czasu kijowskiego) odpowiadamy w 15 minut.",
     "phoneLabel": "Twój telefon",
     "submit": "Zapytaj o cenę",
     "sending": "Wysyłamy…",

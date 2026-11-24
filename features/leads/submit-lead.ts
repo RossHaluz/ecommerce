@@ -11,6 +11,8 @@ export interface LeadInput {
   /** Що шукають: назва або каталожний номер. Раніше форма VIN його не надсилала. */
   desc?: string;
   files?: File[];
+  /** Товар, про ціну якого питають: заявка в адмінці відкривається вже з цією деталлю. */
+  productId?: string;
 }
 
 export type LeadType = "call_me" | "vin" | "search" | "price";
@@ -20,8 +22,10 @@ export type LeadType = "call_me" | "vin" | "search" | "price";
  * (база …/api): відносний axios.post після рефакторингу йшов на адресу сайту й ловив 404.
  */
 export async function submitLead(input: LeadInput, type: LeadType) {
+  // Без type бекенд вважав запит ціни дзвінком і губив деталь — замовлення №319 прийшло без неї.
   const body = new FormData();
-  for (const key of ["phone", "name", "vinCode", "desc"] as const) {
+  body.append("type", type);
+  for (const key of ["phone", "name", "vinCode", "desc", "productId"] as const) {
     const value = input[key];
     if (value) body.append(key, value);
   }

@@ -32,6 +32,23 @@ describe("submitLead", () => {
     expect(trackEvent).toHaveBeenCalledWith("generate_lead", { lead_type: "vin" });
   });
 
+  // Регресія №319: запит ціни без type і товару бекенд записував як «Передзвонити» без деталі.
+  it("каже бекенду тип заявки й товар, про ціну якого питають", async () => {
+    await submitLead({ phone: "+380 67 123 45 67", desc: "Хочу дізнатися ціну до: накладка", productId: "p-8282" }, "price");
+
+    const body = post.mock.calls[0][1] as FormData;
+    expect(body.get("type")).toBe("price");
+    expect(body.get("productId")).toBe("p-8282");
+  });
+
+  it("заявка без товару не шле порожній productId", async () => {
+    await submitLead({ phone: "+380 67 123 45 67" }, "call_me");
+
+    const body = post.mock.calls[0][1] as FormData;
+    expect(body.get("type")).toBe("call_me");
+    expect(body.has("productId")).toBe(false);
+  });
+
   it("подію заявки шле лише після успішної відправки", async () => {
     post.mockRejectedValue(new Error("500"));
 
