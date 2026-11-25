@@ -10,6 +10,8 @@ export const ENDPOINTS = {
     `/product/${storeId}/${productSlug}`,
   similarProducts: (storeId: string, productSlug: string) =>
     `/product/${storeId}/${productSlug}/similar-products`,
+  productSlugByArticle: (storeId: string, article: string) =>
+    `/product/${storeId}/by-article/${article}`,
   productsByModel: (storeId: string, modelSlug: string) =>
     `/product/${storeId}/model/${modelSlug}`,
 

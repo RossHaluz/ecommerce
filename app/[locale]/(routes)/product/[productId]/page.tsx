@@ -1,9 +1,8 @@
 import React from "react";
 import ProductInfo from "./_components/product-info";
 import { getSimilarProducts } from "@/actions/get-data";
-import { fetchProductDetails } from "@/lib/api";
 import { fetchShopRate } from "@/lib/api/exchange-rate";
-import { notFoundOn404 } from "@/lib/api/not-found-on-404";
+import { loadProduct } from "./load-product";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildAlternates } from "@/lib/seo/alternates";
@@ -37,7 +36,7 @@ export const generateStaticParams = () => [];
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { productId } = params;
-  const { product } = await fetchProductDetails(productId).catch(notFoundOn404);
+  const { product } = await loadProduct(productId, params.locale);
 
   return {
     alternates: buildAlternates(`/product/${productId}`, params.locale),
@@ -50,8 +49,8 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   // Без цього getTranslations у дочірніх компонентах читає мову з headers() — сторінка стає динамічною.
   setRequestLocale(locale);
   const [{ product }, similarProducts, t, shopRate] = await Promise.all([
-    // Проданий чи вигаданий товар — справжня 404, а не порожній каркас зі статусом 200.
-    fetchProductDetails(productId).catch(notFoundOn404),
+    // Вигаданий товар — справжня 404; стара адреса перейменованого — постійна переадресація.
+    loadProduct(productId, locale),
     getSimilarProducts(productId),
     getTranslations("nav"),
     fetchShopRate(),
