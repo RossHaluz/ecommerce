@@ -4,6 +4,7 @@ import { productHref } from "./product-href";
 import { productImageUrl } from "./product-image-url";
 import { isInStock } from "./is-in-stock";
 import { merchantProductType, type CategoryPaths } from "./merchant-product-type";
+import { leadWithLargePhoto, type SizedPhoto } from "./lead-with-large-photo";
 
 export interface MerchantFeedSource extends ProductHeadingSource {
   product_name: string;
@@ -12,7 +13,7 @@ export interface MerchantFeedSource extends ProductHeadingSource {
   price: number | string;
   quantity: number;
   catalog_number?: string | null;
-  images?: { url: string }[];
+  images?: SizedPhoto[];
   condition?: "used" | "new";
   categories?: { categoryId: string }[];
 }
@@ -45,7 +46,7 @@ export function toMerchantFeedItem(
   { siteUrl, usdToUahRate, categoryPaths }: { siteUrl: string; usdToUahRate: number; categoryPaths?: CategoryPaths }
 ): MerchantFeedItem | null {
   const priceUsd = Number(product.price);
-  const images = (product.images ?? []).map((image) => productImageUrl(image.url)).filter((url): url is string => url !== null);
+  const images = leadWithLargePhoto(product.images ?? []).map((image) => productImageUrl(image.url)).filter((url): url is string => url !== null);
   if (!(priceUsd > 0) || images.length === 0 || !isInStock(product.quantity) || !product.condition) return null;
 
   const title = buildProductHeading(product);
