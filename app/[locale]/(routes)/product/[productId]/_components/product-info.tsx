@@ -13,6 +13,8 @@ interface ProductInfoProps {
   initialData: Product;
   /** H1 з моделлю — той самий текст, що й остання ланка хлібних крихт. */
   heading: string;
+  /** In-stock parts shown inside «Продано»; empty for a product on sale. */
+  soldAlternatives: Product[];
 }
 
 // Порожній блок (компонент повернув null) не має додавати проміжок.
@@ -23,7 +25,7 @@ const SLOT = "empty:hidden";
  * Телефон: одна колонка в порядку макета (фото → покупка → сумісність → характеристики → допомога);
  * колонки там `contents`, а черговість задає `order`.
  */
-const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading }) => (
+const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading, soldAlternatives }) => (
   <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-start lg:gap-6">
     <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
       <div className={`order-1 ${SLOT}`}>
@@ -40,8 +42,13 @@ const ProductInfo: FC<ProductInfoProps> = ({ initialData, heading }) => (
       </div>
     </div>
     <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
-      <div className="order-2">
-        {initialData.isArchived ? <SoldBox product={initialData} heading={heading} /> : <BuyBox product={initialData} heading={heading} />}
+      {/* A sold part leads with where to go next: on a phone «Продано» comes before the photos. */}
+      <div className={initialData.isArchived ? "order-first lg:order-none" : "order-2"}>
+        {initialData.isArchived ? (
+          <SoldBox product={initialData} heading={heading} alternatives={soldAlternatives} />
+        ) : (
+          <BuyBox product={initialData} heading={heading} />
+        )}
       </div>
       <div className="order-6">
         <FitHelpCard />

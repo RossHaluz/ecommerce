@@ -19,6 +19,8 @@ import { buildProductMeta } from "@/entities/product/model/product-meta";
 import { buildProductHeading } from "@/entities/product/model/product-heading";
 import { buildProductBreadcrumbs } from "@/entities/product/model/product-breadcrumbs";
 import { toProductCard } from "@/entities/product/model/product-card";
+import { splitSimilar } from "@/entities/product/model/split-similar";
+import type { Product } from "@/lib/types";
 import { TrackViewItem } from "./_components/track-view-item";
 
 interface ProductPageProps {
@@ -56,6 +58,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   ]);
 
   const heading = buildProductHeading(product);
+  const similar = splitSimilar<Product>((similarProducts ?? []).map(toProductCard), Boolean(product.isArchived));
   const trail = buildProductBreadcrumbs({ ...product, title: heading });
 
   return (
@@ -74,10 +77,10 @@ const ProductPage = async ({ params }: ProductPageProps) => {
         item={{ id: product.id, title: product.title, price: product.price, categories: product.categories }}
       />
       <Separator />
-      <ProductInfo initialData={product} heading={heading} />
+      <ProductInfo initialData={product} heading={heading} soldAlternatives={similar.inSoldBox} />
       <Separator />
       <SimilarProducts
-        similarProducts={(similarProducts ?? []).map(toProductCard)}
+        similarProducts={similar.below}
         model={product.models?.length === 1 ? formatModelName(product.models[0].model.name) : undefined}
       />
     </div>

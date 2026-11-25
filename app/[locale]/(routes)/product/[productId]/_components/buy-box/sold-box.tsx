@@ -4,12 +4,13 @@ import { TELEGRAM_URL } from "@/entities/store/model/contacts";
 import type { Product } from "@/lib/types";
 import { searchResultsHref } from "@/features/search/model/results-href";
 import { ProductHeadline } from "./product-headline";
+import { SoldAlternatives } from "./sold-alternatives";
 
 /**
  * Проданий (архівний) товар: сторінка лишається для старих посилань і пошуковиків,
  * але замість «Купити» — куди піти далі. Бекенд і так не прийняв би замовлення на нього.
  */
-export const SoldBox = ({ product, heading }: { product: Product; heading: string }) => {
+export const SoldBox = ({ product, heading, alternatives }: { product: Product; heading: string; alternatives: Product[] }) => {
   const t = useTranslations("product");
 
   return (
@@ -35,6 +36,7 @@ export const SoldBox = ({ product, heading }: { product: Product; heading: strin
           {t("askManager")}
         </a>
       </div>
+      <SoldAlternatives products={alternatives} />
     </section>
   );
 };
