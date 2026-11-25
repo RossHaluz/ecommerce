@@ -69,6 +69,15 @@ export function fetchProductDetails(productSlug: string) {
   });
 }
 
+/** The current address of the product with this article, or null when none or several have it. */
+export async function findProductSlugByArticle(article: string): Promise<string | null> {
+  const found = await orNull(
+    "productSlugByArticle",
+    request<{ product_name: string }>(ENDPOINTS.productSlugByArticle(STORE_ID, article), { revalidate: CATALOG_TTL }),
+  );
+  return found?.product_name ?? null;
+}
+
 /** Допоміжний блок: порожній список кращий за зламану сторінку товару. */
 export const getSimilarProducts = (productSlug: string) =>
   orNull(

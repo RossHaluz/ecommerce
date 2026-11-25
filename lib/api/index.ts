@@ -14,6 +14,7 @@ export {
   fetchProductsByModel,
   getProductsByModel,
   fetchProductDetails,
+  findProductSlugByArticle,
   getSimilarProducts,
   type ProductsResponse,
   type ProductListParams,

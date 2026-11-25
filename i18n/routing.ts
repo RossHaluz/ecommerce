@@ -18,5 +18,5 @@ export const routing = defineRouting({
  * Імпортуємо саме їх, а не `next/link`: інакше перехід з польської версії
  * губить префікс і кидає користувача на українську.
  */
-export const { Link, redirect, usePathname, useRouter, getPathname } =
+export const { Link, redirect, permanentRedirect, usePathname, useRouter, getPathname } =
   createNavigation(routing);
