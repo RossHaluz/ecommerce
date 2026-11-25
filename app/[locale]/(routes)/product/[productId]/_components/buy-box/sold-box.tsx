@@ -22,7 +22,7 @@ export const SoldBox = ({ product, heading, alternatives }: { product: Product; 
         {product.catalog_number && (
           <Link
             href={searchResultsHref(product.catalog_number, null)}
-            className="flex h-12 flex-1 items-center justify-center rounded-lg bg-[#C0092A] px-4 font-extrabold text-white hover:bg-[#A30722]"
+            className="flex h-12 shrink-0 items-center md:flex-1 justify-center rounded-lg bg-[#C0092A] px-4 font-extrabold text-white hover:bg-[#A30722]"
           >
             {t("findByOe")}
           </Link>
@@ -31,7 +31,7 @@ export const SoldBox = ({ product, heading, alternatives }: { product: Product; 
           href={TELEGRAM_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-12 flex-1 items-center justify-center rounded-lg border-2 border-[#C0092A] px-4 font-extrabold text-[#C0092A] hover:bg-[#FFF2F4]"
+          className="flex h-12 shrink-0 items-center md:flex-1 justify-center rounded-lg border-2 border-[#C0092A] px-4 font-extrabold text-[#C0092A] hover:bg-[#FFF2F4]"
         >
           {t("askManager")}
         </a>
