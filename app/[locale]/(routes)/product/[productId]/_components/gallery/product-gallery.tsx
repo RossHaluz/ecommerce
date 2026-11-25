@@ -54,7 +54,8 @@ export const ProductGallery = ({ images, title }: ProductGalleryProps) => {
       </div>
 
       {images.length > 1 && (
-        <div className="lg:order-1">
+        // On a phone the strip pushed «Купити» below the first screen; photos swipe and the counter shows the count.
+        <div className="hidden lg:order-1 lg:block">
           <GalleryThumbs images={images} active={active} onSelect={showSlide} />
         </div>
       )}
