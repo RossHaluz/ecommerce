@@ -20,6 +20,9 @@ export interface Product {
   images: {
     id: string;
     url: string;
+    /** Pixels; null until the backend has measured an older photo. */
+    width?: number | null;
+    height?: number | null;
   }[];
   /** Архів = продано (оператор, 2026-10-18). Приходить у деталях товару; списки віддають лише непродані. */
   isArchived?: boolean;

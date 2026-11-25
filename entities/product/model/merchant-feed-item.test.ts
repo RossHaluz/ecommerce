@@ -40,6 +40,18 @@ describe("toMerchantFeedItem", () => {
     expect(item?.description).toBe(item?.title);
   });
 
+  // 47 offers were disapproved for a main photo under 500×500 while a larger one sat second.
+  it("leads with the first photo Google accepts when the main one is too small", () => {
+    const images = [
+      { url: "8530-1.webp", width: 800, height: 450 },
+      { url: "8530-2.webp", width: 1600, height: 900 },
+    ];
+    const item = toMerchantFeedItem({ ...product, images }, context);
+
+    expect(item?.imageLink).toMatch(/\/products\/8530-2\.webp$/);
+    expect(item?.additionalImageLinks[0]).toMatch(/\/products\/8530-1\.webp$/);
+  });
+
   it("caps extra photos at the 10 Google accepts", () => {
     const images = Array.from({ length: 15 }, (_, i) => ({ url: `${i}.jpg` }));
     expect(toMerchantFeedItem({ ...product, images }, context)?.additionalImageLinks).toHaveLength(10);
