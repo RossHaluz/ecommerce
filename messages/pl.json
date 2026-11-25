@@ -345,7 +345,10 @@
   "advantages": {
     "deliveryUkraine": "Dostawa Nova Poshta na terenie całej Ukrainy",
     "exchangeGuarantee": "Gwarancja wymiany lub zwrotu w ciągu 14 dni",
-    "securePayment": "Płatność przy odbiorze lub na kartę"
+    "inspectBeforePay": "Płatność przy odbiorze — najpierw obejrzyj część w oddziale",
+    "checkByVin": "Sprawdzimy dopasowanie po VIN przed wysyłką",
+    "conditionUsed": "Stan: używana",
+    "conditionNew": "Stan: nowa"
   },
   "orderOneClick": {
     "phoneRequired": "Numer telefonu jest wymagany",

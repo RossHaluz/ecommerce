@@ -38,7 +38,7 @@ export const BuyBox = ({ product, heading }: { product: Product; heading: string
           ]}
         />
       )}
-      <TrustList />
+      <TrustList condition={product.condition} />
     </section>
   );
 };

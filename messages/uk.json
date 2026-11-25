@@ -345,7 +345,10 @@
   "advantages": {
     "deliveryUkraine": "Доставка Новою поштою по всій Україні",
     "exchangeGuarantee": "Гарантія обміну чи повернення протягом 14 днів",
-    "securePayment": "Оплата при отриманні або на картку"
+    "inspectBeforePay": "Оплата при отриманні — спершу огляньте деталь у відділенні",
+    "checkByVin": "Перевіримо сумісність за VIN до відправки",
+    "conditionUsed": "Стан: вживана",
+    "conditionNew": "Стан: нова"
   },
   "orderOneClick": {
     "phoneRequired": "Номер телефону обов'язковий",
