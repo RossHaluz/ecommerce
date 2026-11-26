@@ -381,6 +381,11 @@
     "collapse": "Zwiń",
     "aboutTitle": "O dziale „{subject}”",
     "faqTitle": "Częste pytania",
+    "catalog": {
+      "metaTitle": "Katalog części Audi według kategorii — Audiparts",
+      "metaDescription": "Katalog używanych i nowych części Audi według działów: karoseria, oświetlenie, chłodzenie, zawieszenie, hamulce, silnik i skrzynia biegów, elektronika, wnętrze, felgi. Wybierz dział i model swojego Audi.",
+      "h1": "Katalog części Audi"
+    },
     "home": {
       "metaTitle": "Części do Audi używane i nowe — kup w Audiparts",
       "metaDescription": "Oryginalne używane i nowe części do Audi z numerami OE: ponad 6000 pozycji do Audi A4, A6, A7, A8, Q5, Q7, Q8 i e-tron. Bezpłatny dobór po VIN.",
