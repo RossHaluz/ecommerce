@@ -10,6 +10,10 @@ describe("buildProductHeading", () => {
     );
   });
 
+  it("чужу марку не називає Audi", () => {
+    expect(buildProductHeading({ title: "фара ліва", models: [model("TOUAREG 2018-")] })).toBe("Фара ліва для TOUAREG (2018+)");
+  });
+
   it("кілька моделей у заголовок не пхає — для них є блок «Підходить до»", () => {
     expect(buildProductHeading({ title: "решітка", models: [model("Q7 4M 2015-2019"), model("Q8 2018- 2023")] })).toBe(
       "Решітка"

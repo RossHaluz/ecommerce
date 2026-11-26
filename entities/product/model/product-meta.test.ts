@@ -52,6 +52,20 @@ describe("buildProductMeta", () => {
     expect(buildProductMeta(product)).not.toHaveProperty("robots");
   });
 
+  it("does not call another brand Audi", () => {
+    const meta = buildProductMeta({ ...product, models: [{ model: { name: "TOUAREG 2018-" } }] });
+
+    expect(meta.title).toContain("s-line TOUAREG (2018+) | Audiparts");
+    expect(meta.title).not.toContain("Audi (Ауді)");
+    expect(meta.description).toContain("для TOUAREG (2018+).");
+  });
+
+  it("keeps Audi first when a part also fits another brand, so the two-model title still names Audi", () => {
+    const models = ["TOUAREG 2018-", "TOUAREG 15-18", "Q7 4M 2015-2019"].map((name) => ({ model: { name } }));
+
+    expect(buildProductMeta({ ...product, models }).title).toContain("Audi (Ауді) Q7 4M (2015–2019), TOUAREG (2018+) |");
+  });
+
   it("names the part, its OE number and the model in the description", () => {
     expect(buildProductMeta(product).description).toMatch(
       /^Купити бампер задній q7 4m s-line 4M0807511GRU для Audi \(Ауді\) Q7 4M \(2015–2019\)\./

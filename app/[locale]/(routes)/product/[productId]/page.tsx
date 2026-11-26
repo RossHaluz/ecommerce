@@ -8,7 +8,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildAlternates } from "@/lib/seo/alternates";
 import { buildBreadcrumbJsonLd } from "@/lib/seo/breadcrumb-json-ld";
 import { SITE_URL } from "@/lib/seo/site-url";
-import { formatModelName } from "@/lib/seo/format-model-name";
+import { brandedModelName } from "@/lib/seo/model-brand";
 import SimilarProducts from "./_components/similar-products/similar-products";
 import { TrailBreadcrumbs } from "@/components/seo/trail-breadcrumbs";
 import { Separator } from "@/components/ui/separator";
@@ -80,7 +80,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
       <Separator />
       <SimilarProducts
         similarProducts={similar.below}
-        model={product.models?.length === 1 ? formatModelName(product.models[0].model.name) : undefined}
+        model={product.models?.length === 1 ? brandedModelName(product.models[0].model.name) : undefined}
       />
     </div>
   );

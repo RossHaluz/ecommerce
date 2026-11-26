@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { Check, ScanSearch } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import SearchByVinCode from "@/components/search-by-vin-code/search-by-vin-code";
-import { formatModelName } from "@/lib/seo/format-model-name";
+import { brandedModelName } from "@/lib/seo/model-brand";
 import type { Model } from "@/lib/types";
 
 interface CompatibilityCardProps {
@@ -28,7 +28,7 @@ export const CompatibilityCard = ({ models, catalogNumber }: CompatibilityCardPr
                 className="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-lg bg-[#F2F2F2] font-bold text-[#2E2E2E] hover:text-[#C0092A]"
               >
                 <Check size={18} strokeWidth={2.4} className="text-[#008038]" aria-hidden />
-                Audi {formatModelName(model.name)}
+                {brandedModelName(model.name)}
               </Link>
             </li>
           ))}

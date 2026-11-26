@@ -141,7 +141,7 @@
     "helpTitle": "Не впевнені, що підійде?",
     "helpText": "Напишіть VIN або фото своєї деталі — менеджер перевірить сумісність до відправки.",
     "call": "Дзвінок",
-    "similarForModel": "Ще для Audi {model}"
+    "similarForModel": "Ще для {model}"
   },
   "cart": {
     "added": "Додано в кошик",
@@ -364,15 +364,15 @@
     "faster": "Хочете швидше? Напишіть нам:"
   },
   "seo": {
-    "categoryModelTitle": "{category} Audi {model} — купити, ціна | Audiparts",
-    "categoryModelH1": "{category} Audi {model}",
-    "categoryModelDescription": "{category} для Audi {model}: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні запчастини з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",
-    "relatedCategoriesTitle": "Інші запчастини для Audi {model}",
+    "categoryModelTitle": "{category} {model} — купити, ціна | Audiparts",
+    "categoryModelH1": "{category} {model}",
+    "categoryModelDescription": "{category} для {model}: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні запчастини з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",
+    "relatedCategoriesTitle": "Інші запчастини для {model}",
     "relatedModelsTitle": "{category} для інших моделей Audi",
-    "modelTitle": "Запчастини Audi {model} — купити, ціна | Audiparts",
-    "modelH1": "Запчастини Audi {model}",
-    "modelDescription": "Запчастини для Audi {model}: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні деталі з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",
-    "modelCategoriesTitle": "Запчастини Audi {model} за категоріями",
+    "modelTitle": "Запчастини {model} — купити, ціна | Audiparts",
+    "modelH1": "Запчастини {model}",
+    "modelDescription": "Запчастини для {model}: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні деталі з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",
+    "modelCategoriesTitle": "Запчастини {model} за категоріями",
     "categoryTitle": "{category} Audi — купити, ціна | Audiparts",
     "categoryH1": "{category} Audi",
     "categoryDescription": "{category} для Audi: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні деталі з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",

@@ -1,10 +1,10 @@
 import { getTranslations } from "next-intl/server";
-import { formatModelName } from "@/lib/seo/format-model-name";
+import { brandedModelName } from "@/lib/seo/model-brand";
 
 /** Заголовок, H1 і опис під запит «запчастини + модель» — одні для метаданих і сторінки. */
 export async function getModelSeo({ locale, modelName, productCount }: { locale: string; modelName: string; productCount: number }) {
   const t = await getTranslations({ locale, namespace: "seo" });
-  const model = formatModelName(modelName);
+  const model = brandedModelName(modelName);
 
   return {
     model,
