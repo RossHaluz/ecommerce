@@ -1,4 +1,4 @@
-import { formatModelName } from "@/lib/seo/format-model-name";
+import { brandedModelName } from "@/lib/seo/model-brand";
 
 export interface ProductHeadingSource {
   title: string;
@@ -24,5 +24,5 @@ export const productTitle = (title: string) => capitalize(tidy(title).replace(WO
 export function buildProductHeading({ title, models = [] }: ProductHeadingSource) {
   const name = productTitle(title);
   const names = models.map((item) => item.model?.name).filter((n): n is string => Boolean(n));
-  return names.length === 1 ? `${name} для Audi ${formatModelName(names[0])}` : name;
+  return names.length === 1 ? `${name} для ${brandedModelName(names[0])}` : name;
 }

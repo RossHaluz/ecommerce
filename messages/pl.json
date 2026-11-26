@@ -141,7 +141,7 @@
     "helpTitle": "Nie masz pewności, czy pasuje?",
     "helpText": "Wyślij VIN lub zdjęcie swojej części — menedżer sprawdzi zgodność przed wysyłką.",
     "call": "Zadzwoń",
-    "similarForModel": "Więcej do Audi {model}"
+    "similarForModel": "Więcej do {model}"
   },
   "cart": {
     "added": "Dodano do koszyka",
@@ -364,15 +364,15 @@
     "faster": "Chcesz szybciej? Napisz do nas:"
   },
   "seo": {
-    "categoryModelTitle": "{category} Audi {model} — kup, cena | Audiparts",
-    "categoryModelH1": "{category} Audi {model}",
-    "categoryModelDescription": "{category} do Audi {model}: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
-    "relatedCategoriesTitle": "Inne części do Audi {model}",
+    "categoryModelTitle": "{category} {model} — kup, cena | Audiparts",
+    "categoryModelH1": "{category} {model}",
+    "categoryModelDescription": "{category} do {model}: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
+    "relatedCategoriesTitle": "Inne części do {model}",
     "relatedModelsTitle": "{category} do innych modeli Audi",
-    "modelTitle": "Części Audi {model} — kup, cena | Audiparts",
-    "modelH1": "Części Audi {model}",
-    "modelDescription": "Części do Audi {model}: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
-    "modelCategoriesTitle": "Części Audi {model} według kategorii",
+    "modelTitle": "Części {model} — kup, cena | Audiparts",
+    "modelH1": "Części {model}",
+    "modelDescription": "Części do {model}: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
+    "modelCategoriesTitle": "Części {model} według kategorii",
     "categoryTitle": "{category} Audi — kup, cena | Audiparts",
     "categoryH1": "{category} Audi",
     "categoryDescription": "{category} do Audi: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",

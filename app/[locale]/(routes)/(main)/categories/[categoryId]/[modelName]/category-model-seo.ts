@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { formatCategoryName } from "@/lib/seo/format-category-name";
-import { formatModelName } from "@/lib/seo/format-model-name";
+import { brandedModelName } from "@/lib/seo/model-brand";
 
 interface CategoryModelSeoInput {
   locale: string;
@@ -12,7 +12,7 @@ interface CategoryModelSeoInput {
 /** Заголовок, H1 і опис під запит «деталь + модель» — одні й ті самі для метаданих і сторінки. */
 export async function getCategoryModelSeo({ locale, categoryName, modelName, productCount }: CategoryModelSeoInput) {
   const t = await getTranslations({ locale, namespace: "seo" });
-  const values = { category: formatCategoryName(categoryName), model: formatModelName(modelName) };
+  const values = { category: formatCategoryName(categoryName), model: brandedModelName(modelName) };
 
   return {
     ...values,

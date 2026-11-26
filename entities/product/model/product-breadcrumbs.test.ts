@@ -15,6 +15,14 @@ describe("buildProductBreadcrumbs", () => {
     ]);
   });
 
+  it("ланка моделі іншої марки — без «Audi»", () => {
+    const skoda = { model: { name: "SKODA OCTAVIA", modelName: "skoda-octavia" } };
+    expect(buildProductBreadcrumbs({ title: "Бампер", categories: [bumpers], models: [skoda] })[1]).toEqual({
+      label: "SKODA OCTAVIA",
+      href: "/categories/bampera/skoda-octavia",
+    });
+  });
+
   it("без категорій і з кількома моделями лишається лише сам товар", () => {
     const q7 = { model: { name: "Q7 4M 2015-2019", modelName: "q7-4m-2015-2019" } };
     expect(buildProductBreadcrumbs({ title: "Салон", categories: [], models: [q8, q7] })).toEqual([

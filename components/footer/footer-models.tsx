@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useModels } from "@/features/catalog";
 import { pickPopularModels } from "@/features/catalog/lib/popular-models";
+import { brandedModelName } from "@/lib/seo/model-brand";
 import { FooterSection } from "./footer-section";
 import { FooterLink } from "./footer-link";
 
@@ -14,7 +15,7 @@ export const FooterModels = () => {
     <FooterSection title={t("popularModels")}>
       {pickPopularModels(models).map((model) => (
         <FooterLink key={model.id} href={`/${model.modelName}`}>
-          Audi {model.name}
+          {brandedModelName(model.name)}
         </FooterLink>
       ))}
     </FooterSection>

@@ -1,6 +1,6 @@
 import type { Crumb } from "@/lib/breadcrumbs/build-breadcrumb-trail";
 import { formatCategoryName } from "@/lib/seo/format-category-name";
-import { formatModelName } from "@/lib/seo/format-model-name";
+import { brandedModelName } from "@/lib/seo/model-brand";
 
 interface CategoryRef {
   category?: { name: string; category_name: string; parentId?: string | null } | null;
@@ -35,7 +35,7 @@ export function buildProductBreadcrumbs({ title, categories = [], models = [] }:
   const leaf = ordered.at(-1);
   const model = models.length === 1 ? models[0].model : null;
   if (leaf && model?.name && model.modelName) {
-    trail.push({ label: `Audi ${formatModelName(model.name)}`, href: `/categories/${leaf.category_name}/${model.modelName}` });
+    trail.push({ label: brandedModelName(model.name), href: `/categories/${leaf.category_name}/${model.modelName}` });
   }
 
   return [...trail, { label: title, href: null }];

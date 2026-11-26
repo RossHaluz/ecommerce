@@ -1,4 +1,4 @@
-import { formatModelName } from "@/lib/seo/format-model-name";
+import { brandedModelName } from "@/lib/seo/model-brand";
 import { LinkChips } from "./link-chips";
 
 export interface RelatedModel {
@@ -20,7 +20,7 @@ export const RelatedModelLinks = ({
     title={title}
     links={models.map((m) => ({
       href: `/categories/${categorySlug}/${m.modelName}`,
-      label: `Audi ${formatModelName(m.name)}`,
+      label: brandedModelName(m.name),
     }))}
   />
 );

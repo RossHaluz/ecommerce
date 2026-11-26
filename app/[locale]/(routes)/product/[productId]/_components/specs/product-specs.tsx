@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { orderedCategories } from "@/entities/product/model/product-breadcrumbs";
 import { formatCategoryName } from "@/lib/seo/format-category-name";
-import { formatModelName } from "@/lib/seo/format-model-name";
+import { brandedModelName } from "@/lib/seo/model-brand";
 import type { Product } from "@/lib/types";
 
 type Row = { label: string; value: ReactNode };
@@ -34,7 +34,7 @@ export const ProductSpecs = ({ product }: { product: Product }) => {
       label: t("model"),
       value: (
         <Link href={`/${model.modelName}`} prefetch={false} className={LINK}>
-          Audi {formatModelName(model.name)}
+          {brandedModelName(model.name)}
         </Link>
       ),
     });
