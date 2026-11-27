@@ -364,9 +364,9 @@
     "faster": "Chcesz szybciej? Napisz do nas:"
   },
   "seo": {
-    "categoryModelTitle": "{category} {model} — kup, cena | Audiparts",
+    "categoryModelTitle": "{category} {model} — {count} szt., używane i nowe | Audiparts",
     "categoryModelH1": "{category} {model}",
-    "categoryModelDescription": "{category} do {model}: {count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}} w katalogu. Oryginalne części z numerami OE, ceny i dostępność, wysyłka Nova Poshta.",
+    "categoryModelDescription": "{category} do {model}, używane i nowe: {count, plural, one {# część} few {# części} many {# części} other {# części}} w katalogu. Oryginalne części z numerami OE, zdjęciami i dostępnością, bezpłatny dobór po VIN.",
     "relatedCategoriesTitle": "Inne części do {model}",
     "relatedModelsTitle": "{category} do innych modeli Audi",
     "modelTitle": "Części {model} — kup, cena | Audiparts",

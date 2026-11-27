@@ -13,11 +13,12 @@ interface CategoryModelSeoInput {
 export async function getCategoryModelSeo({ locale, categoryName, modelName, productCount }: CategoryModelSeoInput) {
   const t = await getTranslations({ locale, namespace: "seo" });
   const values = { category: formatCategoryName(categoryName), model: brandedModelName(modelName) };
+  const counted = { ...values, count: productCount };
 
   return {
     ...values,
-    title: t("categoryModelTitle", values),
+    title: t("categoryModelTitle", counted),
     h1: t("categoryModelH1", values),
-    description: t("categoryModelDescription", { ...values, count: productCount }),
+    description: t("categoryModelDescription", counted),
   };
 }

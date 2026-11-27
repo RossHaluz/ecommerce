@@ -364,9 +364,9 @@
     "faster": "Хочете швидше? Напишіть нам:"
   },
   "seo": {
-    "categoryModelTitle": "{category} {model} — купити, ціна | Audiparts",
+    "categoryModelTitle": "{category} {model} — {count} шт., б/у та нові | Audiparts",
     "categoryModelH1": "{category} {model}",
-    "categoryModelDescription": "{category} для {model}: {count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} в каталозі. Оригінальні запчастини з OE-номерами, ціни й наявність, доставка Новою поштою по Україні за 2–3 дні.",
+    "categoryModelDescription": "{category} для {model}, б/у та нові: {count, plural, one {# деталь} few {# деталі} many {# деталей} other {# деталі}} в каталозі. Оригінальні запчастини з OE-номерами, фото й наявністю, безкоштовний підбір за VIN, доставка Новою поштою по Україні за 2–3 дні.",
     "relatedCategoriesTitle": "Інші запчастини для {model}",
     "relatedModelsTitle": "{category} для інших моделей Audi",
     "modelTitle": "Запчастини {model} — купити, ціна | Audiparts",
