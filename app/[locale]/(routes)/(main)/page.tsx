@@ -1,4 +1,4 @@
-import { getAllProducts } from "@/actions/get-data";
+import { getAllProducts, getCategories, getModels } from "@/actions/get-data";
 import MainSection from "@/components/main-section";
 import NotFoundItems from "@/components/not-found-items";
 import dynamic from "next/dynamic";
@@ -8,6 +8,7 @@ import { FaqSection } from "@/components/seo/faq-section";
 import { getCatalogFaq } from "@/lib/seo/catalog-faq";
 import { SeoText } from "@/components/seo/seo-text";
 import { buildPageMetadata, getPageSeo } from "@/lib/seo/page-seo";
+import { CatalogShortcuts } from "@/components/seo/catalog-shortcuts";
 
 const Products = dynamic(() => import("../_components/products"), {
   ssr: true,
@@ -20,7 +21,13 @@ export const generateMetadata = ({ params }: { params: { locale: string } }) => 
 const Home = async ({ params }: { params: { locale: string } }) => {
   // Без цього getTranslations читає мову з headers() і сторінка стає динамічною.
   setRequestLocale(params.locale);
-  const [data, t, seo] = await Promise.all([getAllProducts({ pageSize: 52 }), getTranslations(), getPageSeo(params.locale, "home")]);
+  const [data, t, seo, models, categories] = await Promise.all([
+    getAllProducts({ pageSize: 52 }),
+    getTranslations(),
+    getPageSeo(params.locale, "home"),
+    getModels(),
+    getCategories(),
+  ]);
   const first = toProductPage(data);
 
   if (!first.products.length) {
@@ -33,6 +40,12 @@ const Home = async ({ params }: { params: { locale: string } }) => {
   return (
     <MainSection title={seo.h1}>
       <Products products={first.products} page={first.page} totalPages={first.totalPages} />
+      <CatalogShortcuts
+        models={models ?? []}
+        categories={categories ?? []}
+        modelsTitle={t("seo.home.modelsTitle")}
+        sectionsTitle={t("seo.home.sectionsTitle")}
+      />
       <SeoText title={t("seo.home.title")} text={t("seo.home.text")} />
       <FaqSection title={t("seo.faqTitle")} items={faq} />
     </MainSection>

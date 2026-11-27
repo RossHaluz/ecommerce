@@ -33,6 +33,8 @@ export interface Model {
   id: string;
   name: string;
   modelName: string;
+  /** Товари в продажу; є лише у списку моделей. */
+  _count?: { products: number };
 }
 
 export interface Meta {
